@@ -99,12 +99,15 @@ export function Sidebar() {
                 </ListItemPrefix>
                 Attribute
               </ListItem>
-              <ListItem placeholder={"hello"}>
-                <ListItemPrefix placeholder={"hello"}>
-                  <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
-                </ListItemPrefix>
-                Add Products
-              </ListItem>
+
+              <Link href="/dashboard/add-products">
+                <ListItem placeholder={"hello"}>
+                  <ListItemPrefix placeholder={"hello"}>
+                    <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                  </ListItemPrefix>
+                  Add Products
+                </ListItem>
+              </Link>
             </List>
           </AccordionBody>
         </Accordion>

@@ -8,7 +8,7 @@ import {
 
 export const StatisticsCard = () => {
   return (
-    <div placeholder={"ons"} className="mt-6 shadow-md rounded-md">
+    <div className="mt-6 shadow-md rounded-md bg-white">
       <CardBody placeholder={"ons"}>
         <div className="flex justify-between items-center gap-4">
           <svg

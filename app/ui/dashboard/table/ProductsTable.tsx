@@ -2,7 +2,7 @@
 "use client";
 
 import React from "react";
-import { PagePagination } from "../pagination/PagePagination";
+import { PagePagination } from "../../utilities/pagination/PagePagination";
 
 interface DynamicPaginationProps {
   currentPage: number;

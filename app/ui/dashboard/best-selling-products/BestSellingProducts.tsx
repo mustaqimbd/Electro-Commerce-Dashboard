@@ -3,7 +3,7 @@ import React from "react";
 
 const BestSellingProducts = () => {
   return (
-    <div className="shadow-md w-full p-6 rounded-md grid grid-cols-1 gap-3 ">
+    <div className="shadow-md w-full bg-white p-6 rounded-md grid grid-cols-1 gap-3 ">
       <Typography color="blue-gray" variant="h5" placeholder={"osb"}>
         Top Selling Products
       </Typography>
