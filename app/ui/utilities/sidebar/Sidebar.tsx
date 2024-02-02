@@ -32,7 +32,7 @@ export function Sidebar() {
   };
 
   return (
-    <div className=" h-screen  max-w-[16rem] p-4 shadow-xl shadow-blue-gray-900/5 ">
+    <div className="  bg-white max-w-[16rem] p-4  shadow-blue-gray-900/5 ">
       <List placeholder={"hello"} className="">
         <Accordion
           placeholder={"hello"}

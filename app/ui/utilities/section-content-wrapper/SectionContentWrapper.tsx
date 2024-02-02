@@ -4,7 +4,7 @@ import React, { useState } from "react";
 
 import { Card, Typography } from "@material-tailwind/react";
 
-const SectionContentWrapper = ({ children, headeing }: any) => {
+const SectionContentWrapper = ({ children, heading }: any) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const toggleCollapse = () => {
@@ -15,7 +15,7 @@ const SectionContentWrapper = ({ children, headeing }: any) => {
     <>
       <Card placeholder={"osb"} className="p-4 rounded-sm space-y-2 bg-white">
         <div className="flex justify-between items-center">
-          <Typography placeholder={"osb"}>{headeing}</Typography>
+          <Typography placeholder={"osb"}>{heading}</Typography>
 
           {isCollapsed ? (
             <svg

@@ -15,7 +15,7 @@ const ProductDescription = () => {
   };
 
   return (
-    <SectionContentWrapper headeing={"Product Description"}>
+    <SectionContentWrapper heading={"Product Description"}>
       <JoditEditor
         ref={editor}
         value={content}

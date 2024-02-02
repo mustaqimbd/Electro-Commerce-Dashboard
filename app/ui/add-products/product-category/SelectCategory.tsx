@@ -121,7 +121,7 @@ const SelectCategory: React.FC<CategoryListProps> = () => {
 
   return (
     <Card placeholder={"osb"}>
-      <SectionContentWrapper headeing="Select Category">
+      <SectionContentWrapper heading="Select Category">
         <div className=" max-h-64  overflow-y-scroll ">
           <ul className="list-none">
             {categories.map((category) => (
