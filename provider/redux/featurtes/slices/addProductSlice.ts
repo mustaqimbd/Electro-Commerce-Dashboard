@@ -20,7 +20,11 @@ type tAddProduct = {
   isFlashSalesProduct: boolean;
 };
 
-const initialState = {};
+const initialState:T = {
+addProduct: 
+
+
+};
 
 const addProductSlice = createSlice({
   name: "addProducts",
