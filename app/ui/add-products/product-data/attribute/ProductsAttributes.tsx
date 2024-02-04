@@ -1,110 +1,85 @@
-// src/components/ProductAttributesEditor.tsx
 import React, { useState } from "react";
-import { Select, Input, Button, Option } from "@material-tailwind/react";
+import { Select, Button, Option } from "@material-tailwind/react";
+import MultiInput from "@/app/ui/utilities/multi-input/MultiInput";
+import { XMarkIcon } from "@heroicons/react/24/solid";
+// Import the X icon from Heroicons
 
 interface Attribute {
   name: string;
-  type: string;
-  values: string[];
+  values: string[] | number[];
 }
+
+const attributesData: Attribute[] = [
+  { name: "Color", values: ["white", "Green", "Blue"] },
+  { name: "Size", values: ["M", "L", "Xl", "XXL"] },
+  { name: "Brand", values: ["Acer", "Hp", "Lenevo"] },
+  { name: "Capacity", values: [128, 256, 512] },
+];
 
 const ProductsAttributes: React.FC = () => {
   const [attributes, setAttributes] = useState<Attribute[]>([]);
-  const [newAttributeName, setNewAttributeName] = useState("");
-  const [newAttributeValue, setNewAttributeValue] = useState("");
-  const [selectedAttributeType, setSelectedAttributeType] = useState("");
+  const [addAttribute, setAddAttribute] = useState("");
 
-  const addAttribute = () => {
-    if (newAttributeName && selectedAttributeType) {
-      const newAttribute: Attribute = {
-        name: newAttributeName,
-        type: selectedAttributeType,
-        values: [],
-      };
-      setAttributes([...attributes, newAttribute]);
-      setNewAttributeName("");
-      setSelectedAttributeType("");
+  const handleAdd = () => {
+    if (!attributes.find((attr) => attr.name === addAttribute)) {
+      const selectedAttribute = attributesData.find(
+        (attr) => attr.name === addAttribute
+      );
+
+      if (selectedAttribute) {
+        setAttributes([...attributes, selectedAttribute]);
+        setAddAttribute("");
+      }
     }
   };
 
-  const addAttributeValue = (index: number) => {
-    if (newAttributeValue) {
-      const updatedAttributes = [...attributes];
-      updatedAttributes[index].values.push(newAttributeValue);
-      setAttributes(updatedAttributes);
-      setNewAttributeValue("");
-    }
+  const handleRemove = (name: string) => {
+    const updatedAttributes = attributes.filter((attr) => attr.name !== name);
+    setAttributes(updatedAttributes);
   };
 
   return (
     <div>
-      <h2 className="text-2xl font-semibold mb-4">Product Attributes</h2>
-
-      <div className="mb-4">
+      <div className="mb-4 grid grid-cols-2 gap-4 mt-2">
         <Select
+          size="md"
           placeholder={undefined}
-          label="Add Option from Attributes"
-          value={selectedAttributeType}
-          onChange={(e) => setSelectedAttributeType(e.target.value)}
+          label="Add Attributes"
+          onChange={(value) => setAddAttribute(value)}
         >
-          <Option> Color </Option>
-          <Option> Size </Option>
+          {attributesData.map((item) => (
+            <Option value={item.name} key={item.name}>
+              {item.name}
+            </Option>
+          ))}
         </Select>
-      </div>
-
-      <div className="mb-4">
-        <Input
-          crossOrigin={undefined}
+        <Button
+          onClick={handleAdd}
+          className="w-24"
           placeholder={undefined}
-          type="text"
-          label="Attribute Name"
-          placeholder="Enter Attribute Name"
-          value={newAttributeName}
-          onChange={(e) => setNewAttributeName(e.target.value)}
-        />
+          color="indigo"
+          size="sm"
+        >
+          Add
+        </Button>
       </div>
 
-      <Button
-        placeholder={undefined}
-        color="indigo"
-        size="sm"
-        onClick={addAttribute}
-      >
-        Add Attribute
-      </Button>
-
-      {attributes.map((attribute, index) => (
-        <div key={index} className="mt-4">
-          <h3 className="text-lg font-semibold">{attribute.name}</h3>
-          <p className="text-sm text-gray-600">{`Type: ${attribute.type}`}</p>
-
-          <div className="mt-2">
-            <Input
-              crossOrigin={undefined}
-              type="text"
-              label="Attribute Value"
-              placeholder={`Enter ${attribute.name} Value`}
-              value={newAttributeValue}
-              onChange={(e) => setNewAttributeValue(e.target.value)}
-            />
-
-            <Button
-              placeholder={undefined}
-              color="blue"
-              className="mt-2"
-              onClick={() => addAttributeValue(index)}
+      <ul className="space-y-2">
+        {attributes.map((attribute) => (
+          <li
+            key={attribute.name}
+            className="flex justify-start items-center gap-3 "
+          >
+            <MultiInput heading={attribute.name} values={attribute.values} />
+            <button
+              onClick={() => handleRemove(attribute.name)}
+              className="text-red-500 hover:text-red-700"
             >
-              Add Value
-            </Button>
-
-            <ul className="mt-2 list-disc list-inside">
-              {attribute.values.map((value, i) => (
-                <li key={i}>{value}</li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      ))}
+              <XMarkIcon className="w-5 h-5" />
+            </button>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };
