@@ -1,4 +1,3 @@
-"use client";
 import { createSlice } from "@reduxjs/toolkit";
 import { TInitialState } from "./interface";
 
@@ -22,7 +21,6 @@ const authSlice = createSlice({
     },
   },
 });
-
 export const { setUser, logOut } = authSlice.actions;
 
 export default authSlice.reducer;
