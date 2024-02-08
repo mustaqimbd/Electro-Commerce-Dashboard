@@ -1,7 +1,5 @@
 "use client";
 import { configureStore } from "@reduxjs/toolkit";
-import authReducer from "./features/auth/authSlice";
-
 import {
   persistStore,
   persistReducer,
@@ -14,12 +12,12 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
 import baseApi from "./baseApi/baseApi";
+import authReducer from "./features/auth/authSlice";
 import addProductReducer from "./features/addProduct/addProductSlice";
 const persistConfig = {
   key: "auth",
   storage,
 };
-
 const persistedAuthReducer = persistReducer(persistConfig, authReducer);
 
 const store = configureStore({
