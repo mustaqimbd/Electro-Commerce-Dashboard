@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import CommonModal from "../modal/CommonModal";
-import UploadFile from "./UploadFile";
 import MediaLibrary from "./MediaLibrary";
+import UploadFile from "./UploadFile";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const UploaderPopup = ({ open, handleOpen }: any) => {
+const UploaderPopup = ({ open, handleOpen, modalTitle }: any) => {
   const [activeTab, setActiveTab] = useState<string>("uploadFile");
 
   const handleTabClick = (tab: string) => {
@@ -12,7 +12,7 @@ const UploaderPopup = ({ open, handleOpen }: any) => {
   };
   return (
     <div>
-      <CommonModal open={open} handleOpen={handleOpen}>
+      <CommonModal open={open} handleOpen={handleOpen} modalTitle={modalTitle}>
         <div className="h-3/4">
           <div>
             <button

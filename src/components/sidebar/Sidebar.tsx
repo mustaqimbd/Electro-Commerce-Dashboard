@@ -1,150 +1,55 @@
 "use clients";
+import { usePathname } from "next/navigation";
 
-import {
-  // Card,
-  Typography,
-  List,
-  ListItem,
-  ListItemPrefix,
-  ListItemSuffix,
-  Chip,
-  Accordion,
-  AccordionHeader,
-  AccordionBody,
-} from "@material-tailwind/react";
-import {
-  // PresentationChartBarIcon,
-  ShoppingBagIcon,
-  UserCircleIcon,
-  Cog6ToothIcon,
-  InboxIcon,
-  PowerIcon,
-} from "@heroicons/react/24/solid";
-import { ChevronRightIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
-import { SetStateAction, useState } from "react";
+import { cn } from "@/lib/utils";
+import { LayoutDashboard, PlusCircle } from "lucide-react";
+
 import Link from "next/link";
 
 export function Sidebar() {
-  const [open, setOpen] = useState(0);
-
-  const handleOpen = (value: SetStateAction<number>) => {
-    setOpen(open === value ? 0 : value);
-  };
+  const pathname = usePathname();
 
   return (
-    <div className="  bg-white max-w-[16rem] p-4  shadow-blue-gray-900/5 ">
-      <List placeholder={"hello"} className="">
-        <Accordion
-          placeholder={"hello"}
-          open={open === 2}
-          icon={
-            <ChevronDownIcon
-              strokeWidth={2.5}
-              className={`mx-auto h-4 w-4 transition-transform ${
-                open === 2 ? "rotate-180" : ""
-              }`}
-            />
-          }
-        >
-          <ListItem placeholder={"hello"} className="p-0" selected={open === 2}>
-            <AccordionHeader
-              placeholder={"hello"}
-              onClick={() => handleOpen(2)}
-              className="border-b-0 p-3"
-            >
-              <ListItemPrefix placeholder={"hello"}>
-                <ShoppingBagIcon className="h-5 w-5" />
-              </ListItemPrefix>
-              <Typography
-                placeholder={"hello"}
-                color="blue-gray"
-                className="mr-auto font-normal"
-              >
-                E-Commerce
-              </Typography>
-            </AccordionHeader>
-          </ListItem>
-          <AccordionBody className="py-1">
-            <List placeholder={"hello"} className="p-0">
-              <ListItem placeholder={"hello"}>
-                <ListItemPrefix placeholder={"hello"}>
-                  <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
-                </ListItemPrefix>
-                Orders
-              </ListItem>
-
-              <Link href="/dashboard/all-products">
-                <ListItem placeholder={"hello"}>
-                  <ListItemPrefix placeholder={"hello"}>
-                    <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
-                  </ListItemPrefix>
-                  All Products
-                </ListItem>
-              </Link>
-              <ListItem placeholder={"hello"}>
-                <ListItemPrefix placeholder={"hello"}>
-                  <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
-                </ListItemPrefix>
-                All Customers
-              </ListItem>
-              <ListItem placeholder={"hello"}>
-                <ListItemPrefix placeholder={"hello"}>
-                  <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
-                </ListItemPrefix>
-                Category
-              </ListItem>
-              <ListItem placeholder={"hello"}>
-                <ListItemPrefix placeholder={"hello"}>
-                  <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
-                </ListItemPrefix>
-                Attribute
-              </ListItem>
-
-              <Link href="/dashboard/add-products">
-                <ListItem placeholder={"hello"}>
-                  <ListItemPrefix placeholder={"hello"}>
-                    <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
-                  </ListItemPrefix>
-                  Add Products
-                </ListItem>
-              </Link>
-            </List>
-          </AccordionBody>
-        </Accordion>
-        <ListItem placeholder={"hello"}>
-          <ListItemPrefix placeholder={"hello"}>
-            <InboxIcon className="h-5 w-5" />
-          </ListItemPrefix>
-          Inbox
-          <ListItemSuffix placeholder={"hello"}>
-            <Chip
-              value="14"
-              size="sm"
-              variant="ghost"
-              color="blue-gray"
-              className="rounded-full"
-            />
-          </ListItemSuffix>
-        </ListItem>
-        <ListItem placeholder={"hello"}>
-          <ListItemPrefix placeholder={"hello"}>
-            <UserCircleIcon className="h-5 w-5" />
-          </ListItemPrefix>
-          Profile
-        </ListItem>
-        <ListItem placeholder={"hello"}>
-          <ListItemPrefix placeholder={"hello"}>
-            <Cog6ToothIcon className="h-5 w-5" />
-          </ListItemPrefix>
-          Settings
-        </ListItem>
-        <ListItem placeholder={"hello"}>
-          <ListItemPrefix placeholder={"hello"}>
-            <PowerIcon className="h-5 w-5" />
-          </ListItemPrefix>
-          Log Out
-        </ListItem>
-      </List>
+    <div className="  bg-white max-w-[16rem] p-1  shadow-blue-gray-900/5 ">
+      <nav className="grid items-start gap-2">
+        <Link href="/dashboard">
+          <span
+            className={cn(
+              "group flex gap-2 items-center rounded-md px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
+              pathname === "/dashboard" ? "bg-accent" : "transparent"
+            )}
+          >
+            <LayoutDashboard className="w-4 h-4" />
+            <span>Dashboard</span>
+          </span>
+        </Link>
+        <Link href="/dashboard/add-products">
+          <span
+            className={cn(
+              "group flex gap-2 items-center rounded-md px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
+              pathname === "/dashboard/add-products"
+                ? "bg-accent"
+                : "transparent"
+            )}
+          >
+            <PlusCircle className="w-4 h-4" />
+            <span>Add Products</span>
+          </span>
+        </Link>
+        <Link href="/dashboard/all-products">
+          <span
+            className={cn(
+              "group flex gap-2 items-center rounded-md px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
+              pathname === "/dashboard/all-products"
+                ? "bg-accent"
+                : "transparent"
+            )}
+          >
+            <LayoutDashboard className="w-4 h-4" />
+            <span>All Products</span>
+          </span>
+        </Link>
+      </nav>
     </div>
   );
 }

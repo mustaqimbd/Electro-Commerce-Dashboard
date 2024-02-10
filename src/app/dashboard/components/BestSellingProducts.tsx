@@ -1,13 +1,11 @@
-import { Typography } from "@material-tailwind/react";
+import { TypographyH4 } from "@/components/ui/TypographyH4";
+
 import Image from "next/image";
-import React from "react";
 
 const BestSellingProducts = () => {
   return (
     <div className="shadow-md w-full bg-white p-6 rounded-md grid grid-cols-1 gap-3 ">
-      <Typography color="blue-gray" variant="h5" placeholder={"osb"}>
-        Top Selling Products
-      </Typography>
+      <TypographyH4>Top Selling Products</TypographyH4>
 
       <div className="flex justify-between items-center gap-3">
         <div className="flex items-center gap-3">
@@ -19,19 +17,12 @@ const BestSellingProducts = () => {
           />
 
           <div className="">
-            <Typography variant="h6" color="gray" placeholder={"osb"}>
-              This is products{" "}
-            </Typography>
-            <Typography color="blue-gray" variant="small" placeholder={"osb"}>
-              Category Name{" "}
-            </Typography>
+            <TypographyH4>This is products </TypographyH4>
+            <TypographyH4>Category Name </TypographyH4>
           </div>
         </div>
         <div className="">
-          <Typography variant="h4" className=" " placeholder={"osb"}>
-            {" "}
-            452
-          </Typography>
+          <TypographyH4> 452</TypographyH4>
         </div>
       </div>
       <div className="flex justify-between items-center gap-3">
@@ -44,19 +35,12 @@ const BestSellingProducts = () => {
           />
 
           <div className="">
-            <Typography variant="h6" color="gray" placeholder={"osb"}>
-              This is products{" "}
-            </Typography>
-            <Typography color="blue-gray" variant="small" placeholder={"osb"}>
-              Category Name{" "}
-            </Typography>
+            <TypographyH4>This is products </TypographyH4>
+            <TypographyH4>Category Name </TypographyH4>
           </div>
         </div>
         <div className="">
-          <Typography variant="h4" className=" " placeholder={"osb"}>
-            {" "}
-            452
-          </Typography>
+          <TypographyH4> 452</TypographyH4>
         </div>
       </div>
       <div className="flex justify-between items-center gap-3">
@@ -69,19 +53,12 @@ const BestSellingProducts = () => {
           />
 
           <div className="">
-            <Typography variant="h6" color="gray" placeholder={"osb"}>
-              This is products{" "}
-            </Typography>
-            <Typography color="blue-gray" variant="small" placeholder={"osb"}>
-              Category Name{" "}
-            </Typography>
+            <TypographyH4>This is products </TypographyH4>
+            <TypographyH4>Category Name </TypographyH4>
           </div>
         </div>
         <div className="">
-          <Typography variant="h4" className=" " placeholder={"osb"}>
-            {" "}
-            452
-          </Typography>
+          <TypographyH4> 452</TypographyH4>
         </div>
       </div>
       <div className="flex justify-between items-center gap-3">
@@ -94,19 +71,12 @@ const BestSellingProducts = () => {
           />
 
           <div className="">
-            <Typography variant="h6" color="gray" placeholder={"osb"}>
-              This is products{" "}
-            </Typography>
-            <Typography color="blue-gray" variant="small" placeholder={"osb"}>
-              Category Name{" "}
-            </Typography>
+            <TypographyH4>This is products </TypographyH4>
+            <TypographyH4>Category Name </TypographyH4>
           </div>
         </div>
         <div className="">
-          <Typography variant="h4" className=" " placeholder={"osb"}>
-            {" "}
-            452
-          </Typography>
+          <TypographyH4> 452</TypographyH4>
         </div>
       </div>
     </div>

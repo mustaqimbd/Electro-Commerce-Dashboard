@@ -1,21 +1,16 @@
-import { Input } from "@material-tailwind/react";
-import React from "react";
+import { Input } from "@/components/ui/input";
 
 const ProductPrice = () => {
   return (
     <div className="grid grid-cols-2 gap-4">
       <Input
-        crossOrigin={undefined}
         type="text"
-        label="Regular Price"
         placeholder="Enter Regular Price"
         className="w-full"
         // Add SKU input logic here
       />
       <Input
-        crossOrigin={undefined}
         type="text"
-        label="Discount Price"
         placeholder="Enter Discount Price"
         className="w-full"
         // Add SKU input logic here

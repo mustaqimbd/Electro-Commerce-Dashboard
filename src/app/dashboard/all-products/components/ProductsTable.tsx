@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // ProductsTable.js
 "use client";
 
@@ -15,7 +16,8 @@ const ProductsTable = () => {
   const productsData = [
     {
       id: 1,
-      image: "product1.jpg",
+      image:
+        "https://images.unsplash.com/photo-1493612276216-ee3925520721?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       title: "Product One",
       sku: "SKU001",
       stock: 50,
@@ -26,7 +28,8 @@ const ProductsTable = () => {
     },
     {
       id: 2,
-      image: "product2.jpg",
+      image:
+        "https://images.unsplash.com/photo-1493612276216-ee3925520721?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       title: "Product Two",
       sku: "SKU002",
       stock: 30,
@@ -37,7 +40,8 @@ const ProductsTable = () => {
     },
     {
       id: 3,
-      image: "product3.jpg",
+      image:
+        "https://images.unsplash.com/photo-1493612276216-ee3925520721?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       title: "Product Three",
       sku: "SKU003",
       stock: 20,
@@ -48,7 +52,8 @@ const ProductsTable = () => {
     },
     {
       id: 4,
-      image: "product4.jpg",
+      image:
+        "https://images.unsplash.com/photo-1493612276216-ee3925520721?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       title: "Product Forun",
       sku: "SKU004",
       stock: 25,
@@ -59,7 +64,8 @@ const ProductsTable = () => {
     },
     {
       id: 5,
-      image: "product5.jpg",
+      image:
+        "https://images.unsplash.com/photo-1493612276216-ee3925520721?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       title: "Product Five",
       sku: "SKU004",
       stock: 30,
@@ -200,11 +206,7 @@ const ProductsTable = () => {
           </tbody>
         </table>
         <div className=" flex justify-end p-4">
-          <PagePagination
-            active={active}
-            setActive={setActive}
-            toltalPage={totalPage}
-          />
+          <PagePagination />
         </div>
       </div>
     </div>

@@ -1,9 +1,10 @@
-import { CardBody, Typography } from "@material-tailwind/react";
+import { TypographyH4 } from "@/components/ui/TypographyH4";
+import { Card } from "@/components/ui/card";
 
 const StatisticsCard = () => {
   return (
-    <div className="mt-6 shadow-md rounded-md bg-white">
-      <CardBody placeholder={"ons"}>
+    <div className="mt-6   bg-white">
+      <Card className="p-4">
         <div className="flex justify-between items-center gap-4">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -20,20 +21,13 @@ const StatisticsCard = () => {
             />
           </svg>
           <div>
-            <Typography
-              placeholder={"ons"}
-              variant="h5"
-              color="blue-gray"
-              className="mb-2"
-            >
-              $125
-            </Typography>
+            <TypographyH4>$125</TypographyH4>
             <div className="">
-              <Typography placeholder={"ons"}> Total Order </Typography>
+              <TypographyH4>Total order</TypographyH4>
             </div>
           </div>
         </div>
-      </CardBody>
+      </Card>
     </div>
   );
 };

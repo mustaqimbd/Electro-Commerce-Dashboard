@@ -1,6 +1,7 @@
 "use client";
 import StatisticsCard from "./components/StatisticsCard";
-import SellChart from "./components/SellsChart";
+
+import { Button } from "@/components/ui/button";
 import BestSellingProducts from "./components/BestSellingProducts";
 
 const Dashboard = () => {
@@ -14,11 +15,12 @@ const Dashboard = () => {
           <StatisticsCard />
         </div>
         <div className="flex justify-start gap-3">
-          <div className="w-2/3 ">
-            <SellChart />
-          </div>
+          <div className="w-2/3 "></div>
           <div className="w-1/3">
             <BestSellingProducts />
+            <div>
+              <Button>Click me</Button>
+            </div>
           </div>
         </div>
       </div>

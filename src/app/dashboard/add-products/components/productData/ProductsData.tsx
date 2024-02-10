@@ -1,12 +1,6 @@
 "use client";
 import { useState } from "react";
-// import {
-//   Tabs,
-//   TabsHeader,
-//   TabsBody,
-//   Tab,
-//   TabPanel,
-// } from "@material-tailwind/react";
+
 import SectionContentWrapper from "@/components/section-content-wrapper/SectionContentWrapper";
 import ProductInventory from "./ProductInventory";
 import ProductOffer from "./ProductOffer";

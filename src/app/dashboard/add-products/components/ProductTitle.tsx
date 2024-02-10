@@ -1,22 +1,14 @@
 "use client";
 
-import { Card, Input, Typography } from "@material-tailwind/react";
-import React from "react";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { SectionTitle } from "@/components/ui/sectionTitle";
 
 const ProductTitle = () => {
   return (
-    <Card className="p-4 rounded-sm space-y-2 bg-white" placeholder={"osb"}>
-      <Typography variant="paragraph" placeholder={"osb"}>
-        {" "}
-        Product Title
-      </Typography>
-      <hr className="my-2 border-blue-gray-50" />
-      <Input
-        label="Title"
-        variant="outlined"
-        placeholder="Type the product Title"
-        crossOrigin={"osb"}
-      ></Input>
+    <Card className="p-4 rounded-sm space-y-2 bg-white">
+      <SectionTitle>Add Product Title</SectionTitle>
+      <Input placeholder="Products Title" />
     </Card>
   );
 };
