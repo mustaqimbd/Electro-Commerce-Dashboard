@@ -1,5 +1,7 @@
-"use client";
-import { Button, Card, Typography } from "@material-tailwind/react";
+"use clients";
+import { TypographyH4 } from "@/components/ui/TypographyH4";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import ProductDescription from "./components/ProductDescription";
 import ProductTitle from "./components/ProductTitle";
 import SelectCategory from "./components/SelectCategory";
@@ -8,15 +10,10 @@ import ProductData from "./components/productData/ProductsData";
 const AddProducts = () => {
   return (
     <>
-      <Card placeholder={"osb"}>
+      <Card>
         <div className="flex gap-3 justify-between items-center bg-white rounded-md p-4  ">
-          <Typography variant="h5" placeholder={"osb"}>
-            {" "}
-            Add Product
-          </Typography>
-          <Button placeholder={"osb"} size="sm">
-            View All
-          </Button>
+          <TypographyH4> Add Product</TypographyH4>
+          <Button>View All</Button>
         </div>
       </Card>
 

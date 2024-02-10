@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import React, { useState } from "react";
-import Select, { GroupBase, MultiValue } from "react-select";
-import { Typography } from "@material-tailwind/react";
+import { useState } from "react";
+import { GroupBase, MultiValue } from "react-select";
+import { TypographyH4 } from "../ui/TypographyH4";
 
 type OptionType = { value: string; label: string };
 
@@ -35,9 +35,7 @@ const MultiInput = ({ heading }: { heading: string }) => {
   return (
     <div className="w-full flex items-center gap-2">
       <div className="w-fit">
-        <Typography className="w" placeholder={undefined}>
-          {heading}
-        </Typography>
+        <TypographyH4>{heading}</TypographyH4>
       </div>
 
       <div className="w-full">

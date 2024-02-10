@@ -1,8 +1,8 @@
-import { Card } from "@material-tailwind/react";
-
-import React, { useState } from "react";
+"use client";
+import { useState } from "react";
 // import { PlusIcon } from "@heroicons/react/24/solid";
 import SectionContentWrapper from "@/components/section-content-wrapper/SectionContentWrapper";
+import { Card } from "@/components/ui/card";
 
 type Category = {
   id: number;
@@ -120,7 +120,7 @@ const SelectCategory = () => {
   ];
 
   return (
-    <Card placeholder={"osb"}>
+    <Card>
       <SectionContentWrapper heading="Select Category">
         <div className=" max-h-64  overflow-y-scroll ">
           <ul className="list-none">

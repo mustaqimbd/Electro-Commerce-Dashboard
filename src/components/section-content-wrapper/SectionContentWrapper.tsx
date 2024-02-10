@@ -1,6 +1,7 @@
 "use client";
-import { Card, Typography } from "@material-tailwind/react";
+
 import { useState } from "react";
+import { Card } from "../ui/card";
 type TProps = {
   children: React.ReactNode;
   heading: string;
@@ -14,9 +15,11 @@ const SectionContentWrapper = ({ children, heading }: TProps) => {
 
   return (
     <>
-      <Card placeholder={"osb"} className="p-4 rounded-sm space-y-2 bg-white">
+      <Card className="p-4 rounded-sm space-y-2 bg-white">
         <div className="flex justify-between items-center">
-          <Typography placeholder={"osb"}>{heading}</Typography>
+          <h2 className="scroll-m-20   text-sm font-semibold tracking-tight first:mt-0">
+            {heading}
+          </h2>
 
           {isCollapsed ? (
             <svg

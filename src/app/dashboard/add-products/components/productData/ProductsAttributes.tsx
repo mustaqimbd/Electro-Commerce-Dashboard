@@ -1,8 +1,15 @@
 import React, { useState } from "react";
-import { Select, Button, Option } from "@material-tailwind/react";
-import { XMarkIcon } from "@heroicons/react/24/solid";
-// import MultiInput from "@/components/multi-input/MultiInput";
-// Import the X icon from Heroicons
+
+import MultiInput from "@/components/multi-input/MultiInput";
+import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { XCircleIcon } from "lucide-react";
 
 type Attribute = {
   name: string;
@@ -41,25 +48,20 @@ const ProductsAttributes: React.FC = () => {
   return (
     <div>
       <div className="mb-4 grid grid-cols-2 gap-4 mt-2">
-        <Select
-          size="md"
-          placeholder={undefined}
-          label="Add Attributes"
-          onChange={(value) => setAddAttribute(value)}
-        >
-          {attributesData.map((item) => (
-            <Option value={item.name} key={item.name}>
-              {item.name}
-            </Option>
-          ))}
+        <Select>
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Select Property" />
+          </SelectTrigger>
+          <SelectContent>
+            {attributesData.map((item) => (
+              <SelectItem value={item.name} key={item.name}>
+                {item.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
         </Select>
-        <Button
-          onClick={handleAdd}
-          className="w-24"
-          placeholder={undefined}
-          color="indigo"
-          size="sm"
-        >
+
+        <Button onClick={handleAdd} className="w-24" size="sm">
           Add
         </Button>
       </div>
@@ -70,12 +72,12 @@ const ProductsAttributes: React.FC = () => {
             key={attribute.name}
             className="flex justify-start items-center gap-3 "
           >
-            {/* <MultiInput heading={attribute.name} values={attribute.values} /> */}
+            <MultiInput heading={attribute.name} values={attribute.values} />
             <button
               onClick={() => handleRemove(attribute.name)}
               className="text-red-500 hover:text-red-700"
             >
-              <XMarkIcon className="w-5 h-5" />
+              <XCircleIcon />
             </button>
           </li>
         ))}

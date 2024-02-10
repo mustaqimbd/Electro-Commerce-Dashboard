@@ -1,6 +1,7 @@
 // FileUploader.tsx
 
 import { useState } from "react";
+import { Button } from "../ui/button";
 
 const UploadFile: React.FC = () => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
@@ -45,9 +46,7 @@ const UploadFile: React.FC = () => {
             onChange={handleFileInput}
             id="fileInput"
           />
-          <button className="bg-blue-500 text-white px-4 py-2 rounded-md">
-            Select Files
-          </button>
+          <Button className="">Select Files</Button>
         </div>
         {selectedFiles.length > 0 && (
           <div className="mt-4">
