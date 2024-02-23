@@ -1,8 +1,7 @@
-"use clients";
-export function TypographyH4({ children }: { children: string }) {
-  return (
-    <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
-      {children}
-    </h4>
-  );
+type TProps = {
+  children: string;
+  className?: string;
+};
+export function TypographyH4({ children, className }: TProps) {
+  return <h4 className={`text-sm tracking-tight ${className}`}>{children}</h4>;
 }

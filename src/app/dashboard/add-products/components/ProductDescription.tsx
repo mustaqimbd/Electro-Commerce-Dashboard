@@ -1,26 +1,28 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
-
-import React, { useState, useRef } from "react";
-import JoditEditor from "jodit-react";
+import dynamic from "next/dynamic";
+const JoditEditor = dynamic(import("jodit-react"), {
+  ssr: false,
+  loading: () => <p>Loading ...</p>,
+});
+// import JoditEditor from "jodit-react";
 import SectionContentWrapper from "@/components/section-content-wrapper/SectionContentWrapper";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { setDescription } from "@/redux/features/addProduct/addProductSlice";
 
 const ProductDescription = () => {
-  const editor = useRef(null);
-  const [content, setContent] = useState("");
-  // const [isCollapsed, setIsCollapsed] = useState(false);
+  const dispatch = useAppDispatch();
+  const description = useAppSelector(
+    ({ addProduct }) => addProduct.description
+  );
 
-  // const toggleCollapse = () => {
-  //   setIsCollapsed(!isCollapsed);
-  // };
-
+  const handleChange = (data: string) => {
+    dispatch(setDescription(data));
+  };
   return (
     <SectionContentWrapper heading={"Product Description"}>
       <JoditEditor
-        ref={editor}
-        value={content}
-        onBlur={(newContent: string) => setContent(newContent)}
-        onChange={(newContent: string) => {}}
+        value={description}
+        onChange={(newContent: string) => handleChange(newContent)}
       />
     </SectionContentWrapper>
   );

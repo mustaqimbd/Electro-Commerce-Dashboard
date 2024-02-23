@@ -1,7 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+"use client";
 
 import { useState } from "react";
-import { GroupBase, MultiValue } from "react-select";
+import Select, { GroupBase, MultiValue } from "react-select";
 import { TypographyH4 } from "../ui/TypographyH4";
 
 type OptionType = { value: string; label: string };
@@ -18,18 +18,24 @@ const tagOptions: readonly (OptionType | GroupBase<OptionType>)[] = [
   // Add more groups as needed
 ];
 
-const MultiInput = ({ heading }: { heading: string }) => {
+const MultiInput = ({
+  heading,
+  values,
+}: {
+  heading: string;
+  values: string[];
+}) => {
   const [selectedTags, setSelectedTags] = useState<
     MultiValue<string> | undefined
   >([]);
-
+  console.log(values);
   const handleInputChange = (
     selectedOptions: MultiValue<string>
     // actionMeta: ActionMeta<string>
   ) => {
     // This function is called whenever the selection changes
     setSelectedTags(selectedOptions);
-    // console.log(selectedTags);
+    console.log(selectedOptions);
   };
 
   return (
@@ -39,14 +45,14 @@ const MultiInput = ({ heading }: { heading: string }) => {
       </div>
 
       <div className="w-full">
-        {/* <Select
+        <Select
           isMulti
           value={selectedTags}
           onChange={handleInputChange}
-          options={tagOptions}
+          options={values}
           isSearchable
           isClearable
-        /> */}
+        />
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-"use clients";
+"use client";
 import { TypographyH4 } from "@/components/ui/TypographyH4";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -6,6 +6,9 @@ import ProductDescription from "./components/ProductDescription";
 import ProductTitle from "./components/ProductTitle";
 import SelectCategory from "./components/SelectCategory";
 import ProductData from "./components/productData/ProductsData";
+import Published from "./components/Published";
+import ProductTag from "./components/ProductTag";
+import SelectCategory1 from "./components/selectCategory1";
 
 const AddProducts = () => {
   return (
@@ -32,8 +35,10 @@ const AddProducts = () => {
         </div>
 
         {/* right Sidebar of add products */}
-        <div className="w-2/6">
+        <div className="w-2/6 space-y-10">
+          <Published />
           <SelectCategory></SelectCategory>
+          <ProductTag />
         </div>
       </div>
     </>

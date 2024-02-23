@@ -1,12 +1,12 @@
 "use client";
 import { useState } from "react";
-
 import SectionContentWrapper from "@/components/section-content-wrapper/SectionContentWrapper";
 import ProductInventory from "./ProductInventory";
 import ProductOffer from "./ProductOffer";
 import ProductPrice from "./ProductPrice";
 import ProductsAttributes from "./ProductsAttributes";
 import ProductsMedia from "./ProductsMedia";
+import ProductVariations from "./ProductVariations";
 
 const ProductData = () => {
   const [activeTab, setActiveTab] = useState<string>("media");
@@ -29,16 +29,6 @@ const ProductData = () => {
           Media
         </button>
         <button
-          onClick={() => handleTabClick("inventory")}
-          className={`${
-            activeTab === "inventory"
-              ? "bg-blue-500 text-white  hover:bg-blue-700"
-              : "border "
-          }  font-semibold py-2 px-4 rounded-sm `}
-        >
-          Inventory
-        </button>
-        <button
           onClick={() => handleTabClick("price")}
           className={`${
             activeTab === "price"
@@ -59,6 +49,27 @@ const ProductData = () => {
           Attributes
         </button>
         <button
+          onClick={() => handleTabClick("variations")}
+          className={`${
+            activeTab === "variations"
+              ? "bg-blue-500 text-white  hover:bg-blue-700"
+              : "border "
+          }  font-semibold py-2 px-4 rounded-sm`}
+        >
+          Variations
+        </button>
+        <button
+          onClick={() => handleTabClick("inventory")}
+          className={`${
+            activeTab === "inventory"
+              ? "bg-blue-500 text-white  hover:bg-blue-700"
+              : "border "
+          }  font-semibold py-2 px-4 rounded-sm `}
+        >
+          Inventory
+        </button>
+
+        <button
           onClick={() => handleTabClick("offer")}
           className={`${
             activeTab === "offer"
@@ -75,6 +86,7 @@ const ProductData = () => {
         {activeTab === "inventory" && <ProductInventory />}
         {activeTab === "price" && <ProductPrice />}
         {activeTab === "attributes" && <ProductsAttributes />}
+        {activeTab === "variations" && <ProductVariations />}
         {activeTab === "offer" && <ProductOffer />}
       </div>
     </SectionContentWrapper>

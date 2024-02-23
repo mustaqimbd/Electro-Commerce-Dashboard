@@ -1,4 +1,3 @@
-// import MultiInput from "@/components/multi-input/MultiInput";
 import MultiSelect from "@/components/multi-input/MultiSelect";
 import {
   TSelectedAttribute,
@@ -9,19 +8,7 @@ import {
   setSelectedAttribute,
   setSelectedAttributeValue,
 } from "@/redux/features/addProduct/productVariation/productVariationSlice";
-// import {
-//   Select,
-//   SelectContent,
-//   SelectItem,
-//   SelectTrigger,
-//   SelectValue,
-// } from "@/components/ui/select";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-
-type TAttribute = {
-  label: string;
-  value: string | number;
-}[];
 
 const attributesData = [
   { name: "Color", values: ["white", "Green", "Blue"] },
@@ -35,21 +22,7 @@ const formattedAttributes = attributesData.map(({ name, values }) => ({
   value: values.map((value) => ({ label: value, value: value })),
 }));
 
-type TOption = {
-  readonly value: string;
-  readonly label: string;
-  readonly color: string;
-  readonly isFixed?: boolean;
-  readonly isDisabled?: boolean;
-};
-const options: readonly TOption[] = [
-  { value: "purple", label: "Purple", color: "#5243AA" },
-  { value: "orange", label: "Orange", color: "#FF8B00" },
-  { value: "blue", label: "Blue", color: "#0052CC", isDisabled: true },
-  { value: "red", label: "Red", color: "#FF5630", isFixed: true },
-  { value: "yellow", label: "Yellow", color: "#FFC400" },
-];
-const ProductsAttributes = () => {
+const ProductVariations = () => {
   const dispatch = useAppDispatch();
   const defaultAttribute = useAppSelector(
     (state) => state.generateProductVariation.selectedAttribute
@@ -58,28 +31,9 @@ const ProductsAttributes = () => {
     (state) => state.generateProductVariation.selectedAttributeValue
   );
 
-  // Function to handle change event
-  //   const handleChange = (newValue: React.SetStateAction<string>) => {
-  //     console.log(newValue);
-  //
-  //   };
   console.log(defaultAttribute2);
   return (
     <div className="space-y-2">
-      {/* <div className="mb-4 w-full">
-        <Select onValueChange={handleChange}>
-          <SelectTrigger value={selectedValue}>
-            <SelectValue placeholder="Select Property" />
-          </SelectTrigger>
-          <SelectContent>
-            {attributesData.map((item) => (
-              <SelectItem value={item.name} key={item.name}>
-                {item.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div> */}
       <MultiSelect<
         TSelectedAttribute,
         TSelectedAttributeValue,
@@ -114,4 +68,4 @@ const ProductsAttributes = () => {
   );
 };
 
-export default ProductsAttributes;
+export default ProductVariations;
