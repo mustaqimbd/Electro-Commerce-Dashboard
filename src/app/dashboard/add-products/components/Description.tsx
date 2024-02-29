@@ -6,10 +6,10 @@ const JoditEditor = dynamic(import("jodit-react"), {
 });
 // import JoditEditor from "jodit-react";
 import SectionContentWrapper from "@/components/section-content-wrapper/SectionContentWrapper";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { setDescription } from "@/redux/features/addProduct/addProductSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 
-const ProductDescription = () => {
+const Description = () => {
   const dispatch = useAppDispatch();
   const description = useAppSelector(
     ({ addProduct }) => addProduct.description
@@ -28,4 +28,4 @@ const ProductDescription = () => {
   );
 };
 
-export default ProductDescription;
+export default Description;

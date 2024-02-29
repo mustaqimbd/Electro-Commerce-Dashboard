@@ -1,12 +1,11 @@
 "use client";
-
 import SectionContentWrapper from "@/components/section-content-wrapper/SectionContentWrapper";
 import { Card } from "@/components/ui/card";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import {
   setCategory,
   setSubcategory,
 } from "@/redux/features/addProduct/addProductSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 
 type Category = {
   id: string;
@@ -14,9 +13,11 @@ type Category = {
   subcategories?: Category[];
 };
 
-const SelectCategory = () => {
+const Category = () => {
   const dispatch = useAppDispatch();
-  const selectCategory = useAppSelector((state) => state.addProduct.category);
+  const selectCategory = useAppSelector(
+    ({ addProduct }) => addProduct.category
+  );
 
   const toggleCategory = (categoryId: string) => {
     if (selectCategory._id === categoryId) {
@@ -166,4 +167,4 @@ const SelectCategory = () => {
   );
 };
 
-export default SelectCategory;
+export default Category;

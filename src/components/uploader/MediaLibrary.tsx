@@ -8,13 +8,15 @@ import { CheckIcon } from "@radix-ui/react-icons";
 import Image from "next/image";
 import { PagePagination } from "../pagination/PagePagination";
 import { useState } from "react";
+import { setVariationThumbnail } from "@/redux/features/addProduct/variation/variationSlice";
 
 type TImage = { _id: string; src: string; alt: string };
 
 const MediaLibrary = ({ click }: { click?: string }) => {
   const dispatch = useAppDispatch();
   const { thumbnail, gallery } = useAppSelector(
-    (state) => state.addProduct.image
+    ({ addProduct, productVariation }) =>
+      click === "variation" ? productVariation.image : addProduct.image
   );
 
   const selectImage = (imageId: string) => {
@@ -24,7 +26,15 @@ const MediaLibrary = ({ click }: { click?: string }) => {
       } else {
         dispatch(setThumbnail(imageId));
       }
-    } else {
+    }
+    if (click === "variation") {
+      if (thumbnail === imageId) {
+        dispatch(setVariationThumbnail(""));
+      } else {
+        dispatch(setVariationThumbnail(imageId));
+      }
+    }
+    if (click === "gallery") {
       if (gallery.includes(imageId)) {
         const restItem = gallery.filter((item) => item !== imageId);
         dispatch(setGallery(restItem));
@@ -44,7 +54,7 @@ const MediaLibrary = ({ click }: { click?: string }) => {
   return (
     <div>
       <div className="flex flex-wrap gap-3">
-        {click === "thumbnail"
+        {click === "thumbnail" || click === "variation"
           ? data?.data?.map((image: TImage) => (
               <div
                 key={image._id}

@@ -7,17 +7,23 @@ import { useAppSelector } from "@/redux/hooks";
 import Image from "next/image";
 import { useState } from "react";
 
-const ProductsMedia = () => {
+const Media = ({ isVariation }: { isVariation?: boolean }) => {
   const [open, setOpen] = useState(false);
-  const [click, setClick] = useState("");
-  const handleOpen = (c: string) => {
-    setClick(c);
+  const [click, setClick] = useState<string>("");
+  const handleOpen = () => {
     setOpen(!open);
   };
 
   const { thumbnail, gallery } = useAppSelector(
-    (state) => state.addProduct.image
+    ({ addProduct, productVariation }) => {
+      if (isVariation) {
+        return productVariation.image;
+      } else {
+        return addProduct.image;
+      }
+    }
   );
+
   const { data: thumbnailImage } = useGetSingleImageQuery(
     thumbnail || undefined
   );
@@ -31,7 +37,10 @@ const ProductsMedia = () => {
         <div className="flex flex-col justify-evenly">
           <SectionTitle className="text-center">Add Thumbnail</SectionTitle>
           <div
-            onClick={() => handleOpen("thumbnail")}
+            onClick={() => {
+              handleOpen();
+              setClick(isVariation ? "variation" : "thumbnail");
+            }}
             className="flex flex-col items-center justify-center mx-auto mt-5 bg-gray-200 w-48 h-48 border border-dotted  border-blue-gray-200 cursor-pointer relative rounded-sm"
           >
             {thumbnailImage?.data ? (
@@ -66,7 +75,10 @@ const ProductsMedia = () => {
         <div className="flex flex-col justify-center">
           <SectionTitle className="text-center">Image Gallery</SectionTitle>
           <div
-            onClick={() => handleOpen("gallery")}
+            onClick={() => {
+              handleOpen();
+              setClick("gallery");
+            }}
             className="flex flex-col items-center justify-center mx-auto mt-5 bg-gray-200 w-48 h-48 border border-dotted  border-blue-gray-200 cursor-pointer relative rounded-sm group"
           >
             {galleryImage?.data ? (
@@ -121,4 +133,4 @@ const ProductsMedia = () => {
   );
 };
 
-export default ProductsMedia;
+export default Media;

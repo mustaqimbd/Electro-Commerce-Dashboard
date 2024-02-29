@@ -2,11 +2,13 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
   TAttribute,
   TInventory,
+  TOffer,
   TPrice,
   TProduct,
   TPublishedStatus,
   TSeoData,
 } from "./interface";
+import { TSelectValue } from "./variation/interface";
 
 const initialState: TProduct = {
   title: "",
@@ -21,7 +23,7 @@ const initialState: TProduct = {
   price: {
     regularPrice: 0,
     salePrice: 0,
-    discount: 0,
+    discountPercent: 0,
     date: {
       start: "",
       end: "",
@@ -42,6 +44,11 @@ const initialState: TProduct = {
     showStockWithText: false,
     hideStock: false,
     soldIndividually: false,
+  },
+  offer: {
+    flash: false,
+    today: false,
+    featured: false,
   },
   attribute: [],
   brand: [],
@@ -84,10 +91,13 @@ const productSlice = createSlice({
       state.attribute = action.payload;
     },
     setPrice: (state, action: PayloadAction<TPrice>) => {
-      state.price = action.payload;
+      state.price = { ...action.payload };
     },
     setInventory: (state, action: PayloadAction<TInventory>) => {
-      state.inventory = action.payload;
+      state.inventory = { ...action.payload };
+    },
+    setOffer: (state, action: PayloadAction<TOffer>) => {
+      state.offer = { ...action.payload };
     },
     setCategory: (state, action: PayloadAction<string>) => {
       state.category._id = action.payload;
@@ -99,14 +109,14 @@ const productSlice = createSlice({
     setBrand: (state, action: PayloadAction<string[]>) => {
       state.brand = action.payload;
     },
-    setTag: (state, action: PayloadAction<string[]>) => {
+    setTag: (state, action: PayloadAction<TSelectValue[]>) => {
       state.tag = action.payload;
     },
     setSeoData: (state, action: PayloadAction<TSeoData>) => {
-      state.seoData = action.payload;
+      state.seoData = { ...action.payload };
     },
     setPublishedStatus: (state, action: PayloadAction<TPublishedStatus>) => {
-      state.publishedStatus = action.payload;
+      state.publishedStatus = { ...action.payload };
     },
     setProduct: (state, action: PayloadAction<TProduct>) => {
       return action.payload;
@@ -125,6 +135,7 @@ export const {
   setAttribute,
   setPrice,
   setInventory,
+  setOffer,
   setCategory,
   setSubcategory,
   setBrand,

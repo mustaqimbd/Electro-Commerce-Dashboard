@@ -18,7 +18,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 const Published = () => {
   const dispatch = useAppDispatch();
   const publishedStatus = useAppSelector(
-    (state) => state.addProduct.publishedStatus
+    ({ addProduct }) => addProduct.publishedStatus
   );
   // Function to handle change event
   // const handleChange = (newValue: React.SetStateAction<string>) => {
@@ -28,15 +28,17 @@ const Published = () => {
     register,
     handleSubmit,
     // formState: { errors },
-  } = useForm();
+  } = useForm<TPublishedStatus>();
+
   const onSubmit: SubmitHandler<TPublishedStatus> = (data) => {
     dispatch(setPublishedStatus(data));
   };
+
   return (
     <SectionContentWrapper heading="Published" className="text-center">
       <form onChange={handleSubmit(onSubmit)} className="space-y-4">
-        <div className="grid grid-cols-2 items-center gap-10">
-          <div>
+        <div className="flex items-center justify-between">
+          <div className="flex flex-col gap-3">
             <Label htmlFor="status">Status</Label>
             {/* <Controller
         name="status"
@@ -58,17 +60,19 @@ const Published = () => {
               defaultValue={publishedStatus.status}
               {...register("status")}
               id="status"
+              className="border h-9 border-gray-300  rounded-sm min-w-[100px] xl:w-[120px]"
             >
               <option value="Published">Published</option>
               <option value="Draft">Draft</option>
             </select>
           </div>
-          <div>
+          <div className="flex flex-col gap-3">
             <Label htmlFor="visibility">Visibility</Label>
             <select
               defaultValue={publishedStatus.visibility}
               {...register("visibility")}
               id="visibility"
+              className="border h-9 border-gray-300  rounded-sm"
             >
               <option value="Public">Public</option>
               <option value="Password protected">Password protected</option>
@@ -76,22 +80,22 @@ const Published = () => {
             </select>
           </div>
         </div>
-        <div className="space-y-4">
-          <div className="flex items-center justify-between gap-4">
-            <Label htmlFor="date">Published on:</Label>
-            <input
-              type="date"
-              defaultValue={publishedStatus.date}
-              {...register("date")}
-              id="date"
-            />
-          </div>
-          <div className="flex gap-4 items-center justify-center">
-            <Button>Save</Button>
-            <Button>Publish</Button>
-          </div>
+
+        <div className="flex items-center justify-between gap-4 mb-3">
+          <Label htmlFor="date">Published on:</Label>
+          <input
+            type="date"
+            defaultValue={publishedStatus.date}
+            {...register("date")}
+            id="date"
+            className="border h-9 border-gray-300  rounded-sm"
+          />
         </div>
       </form>
+      <div className="flex gap-4 items-center justify-center pt-3">
+        <Button>Save</Button>
+        <Button>Publish</Button>
+      </div>
     </SectionContentWrapper>
   );
 };

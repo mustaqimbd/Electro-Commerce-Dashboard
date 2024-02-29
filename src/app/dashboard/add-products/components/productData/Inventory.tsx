@@ -1,11 +1,12 @@
 "use client";
-import * as yup from "yup";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { setInventory } from "@/redux/features/addProduct/addProductSlice";
+import { setVariationInventory } from "@/redux/features/addProduct/variation/variationSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { setInventory } from "@/redux/features/addProduct/addProductSlice";
+import * as yup from "yup";
 // import {
 //   Select,
 //   SelectContent,
@@ -16,7 +17,11 @@ import { setInventory } from "@/redux/features/addProduct/addProductSlice";
 
 const schema = yup.object().shape({
   stockStatus: yup.string().required("Stock status is required!"),
-  stockQuantity: yup.number().required("Stock quantity is required!"),
+  stockQuantity: yup
+    .number()
+    .min(1, "Stock quantity must be a positive number")
+    .required("Stock quantity is required!")
+    .typeError("Stock quantity is required!"),
   sku: yup.string().default(""),
   productCode: yup.string().default(""),
   manageStock: yup.boolean().default(false),
@@ -26,9 +31,9 @@ const schema = yup.object().shape({
       is: true,
       then: (val) =>
         val
-          .positive("Low stock warning quantity must be positive!")
-          .integer("Low stock warning quantity must be an integer!")
-          .required("Low stock warning quantity is required!"),
+          .min(1, "Low stock warning quantity must be a positive number")
+          .required("Low stock warning quantity is required!")
+          .typeError("Low stock warning quantity is required!"),
       otherwise: (val) => val,
     })
     .default(0),
@@ -39,7 +44,7 @@ const schema = yup.object().shape({
 });
 
 type TFormInput = yup.InferType<typeof schema>;
-const ProductInventory = () => {
+const Inventory = ({ isVariation }: { isVariation?: boolean }) => {
   const dispatch = useAppDispatch();
   const {
     sku,
@@ -52,7 +57,13 @@ const ProductInventory = () => {
     showStockWithText,
     soldIndividually,
     // hideStock,
-  } = useAppSelector((state) => state.addProduct.inventory);
+  } = useAppSelector(({ addProduct, productVariation }) => {
+    if (isVariation) {
+      return productVariation.inventory;
+    } else {
+      return addProduct.inventory;
+    }
+  });
 
   const {
     register,
@@ -67,24 +78,25 @@ const ProductInventory = () => {
   const isManageStock = watch("manageStock") || manageStock;
 
   const onSubmit: SubmitHandler<TFormInput> = (data) => {
-    dispatch(setInventory(data));
+    dispatch(isVariation ? setVariationInventory(data) : setInventory(data));
   };
 
   return (
     <div>
-      <form onBlur={handleSubmit(onSubmit)}>
+      <form onChange={handleSubmit(onSubmit)}>
         <div className="flex items-center gap-3 mb-3">
-          <Label className="flex gap-3" htmlFor="stockStatus">
+          <Label className="flex gap-3 w-48" htmlFor="stockStatus">
             Stock Status
             <span title="Lorem Ipsum is simply dummy text.">
               <i className="fa-solid fa-circle-question">i</i>
             </span>
           </Label>
-          <div className="space-y-2">
+          <div className="space-y-2 w-full">
             <select
               defaultValue={stockStatus}
               {...register("stockStatus")}
               id="stockStatus"
+              className="w-full h-9 border border-gray-300  rounded-sm"
             >
               <option value="In stock">In stock</option>
               <option value="Out of stock">Out of stock</option>
@@ -97,16 +109,16 @@ const ProductInventory = () => {
         </div>
 
         <div className="flex items-center gap-3 mb-3">
-          <Label className="flex gap-3" htmlFor="stockQuantity">
+          <Label className="flex gap-3 w-48" htmlFor="stockQuantity">
             Stock Quantity
             <span title="Lorem Ipsum is simply dummy text.">
               <i className="fa-solid fa-circle-question">i</i>
             </span>
           </Label>
-          <div className="space-y-2">
+          <div className="space-y-2 w-full">
             <Input
               type="number"
-              defaultValue={stockQuantity}
+              defaultValue={stockQuantity || ""}
               {...register("stockQuantity")}
               id="stockQuantity"
               placeholder="Enter stock quantity"
@@ -120,13 +132,13 @@ const ProductInventory = () => {
           </div>
         </div>
         <div className="flex items-center gap-3 mb-3">
-          <Label className="flex gap-3" htmlFor="sku">
+          <Label className="flex gap-3 w-48" htmlFor="sku">
             SKU
             <span title="Lorem Ipsum is simply dummy text.">
               <i className="fa-solid fa-circle-question">i</i>
             </span>
           </Label>
-          <div className="space-y-2">
+          <div className="space-y-2 w-full">
             <Input
               type="text"
               defaultValue={sku}
@@ -141,13 +153,13 @@ const ProductInventory = () => {
           </div>
         </div>
         <div className="flex items-center gap-3 mb-3">
-          <Label className="flex gap-3" htmlFor="productCode">
+          <Label className="flex gap-3 w-48" htmlFor="productCode">
             Product Code
             <span title="Lorem Ipsum is simply dummy text.">
               <i className="fa-solid fa-circle-question">i</i>
             </span>
           </Label>
-          <div className="space-y-2">
+          <div className="space-y-2 w-full">
             <Input
               type="text"
               defaultValue={productCode}
@@ -164,7 +176,7 @@ const ProductInventory = () => {
           </div>
         </div>
         <div className="flex items-center gap-3 mb-3">
-          <Label className="flex gap-3" htmlFor="manageStock">
+          <Label className="flex gap-3 w-48" htmlFor="manageStock">
             Manage Stock
             <span title="Lorem Ipsum is simply dummy text.">
               <i className="fa-solid fa-circle-question">i</i>
@@ -181,16 +193,16 @@ const ProductInventory = () => {
         </div>
         {isManageStock && (
           <div className="flex items-center gap-3 mb-3">
-            <Label className="flex gap-3" htmlFor="lowStockWarning">
+            <Label className="flex gap-3 w-48" htmlFor="lowStockWarning">
               Low Stock Warning
               <span title="Lorem Ipsum is simply dummy text.">
                 <i className="fa-solid fa-circle-question">i</i>
               </span>
             </Label>
-            <div className="space-y-2">
+            <div className="space-y-2 w-full">
               <Input
                 type="number"
-                defaultValue={lowStockWarning}
+                defaultValue={lowStockWarning || ""}
                 {...register("lowStockWarning")}
                 id="lowStockWarning"
                 placeholder="Enter low stock warning quantity"
@@ -205,7 +217,7 @@ const ProductInventory = () => {
           </div>
         )}
         <div className="flex items-center gap-3 mb-3">
-          <Label className="flex gap-3" htmlFor="soldIndividually">
+          <Label className="flex gap-3 w-48" htmlFor="soldIndividually">
             Sold Individually
             <span title="Lorem Ipsum is simply dummy text.">
               <i className="fa-solid fa-circle-question">i</i>
@@ -221,7 +233,7 @@ const ProductInventory = () => {
           </div>
         </div>
         <div className="flex items-center gap-3 mb-3">
-          <Label className="flex gap-3" htmlFor="showStockQuantity">
+          <Label className="flex gap-3 w-48" htmlFor="showStockQuantity">
             Show Stock Quantity
             <span title="Lorem Ipsum is simply dummy text.">
               <i className="fa-solid fa-circle-question">i</i>
@@ -237,7 +249,7 @@ const ProductInventory = () => {
           </div>
         </div>
         <div className="flex items-center gap-3 mb-3">
-          <Label className="flex gap-3" htmlFor="showStockWithText">
+          <Label className="flex gap-3 w-48" htmlFor="showStockWithText">
             Show Stock With Text
             <span title="Lorem Ipsum is simply dummy text.">
               <i className="fa-solid fa-circle-question">i</i>
@@ -274,4 +286,4 @@ const ProductInventory = () => {
   );
 };
 
-export default ProductInventory;
+export default Inventory;

@@ -5,7 +5,7 @@ import { SectionTitle } from "@/components/ui/sectionTitle";
 import { setTitle } from "@/redux/features/addProduct/addProductSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 
-const ProductTitle = () => {
+const Title = () => {
   const dispatch = useAppDispatch();
   const title = useAppSelector(({ addProduct }) => addProduct.title);
 
@@ -16,15 +16,13 @@ const ProductTitle = () => {
   return (
     <Card className="p-4 rounded-sm space-y-2 bg-white">
       <SectionTitle>Add Product Title</SectionTitle>
-      {/* Pass value and onChange handler to Input component */}
       <Input
         placeholder="Product Title"
         defaultValue={title}
         onChange={handleTitleChange}
       />
-      {/* You can access the input value using 'title' state */}
     </Card>
   );
 };
 
-export default ProductTitle;
+export default Title;

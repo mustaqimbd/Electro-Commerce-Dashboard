@@ -4,7 +4,6 @@ const getImages = async () => {
   if (!res.ok) {
     throw new Error("Error when fetching post!");
   }
-  console.log(images);
   return images;
 };
 

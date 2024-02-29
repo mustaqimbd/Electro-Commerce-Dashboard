@@ -4,11 +4,17 @@ import { useState } from "react";
 import { Card } from "../ui/card";
 type TProps = {
   children: React.ReactNode;
-  heading: string;
+  heading?: string;
   className?: string;
+  collapse?: boolean;
 };
-const SectionContentWrapper = ({ children, heading, className }: TProps) => {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+const SectionContentWrapper = ({
+  children,
+  heading,
+  className,
+  collapse,
+}: TProps) => {
+  const [isCollapsed, setIsCollapsed] = useState(collapse || false);
 
   const toggleCollapse = () => {
     setIsCollapsed(!isCollapsed);

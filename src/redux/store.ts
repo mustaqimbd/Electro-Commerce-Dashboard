@@ -13,9 +13,8 @@ import {
 import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
 import baseApi from "./baseApi/baseApi";
 import addProductReducer from "./features/addProduct/addProductSlice";
-import productVariationReducer from "./features/addProduct/productVariation/productVariationSlice";
+import variationReducer from "./features/addProduct/variation/variationSlice";
 import authReducer from "./features/auth/authSlice";
-import mediaReducers from "./features/addProduct/media/mediaSlice";
 const persistConfig = {
   key: "auth",
   storage,
@@ -27,8 +26,7 @@ const store = configureStore({
     [baseApi.reducerPath]: baseApi.reducer,
     auth: persistedAuthReducer,
     addProduct: addProductReducer,
-    generateProductVariation: productVariationReducer,
-    mediaImages: mediaReducers,
+    productVariation: variationReducer,
   },
   middleware: (getDefaultMiddlewares) =>
     getDefaultMiddlewares({

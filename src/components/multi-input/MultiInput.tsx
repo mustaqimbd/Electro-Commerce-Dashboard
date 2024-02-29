@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { useState } from "react";
@@ -28,14 +29,13 @@ const MultiInput = ({
   const [selectedTags, setSelectedTags] = useState<
     MultiValue<string> | undefined
   >([]);
-  console.log(values);
+
   const handleInputChange = (
     selectedOptions: MultiValue<string>
     // actionMeta: ActionMeta<string>
   ) => {
     // This function is called whenever the selection changes
     setSelectedTags(selectedOptions);
-    console.log(selectedOptions);
   };
 
   return (
@@ -47,10 +47,10 @@ const MultiInput = ({
       <div className="w-full">
         <Select
           isMulti
+          isSearchable
           value={selectedTags}
           onChange={handleInputChange}
           options={values}
-          isSearchable
           isClearable
         />
       </div>

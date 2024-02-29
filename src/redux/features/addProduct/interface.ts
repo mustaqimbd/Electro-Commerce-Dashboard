@@ -1,3 +1,5 @@
+import { TSelectValue } from "./variation/interface";
+
 type PriceDate = {
   start: string;
   end: string;
@@ -5,9 +7,9 @@ type PriceDate = {
 
 export type TPrice = {
   regularPrice: number;
-  salePrice: number;
-  discount: number;
-  date: PriceDate;
+  salePrice?: number;
+  discountPercent?: number;
+  date?: PriceDate;
 };
 
 export type TImage = {
@@ -26,6 +28,12 @@ export type TInventory = {
   showStockWithText: boolean;
   hideStock: boolean;
   soldIndividually: boolean;
+};
+
+export type TOffer = {
+  flash: boolean;
+  today: boolean;
+  featured: boolean;
 };
 
 export type TAttribute = {
@@ -67,7 +75,8 @@ export type TProduct = {
   attribute: TAttribute[];
   brand: string[];
   category: TCategory;
-  tag: string[];
+  tag: TSelectValue[];
   seoData: TSeoData;
   publishedStatus: TPublishedStatus;
+  offer: TOffer;
 };

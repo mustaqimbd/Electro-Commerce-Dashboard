@@ -1,12 +1,12 @@
 "use client";
-import { useState } from "react";
 import SectionContentWrapper from "@/components/section-content-wrapper/SectionContentWrapper";
-import ProductInventory from "./ProductInventory";
-import ProductOffer from "./ProductOffer";
-import ProductPrice from "./ProductPrice";
-import ProductsAttributes from "./ProductsAttributes";
-import ProductsMedia from "./ProductsMedia";
-import ProductVariations from "./ProductVariations";
+import { useState } from "react";
+import Inventory from "./Inventory";
+import Media from "./Media";
+import Offer from "./Offer";
+import Price from "./Price";
+import Variations from "./Variations";
+import Attributes from "./attribute/Attributes";
 
 const ProductData = () => {
   const [activeTab, setActiveTab] = useState<string>("media");
@@ -82,12 +82,12 @@ const ProductData = () => {
       </div>
 
       <div>
-        {activeTab === "media" && <ProductsMedia />}
-        {activeTab === "inventory" && <ProductInventory />}
-        {activeTab === "price" && <ProductPrice />}
-        {activeTab === "attributes" && <ProductsAttributes />}
-        {activeTab === "variations" && <ProductVariations />}
-        {activeTab === "offer" && <ProductOffer />}
+        {activeTab === "media" && <Media />}
+        {activeTab === "inventory" && <Inventory />}
+        {activeTab === "price" && <Price />}
+        {activeTab === "attributes" && <Attributes />}
+        {activeTab === "variations" && <Variations />}
+        {activeTab === "offer" && <Offer />}
       </div>
     </SectionContentWrapper>
   );

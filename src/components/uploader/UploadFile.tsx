@@ -126,6 +126,7 @@ const UploadFile = () => {
               multiple
             />
             <Button>Select Files</Button>
+            <p>Maximum upload file size: 2 MB.</p>
           </div>
         </div>
       )}
