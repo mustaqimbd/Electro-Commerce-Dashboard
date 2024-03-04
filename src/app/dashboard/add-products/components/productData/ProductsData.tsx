@@ -7,8 +7,9 @@ import Offer from "./Offer";
 import Price from "./Price";
 import Variations from "./Variations";
 import Attributes from "./attribute/Attributes";
+import { TSelectedAttribute } from "@/redux/features/addProduct/variation/interface";
 
-const ProductData = () => {
+const ProductData = ({ attributes }: { attributes: TSelectedAttribute[] }) => {
   const [activeTab, setActiveTab] = useState<string>("media");
 
   const handleTabClick = (tab: string) => {
@@ -85,7 +86,7 @@ const ProductData = () => {
         {activeTab === "media" && <Media />}
         {activeTab === "inventory" && <Inventory />}
         {activeTab === "price" && <Price />}
-        {activeTab === "attributes" && <Attributes />}
+        {activeTab === "attributes" && <Attributes attributes={attributes} />}
         {activeTab === "variations" && <Variations />}
         {activeTab === "offer" && <Offer />}
       </div>

@@ -1,5 +1,4 @@
 import { Label } from "@/components/ui/label";
-import { useGetAttributesQuery } from "@/redux/features/addProduct/attribute/attributeApi";
 import {
   TSelectedAttribute,
   TSelectValue,
@@ -11,32 +10,13 @@ import {
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import Select, { MultiValue } from "react-select";
 
-// const attributesData = [
-//   { name: "Color", values: ["white", "Green", "Blue"] },
-//   { name: "Size", values: ["M", "L", "Xl", "XXL"] },
-//   { name: "Brand", values: ["Acer", "Hp", "Lenevo"] },
-//   { name: "Capacity", values: [128, 256, 512] },
-// ];
-
-const Attributes = () => {
+const Attributes = ({ attributes }: { attributes: TSelectedAttribute[] }) => {
   const dispatch = useAppDispatch();
   const defaultAttribute = useAppSelector(
     ({ productVariation }) => productVariation.selectedAttribute
   );
   const defaultAttributeValue = useAppSelector(
     ({ productVariation }) => productVariation.selectedAttributeValue
-  );
-
-  const { data } = useGetAttributesQuery(undefined);
-
-  const formattedAttributes: TSelectedAttribute[] = data?.data?.map(
-    ({ name, values }: { name: string; values: string[] }) => ({
-      label: name,
-      value: name,
-      child: values.map(
-        (value) => ({ label: String(value), value: value }) as TSelectValue
-      ),
-    })
   );
 
   const handleAttribute = (value: MultiValue<TSelectedAttribute>) => {
@@ -82,7 +62,7 @@ const Attributes = () => {
           isMulti
           isSearchable
           onChange={handleAttribute}
-          options={formattedAttributes}
+          options={attributes}
           placeholder="Select attribute..."
         />
       </div>

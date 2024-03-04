@@ -1,4 +1,3 @@
-"use client";
 import { TypographyH4 } from "@/components/ui/TypographyH4";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -9,8 +8,15 @@ import SeoData from "./components/SeoData";
 import Tag from "./components/Tag";
 import Title from "./components/Title";
 import ProductData from "./components/productData/ProductsData";
+import getAttributes from "./lib/getAttributes";
+import getCategories from "./lib/getCategories";
+import getTags from "./lib/getTags";
 
-const AddProducts = () => {
+const AddProducts = async () => {
+  const attributes = await getAttributes();
+  const categories = await getCategories();
+  const tags = await getTags();
+
   return (
     <>
       <Card>
@@ -27,14 +33,14 @@ const AddProducts = () => {
           {/* products descriptTion */}
           <Description />
           {/* product data */}
-          <ProductData />
+          <ProductData attributes={attributes} />
           <SeoData />
         </div>
         {/* right Sidebar of add products */}
         <div className="w-2/6 space-y-10">
           <Published />
-          <Category />
-          <Tag />
+          <Category categories={categories} />
+          <Tag tags={tags} />
         </div>
       </div>
     </>
