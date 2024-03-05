@@ -1,5 +1,5 @@
 "use clients";
-import { TypographyH4 } from "@/components/ui/TypographyH4";
+import { TypographyH4 } from "@/components/ui/Typography";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import ProductDescription from "./components/ProductDescription";

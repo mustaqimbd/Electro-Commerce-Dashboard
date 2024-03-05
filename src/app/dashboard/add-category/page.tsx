@@ -15,7 +15,7 @@ const AddCategory = async () => {
 
   return (
     <>
-      <div className="flex gap-4 justify-between items-start ">
+      <div className="flex gap-4 justify-between items-start h-screen ">
         <Card className="p-4 flex-1 space-y-4">
           <SectionTitle> Add New category</SectionTitle>
           <AddCategoryForm categories={categories} />

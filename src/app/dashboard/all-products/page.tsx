@@ -1,6 +1,6 @@
 "use client";
 
-import { TypographyH4 } from "@/components/ui/TypographyH4";
+import { TypographyH4 } from "@/components/ui/Typography";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SectionTitle } from "@/components/ui/sectionTitle";
@@ -17,7 +17,7 @@ import ProductsTable from "./components/ProductsTable";
 
 const AllProducts = () => {
   return (
-    <div>
+    <div className="h-screen">
       <div className="rounded-md shadow-md p-5 bg-white">
         {/* header section , button , serachbbar  */}
 
