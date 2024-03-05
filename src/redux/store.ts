@@ -1,19 +1,20 @@
 "use client";
 import { configureStore } from "@reduxjs/toolkit";
 import {
-  persistStore,
-  persistReducer,
   FLUSH,
-  REHYDRATE,
   PAUSE,
   PERSIST,
   PURGE,
   REGISTER,
+  REHYDRATE,
+  persistReducer,
+  persistStore,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
 import baseApi from "./baseApi/baseApi";
-import authReducer from "./features/auth/authSlice";
 import addProductReducer from "./features/addProduct/addProductSlice";
+import variationReducer from "./features/addProduct/variation/variationSlice";
+import authReducer from "./features/auth/authSlice";
 const persistConfig = {
   key: "auth",
   storage,
@@ -25,6 +26,7 @@ const store = configureStore({
     [baseApi.reducerPath]: baseApi.reducer,
     auth: persistedAuthReducer,
     addProduct: addProductReducer,
+    productVariation: variationReducer,
   },
   middleware: (getDefaultMiddlewares) =>
     getDefaultMiddlewares({

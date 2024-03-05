@@ -1,7 +1,12 @@
-"use clients";
-export function SectionTitle({ children }: { children: string }) {
+type TProps = {
+  children: string;
+  className?: string;
+};
+export function SectionTitle({ children, className }: TProps) {
   return (
-    <h2 className="scroll-m-20 border-b pb-2 text-sm font-semibold tracking-tight first:mt-0">
+    <h2
+      className={`border-b pb-2 text-sm font-semibold tracking-tight first:mt-0 ${className}`}
+    >
       {children}
     </h2>
   );

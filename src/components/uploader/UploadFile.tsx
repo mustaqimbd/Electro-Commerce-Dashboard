@@ -1,78 +1,135 @@
-// FileUploader.tsx
-
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { Button } from "../ui/button";
+import { useUploadImageMutation } from "@/redux/features/addProduct/media/mediaApi";
+import Image from "next/image";
+import { Cross2Icon } from "@radix-ui/react-icons";
+import { useToast } from "@/components/ui/use-toast";
 
-const UploadFile: React.FC = () => {
-  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+const UploadFile = () => {
+  const { toast } = useToast();
+  const [uploadImage] = useUploadImageMutation();
+  // const [images, setImages] = useState(""); // for single
+  const [images, setImages] = useState<File[]>([]);
 
-  const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    const droppedFiles = Array.from(event.dataTransfer.files);
-    handleFiles(droppedFiles);
+  const handleFileInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files) {
+      // const files = e.target.files[0]; // for single image
+      const fileList = Array.from(files);
+      setImages([...images, ...fileList]);
+    }
+  };
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    const files = Array.from(e.dataTransfer.files);
+    setImages([...images, ...files]);
   };
 
-  const handleFiles = (files: FileList | File[]) => {
-    const fileList = Array.from(files);
-    setSelectedFiles(fileList);
+  const removeImage = (index: number) => {
+    const updatedFiles = [...images];
+    updatedFiles.splice(index, 1);
+    setImages(updatedFiles);
   };
 
-  const handleFileInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
-      handleFiles(event.target.files);
+  const handleUpload = async () => {
+    try {
+      const formData = new FormData();
+      // formData.append(`images`, images); // for single
+      images.forEach((image) => {
+        formData.append(`images`, image);
+      });
+      const res = await uploadImage(formData);
+      if (res) {
+        setImages([]);
+      }
+      toast({
+        description: "Images uploaded successfully!",
+      });
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: "There was a problem with your request.",
+      });
     }
   };
 
-  const removeFile = (index: number) => {
-    const updatedFiles = [...selectedFiles];
-    updatedFiles.splice(index, 1);
-    setSelectedFiles(updatedFiles);
-  };
-
   return (
-    <div className="w-full h-96 p-10 flex items-center justify-center">
-      <div
-        className=" flex flex-row justify-center items-center border-2 m-4 h-full w-full  border-dashed border-gray-300 p-4 rounded-md cursor-pointer"
-        onClick={() => document.getElementById("fileInput")?.click()}
-        onDrop={handleDrop}
-        onDragOver={(e) => e.preventDefault()}
-      >
-        <div className="flex flex-col items-center space-y-2">
-          <p className="text-gray-500">Drag and drop files here</p>
-          <input
-            type="file"
-            accept="*/*"
-            className="hidden"
-            onChange={handleFileInput}
-            id="fileInput"
-          />
-          <Button className="">Select Files</Button>
-        </div>
-        {selectedFiles.length > 0 && (
-          <div className="mt-4">
-            <p className="font-bold">Selected Files:</p>
+    <div className="h-full relative">
+      {images.length > 0 ? (
+        <div className="h-full flex flex-col gap-4">
+          <div
+            className="h-full cursor-pointer"
+            onClick={() => document.getElementById("fileInput")?.click()}
+            onDrop={handleDrop}
+            onDragOver={(e) => e.preventDefault()}
+          >
+            <div className="flex flex-wrap gap-4">
+              {images.map((image, index) => (
+                <div key={index} className="w-[150px] h-[150px] relative">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation(); // Prevent event bubbling
+                      removeImage(index);
+                    }}
+                    className="bg-white absolute right-1 top-1 p-1 rounded-full opacity-70 ring-offset-background transition-opacity hover:opacity-100 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground z-10"
+                  >
+                    <Cross2Icon className="h-5 w-5" />
+                  </button>
+                  <Image
+                    src={URL.createObjectURL(image)}
+                    alt={`Image ${index}`}
+                    fill={true}
+                    className="object-cover rounded-sm"
+                    sizes="(max-width: 208px) 100vw,"
+                  />
+                </div>
+              ))}
+            </div>
             <input
               type="file"
               accept="*/*"
               className="hidden"
-              onChange={handleFileInput}
+              onChange={handleFileInputChange}
+              id="fileInput"
+              multiple
             />
-            <ul className="list-disc list-inside">
-              {selectedFiles.map((file, index) => (
-                <li key={index} className="flex items-center justify-between">
-                  <span>{file.name}</span>
-                  <button
-                    className="text-red-500"
-                    onClick={() => removeFile(index)}
-                  >
-                    Remove
-                  </button>
-                </li>
-              ))}
-            </ul>
+            {/* <Button
+              className={`absolute top-2 ${hover ? "block" : "hidden"}`} // Show/hide based on hover state
+              onClick={(e) => {
+                e.stopPropagation(); // Prevent event bubbling
+                document.getElementById("fileInput")?.click();
+              }}
+            >
+              Select Files
+            </Button> */}
           </div>
-        )}
-      </div>
+          <div className="flex justify-end">
+            <Button onClick={handleUpload}>Upload Files</Button>
+          </div>
+        </div>
+      ) : (
+        <div
+          className={`flex flex-col justify-center items-center h-full w-full border-2 border-dashed border-gray-300 rounded-md cursor-pointer`}
+          onClick={() => document.getElementById("fileInput")?.click()}
+          onDrop={handleDrop}
+          onDragOver={(e) => e.preventDefault()}
+        >
+          <div className="flex flex-col items-center justify-center gap-2">
+            <p className="text-gray-500">Drag and drop files here</p>
+            <input
+              type="file"
+              accept="*/*"
+              className="hidden"
+              onChange={handleFileInputChange}
+              id="fileInput"
+              multiple
+            />
+            <Button>Select Files</Button>
+            <p>Maximum upload file size: 2 MB.</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

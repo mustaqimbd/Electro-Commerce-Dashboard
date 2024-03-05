@@ -1,14 +1,15 @@
 "use client";
-import { useState } from "react";
-
 import SectionContentWrapper from "@/components/section-content-wrapper/SectionContentWrapper";
-import ProductInventory from "./ProductInventory";
-import ProductOffer from "./ProductOffer";
-import ProductPrice from "./ProductPrice";
-import ProductsAttributes from "./ProductsAttributes";
-import ProductsMedia from "./ProductsMedia";
+import { useState } from "react";
+import Inventory from "./Inventory";
+import Media from "./Media";
+import Offer from "./Offer";
+import Price from "./Price";
+import Variations from "./Variations";
+import Attributes from "./attribute/Attributes";
+import { TSelectedAttribute } from "@/redux/features/addProduct/variation/interface";
 
-const ProductData = () => {
+const ProductData = ({ attributes }: { attributes: TSelectedAttribute[] }) => {
   const [activeTab, setActiveTab] = useState<string>("media");
 
   const handleTabClick = (tab: string) => {
@@ -27,16 +28,6 @@ const ProductData = () => {
           }  font-semibold py-2 px-4 rounded-sm `}
         >
           Media
-        </button>
-        <button
-          onClick={() => handleTabClick("inventory")}
-          className={`${
-            activeTab === "inventory"
-              ? "bg-blue-500 text-white  hover:bg-blue-700"
-              : "border "
-          }  font-semibold py-2 px-4 rounded-sm `}
-        >
-          Inventory
         </button>
         <button
           onClick={() => handleTabClick("price")}
@@ -59,6 +50,27 @@ const ProductData = () => {
           Attributes
         </button>
         <button
+          onClick={() => handleTabClick("variations")}
+          className={`${
+            activeTab === "variations"
+              ? "bg-blue-500 text-white  hover:bg-blue-700"
+              : "border "
+          }  font-semibold py-2 px-4 rounded-sm`}
+        >
+          Variations
+        </button>
+        <button
+          onClick={() => handleTabClick("inventory")}
+          className={`${
+            activeTab === "inventory"
+              ? "bg-blue-500 text-white  hover:bg-blue-700"
+              : "border "
+          }  font-semibold py-2 px-4 rounded-sm `}
+        >
+          Inventory
+        </button>
+
+        <button
           onClick={() => handleTabClick("offer")}
           className={`${
             activeTab === "offer"
@@ -71,11 +83,12 @@ const ProductData = () => {
       </div>
 
       <div>
-        {activeTab === "media" && <ProductsMedia />}
-        {activeTab === "inventory" && <ProductInventory />}
-        {activeTab === "price" && <ProductPrice />}
-        {activeTab === "attributes" && <ProductsAttributes />}
-        {activeTab === "offer" && <ProductOffer />}
+        {activeTab === "media" && <Media />}
+        {activeTab === "inventory" && <Inventory />}
+        {activeTab === "price" && <Price />}
+        {activeTab === "attributes" && <Attributes attributes={attributes} />}
+        {activeTab === "variations" && <Variations />}
+        {activeTab === "offer" && <Offer />}
       </div>
     </SectionContentWrapper>
   );

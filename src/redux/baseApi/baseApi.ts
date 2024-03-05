@@ -43,9 +43,12 @@ const customBaseQueryWithRefreshToken: BaseQueryFn = async (
   return result;
 };
 
+const tags = ["images"];
+
 const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: customBaseQueryWithRefreshToken,
+  tagTypes: tags,
   endpoints: () => ({}),
 });
 

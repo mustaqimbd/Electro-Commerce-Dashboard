@@ -2,17 +2,35 @@
 import EcButton from "@/components/EcButton/EcButton";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
-import { useLoginMutation } from "@/redux/features/auth/authApi";
 import { setUser } from "@/redux/features/auth/authSlice";
 import { TUser } from "@/redux/features/auth/interface";
+import { useCreateStaffOrAdminMutation } from "@/redux/features/user/userApi";
 import { useAppDispatch } from "@/redux/hooks";
 import decodeJWT from "@/utilities/decodeJWT";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import * as yup from "yup";
 
-const LoginPage = () => {
+const schema = yup.object().shape({
+  phoneNumber: yup
+    .string()
+    .required("Mobile is required")
+    .matches(/^[0-9+]+$/, "Invalid mobile number")
+    .max(15, "Invalid mobile number"),
+  password: yup
+    .string()
+    .required("Password is required")
+    .min(6, "Password must be at least 6 characters")
+    .matches(
+      /^(?=.*[A-Z])(?=.*[!@#$%^&*])/,
+      "Password must contain at least one uppercase letter and one special character"
+    ),
+});
+
+const RegistrationPage = () => {
   const dispatch = useAppDispatch();
-  const [login] = useLoginMutation();
+  const [createStaffOrAdmin] = useCreateStaffOrAdminMutation();
   const router = useRouter();
   const { toast } = useToast();
 
@@ -20,11 +38,13 @@ const LoginPage = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
-      const res = await login(data).unwrap();
+      const res = await createStaffOrAdmin(data).unwrap();
       const user = decodeJWT(res.data.accessToken) as TUser;
       dispatch(setUser({ user: user, token: res.data.accessToken }));
       toast({
@@ -47,7 +67,9 @@ const LoginPage = () => {
         className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
       >
         <div>
-          <h4 className="text-center my-3 font-bold  text-2xl">Login Page</h4>
+          <h4 className="text-center my-3 font-bold text-2xl ">
+            Registration Page
+          </h4>
         </div>
         <div className="mb-4">
           <label
@@ -62,8 +84,12 @@ const LoginPage = () => {
             placeholder="Enter Your Phone Number"
             id="phoneNumber"
             {...register("phoneNumber")}
-            required
           />
+          {errors.phoneNumber && (
+            <p className="text-red-500 text-xs italic">
+              {errors.phoneNumber.message}
+            </p>
+          )}
         </div>
         <div className="mb-6">
           <label
@@ -78,12 +104,16 @@ const LoginPage = () => {
             id="password"
             placeholder="Enter a Password"
             {...register("password")}
-            required
           />
+          {errors.password && (
+            <p className="text-red-500 text-xs italic">
+              {errors.password.message}
+            </p>
+          )}
         </div>
         <div className="flex items-center justify-between">
-          <EcButton type="submit" className=" w-full  font-bold py-2 px-4 ">
-            Login
+          <EcButton className=" w-full  py-2 px-4 " type="submit">
+            Registration
           </EcButton>
         </div>
       </form>
@@ -91,4 +121,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default RegistrationPage;

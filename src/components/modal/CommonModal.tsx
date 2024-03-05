@@ -5,12 +5,18 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const CommonModal = ({ children, handleOpen, open, modalTitle }: any) => {
+type TProps = {
+  children: React.ReactNode;
+  open: boolean;
+  handleOpen: (open: boolean) => void;
+  modalTitle: string;
+};
+const CommonModal = ({ children, open, handleOpen, modalTitle }: TProps) => {
   return (
     <div>
       <Dialog onOpenChange={handleOpen} open={open}>
-        <DialogContent className="">
+        {/* <DialogOverlay style={{ width: "1000px !important" }} /> */}
+        <DialogContent>
           <DialogHeader>
             <DialogTitle>{modalTitle}</DialogTitle>
           </DialogHeader>

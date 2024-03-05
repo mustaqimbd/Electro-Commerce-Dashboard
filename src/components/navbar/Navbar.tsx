@@ -8,7 +8,13 @@ const Navbar = () => {
     <>
       <div className="flex bg-white justify-between items-center  border-b-2 p-1 px-6 top-0 sticky z-10">
         <div className="px-2">
-          <Image className="w-24 " src={logo} alt="Some text" />
+          <Image
+            className="w-24 "
+            src={logo}
+            alt="Some text"
+            priority={true}
+            placeholder="blur"
+          />
         </div>
         <div className="flex items-center gap-2">
           <ModeToggle />
