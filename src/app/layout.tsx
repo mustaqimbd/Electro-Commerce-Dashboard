@@ -1,9 +1,9 @@
 import { ThemeProvider } from "@/components/provider/theme-provider";
+import { Toaster } from "@/components/ui/toaster";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import StoreProvider from "../redux/StoreProvider";
 import "./globals.css";
-import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,6 +29,7 @@ export default function RootLayout({
           >
             <Toaster />
             {children}
+            <Toaster />
           </ThemeProvider>
         </body>
       </StoreProvider>

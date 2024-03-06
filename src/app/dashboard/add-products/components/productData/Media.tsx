@@ -1,5 +1,5 @@
 "use client";
-import { TypographyH4 } from "@/components/ui/TypographyH4";
+import { TypographyH4 } from "@/components/ui/Typography";
 import { SectionTitle } from "@/components/ui/sectionTitle";
 import UploaderPopup from "@/components/uploader/UploaderPopup";
 import { useGetSingleImageQuery } from "@/redux/features/addProduct/media/mediaApi";

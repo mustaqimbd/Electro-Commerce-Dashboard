@@ -1,4 +1,6 @@
-import { TypographyH4 } from "@/components/ui/TypographyH4";
+"use clients";
+import { TypographyH4 } from "@/components/ui/Typography";
+
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import Category from "./components/Category";

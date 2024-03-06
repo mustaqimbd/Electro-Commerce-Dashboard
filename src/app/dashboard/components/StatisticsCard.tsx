@@ -1,4 +1,4 @@
-import { TypographyH4 } from "@/components/ui/TypographyH4";
+import { TypographyH4 } from "@/components/ui/Typography";
 import { Card } from "@/components/ui/card";
 
 const StatisticsCard = () => {

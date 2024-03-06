@@ -1,9 +1,9 @@
 "use client";
+
 import { CaretSortIcon } from "@radix-ui/react-icons";
 import {
   ColumnDef,
   ColumnFiltersState,
-  SortingState,
   VisibilityState,
   flexRender,
   getCoreRowModel,
@@ -35,66 +35,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { refetchCategories } from "@/lib/getCategory";
+import { useDeleteCategoryMutation } from "@/redux/features/category/categoryApi";
 
-const data: Payment[] = [
-  {
-    _id: "m5gr84i9",
-
-    name: "success",
-    items: 45,
-  },
-  {
-    _id: "3u1reuv4",
-
-    name: "success",
-    items: 46,
-  },
-  {
-    _id: "derv1ws0",
-
-    name: "processing",
-    items: 855,
-  },
-  {
-    _id: "5kma53ae",
-
-    name: "success",
-    items: 485,
-  },
-  {
-    _id: "bhqecj4p",
-
-    name: "failed",
-    items: 455,
-  },
-  {
-    _id: "bhqecj4p",
-
-    name: "failed",
-    items: 455,
-  },
-  {
-    _id: "bhqecj4p",
-
-    name: "failed",
-    items: 455,
-  },
-  {
-    _id: "bhqecj4p",
-
-    name: "failed",
-    items: 455,
-  },
-];
-
-export type Payment = {
+export type TCategories = {
   _id: string;
-
-  name: "pending" | "processing" | "success" | "failed";
-  items: number;
+  name: string;
+  subcategories: [];
 };
 
-export const columns: ColumnDef<Payment>[] = [
+export const columns: ColumnDef<TCategories>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -139,23 +89,43 @@ export const columns: ColumnDef<Payment>[] = [
       <div className="lowercase ml-6">{row.getValue("items")}</div>
     ),
   },
-
   {
-    id: "actions",
+    id: "_id",
+    accessorKey: "_id",
     header: () => <div className="text-center">Action</div>,
     enableHiding: true,
-    cell: () => {
+    cell: ({ row }) => {
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const [deleteCategory] = useDeleteCategoryMutation();
+      const handleDelete = async (id: string) => {
+        const res = await deleteCategory(id).unwrap();
+
+        if (res?.success) {
+          refetchCategories();
+        }
+      };
       return (
         <span className="flex justify-center">
-          <Trash2 className="text-red-500" />
+          <TrashButton onDelete={() => handleDelete(row.getValue("_id"))} />
         </span>
       );
     },
   },
 ];
 
-export const CategoryTable = () => {
-  const [sorting, setSorting] = React.useState<SortingState>([]);
+type TrashButtonProps = {
+  onDelete: () => void;
+};
+
+const TrashButton = ({ onDelete }: TrashButtonProps) => {
+  return <Trash2 onClick={onDelete} className="text-red-500 cursor-pointer" />;
+};
+
+export const CategoryTable = ({
+  categories,
+}: {
+  categories: TCategories[];
+}) => {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
@@ -164,9 +134,8 @@ export const CategoryTable = () => {
   const [rowSelection, setRowSelection] = React.useState({});
 
   const table = useReactTable({
-    data,
+    data: categories,
     columns,
-    onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -175,7 +144,6 @@ export const CategoryTable = () => {
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
     state: {
-      sorting,
       columnFilters,
       columnVisibility,
       rowSelection,

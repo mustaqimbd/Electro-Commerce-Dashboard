@@ -1,5 +1,7 @@
+import { ReactNode } from "react";
+
 type TProps = {
-  children: string;
+  children: ReactNode;
   className?: string;
 };
 export function TypographyH4({ children, className }: TProps) {

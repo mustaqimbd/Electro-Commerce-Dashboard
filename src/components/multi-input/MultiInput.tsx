@@ -2,8 +2,9 @@
 "use client";
 
 import { useState } from "react";
+
 import Select, { GroupBase, MultiValue } from "react-select";
-import { TypographyH4 } from "../ui/TypographyH4";
+import { TypographyH4 } from "../ui/Typography";
 
 type OptionType = { value: string; label: string };
 
