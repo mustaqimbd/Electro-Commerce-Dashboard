@@ -43,12 +43,12 @@ const UploadFile = () => {
         setImages([]);
       }
       toast({
-        description: "Images uploaded successfully!",
+        title: "Images uploaded successfully!",
       });
     } catch (error) {
       toast({
         variant: "destructive",
-        title: "Uh oh! Something went wrong.",
+        title: "Images upload is failed! Something went wrong.",
         description: "There was a problem with your request.",
       });
     }
@@ -59,7 +59,7 @@ const UploadFile = () => {
       {images.length > 0 ? (
         <div className="h-full flex flex-col gap-4">
           <div
-            className="h-full cursor-pointer"
+            className="h-full border-2 border-dashed border-gray-300 cursor-pointer"
             onClick={() => document.getElementById("fileInput")?.click()}
             onDrop={handleDrop}
             onDragOver={(e) => e.preventDefault()}
@@ -110,7 +110,8 @@ const UploadFile = () => {
         </div>
       ) : (
         <div
-          className={`flex flex-col justify-center items-center h-full w-full border-2 border-dashed border-gray-300 rounded-md cursor-pointer`}
+          className={`flex flex-col justify-center items-center h-full w-full border-2 border-dashed border-gray-300
+         rounded-md cursor-pointer`}
           onClick={() => document.getElementById("fileInput")?.click()}
           onDrop={handleDrop}
           onDragOver={(e) => e.preventDefault()}

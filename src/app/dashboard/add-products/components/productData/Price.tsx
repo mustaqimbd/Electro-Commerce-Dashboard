@@ -30,12 +30,16 @@ const schema = yup.object().shape({
 });
 
 type TFormInput = yup.InferType<typeof schema>;
-const Price = ({ isVariation }: { isVariation?: boolean }) => {
+type TProps = {
+  isVariation?: boolean;
+  index?: number;
+};
+const Price = ({ isVariation, index }: TProps) => {
   const dispatch = useAppDispatch();
   const { regularPrice, discountPercent, salePrice, date } = useAppSelector(
     ({ addProduct, productVariation }) => {
       if (isVariation) {
-        return productVariation.price;
+        return productVariation.variations[index || 0]?.price || {};
       } else {
         return addProduct.price;
       }
@@ -59,6 +63,7 @@ const Price = ({ isVariation }: { isVariation?: boolean }) => {
     dispatch(
       isVariation
         ? setVariationPrice({
+            index,
             regularPrice: price,
             discountPercent: 0,
             salePrice: 0,
@@ -78,6 +83,7 @@ const Price = ({ isVariation }: { isVariation?: boolean }) => {
     dispatch(
       isVariation
         ? setVariationPrice({
+            index,
             regularPrice: regular,
             discountPercent: 0,
             salePrice: 0,
@@ -98,6 +104,7 @@ const Price = ({ isVariation }: { isVariation?: boolean }) => {
     dispatch(
       isVariation
         ? setVariationPrice({
+            index,
             regularPrice: regular,
             discountPercent: 0,
             salePrice: 0,
@@ -118,6 +125,7 @@ const Price = ({ isVariation }: { isVariation?: boolean }) => {
     dispatch(
       isVariation
         ? setVariationPrice({
+            index,
             regularPrice: regular || regularPrice,
             discountPercent: discount,
             salePrice: sale,
@@ -209,7 +217,6 @@ const Price = ({ isVariation }: { isVariation?: boolean }) => {
               type="date"
               defaultValue={date?.start || ""}
               {...register("start")}
-              placeholder="dd/mm/yy"
               className="w-40 xl:w-52"
               id="startDate"
             />
@@ -217,7 +224,6 @@ const Price = ({ isVariation }: { isVariation?: boolean }) => {
               type="date"
               defaultValue={date?.end || ""}
               {...register("end")}
-              placeholder="dd/mm/yy"
               className="w-40 xl:w-52"
               id="startDate"
             />

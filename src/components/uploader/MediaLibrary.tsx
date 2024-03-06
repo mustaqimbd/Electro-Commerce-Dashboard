@@ -12,12 +12,17 @@ import { setVariationThumbnail } from "@/redux/features/addProduct/variation/var
 
 type TImage = { _id: string; src: string; alt: string };
 
-const MediaLibrary = ({ click }: { click?: string }) => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const MediaLibrary = ({ click, index }: { click?: string; index?: number }) => {
   const dispatch = useAppDispatch();
   const { thumbnail, gallery } = useAppSelector(
-    ({ addProduct, productVariation }) =>
-      click === "variation" ? productVariation.image : addProduct.image
+    ({ addProduct }) => addProduct.image
   );
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // const image = useAppSelector(
+  //   ({ productVariation }) =>
+  //     productVariation.variations[index || 0]?.image || {}
+  // );
 
   const selectImage = (imageId: string) => {
     if (click === "thumbnail") {
@@ -29,14 +34,14 @@ const MediaLibrary = ({ click }: { click?: string }) => {
     }
     if (click === "variation") {
       if (thumbnail === imageId) {
-        dispatch(setVariationThumbnail(""));
+        dispatch(setVariationThumbnail({ index: 0, image: "" }));
       } else {
-        dispatch(setVariationThumbnail(imageId));
+        dispatch(setVariationThumbnail({ index: 0, image: imageId }));
       }
     }
     if (click === "gallery") {
       if (gallery.includes(imageId)) {
-        const restItem = gallery.filter((item) => item !== imageId);
+        const restItem = gallery.filter((item: string) => item !== imageId);
         dispatch(setGallery(restItem));
       } else {
         dispatch(setGallery([...gallery, imageId]));
@@ -53,13 +58,13 @@ const MediaLibrary = ({ click }: { click?: string }) => {
 
   return (
     <div>
-      <div className="flex flex-wrap gap-3">
+      <div className="flex flex-wrap gap-4">
         {click === "thumbnail" || click === "variation"
           ? data?.data?.map((image: TImage) => (
               <div
                 key={image._id}
                 onClick={() => selectImage(image._id)}
-                className={`w-[120px] h-[120px] relative cursor-pointer rounded-sm ${thumbnail === image._id && "border-2 border-blue-600"}`}
+                className={`w-[140px] h-[140px] relative cursor-pointer rounded-sm ${thumbnail === image._id && "border-2 border-blue-600"}`}
               >
                 <Image
                   src={`http://localhost:5000/${image.src}`}
@@ -80,7 +85,7 @@ const MediaLibrary = ({ click }: { click?: string }) => {
               <div
                 key={image._id}
                 onClick={() => selectImage(image._id)}
-                className={`w-[120px] h-[120px] relative cursor-pointer rounded-sm ${gallery.includes(image._id) && "border-2 border-blue-600"}`}
+                className={`w-[140px] h-[140px] relative cursor-pointer rounded-sm ${gallery.includes(image._id) && "border-2 border-blue-600"}`}
               >
                 <Image
                   src={`http://localhost:5000/${image.src}`}

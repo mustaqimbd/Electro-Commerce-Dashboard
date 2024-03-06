@@ -15,11 +15,18 @@ const schema = yup.object().shape({
 });
 
 type TFormInput = yup.InferType<typeof schema>;
-const Offer = ({ isVariation }: { isVariation?: boolean }) => {
+type TProps = {
+  isVariation?: boolean;
+  index?: number;
+};
+
+const Offer = ({ isVariation, index }: TProps) => {
   const dispatch = useAppDispatch();
   const { flash, today, featured } = useAppSelector(
     ({ addProduct, productVariation }) =>
-      isVariation ? productVariation.offer : addProduct.offer
+      isVariation
+        ? productVariation.variations[index || 0]?.offer || {}
+        : addProduct.offer
   );
 
   const { register, handleSubmit } = useForm({
@@ -27,7 +34,9 @@ const Offer = ({ isVariation }: { isVariation?: boolean }) => {
   });
 
   const onSubmit: SubmitHandler<TFormInput> = (data) => {
-    dispatch(isVariation ? setVariationOffer(data) : setOffer(data));
+    dispatch(
+      isVariation ? setVariationOffer({ index, ...data }) : setOffer(data)
+    );
   };
 
   return (

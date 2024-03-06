@@ -8,6 +8,7 @@ import Price from "./Price";
 import Variations from "./Variations";
 import Attributes from "./attribute/Attributes";
 import { TSelectedAttribute } from "@/redux/features/addProduct/variation/interface";
+import Advanced from "./Advanced";
 
 const ProductData = ({ attributes }: { attributes: TSelectedAttribute[] }) => {
   const [activeTab, setActiveTab] = useState<string>("media");
@@ -80,6 +81,16 @@ const ProductData = ({ attributes }: { attributes: TSelectedAttribute[] }) => {
         >
           Offer
         </button>
+        <button
+          onClick={() => handleTabClick("advanced")}
+          className={`${
+            activeTab === "advanced"
+              ? "bg-blue-500 text-white  hover:bg-blue-700"
+              : "border "
+          }  font-semibold py-2 px-4 rounded-sm`}
+        >
+          Advanced
+        </button>
       </div>
 
       <div>
@@ -89,6 +100,7 @@ const ProductData = ({ attributes }: { attributes: TSelectedAttribute[] }) => {
         {activeTab === "attributes" && <Attributes attributes={attributes} />}
         {activeTab === "variations" && <Variations />}
         {activeTab === "offer" && <Offer />}
+        {activeTab === "advanced" && <Advanced />}
       </div>
     </SectionContentWrapper>
   );

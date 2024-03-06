@@ -19,7 +19,7 @@ const initialState: TProduct = {
   shortDescription: "",
   featured: false,
   downloadable: false,
-  review: true,
+  review: false,
   price: {
     regularPrice: 0,
     salePrice: 0,
@@ -118,6 +118,11 @@ const productSlice = createSlice({
     setPublishedStatus: (state, action: PayloadAction<TPublishedStatus>) => {
       state.publishedStatus = { ...action.payload };
     },
+    setAdvanced: (state, action: PayloadAction<Partial<TProduct>>) => {
+      const { review, featured } = action.payload;
+      state.review = review as boolean;
+      state.featured = featured as boolean;
+    },
     setProduct: (state, action: PayloadAction<TProduct>) => {
       return action.payload;
     },
@@ -142,6 +147,7 @@ export const {
   setTag,
   setSeoData,
   setPublishedStatus,
+  setAdvanced,
   setProduct,
 } = productSlice.actions;
 

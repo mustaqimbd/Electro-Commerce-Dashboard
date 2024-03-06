@@ -9,6 +9,7 @@ type PriceDate = {
 };
 
 export type TPrice = {
+  index?: number;
   regularPrice: number;
   salePrice?: number;
   discountPercent?: number;
@@ -21,6 +22,7 @@ export type TImage = {
 };
 
 export type TInventory = {
+  index?: number;
   sku: string;
   stockStatus: string;
   stockQuantity: number;
@@ -34,6 +36,7 @@ export type TInventory = {
 };
 
 export type TOffer = {
+  index?: number;
   flash: boolean;
   today: boolean;
   featured: boolean;

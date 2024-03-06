@@ -1,4 +1,4 @@
-import { TImage, TInventory, TOffer, TPrice } from "../interface";
+import { TInventory, TOffer, TPrice } from "../interface";
 
 export type TSelectValue = {
   label: string;
@@ -16,10 +16,17 @@ export type TSelectedAttributeValue = {
 };
 
 export type TVariation = {
-  selectedAttribute: TSelectedAttribute[];
-  selectedAttributeValue: TSelectedAttributeValue;
+  attributes: {
+    [key: string]: string;
+  };
   price: TPrice;
-  image: TImage;
+  image: string;
   inventory: TInventory;
   offer: TOffer;
+};
+
+export type TVariationInitialState = {
+  selectedAttribute: TSelectedAttribute[];
+  selectedAttributeValue: TSelectedAttributeValue;
+  variations: TVariation[];
 };

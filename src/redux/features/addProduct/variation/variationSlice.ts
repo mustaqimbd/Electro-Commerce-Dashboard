@@ -1,40 +1,42 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { TVariation, TSelectedAttribute } from "./interface";
+import { TSelectedAttribute, TVariationInitialState } from "./interface";
 import { TInventory, TOffer, TPrice } from "../interface";
 
-const initialState: TVariation = {
+// const variations: TVariation = {
+//   attributes: {},
+//   image: "",
+//   price: {
+//     regularPrice: 0,
+//     salePrice: 0,
+//     discountPercent: 0,
+//     date: {
+//       start: "",
+//       end: "",
+//     },
+//   },
+//   inventory: {
+//     sku: "",
+//     stockStatus: "",
+//     stockQuantity: 0,
+//     productCode: "",
+//     lowStockWarning: 0,
+//     manageStock: false,
+//     showStockQuantity: false,
+//     showStockWithText: false,
+//     hideStock: false,
+//     soldIndividually: false,
+//   },
+//   offer: {
+//     flash: false,
+//     today: false,
+//     featured: false,
+//   },
+// };
+
+const initialState: TVariationInitialState = {
   selectedAttribute: [],
   selectedAttributeValue: {},
-  price: {
-    regularPrice: 0,
-    salePrice: 0,
-    discountPercent: 0,
-    date: {
-      start: "",
-      end: "",
-    },
-  },
-  image: {
-    thumbnail: "",
-    gallery: [],
-  },
-  inventory: {
-    sku: "",
-    stockStatus: "",
-    stockQuantity: 0,
-    productCode: "",
-    lowStockWarning: 0,
-    manageStock: false,
-    showStockQuantity: false,
-    showStockWithText: false,
-    hideStock: false,
-    soldIndividually: false,
-  },
-  offer: {
-    flash: false,
-    today: false,
-    featured: false,
-  },
+  variations: [],
 };
 
 const variationSlice = createSlice({
@@ -60,21 +62,64 @@ const variationSlice = createSlice({
       const { label, child } = action.payload;
       state.selectedAttributeValue[label] = child;
     },
-    setVariationThumbnail: (state, action: PayloadAction<string>) => {
-      state.image.thumbnail = action.payload;
+    setVariationAttributes: (
+      state,
+      action: PayloadAction<{ index: number; item: { [key: string]: string } }>
+    ) => {
+      const { index, item } = action.payload;
+      if (state.variations[index]) {
+        state.variations[index].attributes = item;
+      } else {
+        // If variations[index] does not exist, push a new object with attributes
+        state.variations.push({
+          attributes: item,
+          image: "",
+          price: {
+            regularPrice: 0,
+            salePrice: 0,
+            discountPercent: 0,
+            date: {
+              start: "",
+              end: "",
+            },
+          },
+          inventory: {
+            sku: "",
+            stockStatus: "",
+            stockQuantity: 0,
+            productCode: "",
+            lowStockWarning: 0,
+            manageStock: false,
+            showStockQuantity: false,
+            showStockWithText: false,
+            hideStock: false,
+            soldIndividually: false,
+          },
+          offer: {
+            flash: false,
+            today: false,
+            featured: false,
+          },
+        });
+      }
     },
-    setVariationGallery: (state, action: PayloadAction<string[]>) => {
-      state.image.gallery = [];
-      state.image.gallery.push(...action.payload);
+    setVariationThumbnail: (
+      state,
+      action: PayloadAction<{ index: number; image: string }>
+    ) => {
+      const { index, image } = action.payload;
+      state.variations[index].image = image;
     },
     setVariationPrice: (state, action: PayloadAction<TPrice>) => {
-      state.price = { ...action.payload };
+      state.variations[action.payload.index || 0].price = { ...action.payload };
     },
     setVariationInventory: (state, action: PayloadAction<TInventory>) => {
-      state.inventory = { ...action.payload };
+      state.variations[action.payload.index || 0].inventory = {
+        ...action.payload,
+      };
     },
     setVariationOffer: (state, action: PayloadAction<TOffer>) => {
-      state.offer = { ...action.payload };
+      state.variations[action.payload.index || 0].offer = { ...action.payload };
     },
   },
 });
@@ -82,8 +127,9 @@ const variationSlice = createSlice({
 export const {
   setSelectedAttribute,
   setSelectedAttributeValue,
+  setVariationAttributes,
   setVariationThumbnail,
-  setVariationGallery,
+  // setVariationGallery,
   setVariationPrice,
   setVariationInventory,
   setVariationOffer,

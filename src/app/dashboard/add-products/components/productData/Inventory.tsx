@@ -44,7 +44,12 @@ const schema = yup.object().shape({
 });
 
 type TFormInput = yup.InferType<typeof schema>;
-const Inventory = ({ isVariation }: { isVariation?: boolean }) => {
+type TProps = {
+  isVariation?: boolean;
+  index?: number;
+};
+
+const Inventory = ({ isVariation, index }: TProps) => {
   const dispatch = useAppDispatch();
   const {
     sku,
@@ -59,7 +64,7 @@ const Inventory = ({ isVariation }: { isVariation?: boolean }) => {
     // hideStock,
   } = useAppSelector(({ addProduct, productVariation }) => {
     if (isVariation) {
-      return productVariation.inventory;
+      return productVariation.variations[index || 0]?.inventory || {};
     } else {
       return addProduct.inventory;
     }
@@ -78,7 +83,11 @@ const Inventory = ({ isVariation }: { isVariation?: boolean }) => {
   const isManageStock = watch("manageStock") || manageStock;
 
   const onSubmit: SubmitHandler<TFormInput> = (data) => {
-    dispatch(isVariation ? setVariationInventory(data) : setInventory(data));
+    dispatch(
+      isVariation
+        ? setVariationInventory({ index, ...data })
+        : setInventory(data)
+    );
   };
 
   return (

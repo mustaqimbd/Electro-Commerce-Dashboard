@@ -7,7 +7,11 @@ import { useAppSelector } from "@/redux/hooks";
 import Image from "next/image";
 import { useState } from "react";
 
-const Media = ({ isVariation }: { isVariation?: boolean }) => {
+type TProps = {
+  isVariation?: boolean;
+  index?: number;
+};
+const Media = ({ isVariation, index }: TProps) => {
   const [open, setOpen] = useState(false);
   const [click, setClick] = useState<string>("");
   const handleOpen = () => {
@@ -15,13 +19,12 @@ const Media = ({ isVariation }: { isVariation?: boolean }) => {
   };
 
   const { thumbnail, gallery } = useAppSelector(
-    ({ addProduct, productVariation }) => {
-      if (isVariation) {
-        return productVariation.image;
-      } else {
-        return addProduct.image;
-      }
-    }
+    ({ addProduct }) => addProduct.image
+  );
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const image = useAppSelector(
+    ({ productVariation }) => productVariation.variations[index || 0]?.image
   );
 
   const { data: thumbnailImage } = useGetSingleImageQuery(

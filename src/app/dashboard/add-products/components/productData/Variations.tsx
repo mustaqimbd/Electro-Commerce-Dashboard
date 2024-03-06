@@ -1,14 +1,16 @@
 "use client";
 import SectionContentWrapper from "@/components/section-content-wrapper/SectionContentWrapper";
-import { useAppSelector } from "@/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { useState } from "react";
 import Inventory from "./Inventory";
 import Media from "./Media";
 import Offer from "./Offer";
 import Price from "./Price";
 import { TSelectedAttributeValue } from "@/redux/features/addProduct/variation/interface";
+import { setVariationAttributes } from "@/redux/features/addProduct/variation/variationSlice";
 
 const Variations = () => {
+  const dispatch = useAppDispatch();
   const defaultAttributeValue = useAppSelector(
     ({ productVariation }) => productVariation.selectedAttributeValue
   );
@@ -54,13 +56,16 @@ const Variations = () => {
 
     return result;
   };
-
   const generatedVariations = generateVariations(defaultAttributeValue);
 
   const [activeTab, setActiveTab] = useState<string>("media");
   const handleTabClick = (tab: string) => {
     setActiveTab(tab);
   };
+
+  generatedVariations.map((item, index) =>
+    dispatch(setVariationAttributes({ index, item }))
+  );
 
   return (
     <div className="space-y-2">
@@ -118,10 +123,18 @@ const Variations = () => {
               </button>
             </div>
             <div>
-              {activeTab === "media" && <Media isVariation={true} />}
-              {activeTab === "inventory" && <Inventory isVariation={true} />}
-              {activeTab === "price" && <Price isVariation={true} />}
-              {activeTab === "offer" && <Offer isVariation={true} />}
+              {activeTab === "media" && (
+                <Media isVariation={true} index={index} />
+              )}
+              {activeTab === "inventory" && (
+                <Inventory isVariation={true} index={index} />
+              )}
+              {activeTab === "price" && (
+                <Price isVariation={true} index={index} />
+              )}
+              {activeTab === "offer" && (
+                <Offer isVariation={true} index={index} />
+              )}
             </div>
           </SectionContentWrapper>
         </div>

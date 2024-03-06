@@ -18,14 +18,14 @@ const UploaderPopup = ({ open, click, handleOpen, modalTitle }: TProps) => {
   return (
     <CommonModal open={open} handleOpen={handleOpen} modalTitle={modalTitle}>
       <div className="flex flex-col gap-5 h-full">
-        <div>
+        <div className="border-b space-x-4">
           <button
             onClick={() => handleTabClick("uploadFile")}
             className={`${
               activeTab === "uploadFile" &&
               "bg-blue-500 text-white  hover:bg-blue-700"
             }
-              font-semibold py-2 px-4 rounded-sm mr-2`}
+              font-semibold py-2 px-4 rounded-sm border`}
           >
             Upload File
           </button>
@@ -35,13 +35,13 @@ const UploaderPopup = ({ open, click, handleOpen, modalTitle }: TProps) => {
               activeTab === "mediaLibrary" &&
               "bg-blue-500 text-white  hover:bg-blue-700"
             }
-              font-semibold py-2 px-4 rounded-sm mr-2`}
+              font-semibold py-2 px-4 rounded-sm border`}
           >
             Media Library
           </button>
         </div>
         {/* <hr className="my-3"/> */}
-        <div className="flex-1">
+        <div className={`flex-1 ${activeTab === "mediaLibrary" && "border-2"}`}>
           {activeTab === "uploadFile" && <UploadFile />}
           {activeTab === "mediaLibrary" && <MediaLibrary click={click} />}
         </div>
