@@ -1,15 +1,5 @@
 "use client";
-
-import {
-  flexRender,
-  getCoreRowModel,
-  getPaginationRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
-import { columns } from "./OrderColumn";
-
 import { Button } from "@/components/ui/button";
-
 import {
   Table,
   TableBody,
@@ -18,96 +8,34 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { TOrder } from "../interface";
+import { setBulkOrder } from "@/redux/features/order/placeOrderSlice";
+import { useAppDispatch } from "@/redux/hooks";
+import {
+  flexRender,
+  getCoreRowModel,
+  getPaginationRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
+import { useEffect } from "react";
+import formattedOrderData from "../utils/formattedOrderData";
+import { TOrder } from "../utils/interface";
+import { columns } from "./OrderColumn";
 
-const data: TOrder[] = [
-  {
-    id: "m5gr84i9",
-    amount: 316,
-    OrderID: "123564",
-    email: "ken99@yahoo.com",
-  },
-  {
-    id: "3u1reuv4",
-    amount: 242,
-    OrderID: "125464",
-    email: "Abe45@gmail.com",
-  },
-  {
-    id: "derv1ws0",
-    amount: 837,
-    OrderID: "12s564",
-    email: "Monserrat44@gmail.com",
-  },
-  {
-    id: "5kma53ae",
-    amount: 874,
-    OrderID: "125644",
-    email: "Silas22@gmail.com",
-  },
-  {
-    id: "bhqecj4p",
-    amount: 721,
-    OrderID: "12s564",
-    email: "carmella@hotmail.com",
-  },
-  {
-    id: "bhqecj4p",
-    amount: 721,
-    OrderID: "12s564",
-    email: "carmella@hotmail.com",
-  },
-  {
-    id: "bhqecj4p",
-    amount: 721,
-    OrderID: "12s564",
-    email: "carmella@hotmail.com",
-  },
-  {
-    id: "bhqecj4p",
-    amount: 721,
-    OrderID: "12s564",
-    email: "carmella@hotmail.com",
-  },
-  {
-    id: "bhqecj4p",
-    amount: 721,
-    OrderID: "12s564",
-    email: "carmella@hotmail.com",
-  },
-  {
-    id: "bhqecj4p",
-    amount: 721,
-    OrderID: "12s564",
-    email: "carmella@hotmail.com",
-  },
-  {
-    id: "bhqecj4p",
-    amount: 721,
-    OrderID: "12s564",
-    email: "carmella@hotmail.com",
-  },
-  {
-    id: "bhqecj4p",
-    amount: 721,
-    OrderID: "12s564",
-    email: "carmella@hotmail.com",
-  },
-  {
-    id: "bhqecj4p",
-    amount: 721,
-    OrderID: "12s564",
-    email: "carmella@hotmail.com",
-  },
-];
-
-export default function OrdersTable() {
+export default function OrdersTable({ orders }: { orders: TOrder[] }) {
+  const dispatch = useAppDispatch();
   const table = useReactTable({
-    data,
+    data: orders,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
   });
+
+  const selectedRows = table.getFilteredSelectedRowModel().rows;
+  const selectedOrders = formattedOrderData(selectedRows);
+
+  useEffect(() => {
+    dispatch(setBulkOrder(selectedOrders));
+  }, [selectedOrders, dispatch]);
 
   return (
     <div className="w-full">

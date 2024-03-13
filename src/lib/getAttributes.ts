@@ -1,9 +1,11 @@
 "use server";
 
+import config from "@/config/config";
 import { revalidateTag } from "next/cache";
+
 export default async function getAllAttributes() {
   const attributesResponse = await fetch(
-    "http://localhost:5000/api/v1/attributes",
+    `${config.base_url}/api/v1/attributes`,
     { next: { tags: ["attributes"] } }
   );
   if (!attributesResponse.ok) {

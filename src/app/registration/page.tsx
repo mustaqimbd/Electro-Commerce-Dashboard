@@ -8,9 +8,15 @@ import { useCreateStaffOrAdminMutation } from "@/redux/features/user/userApi";
 import { useAppDispatch } from "@/redux/hooks";
 import decodeJWT from "@/utilities/decodeJWT";
 import { yupResolver } from "@hookform/resolvers/yup";
+// import { Metadata } from "next";
 import { useRouter } from "next/navigation";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
+
+// export const metadata: Metadata = {
+//   title: "Registration",
+//   description:"Oneself"
+// };
 
 const schema = yup.object().shape({
   phoneNumber: yup

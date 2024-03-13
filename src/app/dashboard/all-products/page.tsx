@@ -13,7 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import ProductsTable from "./components/ProductsTable";
+// import ProductsTable from "./components/ProductsTable";
 
 const AllProducts = () => {
   return (
@@ -102,8 +102,9 @@ const AllProducts = () => {
           </div>
 
           {/* all products Table  */}
+          <h1 className="text-3xl font-bold text-center py-20">Working on</h1>
 
-          <ProductsTable></ProductsTable>
+          {/* <ProductsTable></ProductsTable> */}
         </div>
       </div>
     </div>

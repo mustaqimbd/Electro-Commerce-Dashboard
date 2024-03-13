@@ -7,13 +7,19 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-
+import { Dispatch, SetStateAction } from "react";
+type TProps = {
+  currentPage: number;
+  setCurrentPage: Dispatch<SetStateAction<number>>;
+  totalPage: number;
+  className: string;
+};
 export function PagePagination({
   currentPage,
   setCurrentPage,
   totalPage,
   className,
-}) {
+}: TProps) {
   const page = [...Array(totalPage)].map((_, index) => index + 1);
   return (
     <Pagination className={className}>

@@ -9,6 +9,7 @@ import Image from "next/image";
 import { PagePagination } from "../pagination/PagePagination";
 import { useState } from "react";
 import { setVariationThumbnail } from "@/redux/features/addProduct/variation/variationSlice";
+import config from "@/config/config";
 
 type TImage = { _id: string; src: string; alt: string };
 
@@ -67,7 +68,7 @@ const MediaLibrary = ({ click, index }: { click?: string; index?: number }) => {
                 className={`w-[140px] h-[140px] relative cursor-pointer rounded-sm ${thumbnail === image._id && "border-2 border-blue-600"}`}
               >
                 <Image
-                  src={`http://localhost:5000/${image.src}`}
+                  src={`${config.base_url}/${image.src}`}
                   alt={image.alt}
                   fill={true}
                   className="object-cover rounded-sm"
@@ -88,7 +89,7 @@ const MediaLibrary = ({ click, index }: { click?: string; index?: number }) => {
                 className={`w-[140px] h-[140px] relative cursor-pointer rounded-sm ${gallery.includes(image._id) && "border-2 border-blue-600"}`}
               >
                 <Image
-                  src={`http://localhost:5000/${image.src}`}
+                  src={`${config.base_url}/${image.src}`}
                   alt={image.alt}
                   fill={true}
                   className="object-cover rounded-sm"

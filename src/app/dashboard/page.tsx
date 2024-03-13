@@ -1,8 +1,12 @@
-"use client";
 import StatisticsCard from "./components/StatisticsCard";
-
 import { Button } from "@/components/ui/button";
 import BestSellingProducts from "./components/BestSellingProducts";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Dashboard",
+  description: "Oneself",
+};
 
 const Dashboard = () => {
   return (

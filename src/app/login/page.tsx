@@ -7,8 +7,14 @@ import { setUser } from "@/redux/features/auth/authSlice";
 import { TUser } from "@/redux/features/auth/interface";
 import { useAppDispatch } from "@/redux/hooks";
 import decodeJWT from "@/utilities/decodeJWT";
+// import { Metadata } from "next";
 import { useRouter } from "next/navigation";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+
+// export const metadata: Metadata = {
+//   title: "Login",
+//   description:"Oneself"
+// };
 
 const LoginPage = () => {
   const dispatch = useAppDispatch();

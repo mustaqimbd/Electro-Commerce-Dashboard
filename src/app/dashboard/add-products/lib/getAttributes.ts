@@ -1,10 +1,11 @@
+import config from "@/config/config";
 import {
   TSelectValue,
   TSelectedAttribute,
 } from "@/redux/features/addProduct/variation/interface";
 
 const getAttributes = async () => {
-  const res = await fetch("http://localhost:5000/api/v1/attributes");
+  const res = await fetch(`${config.base_url}/api/v1/attributes`);
   const data = await res.json();
   if (!res.ok) {
     throw new Error("Error when fetching attributes!");

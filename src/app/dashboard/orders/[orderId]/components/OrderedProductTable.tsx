@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import {
@@ -22,51 +21,21 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import Image from "next/image";
+import config from "@/config/config";
 
-const data: Payment[] = [
-  {
-    id: "m5gr84i9",
-    title: "This the Products Title",
-    image:
-      " https://images.unsplash.com/photo-1708649290066-5f617003b93f?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    property: [],
-    price: 452,
-    quantity: 5,
-    subtotal: 2260,
-  },
-  {
-    id: "m5gre84i9",
-    title: "This the Products Title",
-    image:
-      "https://images.unsplash.com/photo-1708649290066-5f617003b93f?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    property: [],
-    price: 452,
-    quantity: 5,
-    subtotal: 2260,
-  },
-  {
-    id: "m5gr844i9",
-    title: "This the Products Title",
-    image:
-      "https://images.unsplash.com/photo-1708649290066-5f617003b93f?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    property: [],
-    price: 452,
-    quantity: 5,
-    subtotal: 2260,
-  },
-];
-
-export type Payment = {
-  id: string;
+type TProduct = {
+  _id: string;
   title: string;
-  image: string;
-  property: [];
-  price: number;
+  image: {
+    src: string;
+    alt: string;
+  };
+  unitPrice: number;
   quantity: number;
-  subtotal: number;
+  total: number;
 };
 
-export const columns: ColumnDef<Payment>[] = [
+export const columns: ColumnDef<TProduct>[] = [
   {
     accessorKey: "image",
     header: "Products",
@@ -74,45 +43,55 @@ export const columns: ColumnDef<Payment>[] = [
       const { image, title } = row.original;
       return (
         <div className="flex justify-start gap-3">
-          <Image width={100} height={100} src={image} alt="" />
+          <Image
+            width={100}
+            height={100}
+            src={`${config.base_url}/${image.src}`}
+            alt={image.alt}
+          />
           <h1>{title} </h1>
         </div>
       );
     },
   },
   {
-    accessorKey: "email",
-    header: "SKU",
-    cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
+    accessorKey: "unitPrice",
+    header: "Unit Price",
+    cell: ({ row }) => (
+      <div className="lowercase">{row.getValue("unitPrice")}</div>
+    ),
   },
   {
-    accessorKey: "email",
-    header: "Price",
-    cell: ({ row }) => <div className="lowercase">450</div>,
-  },
-  {
-    accessorKey: "email",
+    accessorKey: "quantity",
     header: "Quantity",
-    cell: ({ row }) => <div className="lowercase text-left">2</div>,
+    cell: ({ row }) => (
+      <div className="lowercase">{row.getValue("quantity")}</div>
+    ),
   },
   {
-    accessorKey: "amount",
-    header: () => <div className="text-right">Sub Total</div>,
-    cell: ({ row }) => {
-      return <div className="text-right font-medium">450BDT</div>;
-    },
+    accessorKey: "total",
+    header: "Amount",
+    cell: ({ row }) => (
+      <div className="lowercase text-left">{row.getValue("total")}</div>
+    ),
   },
+  // {
+  //   accessorKey: "amount",
+  //   header: () => <div className="text-right">Sub Total</div>,
+  //   cell: ({ row }) => {
+  //     return <div className="text-right font-medium">450BDT</div>;
+  //   },
+  // },
 ];
 
-export function OrderedProductTable() {
+export function OrderedProductTable({ products }: { products: TProduct[] }) {
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
 
   const table = useReactTable({
-    data,
+    data: products,
     columns,
-
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -176,14 +155,6 @@ export function OrderedProductTable() {
             )}
           </TableBody>
         </Table>
-
-        <hr />
-        <div className="space-y-3">
-          <p className="font-normal text-right">Total: 4589 BDT</p>
-          <p className="font-normal text-right">Shipping Fee: 100 BDT</p>
-          <hr className=" " />
-          <p className="font-semibold text-right">Total: 4689 BDT</p>
-        </div>
       </div>
     </div>
   );

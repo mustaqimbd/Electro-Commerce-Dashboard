@@ -1,7 +1,8 @@
+import config from "@/config/config";
 import { TSelectValue } from "@/redux/features/addProduct/variation/interface";
 
 const getTags = async () => {
-  const res = await fetch("http://localhost:5000/api/v1/tags");
+  const res = await fetch(`${config.base_url}/api/v1/tags`);
   const data = await res.json();
   if (!res.ok) {
     throw new Error("Error when fetching tags!");
