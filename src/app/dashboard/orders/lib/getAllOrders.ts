@@ -4,7 +4,7 @@ import config from "@/config/config";
 
 export default async function getAllOrders() {
   const res = await fetch(
-    `${config.base_url}/api/v1/orders/admin/all-orders`,
+    `${config.base_url}/api/v1/orders/admin/all-orders?sort=-createdAt`,
     // { next: { tags: ["orders"] } }
     { cache: "no-cache" }
   );
