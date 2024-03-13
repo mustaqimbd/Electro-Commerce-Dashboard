@@ -27,8 +27,9 @@ type TProps = {
 
 const UpdateStatus = ({ order, _id }: TProps) => {
   const [action, setAction] = useState("");
-  const [placeSingleOrder] = usePlaceSingleOrderMutation();
-  const [updateStatus] = useUpdateStatusMutation();
+  const [placeSingleOrder, { isLoading: loading }] =
+    usePlaceSingleOrderMutation();
+  const [updateStatus, { isLoading }] = useUpdateStatusMutation();
   // const orders = useAppSelector(({ order }) => order.bulkOrders);
   const handleSubmit = async () => {
     const orderData = {
@@ -90,6 +91,7 @@ const UpdateStatus = ({ order, _id }: TProps) => {
         <p className="underline text-red-500">Move to trash</p>
         <Button
           onClick={handleSubmit}
+          disabled={loading || isLoading}
           className="self-end bg-primary"
           size={"sm"}
         >
