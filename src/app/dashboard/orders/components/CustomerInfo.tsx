@@ -19,8 +19,9 @@ const CustomerInfo = ({ customer }: TProps) => {
       </span>
       <span className="flex items-center gap-1">
         <MapPin className="w-4  " />
-        {customer.fullAddress.length > 20 &&
-          customer.fullAddress.slice(0, 20) + "..."}
+        {customer.fullAddress.length > 20
+          ? customer.fullAddress.slice(0, 20) + "..."
+          : customer.fullAddress}
       </span>
     </div>
   );
