@@ -7,6 +7,7 @@ import { setUser } from "@/redux/features/auth/authSlice";
 import { TUser } from "@/redux/features/auth/interface";
 import { useAppDispatch } from "@/redux/hooks";
 import decodeJWT from "@/utilities/decodeJWT";
+import Link from "next/link";
 // import { Metadata } from "next";
 import { useRouter } from "next/navigation";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
@@ -18,7 +19,7 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
 const LoginPage = () => {
   const dispatch = useAppDispatch();
-  const [login] = useLoginMutation();
+  const [login, { isLoading }] = useLoginMutation();
   const router = useRouter();
   const { toast } = useToast();
 
@@ -87,10 +88,20 @@ const LoginPage = () => {
             required
           />
         </div>
-        <div className="flex items-center justify-between">
-          <EcButton type="submit" className=" w-full  font-bold py-2 px-4 ">
+        <div className="flex flex-col items-center justify-between gap-5">
+          <EcButton
+            type="submit"
+            disabled={isLoading}
+            className="w-full  font-bold py-2 px-4 bg-primary"
+          >
             Login
           </EcButton>
+          <p>
+            Do not have an account?{" "}
+            <Link href="/registration" className="text-blue-600">
+              Create
+            </Link>
+          </p>
         </div>
       </form>
     </div>

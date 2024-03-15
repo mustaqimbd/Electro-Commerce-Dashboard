@@ -8,6 +8,7 @@ import { useCreateStaffOrAdminMutation } from "@/redux/features/user/userApi";
 import { useAppDispatch } from "@/redux/hooks";
 import decodeJWT from "@/utilities/decodeJWT";
 import { yupResolver } from "@hookform/resolvers/yup";
+import Link from "next/link";
 // import { Metadata } from "next";
 import { useRouter } from "next/navigation";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
@@ -117,10 +118,16 @@ const RegistrationPage = () => {
             </p>
           )}
         </div>
-        <div className="flex items-center justify-between">
-          <EcButton className=" w-full  py-2 px-4 " type="submit">
+        <div className="flex flex-col items-center justify-between gap-5">
+          <EcButton className="w-full py-2 px-4 bg-primary" type="submit">
             Registration
           </EcButton>
+          <p>
+            Already have an account? Please{" "}
+            <Link href="/login" className="text-blue-600">
+              Login
+            </Link>
+          </p>
         </div>
       </form>
     </div>

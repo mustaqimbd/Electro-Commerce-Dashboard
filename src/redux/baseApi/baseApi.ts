@@ -28,7 +28,7 @@ const customBaseQueryWithRefreshToken: BaseQueryFn = async (
   let result = await baseQuery(args, api, extraOptions);
   if (result?.error?.status === 401) {
     // request for getting access token
-    const res = await fetch(`${config.base_url}/api/v1/auth/refresh-token`, {
+    const res = await fetch(`${config.base_url}/api/v1/auth/access-token`, {
       method: "POST",
       credentials: "include",
     });
