@@ -43,8 +43,10 @@ const resolver: Resolver<TUpdateOrderForm> = async (values) => {
 };
 
 type TOrder = {
+  invoiceNotes: string;
+  courierNotes: string;
+  officialNotes: string;
   _id: string;
-
   shipping: {
     fullName: string;
     phoneNumber: string;
@@ -156,12 +158,14 @@ const EditOrderInfo = ({ order }: { order: TOrder }) => {
                 <TabsContent value="officialNotes">
                   <Textarea
                     {...register("officialNotes")}
+                    defaultValue={order?.officialNotes}
                     className="border border-green"
                     placeholder="Keep Order Note"
                   ></Textarea>
                 </TabsContent>
                 <TabsContent value="invoiceNotes">
                   <Textarea
+                    defaultValue={order?.invoiceNotes}
                     {...register("invoiceNotes")}
                     className="border border-red-100"
                     placeholder="Keep Invoice Note"
@@ -169,6 +173,7 @@ const EditOrderInfo = ({ order }: { order: TOrder }) => {
                 </TabsContent>
                 <TabsContent value="courierNotes">
                   <Textarea
+                    defaultValue={order?.courierNotes}
                     {...register("courierNotes")}
                     className="border border-blue-100"
                     placeholder="Keep courier Note"

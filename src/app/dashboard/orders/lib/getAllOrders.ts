@@ -1,12 +1,12 @@
 "use server";
 import config from "@/config/config";
-// import { revalidateTag } from "next/cache";
+import { revalidateTag } from "next/cache";
 
 export default async function getAllOrders() {
   const res = await fetch(
     `${config.base_url}/api/v1/orders/admin/all-orders?sort=-createdAt`,
-    // { next: { tags: ["orders"] } }
-    { cache: "no-cache" }
+
+    { cache: "no-cache", next: { tags: ["allorders"] } }
   );
   if (!res.ok) {
     throw new Error("Error when fetching post!");
@@ -16,6 +16,6 @@ export default async function getAllOrders() {
   return orders.data;
 }
 
-// export async function refetchOrders() {
-//     revalidateTag("orders");
-// }
+export async function refetchAllOrders() {
+  revalidateTag("allorders");
+}

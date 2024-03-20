@@ -25,7 +25,7 @@ const updateOrderApi = baseApi.injectEndpoints({
         method: "PATCH",
         body: {
           orderedItemId: data?.orderedItemId,
-          quantity: data?.quantity,
+          quantity: data?.newQuantity,
         },
       }),
     }),

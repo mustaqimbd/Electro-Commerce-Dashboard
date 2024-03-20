@@ -7,7 +7,10 @@ import { OrderedProductsListEdit } from "./components/OrderedProductsListEdit";
 const EditOrder = async ({ params }: { params: { orderId: string } }) => {
   const order = await getSingleOrder(params.orderId);
 
-  //handle upadte Order
+  order.products.forEach((product: { orderId: string }) => {
+    // Add orderId property to each product object
+    product.orderId = order?._id;
+  });
 
   return (
     <>
