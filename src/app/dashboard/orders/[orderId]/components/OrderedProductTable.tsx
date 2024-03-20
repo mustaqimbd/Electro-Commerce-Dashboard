@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/table";
 import Image from "next/image";
 import config from "@/config/config";
+import Link from "next/link";
 
 type TProduct = {
   _id: string;
@@ -37,19 +38,37 @@ type TProduct = {
 
 export const columns: ColumnDef<TProduct>[] = [
   {
+    accessorKey: "",
+    header: "SL",
+    cell: ({ row }) => (
+      <div className="capitalize flex flex-col justify-center items-center">
+        <span className="">{row.index + 1}</span>
+      </div>
+    ),
+  },
+  {
     accessorKey: "image",
     header: "Products",
     cell: ({ row }) => {
-      const { image, title } = row.original;
+      const { image, title, _id } = row.original;
       return (
-        <div className="flex justify-start gap-3">
-          <Image
-            width={100}
-            height={100}
-            src={`${config.base_url}/${image.src}`}
-            alt={image.alt}
-          />
-          <h1>{title} </h1>
+        <div className="flex justify-start items-center gap-3">
+          <div>
+            <Image
+              width={100}
+              height={100}
+              src={`${config.base_url}/${image.src}`}
+              alt={image.alt}
+            />
+          </div>
+          <div>
+            <Link
+              href={`${config.base_url}/products/${_id}}`}
+              className="hover:text-blue-700"
+            >
+              {title}
+            </Link>
+          </div>
         </div>
       );
     },
@@ -65,7 +84,7 @@ export const columns: ColumnDef<TProduct>[] = [
     accessorKey: "quantity",
     header: "Quantity",
     cell: ({ row }) => (
-      <div className="lowercase">{row.getValue("quantity")}</div>
+      <div className="lowercase text-center">{row.getValue("quantity")}</div>
     ),
   },
   {
@@ -113,7 +132,7 @@ export function OrderedProductTable({ products }: { products: TProduct[] }) {
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead key={header.id} className="font-bold">
                       {header.isPlaceholder
                         ? null
                         : flexRender(

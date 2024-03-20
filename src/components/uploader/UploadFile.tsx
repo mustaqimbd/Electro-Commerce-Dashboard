@@ -43,6 +43,7 @@ const UploadFile = () => {
         setImages([]);
       }
       toast({
+        className: "bg-success text-white text-2xl",
         title: "Images uploaded successfully!",
       });
     } catch (error) {

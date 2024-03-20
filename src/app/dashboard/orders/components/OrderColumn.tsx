@@ -77,9 +77,30 @@ export const columns: ColumnDef<TOrder>[] = [
   {
     accessorKey: "status",
     header: "Order Status",
-    cell: ({ row }) => (
-      <span className="capitalize">{row.getValue("status")}</span>
-    ),
+    cell: ({ row }) => {
+      const status = row.original.status;
+      return (
+        <span
+          className={`capitalize px-2 pb-[2px] pt-[1px] text-white rounded`}
+          style={{
+            backgroundColor:
+              status === "pending"
+                ? "#fec400"
+                : status === "processing"
+                  ? "#FA8232"
+                  : status === "On courier"
+                    ? "#4c84ff"
+                    : status === "canceled"
+                      ? "#fe5461"
+                      : status === "completed"
+                        ? "#2DB224"
+                        : "",
+          }}
+        >
+          {status}
+        </span>
+      );
+    },
   },
   {
     id: "actions",

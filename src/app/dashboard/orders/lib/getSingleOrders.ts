@@ -39,6 +39,8 @@ export default async function getSingleOrder(orderId: string) {
       name: order.shippingCharge?.name,
       amount: order.shippingCharge?.amount,
     },
+    advance: order.advance,
+    discount: order.discount,
     total: order.total,
     paymentMethod: {
       name: order.payment?.paymentMethod?.name,
@@ -52,6 +54,8 @@ export default async function getSingleOrder(orderId: string) {
     status: order.status,
     shipping: order.shipping,
     orderFrom: order.orderFrom,
+    invoiceNotes: order.invoiceNotes,
+    officialNotes: order.officialNotes,
     createdAt: order.createdAt,
     updatedAt: order.updatedAt,
   };

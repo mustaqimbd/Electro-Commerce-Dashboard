@@ -71,6 +71,7 @@ const AddCategoryForm = ({ categories }: { categories: TCategories[] }) => {
       if (addedSubCategory?.success) {
         refetchCategories();
         toast({
+          className: "bg-success text-white text-2xl",
           title: addedSubCategory?.message,
         });
       }

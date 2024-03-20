@@ -17,54 +17,59 @@ export type TProduct = {
   total: number;
 };
 
-//   type ShippingCharge = {
-//     name: string;
-//     amount: number;
-//   };
+type Image = {
+  src: string;
+  alt: string;
+};
 
-//   type PaymentMethod = {
-//     name: string;
-//     image: {
-//       src: string;
-//       alt: string;
-//     };
-//   };
+type ShippingCharge = {
+  name: string;
+  amount: number;
+};
 
-//   type StatusHistoryItem = {
-//     _id: string;
-//     updatedBy?: string;
-//     status: string;
-//     createdAt: string;
-//     updatedAt: string;
-//   };
+type PaymentMethod = {
+  name: string;
+  image: string;
+};
 
-//   type ShippingInfo = {
-//     fullName: string;
-//     phoneNumber: string;
-//     fullAddress: string;
-//   };
+type StatusHistory = {
+  refunded: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+};
 
-//   type Order = {
-//     _id: string;
-//     orderId: string;
-//     sessionId: string;
-//     orderedProductsDetails: {
-//       productDetails: ProductDetails[];
-//     };
-//     subtotal: number;
-//     shippingCharge: ShippingCharge;
-//     total: number;
-//     payment: {
-//       paymentMethod: PaymentMethod;
-//     };
-//     statusHistory: {
-//       refunded: boolean;
-//       history: StatusHistoryItem[];
-//     };
-//     status: string;
-//     shipping: ShippingInfo;
-//     orderFrom: string;
-//     createdAt: string;
-//     updatedAt: string;
-//     __v: number;
-//   };
+type Shipping = {
+  fullName: string;
+  phoneNumber: string;
+  fullAddress: string;
+};
+
+type Product = {
+  _id: string;
+  title: string;
+  image: Image;
+  unitPrice: number;
+  quantity: number;
+  total: number;
+};
+
+export type TOrder = {
+  _id: string;
+  orderId: string;
+  sessionId: string;
+  products: Product[];
+  subtotal: number;
+  shippingCharge: ShippingCharge;
+  advance: number;
+  discount: number;
+  total: number;
+  paymentMethod: PaymentMethod;
+  statusHistory: StatusHistory;
+  status: string;
+  shipping: Shipping;
+  orderFrom: string;
+  createdAt: Date;
+  updatedAt: Date;
+  invoiceNotes: string;
+  officialNotes: string;
+};
