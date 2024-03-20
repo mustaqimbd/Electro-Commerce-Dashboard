@@ -16,6 +16,9 @@ export default async function getSingleOrder(orderId: string) {
   const result = {
     _id: order._id,
     orderId: order.orderId,
+    officialNotes: order.officialNotes,
+    courierNotes: order.courierNotes,
+    invoiceNotes: order.invoiceNotes,
     sessionId: order.sessionId,
     products: order.orderedProductsDetails.productDetails.map(
       ({ product, unitPrice, quantity, total, _id }: TProduct) => ({
