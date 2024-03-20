@@ -35,6 +35,7 @@ const ApplyButton = () => {
       if (action === "On courier") {
         await placeOrders(orders).unwrap();
         toast({
+          className: "bg-success text-white text-2xl",
           title: "Courier entry is successful!",
         });
       }

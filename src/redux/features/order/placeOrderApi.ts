@@ -36,10 +36,18 @@ const updateStatusApi = baseApi.injectEndpoints({
         body: status,
       }),
     }),
+    deleteOrder: builder.mutation({
+      query: (orderIds: string[]) => ({
+        url: `/orders/delete-many`,
+        method: "DELETE",
+        body: { orderIds },
+      }),
+    }),
   }),
 });
 
-export const { useUpdateStatusMutation } = updateStatusApi;
+export const { useUpdateStatusMutation, useDeleteOrderMutation } =
+  updateStatusApi;
 
 export const {
   usePlaceSingleOrderMutation,

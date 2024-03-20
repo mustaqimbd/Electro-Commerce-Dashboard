@@ -93,3 +93,16 @@
     scrollbar-width: none;
   }
 }
+
+.invoice-container {
+  display: none;
+}
+
+/* @media print {
+  .invoice-button {
+    display: none;
+  }
+  .invoice-container {
+    display: block;
+  }
+}  */

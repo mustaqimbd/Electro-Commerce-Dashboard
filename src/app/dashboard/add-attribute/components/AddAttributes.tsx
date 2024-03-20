@@ -23,6 +23,7 @@ const AddAttribute = () => {
     if (addedAttribute?.success) {
       refetchAttributes();
       toast({
+        className: "bg-success text-white",
         title: addedAttribute?.message,
       });
     }

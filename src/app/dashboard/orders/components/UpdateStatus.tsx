@@ -18,8 +18,6 @@ import { useState } from "react";
 import { refetchSingleOrder } from "../lib/getSingleOrders";
 import { TOrder } from "../utils/interface";
 
-// import { refetchOrders } from "../lib/getAllOrders";
-
 type TProps = {
   order: TOrder;
   _id: string;
@@ -30,6 +28,7 @@ const UpdateStatus = ({ order, _id }: TProps) => {
   const [placeSingleOrder, { isLoading: loading }] =
     usePlaceSingleOrderMutation();
   const [updateStatus, { isLoading }] = useUpdateStatusMutation();
+
   // const orders = useAppSelector(({ order }) => order.bulkOrders);
   const handleSubmit = async () => {
     const orderData = {
@@ -54,6 +53,7 @@ const UpdateStatus = ({ order, _id }: TProps) => {
         await updateStatus(updatePayload).unwrap();
 
         toast({
+          className: "bg-success text-white text-2xl",
           title: "Courier entry is successful!",
         });
         refetchSingleOrder();
@@ -72,9 +72,9 @@ const UpdateStatus = ({ order, _id }: TProps) => {
   };
 
   return (
-    <div>
+    <div className="space-y-4">
       <Select onValueChange={(value) => setAction(value)}>
-        <SelectTrigger className="w-[140px] h-6">
+        <SelectTrigger className="min-w-[140px] h-8 text-center">
           <SelectValue placeholder="Update Status" />
         </SelectTrigger>
         <SelectContent className="!text-[12px]">
@@ -87,8 +87,7 @@ const UpdateStatus = ({ order, _id }: TProps) => {
           </SelectGroup>
         </SelectContent>
       </Select>
-      <div className="flex justify-between items-center gap-5">
-        <p className="underline text-red-500">Move to trash</p>
+      <div className="flex justify-end">
         <Button
           onClick={handleSubmit}
           disabled={loading || isLoading}
