@@ -10,7 +10,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import * as React from "react";
-import { columns } from "../components/OrderedProductsListColumn";
+import { TProduct, columns } from "../components/OrderedProductsListColumn";
 
 import {
   Table,
@@ -20,18 +20,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
-type TProduct = {
-  _id: string;
-  title: string;
-  image: {
-    src: string;
-    alt: string;
-  };
-  unitPrice: number;
-  quantity: number;
-  total: number;
-};
 
 export function OrderedProductsListEdit({
   products,
