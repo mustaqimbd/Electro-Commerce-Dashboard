@@ -1,6 +1,6 @@
+import baseApi from "@/redux/baseApi/baseApi";
 import courierBaseApi from "@/redux/baseApi/courierBaseApi";
 import { TPlaceOrder, TUpdatePayload } from "./interface";
-import baseApi from "@/redux/baseApi/baseApi";
 
 const orderApi = courierBaseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -27,9 +27,16 @@ const orderApi = courierBaseApi.injectEndpoints({
   }),
 });
 
-const updateStatusApi = baseApi.injectEndpoints({
+const updateOrder = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     updateStatus: builder.mutation({
+      query: ({ id, status }: TUpdatePayload) => ({
+        url: `/orders/update-status/${id}`,
+        method: "PATCH",
+        body: status,
+      }),
+    }),
+    updateOrder: builder.mutation({
       query: ({ id, status }: TUpdatePayload) => ({
         url: `/orders/update-status/${id}`,
         method: "PATCH",
@@ -39,7 +46,7 @@ const updateStatusApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useUpdateStatusMutation } = updateStatusApi;
+export const { useUpdateStatusMutation, useUpdateOrderMutation } = updateOrder;
 
 export const {
   usePlaceSingleOrderMutation,
