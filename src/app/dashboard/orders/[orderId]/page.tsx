@@ -1,9 +1,3 @@
-import OrderIdAndDate from "../components/OrderIdAndDate";
-import UpdateStatus from "../components/UpdateStatus";
-import getSingleOrder from "../lib/getSingleOrders";
-import { OrderedProductTable } from "./components/OrderedProductTable";
-import Invoice from "./components/Invoice";
-import DeleteOrderBtn from "../components/DeleteOrderBtn";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { SectionTitle } from "@/components/ui/sectionTitle";
@@ -16,6 +10,12 @@ import {
   UserRound,
 } from "lucide-react";
 import Link from "next/link";
+import DeleteOrderBtn from "../components/DeleteOrderBtn";
+import OrderIdAndDate from "../components/OrderIdAndDate";
+import UpdateStatus from "../components/UpdateStatus";
+import getSingleOrder from "../lib/getSingleOrders";
+import Invoice from "./components/Invoice";
+import { OrderedProductTable } from "./components/OrderedProductTable";
 
 const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
   const order = await getSingleOrder(params.orderId);
@@ -50,6 +50,7 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
     createdAt,
     invoiceNotes,
     officialNotes,
+    courierNotes,
   } = order;
 
   // console.log(products);
@@ -58,7 +59,7 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
   return (
     <div className="flex justify-between gap-3 h-screen pb-20">
       <div className="w-3/4 ">
-        <Card className="p-3">
+        <Card className="p-7">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-10">
               <div>
@@ -160,7 +161,7 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
           <hr />
           <OrderedProductTable products={products} />
           <hr />
-          <div className="space-y-[2px] space-y2 bg-muted/50 text-sm bg-light">
+          <div className="space-y-[2px] space-y2 text-sm bg-light p-5">
             <p className="text-right pt-[2px] pt2">
               <span className="font-medium">Sub Total :</span> ৳ {subtotal}
             </p>
@@ -175,10 +176,6 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
             <p className="text-xl font-bold text-right text-secondary">
               Total : ৳ {finalTotal}
             </p>
-          </div>
-          <div className="my-5">
-            <p className="font-bold mb-1">Invoice Note</p>
-            <p className="border h-10">{invoiceNotes}</p>
           </div>
         </Card>
       </div>
@@ -199,9 +196,19 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
               rows={5}
             ></textarea>
           </div> */}
-          <div className="my-5">
-            <p className="font-bold mb-1">Official Note</p>
-            <p className="border h-10">{officialNotes}</p>
+          <div>
+            <div className="my-5">
+              <p className="font-bold mb-1">Official Note</p>
+              <p className="border h-10 p-2 rounded-md">{officialNotes}</p>
+            </div>
+            <div className="my-5">
+              <p className="font-bold mb-1">Invoice Note</p>
+              <p className="border h-10 p-2 rounded-md">{invoiceNotes}</p>
+            </div>
+            <div className="my-5">
+              <p className="font-bold mb-1">Courier Note</p>
+              <p className="border h-10 p-2 rounded-md">{courierNotes}</p>
+            </div>
           </div>
         </Card>
         <div className="h-[300px] pr-4 pb-10 flex flex-col justify-end">

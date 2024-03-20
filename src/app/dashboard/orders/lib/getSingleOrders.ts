@@ -53,6 +53,7 @@ export default async function getSingleOrder(orderId: string) {
     orderFrom: order.orderFrom,
     invoiceNotes: order.invoiceNotes,
     officialNotes: order.officialNotes,
+    courierNotes: order.courierNotes,
     createdAt: order.createdAt,
     updatedAt: order.updatedAt,
   };

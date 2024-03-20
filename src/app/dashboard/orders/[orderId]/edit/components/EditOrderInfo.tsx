@@ -9,6 +9,7 @@ import { toast } from "@/components/ui/use-toast";
 import { useUpdateOrderInfoMutation } from "@/redux/features/order/updateOrderApi";
 import { MapPinIcon, PhoneCallIcon, User2Icon } from "lucide-react";
 import { Resolver, useForm } from "react-hook-form";
+import { TOrder } from "../../../lib/interface";
 type TUpdateOrderForm = {
   discount?: number;
   fullName: string;
@@ -42,19 +43,19 @@ const resolver: Resolver<TUpdateOrderForm> = async (values) => {
   };
 };
 
-type TOrder = {
-  invoiceNotes: string;
-  courierNotes: string;
-  officialNotes: string;
-  _id: string;
-  shipping: {
-    fullName: string;
-    phoneNumber: string;
-    fullAddress: string;
-  };
-};
+// type TOrder = {
+//   invoiceNotes: string;
+//   courierNotes: string;
+//   officialNotes: string;
+//   _id: string;
+//   shipping: {
+//     fullName: string;
+//     phoneNumber: string;
+//     fullAddress: string;
+//   };
+// };
 
-const EditOrderInfo = ({ order }: { order: TOrder }) => {
+const EditOrderInfo = ({ order }: { order: Partial<TOrder> }) => {
   const [updateOrderInfo] = useUpdateOrderInfoMutation();
   const {
     register,

@@ -70,6 +70,7 @@ export type TOrder = {
   orderFrom: string;
   createdAt: Date;
   updatedAt: Date;
-  invoiceNotes: string;
-  officialNotes: string;
+  invoiceNotes?: string;
+  officialNotes?: string;
+  courierNotes?: string;
 };
