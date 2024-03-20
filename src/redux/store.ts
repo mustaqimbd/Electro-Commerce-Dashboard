@@ -16,7 +16,8 @@ import courierBaseApi from "./baseApi/courierBaseApi";
 import addProductReducer from "./features/addProduct/addProductSlice";
 import variationReducer from "./features/addProduct/variation/variationSlice";
 import authReducer from "./features/auth/authSlice";
-import orderReducer from "./features/order/placeOrderSlice";
+import orderPlaceReducer from "./features/order/placeOrderSlice";
+import updateOrderReducer from "./features/order/updateOrderSlice";
 
 const persistConfig = {
   key: "auth",
@@ -31,7 +32,8 @@ const store = configureStore({
     auth: persistedAuthReducer,
     addProduct: addProductReducer,
     productVariation: variationReducer,
-    order: orderReducer,
+    orderPlace: orderPlaceReducer,
+    updateOrder: updateOrderReducer,
   },
   middleware: (getDefaultMiddlewares) =>
     getDefaultMiddlewares({

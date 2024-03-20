@@ -1,11 +1,26 @@
-export type TPlaceOrder = {
-  invoice: string; // Must be Unique and can be alpha-numeric including hyphens and underscores.
-  recipient_name: string; // Within 100 characters.
-  recipient_phone: string; // Must be 11 Digits Phone number
-  recipient_address: string; // Recipient’s address within 250 characters.
-  cod_amount: number; // Cash on delivery amount in BDT including all charges. Can’t be less than 0.
-  note?: string; // Delivery instructions or other notes. Optional
+export type TProduct = {
+  _id: string;
+
+  quantity: number;
+  price: number;
 };
+
+type TShipping = {
+  fullName: string | undefined;
+  phoneNumber: string | undefined;
+  fullAddress: string | undefined;
+};
+
+type UpdateOrderInitialState = {
+  product: TProduct;
+
+  subtotal: number;
+
+  total: number;
+
+  shipping: TShipping;
+};
+
 // Example usage:
 // const inputData: TPayload = {
 //     invoice: "Aa12-das4",
@@ -15,6 +30,15 @@ export type TPlaceOrder = {
 //     cod_amount: 1060,
 //     note: "Deliver within 3 PM"
 // };
+
+export type TPlaceOrder = {
+  invoice: string; // Must be Unique and can be alpha-numeric including hyphens and underscores.
+  recipient_name: string; // Within 100 characters.
+  recipient_phone: string; // Must be 11 Digits Phone number
+  recipient_address: string; // Recipient’s address within 250 characters.
+  cod_amount: number; // Cash on delivery amount in BDT including all charges. Can’t be less than 0.
+  note?: string; // Delivery instructions or other notes. Optional
+};
 export type TUpdatePayload = {
   id: string;
   status: {
@@ -22,7 +46,11 @@ export type TUpdatePayload = {
     message?: string;
   };
 };
-export type TInitialState = {
+
+export type TInitialStatePlaceOrder = {
   singleOrder: TPlaceOrder;
   bulkOrders: TPlaceOrder[];
+};
+export type TInitialStateUpdateOrder = {
+  updateOrder: UpdateOrderInitialState;
 };

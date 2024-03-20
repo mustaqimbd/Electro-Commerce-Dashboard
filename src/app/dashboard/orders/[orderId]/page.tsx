@@ -1,16 +1,40 @@
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { SectionTitle } from "@/components/ui/sectionTitle";
-import { MapPin, Phone, SendHorizontal, UserRound } from "lucide-react";
 import OrderIdAndDate from "../components/OrderIdAndDate";
 import UpdateStatus from "../components/UpdateStatus";
 import getSingleOrder from "../lib/getSingleOrders";
 import { OrderedProductTable } from "./components/OrderedProductTable";
 import Invoice from "./components/Invoice";
 import DeleteOrderBtn from "../components/DeleteOrderBtn";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { SectionTitle } from "@/components/ui/sectionTitle";
+import { Skeleton } from "@/components/ui/skeleton";
+import {
+  MapPin,
+  PencilIcon,
+  Phone,
+  Printer,
+  // SendHorizontal,
+  UserRound,
+} from "lucide-react";
+import Link from "next/link";
 
 const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
   const order = await getSingleOrder(params.orderId);
+
+  if (!order) {
+    return (
+      <div>
+        <div className="flex flex-col space-y-3">
+          <Skeleton className="h-[125px] w-[250px] rounded-xl" />
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-[250px]" />
+            <Skeleton className="h-4 w-[200px]" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   const {
     _id,
     orderId,
@@ -21,7 +45,6 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
     discount = 0,
     total,
     paymentMethod,
-    // statusHistory,
     status,
     shipping,
     // orderFrom,
@@ -29,6 +52,7 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
     invoiceNotes,
     officialNotes,
   } = order;
+
   // console.log(products);
   const finalTotal = total - advance - discount;
 
@@ -66,10 +90,23 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
               </div>
             </div>
             <div className="flex gap-5 items-center">
-              <Button className="bg-primary" size={"sm"}>
+              {/* <Button className="bg-primary" size={"sm"}>
                 <SendHorizontal className="w-4 mr-2" /> Courier Entry
+              </Button> */}
+              <Button variant={"outline"} className="" size={"sm"}>
+                <Printer className="w-4 mr-2" /> Invoice
               </Button>
               <Invoice order={order} />
+              <Link href={`/dashboard/orders/${_id}/edit`}>
+                <Button variant={"outline"} className="" size={"sm"}>
+                  <PencilIcon className="w-4 mr-2" /> Edit Order
+                </Button>
+              </Link>
+              {/* <EditOrder
+               
+                modalTitle={"Edit Order"}
+                order={order}
+              /> */}
             </div>
           </div>
           <hr className="my-2" />
@@ -130,9 +167,6 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
           <div className="space-y-[2px] space-y2 bg-muted/50 text-sm bg-light">
             <p className="text-right pt-[2px] pt2">
               <span className="font-medium">Sub Total :</span> ৳ {subtotal}
-            </p>
-            <p className="text-right">
-              <span className="font-medium">Discount :</span> ৳ {discount}
             </p>
             <p className="text-right">
               <span className="font-medium">Advance : </span>৳ {advance}

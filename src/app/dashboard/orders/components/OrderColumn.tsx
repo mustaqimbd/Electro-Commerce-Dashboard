@@ -32,9 +32,11 @@ export const columns: ColumnDef<TOrder>[] = [
   {
     accessorKey: "",
     header: "SL",
-    cell: ({ row }) => (
+    cell: ({ table, row }) => (
       <div className="capitalize flex flex-col justify-center items-center">
-        <span className="">{row.index + 1}</span>
+        <span className="">
+          {table.getFilteredRowModel().rows?.length - row.index}
+        </span>
       </div>
     ),
   },

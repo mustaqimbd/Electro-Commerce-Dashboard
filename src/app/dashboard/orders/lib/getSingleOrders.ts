@@ -18,8 +18,9 @@ export default async function getSingleOrder(orderId: string) {
     orderId: order.orderId,
     sessionId: order.sessionId,
     products: order.orderedProductsDetails.productDetails.map(
-      ({ product, unitPrice, quantity, total }: TProduct) => ({
+      ({ product, unitPrice, quantity, total, _id }: TProduct) => ({
         _id: product?._id,
+        orderItemID: _id,
         title: product?.title,
         image: {
           src: product?.image?.thumbnail?.src,
