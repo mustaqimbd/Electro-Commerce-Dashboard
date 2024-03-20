@@ -1,5 +1,5 @@
+import ApplyButton from "./components/ApplyButton";
 import OrdersTable from "./components/OrderTable";
-// import ApplyButton from "./components/ApplyButton";
 import getAllOrders from "./lib/getAllOrders";
 
 const Orders = async () => {
@@ -8,11 +8,11 @@ const Orders = async () => {
   return (
     <div>
       <div className="w-full">
-        {/* <div className="flex items-center py-4">
+        <div className="flex items-center py-4">
           <div className="flex justify-start  gap-2">
             <ApplyButton />
           </div>
-        </div> */}
+        </div>
         <OrdersTable orders={orders} />
       </div>
     </div>

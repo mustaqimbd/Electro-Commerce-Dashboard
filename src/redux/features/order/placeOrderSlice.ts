@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { TInitialState } from "./interface";
+import { TInitialStatePlaceOrder } from "./interface";
 
-const initialState: TInitialState = {
+const initialState: TInitialStatePlaceOrder = {
   singleOrder: {
     invoice: "",
     recipient_name: "",

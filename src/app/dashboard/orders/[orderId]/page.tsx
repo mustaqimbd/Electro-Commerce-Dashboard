@@ -1,21 +1,41 @@
 import { TypographyH4 } from "@/components/ui/Typography";
-// import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { SectionTitle } from "@/components/ui/sectionTitle";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   MapPin,
+  PencilIcon,
   Phone,
-  // Printer,
-  // SendHorizontal,
+  Printer,
+  SendHorizontal,
   UserRound,
 } from "lucide-react";
-import { OrderedProductTable } from "./components/OrderedProductTable";
+
+import OrderIdAndDate from "../components/OrderIdAndDate";
 import UpdateStatus from "../components/UpdateStatus";
 import getSingleOrder from "../lib/getSingleOrders";
-import OrderIdAndDate from "../components/OrderIdAndDate";
+
+import Link from "next/link";
+import { OrderedProductTable } from "./components/OrderedProductTable";
 
 const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
   const order = await getSingleOrder(params.orderId);
+
+  if (!order) {
+    return (
+      <div>
+        <div className="flex flex-col space-y-3">
+          <Skeleton className="h-[125px] w-[250px] rounded-xl" />
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-[250px]" />
+            <Skeleton className="h-4 w-[200px]" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   const {
     _id,
     orderId,
@@ -24,12 +44,12 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
     shippingCharge,
     total,
     paymentMethod,
-    // statusHistory,
     status,
     shipping,
-    // orderFrom,
+    orderFrom,
     createdAt,
   } = order;
+
   // console.log(products);
   return (
     <div className=" flex justify-between gap-3 h-screen pb-20">
@@ -45,14 +65,25 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
                 <span className="capitalize">{status}</span>
               </div>
             </div>
-            {/* <div className="space-x-2">
+            <div className="space-x-2">
               <Button className="bg-primary" size={"sm"}>
                 <SendHorizontal className="w-4 mr-2" /> Courier Entry
               </Button>
               <Button variant={"outline"} className="" size={"sm"}>
                 <Printer className="w-4 mr-2" /> Invoice
               </Button>
-            </div> */}
+
+              <Link href={`/dashboard/orders/${_id}/edit`}>
+                <Button variant={"outline"} className="" size={"sm"}>
+                  <PencilIcon className="w-4 mr-2" /> Edit Order
+                </Button>
+              </Link>
+              {/* <EditOrder
+               
+                modalTitle={"Edit Order"}
+                order={order}
+              /> */}
+            </div>
           </div>
           <hr className="my-2" />
           <h1 className="flex items-center gap-2">
@@ -66,23 +97,23 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
             <div className="flex flex-col gap-2">
               <TypographyH4 className="font-bold">Customer Info</TypographyH4>
               <span className="flex items-center gap-2">
-                <UserRound className="w-5" /> {shipping.fullName}
+                <UserRound className="w-5" /> {shipping?.fullName}
               </span>
               <span className="flex items-center gap-2">
-                <MapPin className="w-5" /> {shipping.fullAddress}
+                <MapPin className="w-5" /> {shipping?.fullAddress}
               </span>
               <span className="flex items-center gap-2">
                 <Phone className="w-5" />
-                {shipping.phoneNumber}
+                {shipping?.phoneNumber}
               </span>
             </div>
             <div className="flex flex-col pl-3">
               <TypographyH4 className="font-bold">Shipping charge</TypographyH4>
               <span className="flex items-center gap-2">
-                {shippingCharge.name}
+                {shippingCharge?.name}
               </span>
               <span className="flex items-center gap-2">
-                ৳ {shippingCharge.amount}
+                ৳ {shippingCharge?.amount}
               </span>
               {/* <span className="flex items-center gap-2">
                 <Phone className="w-5" />
@@ -90,10 +121,14 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
               </span> */}
             </div>
             <div className="flex flex-col pl-3">
-              <TypographyH4 className="font-bold">Payment By</TypographyH4>
+              <TypographyH4 className="font-bold">Payment By:</TypographyH4>
               <span className="flex items-center gap-2">
-                {paymentMethod.name}
+                {paymentMethod?.name}
               </span>
+              <div>
+                <TypographyH4 className="font-bold">Order Source:</TypographyH4>
+                <span className="capitalize">{orderFrom}</span>
+              </div>
               {/* <span className="flex items-center gap-2">
                 <MapPin className="w-5" /> {paymentMethod.amount}
               </span> */}
@@ -105,7 +140,7 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
           <div className="space-y-3">
             <p className="font-normal text-right">Sub Total : ৳ {subtotal}</p>
             <p className="font-normal text-right">
-              Shipping Fee : ৳ {shippingCharge.amount}
+              Shipping Fee : ৳ {shippingCharge?.amount}
             </p>
             <hr className=" " />
             <p className="font-semibold text-right">Total : ৳ {total}</p>
