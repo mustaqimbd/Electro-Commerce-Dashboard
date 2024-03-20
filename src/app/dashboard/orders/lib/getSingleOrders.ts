@@ -54,9 +54,7 @@ export default async function getSingleOrder(orderId: string) {
     status: order.status,
     shipping: order.shipping,
     orderFrom: order.orderFrom,
-    invoiceNotes: order.invoiceNotes,
-    officialNotes: order.officialNotes,
-    courierNotes: order.courierNotes,
+
     createdAt: order.createdAt,
     updatedAt: order.updatedAt,
   };

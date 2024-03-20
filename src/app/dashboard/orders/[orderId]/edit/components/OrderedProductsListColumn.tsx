@@ -12,7 +12,7 @@ import { toast } from "@/components/ui/use-toast";
 import { useUpdateOrderProductQuantityMutation } from "@/redux/features/order/updateOrderApi";
 import Image from "next/image";
 import { refetchSingleOrder } from "../../../lib/getSingleOrders";
-type TProduct = {
+export type TProduct = {
   orderItemID: string;
   orderId: string;
   _id: string;
