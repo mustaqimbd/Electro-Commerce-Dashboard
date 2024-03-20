@@ -12,7 +12,6 @@ import {
   MapPin,
   PencilIcon,
   Phone,
-  Printer,
   // SendHorizontal,
   UserRound,
 } from "lucide-react";
@@ -93,9 +92,6 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
               {/* <Button className="bg-primary" size={"sm"}>
                 <SendHorizontal className="w-4 mr-2" /> Courier Entry
               </Button> */}
-              <Button variant={"outline"} className="" size={"sm"}>
-                <Printer className="w-4 mr-2" /> Invoice
-              </Button>
               <Invoice order={order} />
               <Link href={`/dashboard/orders/${_id}/edit`}>
                 <Button variant={"outline"} className="" size={"sm"}>
@@ -192,7 +188,7 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
         <Card className="p-4 space-y-3 flex flex-col">
           <SectionTitle> Order Status</SectionTitle>
           <UpdateStatus order={order} _id={_id} />
-          <div className="mt-10">
+          {/* <div className="mt-10">
             <p className="font-bold mb-1">Add courier note</p>
             <textarea
               placeholder="Enter note for courier"
@@ -202,7 +198,7 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
               cols={25}
               rows={5}
             ></textarea>
-          </div>
+          </div> */}
           <div className="my-5">
             <p className="font-bold mb-1">Official Note</p>
             <p className="border h-10">{officialNotes}</p>
