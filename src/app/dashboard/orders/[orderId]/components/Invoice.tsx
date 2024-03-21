@@ -47,7 +47,7 @@ function Invoice({ order }: { order: TOrder }) {
               className="w-28 h-auto"
               src={logo}
               alt="Some text"
-              // priority={true}
+              priority={true}
               placeholder="blur"
             />
           </div>
@@ -143,7 +143,7 @@ function Invoice({ order }: { order: TOrder }) {
                 className="w-20 h-auto"
                 src={logo}
                 alt="Some text"
-                // priority={true}
+                priority={true}
                 placeholder="blur"
               />
             </div>
