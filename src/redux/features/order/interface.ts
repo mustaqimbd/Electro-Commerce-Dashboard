@@ -12,6 +12,8 @@ type TShipping = {
 };
 
 type UpdateOrderInitialState = {
+  discount: number;
+
   product: TProduct;
 
   subtotal: number;
@@ -19,6 +21,9 @@ type UpdateOrderInitialState = {
   total: number;
 
   shipping: TShipping;
+  officialNotes: string;
+  invoiceNotes: string;
+  courierNotes: string;
 };
 
 // Example usage:

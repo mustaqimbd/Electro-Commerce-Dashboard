@@ -41,7 +41,7 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
     subtotal,
     shippingCharge,
     advance = 0,
-    discount = 0,
+
     total,
     paymentMethod,
     status,
@@ -51,6 +51,7 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
     invoiceNotes,
     officialNotes,
     courierNotes,
+    discount,
   } = order;
 
   // console.log(products);
@@ -162,6 +163,9 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
           <OrderedProductTable products={products} />
           <hr />
           <div className="space-y-[2px] space-y2 text-sm bg-light p-5">
+            <p className="text-right pt-[2px] pt2 text-red-500">
+              <span className="font-medium ">Discount :</span> ৳ {discount}
+            </p>
             <p className="text-right pt-[2px] pt2">
               <span className="font-medium">Sub Total :</span> ৳ {subtotal}
             </p>
