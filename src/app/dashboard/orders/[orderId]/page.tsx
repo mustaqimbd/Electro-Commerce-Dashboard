@@ -55,7 +55,6 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
   } = order;
 
   // console.log(products);
-  const finalTotal = total - advance - discount;
 
   return (
     <div className="flex justify-between gap-3 h-screen pb-20">
@@ -178,7 +177,7 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
             </p>
             <hr />
             <p className="text-xl font-bold text-right text-secondary">
-              Total : ৳ {finalTotal}
+              Total : ৳ {total}
             </p>
           </div>
         </Card>
