@@ -1,8 +1,10 @@
 import { Card } from "@/components/ui/card";
 import { SectionTitle } from "@/components/ui/sectionTitle";
+
 import getSingleOrder from "../../lib/getSingleOrders";
 import EditOrderInfo from "./components/EditOrderInfo";
 import { OrderedProductsListEdit } from "./components/OrderedProductsListEdit";
+import TotalCalculation from "./components/TotalCalculation";
 
 const EditOrder = async ({ params }: { params: { orderId: string } }) => {
   const order = await getSingleOrder(params.orderId);
@@ -25,18 +27,7 @@ const EditOrder = async ({ params }: { params: { orderId: string } }) => {
             <SectionTitle>Products:</SectionTitle>{" "}
             <OrderedProductsListEdit products={order?.products} />
             <hr />
-            <div className="space-y-3">
-              <p className="font-normal text-right">
-                Sub Total : ৳ {order?.subtotal}
-              </p>
-              <p className="font-normal text-right">
-                Shipping Fee : ৳ {order?.shippingCharge?.amount}
-              </p>
-              <hr className=" " />
-              <p className="font-semibold text-right">
-                Total : ৳ {order?.total}
-              </p>
-            </div>
+            <TotalCalculation order={order} />
           </div>
         </Card>
 

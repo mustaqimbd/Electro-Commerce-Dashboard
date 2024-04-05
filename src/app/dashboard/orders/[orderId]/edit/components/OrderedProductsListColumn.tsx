@@ -6,10 +6,10 @@ import * as React from "react";
 import { Input } from "@/components/ui/input";
 
 import config from "@/config/config";
-import { X } from "lucide-react";
 
 import { toast } from "@/components/ui/use-toast";
 import { useUpdateOrderProductQuantityMutation } from "@/redux/features/order/updateOrderApi";
+import { Check } from "lucide-react";
 import Image from "next/image";
 import { refetchSingleOrder } from "../../../lib/getSingleOrders";
 export type TProduct = {
@@ -27,11 +27,6 @@ export type TProduct = {
 };
 
 export const columns: ColumnDef<TProduct>[] = [
-  {
-    accessorKey: "image",
-    header: "",
-    cell: () => <X className="cursor-pointer hover:bg-red-500 rounded-xl " />,
-  },
   {
     accessorKey: "image",
     header: "Products",
@@ -65,11 +60,10 @@ export const columns: ColumnDef<TProduct>[] = [
       const [updateOrderProductQuantity] =
         // eslint-disable-next-line react-hooks/rules-of-hooks
         useUpdateOrderProductQuantityMutation();
-
-      const handleQuantityChange = async (
-        e: React.ChangeEvent<HTMLInputElement>
-      ) => {
-        const newQuantity = parseInt(e.target.value);
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const [qunatity, setQuantity] = React.useState<number>(0);
+      const handleQuantityChange = async () => {
+        const newQuantity = qunatity;
 
         // Ensure new quantity is a valid non-negative integer
         if (!isNaN(newQuantity) && newQuantity >= 0) {
@@ -91,13 +85,17 @@ export const columns: ColumnDef<TProduct>[] = [
       };
 
       return (
-        <div className="lowercase">
+        <div className="lowercase flex gap-1 items-center">
           <Input
             type="number"
-            className="w-20"
+            className="w-16"
             min={1}
             defaultValue={row?.original.quantity}
-            onBlur={handleQuantityChange}
+            onChange={(e) => setQuantity(parseInt(e.target.value))}
+          />
+          <Check
+            onClick={() => handleQuantityChange()}
+            className="text-primary cursor-pointer"
           />
         </div>
       );

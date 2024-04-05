@@ -13,10 +13,15 @@ type TShipping = {
 };
 
 type UpdateOrderInitialState = {
+  discount: number;
+
   product: TProduct;
   subtotal: number;
   total: number;
   shipping: TShipping;
+  officialNotes: string;
+  invoiceNotes: string;
+  courierNotes: string;
 };
 
 export type TPlaceOrder = {

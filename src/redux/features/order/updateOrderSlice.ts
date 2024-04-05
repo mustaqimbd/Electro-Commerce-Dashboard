@@ -11,7 +11,11 @@ const initialState: TInitialStateUpdateOrder = {
     },
     subtotal: 0,
     total: 0,
+    discount: 0,
     shipping: { fullName: "", phoneNumber: "", fullAddress: "" },
+    officialNotes: "",
+    invoiceNotes: "",
+    courierNotes: "",
   },
 };
 
@@ -33,6 +37,22 @@ const updateOrderSlice = createSlice({
     // Action for setting shipping full address
     setShippingFullAddress: (state, action: PayloadAction<string>) => {
       state.updateOrder.shipping.fullAddress = action.payload;
+    },
+    // Action for setting Official Notes
+    setOfficialNotes: (state, action: PayloadAction<string>) => {
+      state.updateOrder.officialNotes = action.payload;
+    },
+    // Action for setting Courier Notes
+    setInvoiceNotes: (state, action: PayloadAction<string>) => {
+      state.updateOrder.invoiceNotes = action.payload;
+    },
+    // Action for setting Courier Notes
+    setCourierNotes: (state, action: PayloadAction<string>) => {
+      state.updateOrder.courierNotes = action.payload;
+    },
+    // Action for setting Courier Notes
+    setDiscount: (state, action: PayloadAction<number>) => {
+      state.updateOrder.discount = action.payload;
     },
 
     // Action for updating products
@@ -69,6 +89,9 @@ export const {
   setShippingFullName,
   setShippingPhoneNumber,
   setShippingFullAddress,
+  setCourierNotes,
+  setInvoiceNotes,
+  setOfficialNotes,
   updateProducts,
   resetProduct,
 } = updateOrderSlice.actions;
