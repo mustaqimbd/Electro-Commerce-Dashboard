@@ -16,7 +16,12 @@ const UploaderPopup = ({ open, click, handleOpen, modalTitle }: TProps) => {
     setActiveTab(tab);
   };
   return (
-    <CommonModal open={open} handleOpen={handleOpen} modalTitle={modalTitle}>
+    <CommonModal
+      open={open}
+      handleOpen={handleOpen}
+      modalTitle={modalTitle}
+      className="w-[95%] h-[90%]"
+    >
       <div className="flex flex-col gap-5 h-full">
         <div className="border-b space-x-4">
           <button

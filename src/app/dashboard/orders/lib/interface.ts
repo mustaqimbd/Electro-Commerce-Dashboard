@@ -4,6 +4,7 @@ export type TProduct = {
     _id: string;
     id: string;
     title: string;
+    slug: string;
     image: {
       thumbnail: {
         src: string;
@@ -67,10 +68,10 @@ export type TOrder = {
   statusHistory: StatusHistory;
   status: string;
   shipping: Shipping;
-  orderFrom: string;
   createdAt: Date;
   updatedAt: Date;
   invoiceNotes?: string;
   officialNotes?: string;
   courierNotes?: string;
+  orderSource: string;
 };

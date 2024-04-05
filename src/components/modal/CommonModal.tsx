@@ -9,14 +9,20 @@ type TProps = {
   children: React.ReactNode;
   open: boolean;
   handleOpen: (open: boolean) => void;
-  modalTitle: string;
+  modalTitle?: string;
+  className?: string;
 };
-const CommonModal = ({ children, open, handleOpen, modalTitle }: TProps) => {
+const CommonModal = ({
+  children,
+  open,
+  handleOpen,
+  modalTitle,
+  className,
+}: TProps) => {
   return (
     <div>
       <Dialog onOpenChange={handleOpen} open={open}>
-        {/* <DialogOverlay style={{ width: "1000px !important" }} /> */}
-        <DialogContent>
+        <DialogContent className={`${className}`}>
           <DialogHeader>
             <DialogTitle>{modalTitle}</DialogTitle>
           </DialogHeader>

@@ -1,5 +1,4 @@
 "use server";
-
 import config from "@/config/config";
 import { revalidateTag } from "next/cache";
 

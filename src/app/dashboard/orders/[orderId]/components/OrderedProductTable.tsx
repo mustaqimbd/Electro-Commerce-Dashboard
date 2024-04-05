@@ -1,5 +1,4 @@
 "use client";
-
 import {
   ColumnDef,
   VisibilityState,
@@ -10,8 +9,6 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import * as React from "react";
-
 import {
   Table,
   TableBody,
@@ -23,6 +20,7 @@ import {
 import Image from "next/image";
 import config from "@/config/config";
 import Link from "next/link";
+import * as React from "react";
 
 type TProduct = {
   _id: string;
@@ -50,7 +48,7 @@ export const columns: ColumnDef<TProduct>[] = [
     accessorKey: "image",
     header: "Products",
     cell: ({ row }) => {
-      const { image, title, _id } = row.original;
+      const { image, title, _id, slug } = row.original;
       return (
         <div className="flex justify-start items-center gap-3">
           <div>
@@ -63,8 +61,9 @@ export const columns: ColumnDef<TProduct>[] = [
           </div>
           <div>
             <Link
-              href={`${config.base_url}/products/${_id}}`}
+              href={`${config.base_client_url}/product/${_id}/${slug}}`}
               className="hover:text-blue-700"
+              target="_blank"
             >
               {title}
             </Link>

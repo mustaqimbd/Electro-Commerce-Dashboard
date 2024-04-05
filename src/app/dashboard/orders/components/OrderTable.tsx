@@ -18,11 +18,13 @@ import {
 } from "@tanstack/react-table";
 import { useEffect } from "react";
 import formattedOrderData from "../utils/formattedOrderData";
-import { TOrder } from "../utils/interface";
+// import { TOrdersTableData } from "../utils/interface";
 import { columns } from "./OrderColumn";
+import { TOrder } from "../lib/interface";
 
 export default function OrdersTable({ orders }: { orders: TOrder[] }) {
   const dispatch = useAppDispatch();
+
   const table = useReactTable({
     data: orders,
     columns,
@@ -40,13 +42,13 @@ export default function OrdersTable({ orders }: { orders: TOrder[] }) {
   return (
     <div className="w-full">
       <div className="rounded-md border">
-        <Table>
-          <TableHeader>
+        <Table className="min-w-[1100px]">
+          <TableHeader className="bg-primary text-white">
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
+              <TableRow key={headerGroup.id} className="hover:bg-muted/0">
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead key={header.id} className="text-center">
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -65,9 +67,10 @@ export default function OrdersTable({ orders }: { orders: TOrder[] }) {
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  className="border-b border-cyan-400"
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell key={cell.id} className="text-center">
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -82,7 +85,7 @@ export default function OrdersTable({ orders }: { orders: TOrder[] }) {
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  No orders.
                 </TableCell>
               </TableRow>
             )}

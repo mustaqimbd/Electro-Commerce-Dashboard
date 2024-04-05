@@ -1,12 +1,33 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
-import { useDeleteOrderMutation } from "@/redux/features/order/placeOrderApi";
+import { useDeleteOrdersMutation } from "@/redux/features/order/orderApi";
 import { useRouter } from "next/navigation";
+import { ReactNode } from "react";
 
-const DeleteOrderBtn = ({ _id }: { _id: string }) => {
+const DeleteOrderBtn = ({
+  _id,
+  children,
+  className,
+  title,
+  variant,
+  size,
+}: {
+  _id: string;
+  children: ReactNode;
+  className?: string;
+  title?: string;
+  variant?:
+    | "link"
+    | "default"
+    | "destructive"
+    | "outline"
+    | "secondary"
+    | "ghost";
+  size?: "default" | "sm" | "lg" | "icon";
+}) => {
   const router = useRouter();
-  const [deleteOrder, { isLoading }] = useDeleteOrderMutation();
+  const [deleteOrder, { isLoading }] = useDeleteOrdersMutation();
   const handleDelete = async (id: string) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this order?"
@@ -33,10 +54,12 @@ const DeleteOrderBtn = ({ _id }: { _id: string }) => {
       <Button
         onClick={() => handleDelete(_id)}
         disabled={isLoading}
-        className="bg-red-600 text-white"
-        size={"sm"}
+        variant={variant}
+        className={className}
+        size={size}
+        title={title}
       >
-        Delete
+        {children}
       </Button>
     </div>
   );

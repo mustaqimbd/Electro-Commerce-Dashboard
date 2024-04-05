@@ -1,10 +1,11 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { ColumnDef } from "@tanstack/react-table";
-import { TOrder } from "../utils/interface";
 import ActionDropDown from "./ActionDropDown";
 import CustomerInfo from "./CustomerInfo";
 import OrderIdAndDate from "./OrderIdAndDate";
-// import UpdateStatus from "./UpdateStatus";
+import { TOrder } from "../lib/interface";
+import AddNotes from "./AddNotes";
+import Status from "./OrderStatus";
 
 export const columns: ColumnDef<TOrder>[] = [
   {
@@ -26,7 +27,7 @@ export const columns: ColumnDef<TOrder>[] = [
         aria-label="Select row"
       />
     ),
-    enableSorting: false,
+    enableSorting: true,
     enableHiding: false,
   },
   {
@@ -59,53 +60,64 @@ export const columns: ColumnDef<TOrder>[] = [
       return <CustomerInfo customer={customer} />;
     },
   },
-  // {
-  //   accessorKey: "product",
-  //   header: "Product Info",
-  //   cell: ({ row }) => <div className="lowercase">product 1</div>,
-  // },
-  // {
-  //   accessorKey: "discount",
-  //   header: "Discount",
-  //   cell: ({ row }) => <div className="capitalized ">৳ 10</div>,
-  // },
   {
-    accessorKey: "total",
-    header: "Total Price",
-    cell: ({ row }) => <span>৳ {row.getValue("total")}</span>,
-  },
-  {
-    accessorKey: "status",
-    header: "Order Status",
+    accessorKey: "product",
+    header: "Product Info",
     cell: ({ row }) => {
-      const status = row.original.status;
+      const length = row.original.products?.length;
+      const {
+        title = "",
+        unitPrice = "",
+        quantity = "",
+      } = length ? row.original.products[0] : {};
       return (
-        <span
-          className={`capitalize px-2 pb-[2px] pt-[1px] text-white rounded`}
-          style={{
-            backgroundColor:
-              status === "pending"
-                ? "#fec400"
-                : status === "processing"
-                  ? "#FA8232"
-                  : status === "On courier"
-                    ? "#4c84ff"
-                    : status === "canceled"
-                      ? "#fe5461"
-                      : status === "completed"
-                        ? "#2DB224"
-                        : "",
-          }}
-        >
-          {status}
-        </span>
+        <div>
+          <p className="flex flex-col gap-1" title={title}>
+            {title.length > 18 ? title.slice(0, 18) + "..." : title}
+          </p>
+          <p>৳ {unitPrice}</p>
+          <p>Quantity : {quantity}</p>
+          {length > 1 && (
+            <p>
+              And {length - 1} more {length - 1 === 1 ? "item" : "items"}.
+            </p>
+          )}
+        </div>
       );
     },
   },
   {
+    accessorKey: "total",
+    header: "Total",
+    cell: ({ row }) => <span>৳ {row.getValue("total")}</span>,
+  },
+  {
+    accessorKey: "payment",
+    header: "Payment",
+    cell: () => <p>Case on delivery</p>,
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+    cell: ({ row }) => <Status order={row.original} />,
+  },
+  {
+    accessorKey: "notes",
+    header: "Notes",
+    cell: ({ row }) => <AddNotes order={row.original} />,
+  },
+  {
+    accessorKey: "orderSource",
+    header: "Origin",
+    cell: ({ row }) => (
+      <div className="capitalized ">{row.original.orderSource}</div>
+    ),
+  },
+  {
     id: "actions",
-    header: "Action",
+    header: "Actions",
     enableHiding: false,
-    cell: ({ row }) => <ActionDropDown orderId={row.original._id} />,
+    // cell: ({ row }) => <Actions order={row.original} />,
+    cell: ({ row }) => <ActionDropDown order={row.original} />,
   },
 ];

@@ -10,7 +10,11 @@ const initialState: TInitialStatePlaceOrder = {
     cod_amount: 0,
     note: "",
   },
-  bulkOrders: [],
+  bulkOrders: {
+    selectedOrders: [],
+    orderIds: [],
+    invoices: [],
+  },
 };
 
 const placeOrderSlice = createSlice({

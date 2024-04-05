@@ -1,6 +1,7 @@
+import { TOrder } from "@/app/dashboard/orders/lib/interface";
+
 export type TProduct = {
   _id: string;
-
   quantity: number;
   price: number;
 };
@@ -13,23 +14,10 @@ type TShipping = {
 
 type UpdateOrderInitialState = {
   product: TProduct;
-
   subtotal: number;
-
   total: number;
-
   shipping: TShipping;
 };
-
-// Example usage:
-// const inputData: TPayload = {
-//     invoice: "Aa12-das4",
-//     recipient_name: "John Smith",
-//     recipient_phone: "01234567890",
-//     recipient_address: "Fla# A1, House# 17/1, Road# 3/A, Dhanmondi, Dhaka-1209",
-//     cod_amount: 1060,
-//     note: "Deliver within 3 PM"
-// };
 
 export type TPlaceOrder = {
   invoice: string; // Must be Unique and can be alpha-numeric including hyphens and underscores.
@@ -49,7 +37,11 @@ export type TUpdatePayload = {
 
 export type TInitialStatePlaceOrder = {
   singleOrder: TPlaceOrder;
-  bulkOrders: TPlaceOrder[];
+  bulkOrders: {
+    selectedOrders: TPlaceOrder[];
+    orderIds: string[];
+    invoices: TOrder[];
+  };
 };
 export type TInitialStateUpdateOrder = {
   updateOrder: UpdateOrderInitialState;
