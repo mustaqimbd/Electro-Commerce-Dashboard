@@ -10,11 +10,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "@/components/ui/use-toast";
-import { refetchCategories } from "@/lib/getCategory";
 import {
   useAddCategoryMutation,
   useAddSubCategoryMutation,
 } from "@/redux/features/category/categoryApi";
+import { refetchCategories } from "../lib/getCategories";
 
 import { useState } from "react";
 import { Resolver, useForm } from "react-hook-form";

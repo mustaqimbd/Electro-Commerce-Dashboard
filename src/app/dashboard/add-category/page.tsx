@@ -4,7 +4,7 @@ import { SectionTitle } from "@/components/ui/sectionTitle";
 
 import { Pagination } from "@/components/ui/pagination";
 
-import getAllCategories from "@/lib/getCategory";
+import getAllCategories from "./lib/getCategories";
 
 import AddCategoryForm from "./components/AddCategoryForm";
 import { CategoryTable } from "./components/CategoryTable";

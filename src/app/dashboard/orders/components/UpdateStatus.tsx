@@ -12,7 +12,7 @@ import {
 import { toast } from "@/components/ui/use-toast";
 import {
   usePlaceSingleOrderMutation,
-  useUpdateStatusMutation,
+  useUpdateOrderStatusMutation,
 } from "@/redux/features/order/placeOrderApi";
 import { useState } from "react";
 import { refetchSingleOrder } from "../lib/getSingleOrders";
@@ -27,7 +27,7 @@ const UpdateStatus = ({ order, _id }: TProps) => {
   const [action, setAction] = useState("");
   const [placeSingleOrder, { isLoading: loading }] =
     usePlaceSingleOrderMutation();
-  const [updateStatus, { isLoading }] = useUpdateStatusMutation();
+  const [updateStatus, { isLoading }] = useUpdateOrderStatusMutation();
 
   // const orders = useAppSelector(({ order }) => order.bulkOrders);
   const handleSubmit = async () => {
@@ -40,10 +40,8 @@ const UpdateStatus = ({ order, _id }: TProps) => {
       note: "",
     };
     const updatePayload = {
-      id: _id,
-      status: {
-        status: action,
-      },
+      orderIds: [_id],
+      status: action,
     };
     try {
       if (action === "On courier") {

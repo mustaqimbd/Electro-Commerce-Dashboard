@@ -1,6 +1,6 @@
-import getAllAttributes from "@/lib/getAttributes";
 import AddAttribute from "./components/AddAttributes";
 import AddedAttributes from "./components/AddedAttributes";
+import getAllAttributes from "./lib/getAttributes";
 
 const Attributes = async () => {
   const attributes = await getAllAttributes();

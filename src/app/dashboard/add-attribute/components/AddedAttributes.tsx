@@ -10,9 +10,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { toast } from "@/components/ui/use-toast";
+import { useDeleteAttributeMutation } from "@/redux/features/addAttributes/attributesApi";
+import { TrashIcon } from "lucide-react";
 import { useState } from "react";
+import { refetchAttributes } from "../lib/getAttributes";
 
 type TAttribute = {
+  _id: string;
   name: string;
   inputValue?: string;
   values: string[]; // Changed from 'attributeValues' to 'values'
@@ -95,6 +100,24 @@ const AddedAttributes = ({ attributes }: { attributes: TAttribute[] }) => {
   const handleValueClick = (index: number) => {
     console.log("The value at index " + index + " was clicked");
   };
+  //handle delete an attributes
+  const [deleteAttribute] = useDeleteAttributeMutation();
+  const handleAttributes = async (attributeId: string) => {
+    const res = await deleteAttribute(attributeId).unwrap();
+    console.log(res);
+    if (res?.success) {
+      refetchAttributes();
+      toast({
+        className: "bg-success text-white text-2xl",
+        title: res?.message,
+      });
+    } else {
+      toast({
+        className: "bg-success text-white text-2xl",
+        title: res?.message,
+      });
+    }
+  };
 
   return (
     <div className="w-full">
@@ -145,6 +168,12 @@ const AddedAttributes = ({ attributes }: { attributes: TAttribute[] }) => {
                       placeholder="Type and press Enter to add values"
                     />
                   </div>
+                </TableCell>
+                <TableCell>
+                  <TrashIcon
+                    onClick={() => handleAttributes(singleAttribute._id)}
+                    className="text-red-500  cursor-pointer"
+                  />
                 </TableCell>
               </TableRow>
             ))}
