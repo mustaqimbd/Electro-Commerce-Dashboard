@@ -1,12 +1,12 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
-import { usePlaceSingleOrderMutation } from "@/redux/features/order/placeOrderApi";
 import { useUpdateOrderStatusMutation } from "@/redux/features/order/orderApi";
+import { usePlaceSingleOrderMutation } from "@/redux/features/order/placeOrderApi";
+import { refetchData } from "@/utilities/fetchData";
 import { useState } from "react";
 import { refetchSingleOrder } from "../lib/getSingleOrders";
 import { TOrder } from "../lib/interface";
-import { refetchData } from "@/utilities/fetchData";
 
 type TProps = {
   order: TOrder;

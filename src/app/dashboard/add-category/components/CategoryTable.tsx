@@ -35,8 +35,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { refetchCategories } from "@/lib/getCategory";
 import { useDeleteCategoryMutation } from "@/redux/features/category/categoryApi";
+import { refetchCategories } from "../lib/getCategories";
 
 export type TCategories = {
   _id: string;

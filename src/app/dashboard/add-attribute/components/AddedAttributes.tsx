@@ -10,9 +10,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { toast } from "@/components/ui/use-toast";
+import { useDeleteAttributeMutation } from "@/redux/features/addAttributes/attributesApi";
+import { TrashIcon } from "lucide-react";
 import { useState } from "react";
+import { refetchAttributes } from "../lib/getAttributes";
 
 type TAttribute = {
+  _id: string;
   name: string;
   inputValue?: string;
   values: string[]; // Changed from 'attributeValues' to 'values'
@@ -41,59 +46,26 @@ const AddedAttributes = ({ attributes }: { attributes: TAttribute[] }) => {
     console.log("Updated State:", newAttributes);
   };
 
-  const handleInputChange = (index: number, value: string) => {
-    const newAttributes = [...addAttributes];
-    newAttributes[index].inputValue = value;
-    setAddAttributes(newAttributes);
-  };
-
-  const handleInputKeyPress = (
-    index: number,
-    event: React.KeyboardEvent<HTMLInputElement>
-  ) => {
-    if (event.key === "Enter" || event.key === ",") {
-      event.preventDefault();
-      const newAttributes = [...addAttributes];
-      const attribute = newAttributes[index];
-      const value = attribute?.inputValue?.trim();
-      if (value && !attribute.values.includes(value)) {
-        attribute.values.push(value);
-        attribute.inputValue = "";
-      }
-      setAddAttributes(newAttributes);
-      console.log("Updated State:", newAttributes);
-    }
-  };
-
-  const handleDragStart = (
-    e: React.DragEvent<HTMLDivElement>,
-    value: string
-  ) => {
-    e.dataTransfer.setData("text/plain", value);
-  };
-
-  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-  };
-
-  const handleDrop = (index: number, valueIndex: number) => {
-    return (e: React.DragEvent<HTMLDivElement>) => {
-      const draggedValue = e.dataTransfer.getData("text/plain");
-      const newAttributes = [...addAttributes];
-      const attribute = newAttributes[index];
-      const currIndex = attribute.values.indexOf(draggedValue);
-      const newIndex = valueIndex;
-      if (currIndex !== -1) {
-        const removedValue = attribute.values.splice(currIndex, 1);
-        attribute.values.splice(newIndex, 0, ...removedValue);
-        setAddAttributes(newAttributes);
-        console.log("Updated State:", newAttributes);
-      }
-    };
-  };
-
   const handleValueClick = (index: number) => {
     console.log("The value at index " + index + " was clicked");
+  };
+  //handle delete an attributes
+  const [deleteAttribute] = useDeleteAttributeMutation();
+  const handleAttributes = async (attributeId: string) => {
+    const res = await deleteAttribute(attributeId).unwrap();
+    console.log(res);
+    if (res?.success) {
+      refetchAttributes();
+      toast({
+        className: "bg-success text-white text-2xl",
+        title: res?.message,
+      });
+    } else {
+      toast({
+        className: "bg-success text-white text-2xl",
+        title: res?.message,
+      });
+    }
   };
 
   return (
@@ -108,43 +80,41 @@ const AddedAttributes = ({ attributes }: { attributes: TAttribute[] }) => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {addAttributes.map((singleAttribute, index) => (
+            {attributes.map((singleAttribute, index) => (
               <TableRow key={index}>
                 <TableCell className="font-medium">
                   {singleAttribute.name}
                 </TableCell>
-                <TableCell className="flex items-center">
-                  <div className="flex flex-wrap w-full gap-2 border rounded-md p-2">
+                <TableCell className="flex items-center ">
+                  <div className="flex flex-grow  items-center w-full gap-2 border rounded-md p-2">
                     {singleAttribute.values.map((value, valueIndex) => (
-                      <div
-                        key={valueIndex}
-                        className="bg-gray-200 rounded-full px-3 py-1"
-                        draggable
-                        onDragStart={(e) => handleDragStart(e, value)}
-                        onDragOver={handleDragOver}
-                        onDrop={handleDrop(index, valueIndex)}
-                        onClick={() => handleValueClick(valueIndex)}
-                        style={{ cursor: "move" }}
-                      >
-                        <span>{value}</span>
-                        <button
-                          className="ml-2"
-                          onClick={() => handleDeleteValue(index, valueIndex)}
-                          aria-label={`Remove ${value}`}
+                      <>
+                        {" "}
+                        <div
+                          key={valueIndex}
+                          className="bg-gray-200 rounded-full px-3 py-1"
+                          onClick={() => handleValueClick(valueIndex)}
                         >
-                          &#10005;
-                        </button>
-                      </div>
+                          <span>{value}</span>
+                          <button
+                            className="ml-2"
+                            onClick={() => handleDeleteValue(index, valueIndex)}
+                            aria-label={`Remove ${value}`}
+                          >
+                            &#10005;
+                          </button>
+                        </div>
+                      </>
                     ))}
-                    <input
-                      type="text"
-                      className="flex-grow w-full outline-none"
-                      value={singleAttribute.inputValue}
-                      onChange={(e) => handleInputChange(index, e.target.value)}
-                      onKeyPress={(e) => handleInputKeyPress(index, e)}
-                      placeholder="Type and press Enter to add values"
-                    />
                   </div>
+
+                  <div className="">Add</div>
+                </TableCell>
+                <TableCell>
+                  <TrashIcon
+                    onClick={() => handleAttributes(singleAttribute._id)}
+                    className="text-red-500  cursor-pointer"
+                  />
                 </TableCell>
               </TableRow>
             ))}
