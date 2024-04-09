@@ -84,6 +84,19 @@ export function Sidebar() {
             <span>All Products</span>
           </span>
         </Link>
+        <Link href="/dashboard/all-claim-request">
+          <span
+            className={cn(
+              "group flex gap-2 items-center rounded-md px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
+              pathname === "/dashboard/all-claim-request"
+                ? "bg-accent"
+                : "transparent"
+            )}
+          >
+            <LayoutDashboard className="w-4 h-4" />
+            <span>All-Claim-request</span>
+          </span>
+        </Link>
       </nav>
     </div>
   );
