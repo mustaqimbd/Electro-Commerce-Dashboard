@@ -43,7 +43,7 @@ export const columns: ColumnDef<TAllProducts>[] = [
     cell: ({ row }) => {
       const { image } = row.original;
       return (
-        <div className="flex justify-start items-center gap-3 rounded bg-red-400">
+        <div className="flex justify-start items-center gap-3 rounded">
           <Image
             width={50}
             height={50}

@@ -1,6 +1,6 @@
 "use client";
 import CommonModal from "@/components/modal/CommonModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { TOrder } from "../lib/interface";
-import { refetchData } from "@/utilities/fetchData";
+import fetchData, { refetchData } from "@/utilities/fetchData";
 import { Input } from "@/components/ui/input";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -21,18 +21,19 @@ const schema = yup.object().shape({
     phoneNumber: yup.string().required("Phone number is required!"),
     fullAddress: yup.string().required("Customer address is required!"),
   }),
-  shippingCharge: yup.object().shape({
-    name: yup.string().optional(),
-    amount: yup
-      .number()
-      .min(1, "Shipping cost must be a positive number")
-      .required("Shipping cost is required!")
-      .typeError("Shipping cost is required!"),
+  shippingChargeId: yup.string().required("Shipping cost is required!"),
+  payment: yup.object().shape({
+    paymentMethod: yup.string().required("Payment is required!"),
   }),
   advance: yup
     .number()
-    .default(0)
-    .typeError("Advance must be a positive number")
+    .transform((value, originalValue) => (originalValue === "" ? 0 : value))
+    .min(0, "Advance must be a positive number")
+    .optional(),
+  discount: yup
+    .number()
+    .transform((value, originalValue) => (originalValue === "" ? 0 : value))
+    .min(0, "Discount must be a positive number")
     .optional(),
   orderedProducts: yup.array(
     yup.object().shape({
@@ -44,24 +45,50 @@ const schema = yup.object().shape({
         .typeError("Stock quantity is required!"),
     })
   ),
-  orderFrom: yup.string().required("Order source is required!"),
+  orderSource: yup.object().shape({
+    name: yup.string().required("Order source is required!"),
+  }),
+  // orderSource: yup.string().required("Order source is required!"),
   orderNotes: yup.string().optional(),
   officialNotes: yup.string().optional(),
   invoiceNotes: yup.string().optional(),
   courierNotes: yup.string().optional(),
+  custom: yup.boolean().default(true),
+  eventId: yup.string().default("eventId"),
 });
 
 type TFormInput = yup.InferType<typeof schema>;
 
 const CreateOrder = ({ order }: { order?: TOrder }) => {
   const { toast } = useToast();
+  const [createOrder, { isLoading }] = useCreateOrderMutation();
+  const [productsName, setProductsName] = useState([]);
+  const [shippingCharges, setShippingCharges] = useState([]);
+  const [paymentMethods, setPaymentMethods] = useState([]);
   const [open, setOpen] = useState(false);
+  const [product, setProduct] = useState(1);
+
+  useEffect(() => {
+    const productsName = async () => {
+      const data = await fetchData("/products", ["ProductsName"]);
+      setProductsName(data);
+    };
+    const shippingCharge = async () => {
+      const data = await fetchData("/shipping-charges", ["shippingCharge"]);
+      setShippingCharges(data);
+    };
+    const paymentMethod = async () => {
+      const data = await fetchData("/payment-method", ["paymentMethod"]);
+      setPaymentMethods(data);
+    };
+    productsName();
+    shippingCharge();
+    paymentMethod();
+  }, []);
+
   const handleOpen = () => {
     setOpen(!open);
   };
-
-  const [createOrder, { isLoading }] = useCreateOrderMutation();
-  const [products] = useState([0]);
 
   const {
     register,
@@ -73,12 +100,11 @@ const CreateOrder = ({ order }: { order?: TOrder }) => {
   });
 
   const onSubmit: SubmitHandler<TFormInput> = async (data) => {
-    // console.log(data);
     try {
       await createOrder(data).unwrap();
       refetchData("allOrders");
       reset();
-      //   handleOpen();
+      handleOpen();
       toast({
         className: "bg-success text-white text-2xl",
         title: "Order created successfully!",
@@ -162,21 +188,75 @@ const CreateOrder = ({ order }: { order?: TOrder }) => {
                 )}
               </div>
             </div>
+          </div>
+          <div className="grid grid-cols-5 gap-5">
             <div className="flex flex-col gap-2 mb-3">
               <Label htmlFor="cost">
                 Shipping Cost <span className="text-red-600">*</span>
               </Label>
               <div className="space-y-2 w-full">
+                <select
+                  {...register("shippingChargeId")}
+                  className="w-full h-9 border border-gray-300  rounded-sm"
+                >
+                  <option value="">Shipping charge</option>
+                  {shippingCharges.map(({ _id, name, amount }) => (
+                    <option
+                      key={_id}
+                      value={_id}
+                      className="flex items-center gap-5"
+                    >
+                      {name + " " + amount}
+                    </option>
+                  ))}
+                </select>
+                {errors.shippingChargeId?.message && (
+                  <p className="text-red-600">
+                    {errors.shippingChargeId?.message as string}
+                  </p>
+                )}
+              </div>
+            </div>
+            <div className="flex flex-col gap-2 mb-3">
+              <Label htmlFor="cost">
+                Payment <span className="text-red-600">*</span>
+              </Label>
+              <div className="space-y-2 w-full">
+                <select
+                  {...register("payment.paymentMethod")}
+                  className="w-full h-9 border border-gray-300  rounded-sm"
+                >
+                  <option value="">Payment</option>
+                  {paymentMethods.map(({ _id, name }) => (
+                    <option
+                      key={_id}
+                      value={_id}
+                      className="flex items-center gap-5"
+                    >
+                      {name}
+                    </option>
+                  ))}
+                </select>
+                {errors.payment?.paymentMethod?.message && (
+                  <p className="text-red-600">
+                    {errors.payment?.paymentMethod?.message as string}
+                  </p>
+                )}
+              </div>
+            </div>
+            <div className="flex flex-col gap-2 mb-3">
+              <Label htmlFor="cost">Discount</Label>
+              <div className="space-y-2 w-full">
                 <Input
                   type="number"
-                  {...register("shippingCharge.amount")}
+                  {...register("discount")}
                   id="cost"
-                  placeholder="Enter stock quantity"
+                  placeholder="Enter discount"
                   className="w-full"
                 />
-                {errors.shippingCharge?.amount?.message && (
+                {errors.discount?.message && (
                   <p className="text-red-600">
-                    {errors.shippingCharge?.amount?.message as string}
+                    {errors.discount?.message as string}
                   </p>
                 )}
               </div>
@@ -186,7 +266,6 @@ const CreateOrder = ({ order }: { order?: TOrder }) => {
               <div className="space-y-2 w-full">
                 <Input
                   type="number"
-                  defaultValue={0}
                   {...register("advance")}
                   id="cost"
                   placeholder="Enter advance"
@@ -204,26 +283,27 @@ const CreateOrder = ({ order }: { order?: TOrder }) => {
                 Order Source <span className="text-red-600">*</span>
               </Label>
               <select
-                {...register("orderFrom")}
+                {...register("orderSource.name")}
                 className="w-full h-9 border border-gray-300  rounded-sm"
               >
                 <option value="">Order source</option>
-                <option value="social">Social Media</option>
-                <option value="phone">Phone Call</option>
-                <option value="others">Others</option>
+                <option value="Phone Call">Phone Call</option>
+                <option value="Social Media">Social Media</option>
+                <option value="From Office">From Office</option>
+                <option value="Others">Others</option>
               </select>
-              {errors.orderFrom?.message && (
+              {errors.orderSource?.name?.message && (
                 <p className="text-red-600">
-                  {errors.orderFrom?.message as string}
+                  {errors.orderSource?.name?.message as string}
                 </p>
               )}
             </div>
           </div>
           <div className="flex gap-4">
-            <div className="grid grid-cols-3 gap-5">
-              {products.map((product, index) => (
-                <>
-                  <div className="flex flex-col col-span-2 gap-2" key={index}>
+            <div className="space-y-5">
+              {Array.from({ length: product }).map((_, index) => (
+                <div className="grid grid-cols-3 gap-5" key={index}>
+                  <div className="flex flex-col col-span-2 gap-2">
                     <Label>
                       Product name <span className="text-red-600">*</span>
                     </Label>
@@ -232,9 +312,11 @@ const CreateOrder = ({ order }: { order?: TOrder }) => {
                       className="w-full h-9 border border-gray-300  rounded-sm"
                     >
                       <option value="">Select product</option>
-                      <option value="social">Social Media</option>
-                      <option value="phone">Phone Call</option>
-                      <option value="others">Others</option>
+                      {productsName.map(({ _id, title }) => (
+                        <option value={_id} key={_id}>
+                          {title}
+                        </option>
+                      ))}
                     </select>
                     {errors.orderedProducts &&
                       errors.orderedProducts[index] &&
@@ -252,8 +334,8 @@ const CreateOrder = ({ order }: { order?: TOrder }) => {
                       <Input
                         type="number"
                         {...register(`orderedProducts.${index}.quantity`)}
-                        id="stockQuantity"
-                        placeholder="Enter stock quantity"
+                        id="quantity"
+                        placeholder="Enter quantity"
                         className="w-full"
                       />
                       {errors.orderedProducts &&
@@ -265,27 +347,27 @@ const CreateOrder = ({ order }: { order?: TOrder }) => {
                         )}
                     </div>
                   </div>
-                </>
+                </div>
               ))}
             </div>
             <div className="flex items-end gap-2">
-              <Button onClick={() => products.push(products.length + 1)}>
-                <Plus /> Add Product
-              </Button>
-              {products.length > 1 && (
-                <Button
-                  onClick={() => products.pop()}
-                  className="text-red-600 bg-white hover:bg-slate-100 px-1 py-0"
+              <div
+                onClick={() => setProduct(product + 1)}
+                className="w-[140px] flex items-center gap-1 rounded-md text-sm font-medium transition-colors bg-primary hover:bg-secondary text-white  shadow cursor-pointer h-9 px-2 py-2"
+              >
+                <Plus /> <span>Add Product</span>
+              </div>
+              {product > 1 && (
+                <span
+                  onClick={() => setProduct(product - 1)}
+                  className="text-red-600 bg-white hover:bg-slate-100 h-9 px-2 py-2  cursor-pointer"
                 >
                   <Minus />
-                </Button>
+                </span>
               )}
             </div>
           </div>
-          <Tabs
-            defaultValue="orderNote"
-            // onChange={(e) => handleTabClick(e.target)}
-          >
+          <Tabs defaultValue="orderNote">
             <TabsList className="grid w-full grid-cols-3 gap-4 bg-cyan-50">
               <TabsTrigger
                 value="orderNote"

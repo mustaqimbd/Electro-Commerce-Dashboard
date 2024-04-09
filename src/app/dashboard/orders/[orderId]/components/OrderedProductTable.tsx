@@ -25,6 +25,7 @@ import * as React from "react";
 type TProduct = {
   _id: string;
   title: string;
+  slug: string;
   image: {
     src: string;
     alt: string;

@@ -10,7 +10,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "@/components/ui/use-toast";
-import { refetchCategories } from "@/lib/getCategory";
+// import { refetchCategories } from "@/lib/getCategory";
 import {
   useAddCategoryMutation,
   useAddSubCategoryMutation,
@@ -18,6 +18,7 @@ import {
 
 import { useState } from "react";
 import { Resolver, useForm } from "react-hook-form";
+import { refetchCategories } from "../lib/getAllCategories";
 
 type TCategories = {
   _id: string;
