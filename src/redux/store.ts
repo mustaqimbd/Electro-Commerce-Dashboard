@@ -10,7 +10,8 @@ import {
   persistReducer,
   persistStore,
 } from "redux-persist";
-import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
+// import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
+import storage from "./storage";
 import baseApi from "./baseApi/baseApi";
 import courierBaseApi from "./baseApi/courierBaseApi";
 import addProductReducer from "./features/addProduct/addProductSlice";

@@ -1,9 +1,7 @@
 "use client";
 import { usePathname } from "next/navigation";
-
 import { cn } from "@/lib/utils";
 import { LayoutDashboard, PlusCircle } from "lucide-react";
-
 import Link from "next/link";
 
 export function Sidebar() {

@@ -5,19 +5,18 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "@/components/ui/use-toast";
-import { usePlaceOrdersMutation } from "@/redux/features/order/placeOrderApi";
-import { useAppSelector } from "@/redux/hooks";
+// import { usePlaceOrdersMutation } from "@/redux/features/order/placeOrderApi";
+// import { useAppSelector } from "@/redux/hooks";
 import { useState } from "react";
 
 const ApplyButton = () => {
   const [action, setAction] = useState("");
-  const [placeOrders] = usePlaceOrdersMutation();
-  const orders = useAppSelector(({ orderPlace }) => orderPlace.bulkOrders);
+  // const [placeOrders] = usePlaceOrdersMutation();
+  // const orders = useAppSelector(({ orderPlace }) => orderPlace.bulkOrders);
   const handleSubmit = async () => {
     // const payload = [
     //   {
@@ -33,7 +32,7 @@ const ApplyButton = () => {
     // console.log(action);
     try {
       if (action === "On courier") {
-        await placeOrders(orders).unwrap();
+        // await placeOrders(orders).unwrap();
         toast({
           className: "bg-success text-white text-2xl",
           title: "Courier entry is successful!",
@@ -55,13 +54,13 @@ const ApplyButton = () => {
     <>
       <Select onValueChange={(value) => setAction(value)}>
         <SelectTrigger className="w-[180px]">
-          <SelectValue placeholder="Bulk Action" />
+          <SelectValue placeholder="Bulk Actions" />
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
-            <SelectLabel>Bulk Action</SelectLabel>
+            <SelectItem value="bulk">Bulk Actions</SelectItem>
             <SelectItem value="delete">Delete</SelectItem>
-            <SelectItem value="On courier">Courier Entry</SelectItem>
+            {/* <SelectItem value="On courier">Courier Entry</SelectItem> */}
           </SelectGroup>
         </SelectContent>
       </Select>

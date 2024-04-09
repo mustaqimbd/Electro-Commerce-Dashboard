@@ -1,7 +1,9 @@
-import type { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+
 import decodeJWT from "./utilities/decodeJWT";
 import { TUser } from "./redux/features/auth/interface";
 import getAccessToken from "./lib/getAccessToken";
+// import { cookies } from 'next/headers'
 
 export async function middleware(request: NextRequest) {
   let accessToken = request.cookies.get("accessToken")?.value;
@@ -13,11 +15,23 @@ export async function middleware(request: NextRequest) {
   if (!accessToken) {
     try {
       accessToken = await getAccessToken(refreshToken);
+      // response.cookies.set({
+      //   name: 'accessToken',
+      //   value: accessToken,
+      //   httpOnly: true,
+      //   path: '/',
+      // })
     } catch (error) {
       return Response.redirect(new URL("/login", request.url));
     }
   }
-
+  const response = NextResponse.next();
+  response.cookies.set("vercel", "fast");
+  response.cookies.set({
+    name: "vercel",
+    value: "fast",
+    path: "/",
+  });
   // try {
   const currentUser = decodeJWT(accessToken as string) as TUser;
 

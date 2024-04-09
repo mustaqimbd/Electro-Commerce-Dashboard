@@ -6,7 +6,7 @@ import { ModeToggle } from "../ui/ModeToggle";
 const Navbar = () => {
   return (
     <>
-      <div className="flex bg-white justify-between items-center  border-b-2 p-1 px-6 top-0 sticky z-10">
+      <div className="w-full flex bg-white justify-between items-center  border-b-2 p-1 px-6 top-0 sticky z-10">
         <div className="px-2">
           <Image
             className="w-24 "

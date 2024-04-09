@@ -11,7 +11,8 @@ function formatDate(timestamp: string | Date) {
   const hours = date.getHours();
   const minutes = date.getMinutes();
   // Format time
-  const formattedHours = hours > 12 ? hours - 12 : hours;
+  // const formattedHours = hours > 12 ? hours - 12 : hours;
+  const formattedHours = hours % 12 || 12;
   const amPm = hours >= 12 ? "pm" : "am";
   const formattedTime = `${formattedHours}:${minutes < 10 ? "0" : ""}${minutes} ${amPm}`;
   // Format date

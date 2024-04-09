@@ -1,22 +1,12 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { toast } from "@/components/ui/use-toast";
-import {
-  usePlaceSingleOrderMutation,
-  useUpdateOrderStatusMutation,
-} from "@/redux/features/order/placeOrderApi";
+import { useUpdateOrderStatusMutation } from "@/redux/features/order/orderApi";
+import { usePlaceSingleOrderMutation } from "@/redux/features/order/placeOrderApi";
+import { refetchData } from "@/utilities/fetchData";
 import { useState } from "react";
 import { refetchSingleOrder } from "../lib/getSingleOrders";
-import { TOrder } from "../utils/interface";
+import { TOrder } from "../lib/interface";
 
 type TProps = {
   order: TOrder;
@@ -27,9 +17,8 @@ const UpdateStatus = ({ order, _id }: TProps) => {
   const [action, setAction] = useState("");
   const [placeSingleOrder, { isLoading: loading }] =
     usePlaceSingleOrderMutation();
-  const [updateStatus, { isLoading }] = useUpdateOrderStatusMutation();
+  const [updateOrderStatus, { isLoading }] = useUpdateOrderStatusMutation();
 
-  // const orders = useAppSelector(({ order }) => order.bulkOrders);
   const handleSubmit = async () => {
     const orderData = {
       invoice: order.orderId,
@@ -37,7 +26,7 @@ const UpdateStatus = ({ order, _id }: TProps) => {
       recipient_phone: order.shipping.phoneNumber,
       recipient_address: order.shipping.fullAddress,
       cod_amount: order.total,
-      note: "",
+      note: order.courierNotes,
     };
     const updatePayload = {
       orderIds: [_id],
@@ -45,52 +34,72 @@ const UpdateStatus = ({ order, _id }: TProps) => {
     };
     try {
       if (action === "On courier") {
-        // console.log(updatePayload)
-        // console.log(orderData)
-        await placeSingleOrder(orderData).unwrap();
-        await updateStatus(updatePayload).unwrap();
-
-        toast({
-          className: "bg-success text-white text-2xl",
-          title: "Courier entry is successful!",
-        });
-        refetchSingleOrder();
-      } else {
-        // console.log(updatePayload)
-        await updateStatus(updatePayload).unwrap();
-        refetchSingleOrder();
+        const courier = await placeSingleOrder(orderData).unwrap();
+        if (courier.status == 400) {
+          toast({
+            className: "text-2xl",
+            title: "Courier entry is Failed!",
+            variant: "destructive",
+          });
+          return;
+        }
+        const res = await updateOrderStatus(updatePayload).unwrap();
+        if (res.success) {
+          refetchSingleOrder();
+          refetchData("allOrders");
+          toast({
+            className: "bg-success text-white text-2xl",
+            title: "Courier entry is successful!",
+          });
+          return;
+        } else {
+          throw new Error(res.message);
+        }
       }
-    } catch (error) {
-      // console.error("Error:", error);
+      if (action) {
+        const res = await updateOrderStatus(updatePayload).unwrap();
+        if (res.success) {
+          refetchData("allOrders");
+          refetchData("singleOrder");
+          toast({
+            className: "bg-success text-white text-2xl",
+            title: "Order status updated successfully!",
+          });
+          return;
+        } else {
+          throw new Error(res.message);
+        }
+      }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
       toast({
         variant: "destructive",
-        title: "Courier entry is failed!",
+        title: error?.message,
       });
     }
   };
 
   return (
-    <div className="space-y-4">
-      <Select onValueChange={(value) => setAction(value)}>
-        <SelectTrigger className="min-w-[140px] h-8 text-center">
-          <SelectValue placeholder="Update Status" />
-        </SelectTrigger>
-        <SelectContent className="!text-[12px]">
-          <SelectGroup>
-            <SelectLabel className="!text-[12px]">Update Status</SelectLabel>
-            <SelectItem value="processing">Processing</SelectItem>
-            <SelectItem value="On courier">On Courier</SelectItem>
-            <SelectItem value="completed">Completed</SelectItem>
-            <SelectItem value="canceled">Canceled</SelectItem>
-          </SelectGroup>
-        </SelectContent>
-      </Select>
+    <div className="flex items-center gap-5">
+      <select
+        onChange={(e) => setAction(e.target.value)}
+        className="h-9 border border-primary focus:outline focus:outline-primary rounded-sm"
+      >
+        <option value="">Update status</option>
+        <option value="confirmed">Confirmed</option>
+        <option value="processing">Processing</option>
+        <option value="On courier">On Courier</option>
+        <option value="completed">Completed</option>
+        <option value="canceled">Canceled</option>
+        <option value="returned">Returned</option>
+        <option value="follow up">Follow up</option>
+      </select>
       <div className="flex justify-end">
         <Button
           onClick={handleSubmit}
           disabled={loading || isLoading}
           className="self-end bg-primary"
-          size={"sm"}
+          // size={"sm"}
         >
           Update
         </Button>

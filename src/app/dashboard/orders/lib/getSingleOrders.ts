@@ -25,6 +25,7 @@ export default async function getSingleOrder(orderId: string) {
         _id: product?._id,
         orderItemID: _id,
         title: product?.title,
+        slug: product?.slug,
         image: {
           src: product?.image?.thumbnail?.src,
           alt: product?.image?.thumbnail?.src,
@@ -53,8 +54,7 @@ export default async function getSingleOrder(orderId: string) {
     },
     status: order.status,
     shipping: order.shipping,
-    orderFrom: order.orderFrom,
-
+    orderSource: order.orderFrom,
     createdAt: order.createdAt,
     updatedAt: order.updatedAt,
   };

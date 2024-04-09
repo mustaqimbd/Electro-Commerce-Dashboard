@@ -46,7 +46,7 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
     paymentMethod,
     status,
     shipping,
-    // orderFrom,
+    // orderSource,
     createdAt,
     invoiceNotes,
     officialNotes,
@@ -66,23 +66,28 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
                 <span className="font-bold">Order Id :</span> {orderId}
               </div>
               <div className="flex items-center gap-2">
-                <span className="font-bold">Status : </span>{" "}
+                <span className="font-bold min-w-[60px]">Status : </span>
                 <span
                   className={`capitalize px-2 pb-[2px] pt-[1px] text-white rounded`}
                   style={{
-                    backgroundColor: `${
+                    backgroundColor:
                       status === "pending"
                         ? "#fec400"
-                        : status === "On courier"
-                          ? "#4c84ff"
-                          : status === "canceled"
-                            ? "#fe5461"
-                            : status === "completed"
-                              ? "#2DB224"
-                              : status === "processing"
-                                ? "#FA8232"
-                                : ""
-                    }`,
+                        : status === "confirmed"
+                          ? "rgb(107 211 176)"
+                          : status === "processing"
+                            ? "#FA8232"
+                            : status === "On courier"
+                              ? "#4c84ff"
+                              : status === "canceled"
+                                ? "#fe5461"
+                                : status === "completed"
+                                  ? "#2DB224"
+                                  : status === "returned"
+                                    ? "rgb(227 131 144)"
+                                    : status === "follow up"
+                                      ? "#00C3C6"
+                                      : "",
                   }}
                 >
                   {status}
@@ -93,7 +98,7 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
               {/* <Button className="bg-primary" size={"sm"}>
                 <SendHorizontal className="w-4 mr-2" /> Courier Entry
               </Button> */}
-              <Invoice order={order} />
+              <Invoice orders={[order]} />
               <Link href={`/dashboard/orders/${_id}/edit`}>
                 <Button variant={"outline"} className="" size={"sm"}>
                   <PencilIcon className="w-4 mr-2" /> Edit Order
@@ -159,6 +164,7 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
             </div>
           </div>
           <hr />
+          {/* Single order table */}
           <OrderedProductTable products={products} />
           <hr />
           <div className="space-y-[2px] space-y2 text-sm bg-light p-5">
@@ -167,6 +173,9 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
             </p>
             <p className="text-right pt-[2px] pt2">
               <span className="font-medium">Sub Total :</span> ৳ {subtotal}
+            </p>
+            <p className="text-right">
+              <span className="font-medium">Discount : </span>৳ {discount}
             </p>
             <p className="text-right">
               <span className="font-medium">Advance : </span>৳ {advance}
@@ -215,7 +224,9 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
           </div>
         </Card>
         <div className="h-[300px] pr-4 pb-10 flex flex-col justify-end">
-          <DeleteOrderBtn _id={_id} />
+          <DeleteOrderBtn _id={_id} variant="destructive">
+            Delete
+          </DeleteOrderBtn>
         </div>
       </div>
     </div>
