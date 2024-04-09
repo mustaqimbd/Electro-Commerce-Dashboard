@@ -1,5 +1,14 @@
 "use client";
 import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import config from "@/config/config";
+import {
   ColumnDef,
   VisibilityState,
   flexRender,
@@ -9,19 +18,10 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import Image from "next/image";
-import config from "@/config/config";
 import Link from "next/link";
 import * as React from "react";
-
+//this is type
 type TProduct = {
   _id: string;
   title: string;

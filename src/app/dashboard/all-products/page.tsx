@@ -6,9 +6,10 @@ import ProductsTable from "./components/ProductsTable";
 // import getAllProducts from "./lib/getAllProducts";
 import ApplyButton from "./components/ApplyButton";
 import Filter from "./components/Filter";
-import getAllCategories from "../add-category/lib/getAllCategories";
+
 // import queryHelper from "@/utilities/queryHelper";
 import fetchData from "@/utilities/fetchData";
+import getAllCategories from "../add-category/lib/getCategories";
 
 type TProps = { searchParams: { category: string; stock: string } };
 

@@ -3,22 +3,19 @@ import baseApi from "@/redux/baseApi/baseApi";
 const attributesApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     deleteAttribute: builder.mutation({
-      query: (categoryIds) => ({
-        url: `/categories`,
+      query: (attributeId) => ({
+        url: `/attributes/${attributeId}`,
         method: "DELETE",
-        body: {
-          categoryIds,
-        },
+        // body: {
+        //   categoryIds: attributeId,
+        // },
       }),
     }),
     addAttribute: builder.mutation({
-      query: (attributeName) => ({
+      query: (data) => ({
         url: `/attributes`,
         method: "POST",
-        body: {
-          name: attributeName,
-          values: [""],
-        },
+        body: data,
       }),
     }),
   }),
