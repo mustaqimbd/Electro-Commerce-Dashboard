@@ -21,7 +21,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import * as React from "react";
-
+//this is type
 type TProduct = {
   _id: string;
   title: string;
