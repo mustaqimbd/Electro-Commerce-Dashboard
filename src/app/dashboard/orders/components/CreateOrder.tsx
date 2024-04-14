@@ -21,7 +21,7 @@ const schema = yup.object().shape({
     phoneNumber: yup.string().required("Phone number is required!"),
     fullAddress: yup.string().required("Customer address is required!"),
   }),
-  shippingChargeId: yup.string().required("Shipping cost is required!"),
+  shippingCharge: yup.string().required("Shipping cost is required!"),
   payment: yup.object().shape({
     paymentMethod: yup.string().required("Payment is required!"),
   }),
@@ -196,7 +196,7 @@ const CreateOrder = ({ order }: { order?: TOrder }) => {
               </Label>
               <div className="space-y-2 w-full">
                 <select
-                  {...register("shippingChargeId")}
+                  {...register("shippingCharge")}
                   className="w-full h-9 border border-gray-300  rounded-sm"
                 >
                   <option value="">Shipping charge</option>
@@ -210,9 +210,9 @@ const CreateOrder = ({ order }: { order?: TOrder }) => {
                     </option>
                   ))}
                 </select>
-                {errors.shippingChargeId?.message && (
+                {errors.shippingCharge?.message && (
                   <p className="text-red-600">
-                    {errors.shippingChargeId?.message as string}
+                    {errors.shippingCharge?.message as string}
                   </p>
                 )}
               </div>
