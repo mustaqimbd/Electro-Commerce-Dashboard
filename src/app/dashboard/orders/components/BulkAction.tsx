@@ -29,16 +29,8 @@ const BulkAction = () => {
     try {
       if (bulkAction === "On courier") {
         // console.log(selectedOrders)
-        const courier = await placeOrders(selectedOrders).unwrap();
+        await placeOrders(selectedOrders).unwrap();
         // console.log(courier)
-        if (courier.status == 400) {
-          toast({
-            className: "text-2xl",
-            title: "Courier entry is Failed!",
-            variant: "destructive",
-          });
-          return;
-        }
         const res = await updateOrderStatus(updatePayload).unwrap();
         if (res.success) {
           refetchData("allOrders");

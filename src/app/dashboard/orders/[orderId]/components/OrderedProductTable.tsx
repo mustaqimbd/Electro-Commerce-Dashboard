@@ -23,7 +23,7 @@ import Link from "next/link";
 import * as React from "react";
 //this is type
 type TProduct = {
-  _id: string;
+  productId: string;
   title: string;
   slug: string;
   image: {
@@ -49,7 +49,7 @@ export const columns: ColumnDef<TProduct>[] = [
     accessorKey: "image",
     header: "Products",
     cell: ({ row }) => {
-      const { image, title, _id, slug } = row.original;
+      const { image, title, productId, slug } = row.original;
       return (
         <div className="flex justify-start items-center gap-3">
           <div>
@@ -62,7 +62,7 @@ export const columns: ColumnDef<TProduct>[] = [
           </div>
           <div>
             <Link
-              href={`${config.base_client_url}/product/${_id}/${slug}}`}
+              href={`${config.base_client_url}/product/${productId}/${slug}}`}
               className="hover:text-blue-700"
               target="_blank"
             >

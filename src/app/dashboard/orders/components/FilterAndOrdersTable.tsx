@@ -33,6 +33,7 @@ const FilterAndOrdersTable = ({ orders }: { orders: TOrder[] }) => {
   return (
     <>
       <div className="flex items-center gap-20 mb-5">
+        {/* balk actions */}
         <BulkAction />
         <div className="flex items-center gap-2">
           <select

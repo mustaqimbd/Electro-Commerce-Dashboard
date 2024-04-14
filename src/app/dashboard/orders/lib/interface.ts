@@ -73,5 +73,5 @@ export type TOrder = {
   invoiceNotes?: string;
   officialNotes?: string;
   courierNotes?: string;
-  orderSource: string;
+  orderSource: { name: string; url: string; lpNo: number };
 };

@@ -16,6 +16,7 @@ import UpdateStatus from "../components/UpdateStatus";
 import getSingleOrder from "../lib/getSingleOrders";
 import Invoice from "./components/Invoice";
 import { OrderedProductTable } from "./components/OrderedProductTable";
+import backgroundColor from "../utils/backgroundColor";
 
 const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
   const order = await getSingleOrder(params.orderId);
@@ -41,9 +42,8 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
     subtotal,
     shippingCharge,
     advance = 0,
-
     total,
-    paymentMethod,
+    payment,
     status,
     shipping,
     // orderSource,
@@ -69,26 +69,7 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
                 <span className="font-bold min-w-[60px]">Status : </span>
                 <span
                   className={`capitalize px-2 pb-[2px] pt-[1px] text-white rounded`}
-                  style={{
-                    backgroundColor:
-                      status === "pending"
-                        ? "#fec400"
-                        : status === "confirmed"
-                          ? "rgb(107 211 176)"
-                          : status === "processing"
-                            ? "#FA8232"
-                            : status === "On courier"
-                              ? "#4c84ff"
-                              : status === "canceled"
-                                ? "#fe5461"
-                                : status === "completed"
-                                  ? "#2DB224"
-                                  : status === "returned"
-                                    ? "rgb(227 131 144)"
-                                    : status === "follow up"
-                                      ? "#00C3C6"
-                                      : "",
-                  }}
+                  style={backgroundColor(status)}
                 >
                   {status}
                 </span>
@@ -104,11 +85,6 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
                   <PencilIcon className="w-4 mr-2" /> Edit Order
                 </Button>
               </Link>
-              {/* <EditOrder
-               
-                modalTitle={"Edit Order"}
-                order={order}
-              /> */}
             </div>
           </div>
           <hr className="my-2" />
@@ -155,7 +131,7 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
               <h1 className="font-bold">Payment By</h1>
               <div>
                 <span className="flex items-center gap-2">
-                  {paymentMethod.name}
+                  {payment?.paymentMethod?.name}
                 </span>
               </div>
               {/* <span className="flex items-center gap-2">

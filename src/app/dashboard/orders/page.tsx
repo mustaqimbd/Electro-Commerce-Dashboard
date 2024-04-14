@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import fetchData from "@/utilities/fetchData";
 import FilterAndOrdersTable from "./components/FilterAndOrdersTable";
 import CreateOrder from "./components/CreateOrder";
+import backgroundColor from "./utils/backgroundColor";
 
 const Orders = async () => {
   const orders = await fetchData("/orders/admin/all-orders", ["allOrders"], {
@@ -34,26 +35,7 @@ const Orders = async () => {
               <TypographyH4 key={status.name} className="capitalize">
                 <span
                   className={`capitalize px-2 pb-[3px] pt-[1px] text-white rounded`}
-                  style={{
-                    backgroundColor:
-                      status.name === "pending"
-                        ? "#fec400"
-                        : status.name === "confirmed"
-                          ? "rgb(107 211 176)"
-                          : status.name === "processing"
-                            ? "#FA8232"
-                            : status.name === "On courier"
-                              ? "#4c84ff"
-                              : status.name === "canceled"
-                                ? "#fe5461"
-                                : status.name === "completed"
-                                  ? "#2DB224"
-                                  : status.name === "returned"
-                                    ? "rgb(227 131 144)"
-                                    : status.name === "follow up"
-                                      ? "#00C3C6"
-                                      : "",
-                  }}
+                  style={backgroundColor(status.name)}
                 >
                   {status.name} ({status.total})
                 </span>

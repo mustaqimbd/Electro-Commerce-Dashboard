@@ -14,10 +14,10 @@ const orderApi = courierBaseApi.injectEndpoints({
       query: (payload: TPlaceOrder[]) => ({
         url: `/create_order/bulk-order`,
         method: "POST",
-        body: { data: payload },
+        body: payload,
       }),
     }),
-    checkDeliveryStatus: builder.query({
+    courierStatus: builder.query({
       query: (invoiceId: string) => ({
         url: `/status_by_invoice/${invoiceId}`,
         method: "GET",
@@ -29,5 +29,5 @@ const orderApi = courierBaseApi.injectEndpoints({
 export const {
   usePlaceSingleOrderMutation,
   usePlaceOrdersMutation,
-  useCheckDeliveryStatusQuery,
+  useCourierStatusQuery,
 } = orderApi;

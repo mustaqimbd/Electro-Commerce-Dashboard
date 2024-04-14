@@ -1,61 +1,45 @@
 import { NextRequest, NextResponse } from "next/server";
-
 import decodeJWT from "./utilities/decodeJWT";
 import { TUser } from "./redux/features/auth/interface";
 import getAccessToken from "./lib/getAccessToken";
-// import { cookies } from 'next/headers'
+import con from "@/config/config";
 
 export async function middleware(request: NextRequest) {
-  let accessToken = request.cookies.get("accessToken")?.value;
+  const accessToken = request.cookies.get("accessToken")?.value || "";
   const refreshToken = request.cookies.get("refreshToken")?.value;
+
   if (!refreshToken) {
     return Response.redirect(new URL("/login", request.url));
   }
 
   if (!accessToken) {
     try {
-      accessToken = await getAccessToken(refreshToken);
-      // response.cookies.set({
-      //   name: 'accessToken',
-      //   value: accessToken,
-      //   httpOnly: true,
-      //   path: '/',
-      // })
+      const token = await getAccessToken(refreshToken);
+      const cookieOption = {
+        domain: con.env === "production" ? `.${con.main_domain}` : "localhost",
+        httpOnly: con.env === "production",
+        secure: con.env === "production",
+        sameSite: "lax" as const,
+        maxAge: Number(con.token_data.access_token_cookie_expires),
+      };
+      const response = NextResponse.next();
+      response.cookies.set("accessToken", token, cookieOption);
+      return response;
     } catch (error) {
       return Response.redirect(new URL("/login", request.url));
     }
   }
-  const response = NextResponse.next();
-  response.cookies.set("vercel", "fast");
-  response.cookies.set({
-    name: "vercel",
-    value: "fast",
-    path: "/",
-  });
-  // try {
-  const currentUser = decodeJWT(accessToken as string) as TUser;
 
+  const currentUser = decodeJWT(accessToken as string) as TUser; // Decode the JWT
   if (currentUser.role !== "admin") {
     return Response.redirect(new URL("/error", request.url));
   }
 
-  // if (
-  //   currentUser.role === "admin" &&
-  //   request.nextUrl.pathname === "/registration"
-  // ) {
-  //   return Response.redirect(new URL("/registration", request.url));
-  // }
-  if (
-    currentUser.role === "admin" &&
-    !request.nextUrl.pathname.startsWith("/dashboard")
-  ) {
+  if (!request.nextUrl.pathname.startsWith("/dashboard")) {
     return Response.redirect(new URL("/dashboard", request.url));
   }
 
-  // return new Response(null, { status: 200 });
-  // } catch (error) {
-  //   return Response.redirect(new URL("/error", request.url));
-  // }
+  return null;
 }
 
 export const config = {
@@ -63,38 +47,3 @@ export const config = {
     "/((?!api|_next/static|_next/image|favicon.ico|.*\\.png$|login|registration|error).*)",
   ],
 };
-
-//middleware.ts
-// import type { NextRequest } from "next/server";
-// import decodeJWT from "./utilities/decodeJWT";
-// import { TUser } from "./redux/features/auth/interface";
-// import getAccessToken from "./lib/getAccessToken";
-
-// export async function middleware(request: NextRequest) {
-//   let accessToken = request.cookies.get("accessToken")?.value;
-//   if (!accessToken) {
-//     try {
-//       accessToken = await getAccessToken();
-//     } catch (error) {
-//       return Response.redirect(new URL("/login", request.url));
-//     }
-//   }
-
-//   const currentUser = decodeJWT(accessToken as string) as TUser;
-
-//   if (currentUser.role !== "admin") {
-//     return Response.redirect(new URL("/error", request.url));
-//   }
-
-//   if (currentUser.role === "admin" && !request.nextUrl.pathname.startsWith("/dashboard")) {
-//     return Response.redirect(new URL("/dashboard", request.url));
-//   }
-
-//   return Response;
-// }
-
-// export const config = {
-//   matcher: [
-//     "/((?!api|_next/static|_next/image|favicon.ico|.*\\.png$|login|registration|error).*)",
-//   ],
-// };
