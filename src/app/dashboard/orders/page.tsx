@@ -32,12 +32,12 @@ const Orders = async () => {
           {/* All,Pending,canceled,on courier etc status*/}
           <div className="flex gap-5 items-center justify-start mt-3 mb-8">
             {orderStatusCount.map((status: { name: string; total: string }) => (
-              <TypographyH4 key={status.name} className="capitalize">
+              <TypographyH4 key={status?.name} className="capitalize">
                 <span
                   className={`capitalize px-2 pb-[3px] pt-[1px] text-white rounded`}
-                  style={backgroundColor(status.name)}
+                  style={backgroundColor(status?.name)}
                 >
-                  {status.name} ({status.total})
+                  {status?.name} ({status.total})
                 </span>
               </TypographyH4>
             ))}

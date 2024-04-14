@@ -119,7 +119,7 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
               <h1 className="font-bold">Shipping charge</h1>
               <div>
                 <span>
-                  {shippingCharge.name} ৳ {shippingCharge.amount}
+                  {shippingCharge?.name} ৳ {shippingCharge?.amount}
                 </span>
               </div>
               {/* <span className="flex items-center gap-2">

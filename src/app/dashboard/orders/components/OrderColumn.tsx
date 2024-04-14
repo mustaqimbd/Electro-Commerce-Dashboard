@@ -110,7 +110,7 @@ export const columns: ColumnDef<TOrder>[] = [
     accessorKey: "orderSource",
     header: "Origin",
     cell: ({ row }) => (
-      <div className="capitalized ">{row.original.orderSource.name}</div>
+      <div className="capitalized ">{row.original.orderSource?.name}</div>
     ),
   },
   {
