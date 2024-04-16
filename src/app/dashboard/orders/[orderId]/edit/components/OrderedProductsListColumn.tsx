@@ -13,7 +13,7 @@ import { Check } from "lucide-react";
 import Image from "next/image";
 import { refetchSingleOrder } from "../../../lib/getSingleOrders";
 export type TProduct = {
-  orderItemID: string;
+  // orderItemID: string;
   orderId: string;
   _id: string;
   title: string;
@@ -56,22 +56,24 @@ export const columns: ColumnDef<TProduct>[] = [
   {
     accessorKey: "quantity",
     header: "Quantity",
-    cell: async ({ row }) => {
+    cell: ({ row }) => {
       const [updateOrderProductQuantity] =
         // eslint-disable-next-line react-hooks/rules-of-hooks
         useUpdateOrderProductQuantityMutation();
       // eslint-disable-next-line react-hooks/rules-of-hooks
       const [qunatity, setQuantity] = React.useState<number>(0);
+
       const handleQuantityChange = async () => {
         const newQuantity = qunatity;
 
         // Ensure new quantity is a valid non-negative integer
         if (!isNaN(newQuantity) && newQuantity >= 0) {
           const quntaityUpdaeData = {
-            orderedItemId: row.original?.orderItemID,
-            _id: row?.original?.orderId,
+            orderedItemId: row.original?._id,
+            orderId: row?.original?.orderId,
             newQuantity: newQuantity,
           };
+
           const result =
             await updateOrderProductQuantity(quntaityUpdaeData).unwrap();
 
