@@ -80,6 +80,7 @@ export const columns: ColumnDef<TProduct>[] = [
           if (result?.success) {
             refetchSingleOrder();
             toast({
+              className: "bg-success text-white text-2xl",
               title: result?.message,
             });
           }
