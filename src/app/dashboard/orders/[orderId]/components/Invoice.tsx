@@ -3,17 +3,30 @@ import { MapPin, Phone, UserRound, ScissorsLineDashedIcon } from "lucide-react";
 import logo from "../../../../../../public/logo.png";
 import Image from "next/image";
 import { InvoiceTable } from "./InvoiceTable";
-import { TOrder } from "../../lib/interface";
-function Invoice({ orders }: { orders: TOrder[] }) {
+import { TOrders } from "@/types/order/order.interface";
+
+function Invoice({ orders }: { orders: TOrders[] }) {
+  // function formatDate(date: string | number | Date) {
+  //   return new Date(date).toLocaleString("en-US", {
+  //     day: "numeric",
+  //     month: "long",
+  //     year: "numeric",
+  //     hour: "numeric",
+  //     minute: "numeric",
+  //     second: "numeric",
+  //   });
+  // }
   function formatDate(date: string | number | Date) {
-    return new Date(date).toLocaleString("en-US", {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
+    const d = new Date(date);
+    const t = new Date(date).toLocaleString("en-US", {
       hour: "numeric",
       minute: "numeric",
       second: "numeric",
     });
+    const day = d.getDate();
+    const month = d.toLocaleString("en-US", { month: "long" });
+    const year = d.getFullYear();
+    return `${day} ${month} ${year} at ${t}`; // "24 April 2024"
   }
 
   return (

@@ -1,19 +1,19 @@
 "use client";
 import CommonModal from "@/components/modal/CommonModal";
-import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { TOrder } from "../lib/interface";
-import fetchData, { refetchData } from "@/utilities/fetchData";
-import { Input } from "@/components/ui/input";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { Plus, Minus } from "lucide-react";
 import { useCreateOrderMutation } from "@/redux/features/order/orderApi";
+import { TOrders } from "@/types/order/order.interface";
+import fetchData, { refetchData } from "@/utilities/fetchData";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { Minus, Plus } from "lucide-react";
+import { useEffect, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import * as yup from "yup";
 
 const schema = yup.object().shape({
   shipping: yup.object().shape({
@@ -59,7 +59,7 @@ const schema = yup.object().shape({
 
 type TFormInput = yup.InferType<typeof schema>;
 
-const CreateOrder = ({ order }: { order?: TOrder }) => {
+const CreateOrder = ({ order }: { order?: TOrders }) => {
   const { toast } = useToast();
   const [createOrder, { isLoading }] = useCreateOrderMutation();
   const [productsName, setProductsName] = useState([]);
@@ -70,15 +70,24 @@ const CreateOrder = ({ order }: { order?: TOrder }) => {
 
   useEffect(() => {
     const productsName = async () => {
-      const data = await fetchData("/products", ["ProductsName"]);
+      const data = await fetchData({
+        endPoint: "/products",
+        tags: ["ProductsName"],
+      });
       setProductsName(data);
     };
     const shippingCharge = async () => {
-      const data = await fetchData("/shipping-charges", ["shippingCharge"]);
+      const data = await fetchData({
+        endPoint: "/shipping-charges",
+        tags: ["shippingCharge"],
+      });
       setShippingCharges(data);
     };
     const paymentMethod = async () => {
-      const data = await fetchData("/payment-method", ["paymentMethod"]);
+      const data = await fetchData({
+        endPoint: "/payment-method",
+        tags: ["paymentMethod"],
+      });
       setPaymentMethods(data);
     };
     productsName();
@@ -120,7 +129,7 @@ const CreateOrder = ({ order }: { order?: TOrder }) => {
 
   return (
     <>
-      <Button onClick={handleOpen}>
+      <Button onClick={handleOpen} className="rounded-2xl">
         <Plus /> Create Order
       </Button>
       <CommonModal
@@ -333,6 +342,8 @@ const CreateOrder = ({ order }: { order?: TOrder }) => {
                     <div className="space-y-2 w-full">
                       <Input
                         type="number"
+                        defaultValue={1}
+                        min={1}
                         {...register(`orderedProducts.${index}.quantity`)}
                         id="quantity"
                         placeholder="Enter quantity"
@@ -373,7 +384,7 @@ const CreateOrder = ({ order }: { order?: TOrder }) => {
                 value="orderNote"
                 className="border border-cyan-400 data-[state=active]:bg-primary data-[state=active]:text-white"
               >
-                Order Note
+                Official Note
               </TabsTrigger>
               <TabsTrigger
                 value="invoiceNote"

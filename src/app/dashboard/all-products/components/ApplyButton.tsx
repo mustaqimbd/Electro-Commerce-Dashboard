@@ -16,7 +16,7 @@ import { useState } from "react";
 const ApplyButton = () => {
   const [action, setAction] = useState("");
   // const [placeOrders] = usePlaceOrdersMutation();
-  // const orders = useAppSelector(({ orderPlace }) => orderPlace.bulkOrders);
+  // const orders = useAppSelector(({ orders }) => orders.bulkOrders);
   const handleSubmit = async () => {
     // const payload = [
     //   {

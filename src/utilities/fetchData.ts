@@ -4,12 +4,14 @@ import config from "@/config/config";
 import objectToSearchParams from "./objectToSearchParams";
 import { revalidateTag } from "next/cache";
 
-const fetchData = async (
-  endPoint: string,
-  tags?: string[],
-  searchParams?: Record<string, string | string[] | undefined>,
-  cache?: RequestCache
-) => {
+type TProps = {
+  endPoint: string;
+  tags?: string[];
+  searchParams?: Record<string, string | string[] | undefined>;
+  cache?: RequestCache;
+};
+
+const fetchData = async ({ endPoint, tags, searchParams, cache }: TProps) => {
   let url = `${config.base_url}/api/v1${endPoint}`;
   const reqConfig = {
     cache: cache,

@@ -1,4 +1,4 @@
-import { TOrder } from "@/app/dashboard/orders/lib/interface";
+import { TOrders } from "@/types/order/order.interface";
 
 export type TProduct = {
   _id: string;
@@ -41,11 +41,16 @@ export type TUpdatePayload = {
 };
 
 export type TInitialStatePlaceOrder = {
+  orders: TOrders[];
+  searchedOrders: TOrders[];
+  orderFilterValue: string;
+  processingOrders: TOrders[];
+  searchProcessingOrders: TOrders[];
   singleOrder: TPlaceOrder;
   bulkOrders: {
     selectedOrders: TPlaceOrder[];
     orderIds: string[];
-    invoices: TOrder[];
+    invoices: TOrders[];
   };
 };
 export type TInitialStateUpdateOrder = {

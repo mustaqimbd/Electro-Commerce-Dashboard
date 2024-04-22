@@ -16,11 +16,13 @@ type TProps = { searchParams: { category: string; stock: string } };
 const AllProducts = async ({ searchParams }: TProps) => {
   // const query = queryHelper({ ...searchParams });
   // const products = await getAllProducts(query);
-  const products = await fetchData(
-    "/products/admin",
-    ["allProducts"],
-    searchParams
-  );
+  // console.log(searchParams);
+  const products = await fetchData({
+    endPoint: "/products/admin",
+    tags: ["allProducts"],
+    searchParams,
+  });
+  // console.log(products);
   const categories = await getAllCategories();
 
   return (

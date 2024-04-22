@@ -11,14 +11,14 @@ import {
   persistStore,
 } from "redux-persist";
 // import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
-import storage from "./storage";
 import baseApi from "./baseApi/baseApi";
 import courierBaseApi from "./baseApi/courierBaseApi";
 import addProductReducer from "./features/addProduct/addProductSlice";
 import variationReducer from "./features/addProduct/variation/variationSlice";
 import authReducer from "./features/auth/authSlice";
-import orderPlaceReducer from "./features/order/placeOrderSlice";
+import orderReducer from "./features/order/OrderSlice";
 import updateOrderReducer from "./features/order/updateOrderSlice";
+import storage from "./storage";
 
 const persistConfig = {
   key: "auth",
@@ -33,7 +33,7 @@ const store = configureStore({
     auth: persistedAuthReducer,
     addProduct: addProductReducer,
     productVariation: variationReducer,
-    orderPlace: orderPlaceReducer,
+    order: orderReducer,
     updateOrder: updateOrderReducer,
   },
   middleware: (getDefaultMiddlewares) =>

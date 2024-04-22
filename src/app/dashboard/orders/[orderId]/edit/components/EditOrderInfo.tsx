@@ -20,7 +20,8 @@ import { RootState } from "@/redux/store";
 import { MapPinIcon, PhoneCallIcon, User2Icon } from "lucide-react";
 import { refetchAllOrders } from "../../../lib/getAllOrders";
 import { refetchSingleOrder } from "../../../lib/getSingleOrders";
-import { TOrder } from "../../../lib/interface";
+import { TOrders } from "@/types/order/order.interface";
+
 // type TUpdateOrderForm = {
 //   discount?: number;
 //   fullName: string;
@@ -31,7 +32,7 @@ import { TOrder } from "../../../lib/interface";
 //   invoiceNotes?: string;
 // };
 
-// type TOrder = {
+// type TOrders= {
 //   invoiceNotes: string;
 //   courierNotes: string;
 //   officialNotes: string;
@@ -43,7 +44,7 @@ import { TOrder } from "../../../lib/interface";
 //   };
 // };
 
-const EditOrderInfo = ({ order }: { order: Partial<TOrder> }) => {
+const EditOrderInfo = ({ order }: { order: Partial<TOrders> }) => {
   const [updateOrderInfo] = useUpdateOrderInfoMutation();
 
   const { updateOrder } = useAppSelector(

@@ -68,8 +68,7 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
               <div className="flex items-center gap-2">
                 <span className="font-bold min-w-[60px]">Status : </span>
                 <span
-                  className={`capitalize px-2 pb-[2px] pt-[1px] text-white rounded`}
-                  style={backgroundColor(status)}
+                  className={`capitalize px-2 pb-[2px] pt-[1px] text-white rounded ${backgroundColor(status)}`}
                 >
                   {status}
                 </span>

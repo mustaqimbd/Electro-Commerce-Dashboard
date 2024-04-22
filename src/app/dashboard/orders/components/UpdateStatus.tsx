@@ -6,14 +6,16 @@ import { usePlaceSingleOrderMutation } from "@/redux/features/order/placeOrderAp
 import { refetchData } from "@/utilities/fetchData";
 import { useState } from "react";
 import { refetchSingleOrder } from "../lib/getSingleOrders";
-import { TOrder } from "../lib/interface";
+import { TOrders } from "@/types/order/order.interface";
+import statusOptions from "../utils/statusOptions";
 
 type TProps = {
-  order: TOrder;
+  order: TOrders;
   _id: string;
+  handleOpen?: () => void;
 };
 
-const UpdateStatus = ({ order, _id }: TProps) => {
+const UpdateStatus = ({ order, _id, handleOpen }: TProps) => {
   const [action, setAction] = useState("");
   const [placeSingleOrder, { isLoading: loading }] =
     usePlaceSingleOrderMutation();
@@ -41,6 +43,9 @@ const UpdateStatus = ({ order, _id }: TProps) => {
             title: "Courier entry is Failed!",
             variant: "destructive",
           });
+          if (handleOpen) {
+            handleOpen();
+          }
           return;
         }
         const res = await updateOrderStatus(updatePayload).unwrap();
@@ -51,6 +56,9 @@ const UpdateStatus = ({ order, _id }: TProps) => {
             className: "bg-success text-white text-2xl",
             title: "Courier entry is successful!",
           });
+          if (handleOpen) {
+            handleOpen();
+          }
           return;
         } else {
           throw new Error(res.message);
@@ -65,11 +73,15 @@ const UpdateStatus = ({ order, _id }: TProps) => {
             className: "bg-success text-white text-2xl",
             title: "Order status updated successfully!",
           });
+          if (handleOpen) {
+            handleOpen();
+          }
           return;
         } else {
           throw new Error(res.message);
         }
       }
+
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       toast({
@@ -79,20 +91,19 @@ const UpdateStatus = ({ order, _id }: TProps) => {
     }
   };
 
+  // const status = order.status;
   return (
     <div className="flex items-center gap-5">
       <select
         onChange={(e) => setAction(e.target.value)}
-        className="h-9 border border-primary focus:outline focus:outline-primary rounded-sm"
+        className="h-9 border border-primary focus:outline focus:outline-primary rounded-sm capitalize"
       >
         <option value="">Update status</option>
-        <option value="confirmed">Confirmed</option>
-        <option value="processing">Processing</option>
-        <option value="On courier">On Courier</option>
-        <option value="completed">Completed</option>
-        <option value="canceled">Canceled</option>
-        <option value="returned">Returned</option>
-        <option value="follow up">Follow up</option>
+        {statusOptions(order.status).map((status) => (
+          <option value={status} key={status}>
+            {status}
+          </option>
+        ))}
       </select>
       <div className="flex justify-end">
         <Button

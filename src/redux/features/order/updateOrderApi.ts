@@ -16,6 +16,7 @@ const updateOrderApi = baseApi.injectEndpoints({
           officialNotes: data?.officialNotes,
           invoiceNotes: data?.invoiceNotes,
           courierNotes: data?.courierNotes,
+          followUpDate: data?.followUpDate,
         },
       }),
     }),

@@ -1,13 +1,13 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { ColumnDef } from "@tanstack/react-table";
 import ActionDropDown from "./ActionDropDown";
+import AddNotes from "./AddNotes";
 import CustomerInfo from "./CustomerInfo";
 import OrderIdAndDate from "./OrderIdAndDate";
-import { TOrder } from "../lib/interface";
-import AddNotes from "./AddNotes";
-import Status from "./OrderStatus";
+import OrderStatus from "./OrderStatus";
+import { TOrders } from "@/types/order/order.interface";
 
-export const columns: ColumnDef<TOrder>[] = [
+export const columns: ColumnDef<TOrders>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -99,7 +99,7 @@ export const columns: ColumnDef<TOrder>[] = [
   {
     accessorKey: "status",
     header: "Status",
-    cell: ({ row }) => <Status order={row.original} />,
+    cell: ({ row }) => <OrderStatus order={row.original} />,
   },
   {
     accessorKey: "notes",
@@ -117,7 +117,6 @@ export const columns: ColumnDef<TOrder>[] = [
     id: "actions",
     header: "Actions",
     enableHiding: false,
-    // cell: ({ row }) => <Actions order={row.original} />,
     cell: ({ row }) => <ActionDropDown order={row.original} />,
   },
 ];

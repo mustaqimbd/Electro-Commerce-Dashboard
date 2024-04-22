@@ -8,9 +8,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { setBulkOrder } from "@/redux/features/order/placeOrderSlice";
-import { useAppDispatch } from "@/redux/hooks";
+import { setBulkOrder } from "@/redux/features/order/OrderSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import {
+  ColumnDef,
   flexRender,
   getCoreRowModel,
   getPaginationRowModel,
@@ -18,21 +19,39 @@ import {
 } from "@tanstack/react-table";
 import { useEffect } from "react";
 import formattedOrderData from "../utils/formattedOrderData";
-// import { TOrdersTableData } from "../utils/interface";
 import { columns } from "./OrderColumn";
-import { TOrder } from "../lib/interface";
+import { TOrders } from "@/types/order/order.interface";
+import FollowUpDate from "./FollowUpDate";
 
-export default function OrdersTable({ orders }: { orders: TOrder[] }) {
+export default function OrdersTable() {
   const dispatch = useAppDispatch();
+  const status = useAppSelector(({ order }) => order.orderFilterValue);
+
+  const newColumns: ColumnDef<TOrders>[] =
+    status === "follow up"
+      ? [
+          ...columns.slice(0, 8),
+          {
+            accessorKey: "followUpDate",
+            header: "Follow up",
+            cell: ({ row }) => <FollowUpDate order={row.original} />,
+          },
+          ...columns.slice(8),
+        ]
+      : [...columns];
+
+  const orders = useAppSelector(({ order }) => {
+    return order.searchedOrders.length ? order.searchedOrders : order.orders;
+  });
 
   const table = useReactTable({
     data: orders,
-    columns,
+    columns: newColumns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
   });
 
-  const selectedRows = table.getFilteredSelectedRowModel().rows;
+  const selectedRows = table?.getFilteredSelectedRowModel().rows;
   const selectedOrders = formattedOrderData(selectedRows);
 
   useEffect(() => {

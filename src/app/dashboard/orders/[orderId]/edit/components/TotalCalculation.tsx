@@ -2,13 +2,13 @@
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
 import { useUpdateOrderInfoMutation } from "@/redux/features/order/updateOrderApi";
+import { TOrders } from "@/types/order/order.interface";
 import { Check } from "lucide-react";
 import React from "react";
 import { refetchAllOrders } from "../../../lib/getAllOrders";
 import { refetchSingleOrder } from "../../../lib/getSingleOrders";
-import { TOrder } from "../../../lib/interface";
 
-const TotalCalculation = ({ order }: { order: TOrder }) => {
+const TotalCalculation = ({ order }: { order: TOrders }) => {
   const [discount, setDiscount] = React.useState(0);
   const [updateOrderInfo] = useUpdateOrderInfoMutation();
 

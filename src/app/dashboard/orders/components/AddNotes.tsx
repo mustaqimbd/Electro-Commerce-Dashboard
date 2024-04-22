@@ -1,16 +1,16 @@
 import CommonModal from "@/components/modal/CommonModal";
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
-import { useUpdateOrderInfoMutation } from "@/redux/features/order/updateOrderApi";
 import { useToast } from "@/components/ui/use-toast";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import { TOrder } from "../lib/interface";
+import { useUpdateOrderInfoMutation } from "@/redux/features/order/updateOrderApi";
+import { TOrders } from "@/types/order/order.interface";
 import { refetchData } from "@/utilities/fetchData";
+import { useState } from "react";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
-const AddNotes = ({ order }: { order: TOrder }) => {
+const AddNotes = ({ order }: { order: TOrders }) => {
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
@@ -48,14 +48,24 @@ const AddNotes = ({ order }: { order: TOrder }) => {
   return (
     <>
       {notes ? (
-        <button onClick={handleOpen} title={notes} className="relative">
-          <span className="flex justify-center items-center absolute -top-[10px] -right-2 h-4 w-4 bg-primary text-white rounded-full">
+        <button onClick={handleOpen} className="relative">
+          <span
+            className="flex justify-center items-center absolute -top-[10px] -right-2 h-4 w-4 bg-primary text-white rounded-full"
+            title="view notes"
+          >
             {noteNumbers}
           </span>
-          <span>{notes.length > 10 ? notes.slice(0, 10) + "..." : notes}</span>
+          <span title={notes}>
+            {notes.length > 10 ? notes.slice(0, 10) + "..." : notes}
+          </span>
         </button>
       ) : (
-        <button onClick={handleOpen}>Add note</button>
+        <Button
+          onClick={handleOpen}
+          className="bg-inherit text-inherit hover:bg-inherit"
+        >
+          Add note
+        </Button>
       )}
 
       <CommonModal
@@ -74,7 +84,7 @@ const AddNotes = ({ order }: { order: TOrder }) => {
                 value="orderNote"
                 className="border border-cyan-400 data-[state=active]:bg-primary data-[state=active]:text-white"
               >
-                Order Note
+                Official Note
               </TabsTrigger>
               <TabsTrigger
                 value="invoiceNote"

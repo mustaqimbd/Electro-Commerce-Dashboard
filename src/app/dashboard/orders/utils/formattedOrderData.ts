@@ -1,7 +1,7 @@
+import { TOrders } from "@/types/order/order.interface";
 import { Row } from "@tanstack/react-table";
-import { TOrder } from "../lib/interface";
 
-const formattedOrderData = (rows: Row<TOrder>[]) => {
+const formattedOrderData = (rows: Row<TOrders>[]) => {
   const selectedOrders = rows.map(({ original }) => {
     return {
       invoice: original.orderId,

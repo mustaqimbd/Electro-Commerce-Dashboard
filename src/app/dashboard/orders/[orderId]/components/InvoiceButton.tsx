@@ -1,4 +1,5 @@
 "use client";
+import { Button } from "@/components/ui/button";
 import { Printer } from "lucide-react";
 
 const InvoiceButton = () => {
@@ -340,10 +341,10 @@ const InvoiceButton = () => {
 
   return (
     <div className="invoice-button">
-      <button onClick={handlePrint} className="flex items-center">
+      <Button onClick={handlePrint} className="flex items-center">
         <Printer className="w-4 mr-2" />
         <span>Invoice</span>
-      </button>
+      </Button>
     </div>
   );
 };

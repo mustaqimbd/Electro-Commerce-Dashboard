@@ -8,7 +8,7 @@ type TProps = {
 };
 const CustomerInfo = ({ customer }: TProps) => {
   return (
-    <div className="capitalize flex flex-col mx-auto w-[150px]">
+    <div className="capitalize flex flex-col mx-auto w-[155px]">
       <div className="flex items-center gap-1" title={customer.fullName}>
         <UserRound className="w-4" />
         <span>

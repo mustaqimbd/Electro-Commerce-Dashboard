@@ -1,22 +1,23 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
-import { usePlaceOrdersMutation } from "@/redux/features/order/placeOrderApi";
+import { setBulkOrder } from "@/redux/features/order/OrderSlice";
 import { useUpdateOrderStatusMutation } from "@/redux/features/order/orderApi";
-import { useAppSelector } from "@/redux/hooks";
+import { usePlaceOrdersMutation } from "@/redux/features/order/placeOrderApi";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { refetchData } from "@/utilities/fetchData";
 import { useState } from "react";
 import Invoice from "../[orderId]/components/Invoice";
-import { setBulkOrder } from "@/redux/features/order/placeOrderSlice";
-import { useAppDispatch } from "@/redux/hooks";
+import statusOptions from "../utils/statusOptions";
 
 const BulkAction = () => {
   const dispatch = useAppDispatch();
   const [placeOrders] = usePlaceOrdersMutation();
   const [updateOrderStatus, { isLoading }] = useUpdateOrderStatusMutation();
   const { selectedOrders, orderIds, invoices } = useAppSelector(
-    ({ orderPlace }) => orderPlace.bulkOrders
+    ({ order }) => order.bulkOrders
   );
+  const filter = useAppSelector(({ order }) => order.orderFilterValue);
 
   const [bulkAction, setBulkAction] = useState("");
 
@@ -71,29 +72,28 @@ const BulkAction = () => {
   };
 
   return (
-    <>
+    <div
+      className={`${filter == "all" || filter == "canceled" || filter == "deleted" ? "hidden" : "flex gap-10 items-center"}`}
+    >
       <div className="flex items-center gap-2">
         <select
           defaultValue={bulkAction}
           onChange={(e) => setBulkAction(e.target.value)}
-          className="h-9 border border-primary focus:outline focus:outline-primary rounded-sm"
+          className="h-9 border border-primary focus:outline focus:outline-primary rounded-sm capitalize"
         >
           <option value="">Bulk Actions</option>
-          <option value="confirmed">Confirmed</option>
-          <option value="processing">Processing</option>
-          <option value="On courier">On Courier</option>
-          <option value="completed">Completed</option>
-          <option value="canceled">Canceled</option>
-          <option value="returned">Returned</option>
-          <option value="follow up">Follow up</option>
-          <option value="deleted">Move to trash</option>
+          {statusOptions(filter).map((status) => (
+            <option value={status} key={status}>
+              {status}
+            </option>
+          ))}
         </select>
         <Button onClick={handleBulkAction} disabled={isLoading}>
           Apply
         </Button>
       </div>
       <Invoice orders={invoices} />
-    </>
+    </div>
   );
 };
 
