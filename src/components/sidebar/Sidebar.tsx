@@ -84,7 +84,7 @@ export function Sidebar() {
             <span>Orders</span>
           </span>
         </Link>
-        <Link href="/dashboard/processing-orders">
+        {/* <Link href="/dashboard/processing-orders">
           <span
             className={cn(
               "group flex gap-2 items-center rounded-md px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
@@ -96,7 +96,7 @@ export function Sidebar() {
             <PlusCircle className="w-4 h-4" />
             <span>Processing Orders</span>
           </span>
-        </Link>
+        </Link> */}
 
         <Link href="/dashboard/all-claim-request">
           <span
