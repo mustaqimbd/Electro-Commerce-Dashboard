@@ -24,6 +24,7 @@ const TotalCalculation = ({ order }: { order: TOrders }) => {
       refetchAllOrders();
 
       toast({
+        className: "bg-success text-white text-2xl",
         title: "Discount Added",
       });
     } else {

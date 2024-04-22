@@ -22,7 +22,7 @@ const updateOrderApi = baseApi.injectEndpoints({
     }),
     updateOrderProductQuantity: builder.mutation({
       query: (data) => ({
-        url: `/orders/update-quantity/${data._id}`,
+        url: `/orders/update-quantity/${data.orderId}`,
         method: "PATCH",
         body: {
           orderedItemId: data?.orderedItemId,
