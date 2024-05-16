@@ -8,10 +8,10 @@ import { Input } from "@/components/ui/input";
 import config from "@/config/config";
 
 import { toast } from "@/components/ui/use-toast";
-import { useUpdateOrderProductQuantityMutation } from "@/redux/features/order/updateOrderApi";
+import { useUpdateOrderProductQuantityMutation } from "@/redux/features/orders/updateOrderApi";
 import { Check } from "lucide-react";
 import Image from "next/image";
-import { refetchSingleOrder } from "../../../lib/getSingleOrders";
+import { refetchData } from "@/utilities/fetchData";
 export type TProduct = {
   // orderItemID: string;
   orderId: string;
@@ -78,7 +78,7 @@ export const columns: ColumnDef<TProduct>[] = [
             await updateOrderProductQuantity(quntaityUpdaeData).unwrap();
 
           if (result?.success) {
-            refetchSingleOrder();
+            refetchData("singleOrder");
             toast({
               className: "bg-success text-white text-2xl",
               title: result?.message,

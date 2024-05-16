@@ -1,5 +1,4 @@
 "use client";
-
 import {
   ColumnDef,
   flexRender,
@@ -91,12 +90,12 @@ export function InvoiceTable({ products }: { products: TProduct[] }) {
     <div>
       <Table className="border-b" id="tbl">
         <TableHeader className="bg-secondary text-white ">
-          {table.getHeaderGroups().map((headerGroup) => (
+          {table?.getHeaderGroups()?.map((headerGroup) => (
             <TableRow key={headerGroup.id} className="border-none">
-              {headerGroup.headers.map((header) => {
+              {headerGroup?.headers?.map((header) => {
                 return (
                   <TableHead key={header.id} className="font-bold">
-                    {header.isPlaceholder
+                    {header?.isPlaceholder
                       ? null
                       : flexRender(
                           header.column.columnDef.header,
@@ -109,10 +108,10 @@ export function InvoiceTable({ products }: { products: TProduct[] }) {
           ))}
         </TableHeader>
         <TableBody>
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
+          {table?.getRowModel()?.rows?.length ? (
+            table?.getRowModel()?.rows.map((row) => (
               <TableRow key={row.id} className="border-b">
-                {row.getVisibleCells().map((cell) => (
+                {row.getVisibleCells()?.map((cell) => (
                   <TableCell key={cell.id} className="bg-muted/50">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>

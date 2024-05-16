@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
-import { useCreateOrderMutation } from "@/redux/features/order/orderApi";
+import { useCreateOrderMutation } from "@/redux/features/orders/ordersApi";
 import { TOrders } from "@/types/order/order.interface";
 import fetchData, { refetchData } from "@/utilities/fetchData";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -70,21 +70,21 @@ const CreateOrder = ({ order }: { order?: TOrders }) => {
 
   useEffect(() => {
     const productsName = async () => {
-      const data = await fetchData({
+      const { data } = await fetchData({
         endPoint: "/products",
         tags: ["ProductsName"],
       });
-      setProductsName(data);
+      setProductsName(data?.products);
     };
     const shippingCharge = async () => {
-      const data = await fetchData({
+      const { data } = await fetchData({
         endPoint: "/shipping-charges",
         tags: ["shippingCharge"],
       });
       setShippingCharges(data);
     };
     const paymentMethod = async () => {
-      const data = await fetchData({
+      const { data } = await fetchData({
         endPoint: "/payment-method",
         tags: ["paymentMethod"],
       });
@@ -321,7 +321,7 @@ const CreateOrder = ({ order }: { order?: TOrders }) => {
                       className="w-full h-9 border border-gray-300  rounded-sm"
                     >
                       <option value="">Select product</option>
-                      {productsName.map(({ _id, title }) => (
+                      {productsName?.map(({ _id, title }) => (
                         <option value={_id} key={_id}>
                           {title}
                         </option>

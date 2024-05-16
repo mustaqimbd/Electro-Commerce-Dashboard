@@ -1,47 +1,59 @@
-import fetchData from "@/utilities/fetchData";
+"use client";
+import OrderSearchBar from "@/components/OrderSearchBar";
 import BulkAction from "./components/BulkAction";
 import CreateOrder from "./components/CreateOrder";
+import OrdersStatusButtons from "./components/OrdersStatusButtons";
 import OrdersTable from "./components/OrdersTable";
-import StatusButtons from "./components/StatusButtons";
 // import DateRangeSelector from "./components/DateRangeSelector";
-import SearchOrder from "./components/SearchOrder";
-// import ShowOrder from "./components/ShowOrder";
-// import ShowOrder from "./components/ShowOrder";
+import Show from "@/components/Show";
+import { useAppSelector } from "@/redux/hooks";
+import { useRouter } from "next/navigation";
+import { permission } from "@/types/order/order.interface";
+import { useEffect } from "react";
 
-const Orders = async () => {
-  const orders = await fetchData({
-    endPoint: "/orders/admin/all-orders",
-    // tags: ["allOrders"],
-    searchParams: {
-      sort: "-createdAt",
-    },
-    cache: "no-cache",
-  });
-  const orderStatusCount = await fetchData({
-    endPoint: "/orders/orders-count-by-status",
-    // tags: ["orderStatusCount"],
-    cache: "no-cache",
-  });
+const Orders = () => {
+  const router = useRouter();
+  const { profile } = useAppSelector(({ auth }) => auth);
+  const permissions = profile?.permissions;
+  const manageOrder =
+    permissions &&
+    (permissions.includes(permission.superAdmin) ||
+      permissions.includes(permission.manageOrder));
+
+  useEffect(() => {
+    if (!manageOrder) {
+      router.push("/error");
+    }
+  }, [manageOrder, router]);
+
+  if (!permissions) {
+    return (
+      <div
+        role="status"
+        className="flex items-center justify-center h-full w-full bg-gray-300 rounded-lg animate-pulse dark:bg-gray-700"
+      ></div>
+    );
+  }
 
   return (
     <div className="rounded-md shadow-md p-5 bg-white">
-      {/* header section , button , search bar  */}
+      {/* header section, search bar  */}
       <div className="grid grid-cols-2 justify-between items-center mb-8">
         <h1 className="text-3xl">All Orders</h1>
-        <SearchOrder orders={orders} />
+        <OrderSearchBar endPoint="/orders/admin/all-orders" />
       </div>
       <div>
         {/* All,Pending,canceled,on courier etc status*/}
-        <StatusButtons orderStatusCount={orderStatusCount} orders={orders} />
+        <OrdersStatusButtons />
         <div className="flex items-center justify-between mt-5 mb-3">
           {/*Bulk actions and invoice print for Orders*/}
-          <BulkAction />
-          {/* <div className="flex items-center justify-end gap-5"> */}
-          <div>
-            <CreateOrder />
+          <div className="flex items-center gap-5">
+            <BulkAction />
+            <div>
+              <CreateOrder />
+            </div>
           </div>
-          {/* <ShowOrder/> */}
-          {/* </div> */}
+          <Show />
         </div>
         {/* <FilterAndOrdersTable/> */}
         <OrdersTable />

@@ -8,10 +8,10 @@ import {
 import { TOrders } from "@/types/order/order.interface";
 import { DotsVerticalIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
-// import Invoice from "../[orderId]/components/Invoice";
 import DeleteOrderBtn from "./DeleteOrderBtn";
+// import Invoice from "../[orderId]/components/Invoice";
 
-const ActionDropDown = ({ order }: { order: TOrders }) => {
+const OrderActionDropDown = ({ order }: { order: TOrders }) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -72,7 +72,7 @@ const ActionDropDown = ({ order }: { order: TOrders }) => {
               <span>Edit</span>
             </Link>
           </DropdownMenuItem>
-          {order.status == "pending" && (
+          {(order.status == "pending" || order.status == "follow up") && (
             <DropdownMenuItem>
               <DeleteOrderBtn
                 _id={order._id}
@@ -103,4 +103,4 @@ const ActionDropDown = ({ order }: { order: TOrders }) => {
   );
 };
 
-export default ActionDropDown;
+export default OrderActionDropDown;

@@ -105,21 +105,21 @@ export const columns: ColumnDef<TAllProducts>[] = [
     header: "Price",
     cell: ({ row }) => <span>৳ {row.original.price}</span>,
   },
-  {
-    accessorKey: "sales",
-    header: "Sales",
-    cell: ({ row }) => <span>{row.original.sales}150</span>,
-  },
-  {
-    accessorKey: "rating",
-    header: "Rating",
-    cell: ({ row }) => (
-      <div className="flex flex-col gap-1">
-        <span>{row.original.totalReview}</span>
-        <span>{row.original.averageRating}55555</span>
-      </div>
-    ),
-  },
+  // {
+  //   accessorKey: "sales",
+  //   header: "Sales",
+  //   cell: ({ row }) => <span>{row.original.sales}150</span>,
+  // },
+  // {
+  //   accessorKey: "rating",
+  //   header: "Rating",
+  //   cell: ({ row }) => (
+  //     <div className="flex flex-col gap-1">
+  //       <span>{row.original.totalReview}</span>
+  //       <span>{row.original.averageRating}55555</span>
+  //     </div>
+  //   ),
+  // },
   {
     accessorKey: "published",
     header: "Published",

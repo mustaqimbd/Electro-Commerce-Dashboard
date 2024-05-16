@@ -1,5 +1,4 @@
-import * as React from "react";
-
+"use client";
 import {
   Select,
   SelectContent,
@@ -8,14 +7,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { setLimit } from "@/redux/features/pagination/PaginationSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 
-const ShowOrder = () => {
+const Show = () => {
+  const dispatch = useAppDispatch();
+  const { limit } = useAppSelector(({ pagination }) => pagination);
+
   return (
-    <div className="flex items-center gap-1">
+    <div className="flex items-center gap-1 text-muted-foreground">
       <span>Show</span>
-      <Select>
-        <SelectTrigger className="w-[60px]">
-          <SelectValue placeholder="10" />
+      <Select onValueChange={(v) => dispatch(setLimit(parseInt(v)))}>
+        <SelectTrigger className="w-[60px] h-[30px] border-primary focus:ring-0">
+          <SelectValue placeholder={limit} />
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
@@ -31,4 +35,4 @@ const ShowOrder = () => {
   );
 };
 
-export default ShowOrder;
+export default Show;

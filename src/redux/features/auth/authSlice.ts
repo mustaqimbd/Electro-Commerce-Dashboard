@@ -4,6 +4,7 @@ import { TInitialState } from "./interface";
 const initialState: TInitialState = {
   user: null,
   token: null,
+  profile: null,
 };
 
 const authSlice = createSlice({
@@ -19,8 +20,11 @@ const authSlice = createSlice({
       state.user = null;
       state.token = null;
     },
+    setProfile: (state, action) => {
+      state.profile = action.payload;
+    },
   },
 });
-export const { setUser, logOut } = authSlice.actions;
+export const { setUser, logOut, setProfile } = authSlice.actions;
 
 export default authSlice.reducer;

@@ -1,12 +1,11 @@
 "use client";
 import { Button } from "@/components/ui/button";
-
 import { Input } from "@/components/ui/input";
 import { SectionTitle } from "@/components/ui/sectionTitle";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/use-toast";
-import { useUpdateOrderInfoMutation } from "@/redux/features/order/updateOrderApi";
+import { useUpdateOrderInfoMutation } from "@/redux/features/orders/updateOrderApi";
 import {
   setCourierNotes,
   setInvoiceNotes,
@@ -14,13 +13,12 @@ import {
   setShippingFullAddress,
   setShippingFullName,
   setShippingPhoneNumber,
-} from "@/redux/features/order/updateOrderSlice";
+} from "@/redux/features/orders/updateOrderSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { RootState } from "@/redux/store";
-import { MapPinIcon, PhoneCallIcon, User2Icon } from "lucide-react";
-import { refetchAllOrders } from "../../../lib/getAllOrders";
-import { refetchSingleOrder } from "../../../lib/getSingleOrders";
 import { TOrders } from "@/types/order/order.interface";
+import { MapPinIcon, PhoneCallIcon, User2Icon } from "lucide-react";
+import { refetchData } from "@/utilities/fetchData";
 
 // type TUpdateOrderForm = {
 //   discount?: number;
@@ -69,9 +67,8 @@ const EditOrderInfo = ({ order }: { order: Partial<TOrders> }) => {
 
     const result = await updateOrderInfo(updatedOrderInfo).unwrap();
     if (result?.success) {
-      refetchSingleOrder();
-      refetchAllOrders();
-
+      refetchData("allOrders");
+      refetchData("singleOrder");
       toast({
         title: result?.message,
       });

@@ -1,31 +1,37 @@
 import CommonModal from "@/components/modal/CommonModal";
 import { TOrders } from "@/types/order/order.interface";
+import backgroundColor from "@/utilities/backgroundColor";
 import { useState } from "react";
-import backgroundColor from "../utils/backgroundColor";
-import UpdateStatus from "./UpdateStatus";
-import { useAppSelector } from "@/redux/hooks";
+import UpdateOrderStatus from "./UpdateOrderStatus";
 
-const OrderStatus = ({ order }: { order: TOrders }) => {
-  const filter = useAppSelector(({ order }) => order.orderFilterValue);
+const OrderStatus = ({
+  order,
+  notDisable,
+}: {
+  order: TOrders;
+  notDisable?: boolean;
+}) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
     setOpen(!open);
   };
   const status = order.status;
   // const isDisable =
-  //   status == "all" ||
-  //   status == "canceled" ||
-  //   status == "deleted" ||
-  //   status == "processing"
-  //     ? true
-  //     : false;
+  //   status == "deleted" || status == "processing" ? true : false;
+  const isDisable =
+    status == "all" ||
+    status == "deleted" ||
+    status == "processing" ||
+    status == "processing done" ||
+    status == "on courier"
+      ? true
+      : false;
 
   return (
     <>
       <button
         onClick={handleOpen}
-        disabled={filter == "all" ? true : false}
-        // disabled={filter == "all" ? true : isDisable}
+        disabled={notDisable ? false : isDisable}
         className={`capitalize px-2 pb-[2px] pt-[1px] text-white rounded ${backgroundColor(status)}`}
       >
         {status}
@@ -44,7 +50,12 @@ const OrderStatus = ({ order }: { order: TOrders }) => {
             {status}
           </span>
         </div>
-        <UpdateStatus order={order} _id={order._id} handleOpen={handleOpen} />
+        <UpdateOrderStatus
+          order={order}
+          _id={order._id}
+          handleOpen={handleOpen}
+          notDisable={notDisable}
+        />
       </CommonModal>
     </>
   );

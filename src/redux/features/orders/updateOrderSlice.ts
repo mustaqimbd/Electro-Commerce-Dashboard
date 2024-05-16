@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { TInitialStateUpdateOrder, TProduct } from "./interface";
+import { TInitialStateUpdateOrder, TProduct } from "./ordersInterface";
 
 // Define the initial state
 const initialState: TInitialStateUpdateOrder = {

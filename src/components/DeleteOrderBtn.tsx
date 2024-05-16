@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
-import { useDeleteOrdersMutation } from "@/redux/features/order/orderApi";
+import { useDeleteOrdersMutation } from "@/redux/features/orders/ordersApi";
 import { useRouter } from "next/navigation";
 import { ReactNode } from "react";
 

@@ -16,7 +16,7 @@
 
 //   const handleFilter = async () => {
 //     if (filter) {
-//       const result = await fetchData({
+//       const {data:result} = await fetchData({
 //         endPoint: "/orders/admin/all-orders",
 //         tags: ["allOrders"],
 //         searchParams: {

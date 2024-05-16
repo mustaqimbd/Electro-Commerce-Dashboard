@@ -4,7 +4,7 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
-import { useUpdateOrderInfoMutation } from "@/redux/features/order/updateOrderApi";
+import { useUpdateOrderInfoMutation } from "@/redux/features/orders/updateOrderApi";
 import { TOrders } from "@/types/order/order.interface";
 import { refetchData } from "@/utilities/fetchData";
 import { useState } from "react";

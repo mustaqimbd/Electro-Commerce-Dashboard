@@ -1,9 +1,9 @@
-import InvoiceButton from "../components/InvoiceButton";
 import { MapPin, Phone, UserRound, ScissorsLineDashedIcon } from "lucide-react";
-import logo from "../../../../../../public/logo.png";
+import logo from "../../../public/logo.png";
 import Image from "next/image";
 import { InvoiceTable } from "./InvoiceTable";
 import { TOrders } from "@/types/order/order.interface";
+import InvoiceButton from "./InvoiceButton";
 
 function Invoice({ orders }: { orders: TOrders[] }) {
   // function formatDate(date: string | number | Date) {
@@ -83,13 +83,13 @@ function Invoice({ orders }: { orders: TOrders[] }) {
                       <span className="font-semibold flex items-center gap-2">
                         <UserRound className="w-4 text-primary" /> Name :{" "}
                       </span>
-                      <span>{shipping.fullName}</span>
+                      <span>{shipping?.fullName}</span>
                     </div>
                     <div className="flex items-center gap-2 text-sm">
                       <span className="font-semibold flex items-center gap-2">
                         <Phone className="w-4 text-primary" /> Mobile :{" "}
                       </span>
-                      <span>{shipping.phoneNumber}</span>
+                      <span>{shipping?.phoneNumber}</span>
                     </div>
                     <div className="flex items-start gap-2 text-sm">
                       <div>
@@ -97,7 +97,7 @@ function Invoice({ orders }: { orders: TOrders[] }) {
                           <MapPin className="w-4 text-primary" /> Address :
                         </span>
                       </div>
-                      <span className="mt2">{shipping.fullAddress}</span>
+                      <span className="mt2">{shipping?.fullAddress}</span>
                     </div>
                   </div>
                 </div>

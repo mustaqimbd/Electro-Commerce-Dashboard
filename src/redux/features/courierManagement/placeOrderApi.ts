@@ -1,5 +1,5 @@
 import courierBaseApi from "@/redux/baseApi/courierBaseApi";
-import { TPlaceOrder } from "./interface";
+import { TPlaceOrder } from "./courierManagementInterface";
 
 const orderApi = courierBaseApi.injectEndpoints({
   endpoints: (builder) => ({

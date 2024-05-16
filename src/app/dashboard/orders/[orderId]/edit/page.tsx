@@ -1,14 +1,15 @@
 import { Card } from "@/components/ui/card";
 import { SectionTitle } from "@/components/ui/sectionTitle";
-
-import getSingleOrder from "../../lib/getSingleOrders";
 import EditOrderInfo from "./components/EditOrderInfo";
 import { OrderedProductsListEdit } from "./components/OrderedProductsListEdit";
 import TotalCalculation from "./components/TotalCalculation";
+import fetchData from "@/utilities/fetchData";
 
 const EditOrder = async ({ params }: { params: { orderId: string } }) => {
-  const order = await getSingleOrder(params.orderId);
-
+  const { data: order } = await fetchData({
+    endPoint: `/orders/admin/order-id/${params.orderId}`,
+    tags: ["singleOrder"],
+  });
   order.products.forEach((product: { orderId: string }) => {
     // Add orderId property to each product object
     product.orderId = order?._id;

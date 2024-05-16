@@ -1,5 +1,6 @@
 "use client";
-import { Button } from "@/components/ui/button";
+import { PagePagination } from "@/components/pagination/PagePagination";
+import TableSkeleton from "@/components/skeleton/TableSkeleton";
 import {
   Table,
   TableBody,
@@ -8,24 +9,26 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { setBulkOrder } from "@/redux/features/order/OrderSlice";
+import { setBulkOrder } from "@/redux/features/orders/ordersSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { TOrders } from "@/types/order/order.interface";
 import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
-  getPaginationRowModel,
+  // getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 import { useEffect } from "react";
-import formattedOrderData from "../utils/formattedOrderData";
-import { columns } from "./OrderColumn";
-import { TOrders } from "@/types/order/order.interface";
 import FollowUpDate from "./FollowUpDate";
+import formattedOrderData from "@/utilities/formattedOrderData";
+import { columns } from "./OrdersColumn";
 
 export default function OrdersTable() {
   const dispatch = useAppDispatch();
-  const status = useAppSelector(({ order }) => order.orderFilterValue);
+  const { isLoading } = useAppSelector(({ pagination }) => pagination);
+
+  const status = useAppSelector(({ orders }) => orders.selectedStatus);
 
   const newColumns: ColumnDef<TOrders>[] =
     status === "follow up"
@@ -40,18 +43,21 @@ export default function OrdersTable() {
         ]
       : [...columns];
 
-  const orders = useAppSelector(({ order }) => {
-    return order.searchedOrders.length ? order.searchedOrders : order.orders;
+  const orders = useAppSelector(({ orders, search }) => {
+    return search.search ? search.searchedOrders : orders.orders;
+  });
+  const search = useAppSelector(({ search }) => {
+    return search.search;
   });
 
   const table = useReactTable({
     data: orders,
     columns: newColumns,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
+    // getPaginationRowModel: getPaginationRowModel(),
   });
 
-  const selectedRows = table?.getFilteredSelectedRowModel().rows;
+  const selectedRows = table?.getFilteredSelectedRowModel()?.rows;
   const selectedOrders = formattedOrderData(selectedRows);
 
   useEffect(() => {
@@ -98,43 +104,33 @@ export default function OrdersTable() {
                   ))}
                 </TableRow>
               ))
+            ) : isLoading ? (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
+                  <TableSkeleton />
+                </TableCell>
+              </TableRow>
             ) : (
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No orders.
+                  No orders
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
+      {!search && (
+        <div className="flex items-center justify-end space-x-2 py-4">
+          <PagePagination />
         </div>
-        <div className="space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            Previous
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            Next
-          </Button>
-        </div>
-      </div>
+      )}
     </div>
   );
 }

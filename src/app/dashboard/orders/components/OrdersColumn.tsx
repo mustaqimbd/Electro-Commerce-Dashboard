@@ -1,11 +1,11 @@
+import AddNotes from "@/components/AddNotes";
+import CustomerInfo from "@/components/CustomerInfo";
+import OrderActionDropDown from "@/components/OrderActionDropDown";
+import OrderIdAndDate from "@/components/OrderIdAndDate";
+import OrderStatus from "@/components/OrderStatus";
 import { Checkbox } from "@/components/ui/checkbox";
-import { ColumnDef } from "@tanstack/react-table";
-import ActionDropDown from "./ActionDropDown";
-import AddNotes from "./AddNotes";
-import CustomerInfo from "./CustomerInfo";
-import OrderIdAndDate from "./OrderIdAndDate";
-import OrderStatus from "./OrderStatus";
 import { TOrders } from "@/types/order/order.interface";
+import { ColumnDef } from "@tanstack/react-table";
 
 export const columns: ColumnDef<TOrders>[] = [
   {
@@ -110,13 +110,13 @@ export const columns: ColumnDef<TOrders>[] = [
     accessorKey: "orderSource",
     header: "Origin",
     cell: ({ row }) => (
-      <div className="capitalized ">{row.original.orderSource?.name}</div>
+      <div className="capitalized">{row.original.orderSource?.name}</div>
     ),
   },
   {
     id: "actions",
     header: "Actions",
     enableHiding: false,
-    cell: ({ row }) => <ActionDropDown order={row.original} />,
+    cell: ({ row }) => <OrderActionDropDown order={row.original} />,
   },
 ];

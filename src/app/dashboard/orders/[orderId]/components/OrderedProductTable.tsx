@@ -8,6 +8,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import config from "@/config/config";
+import { Product } from "@/types/order/order.interface";
 import {
   ColumnDef,
   VisibilityState,
@@ -22,20 +23,20 @@ import Image from "next/image";
 import Link from "next/link";
 import * as React from "react";
 //this is type
-type TProduct = {
-  productId: string;
-  title: string;
-  slug: string;
-  image: {
-    src: string;
-    alt: string;
-  };
-  unitPrice: number;
-  quantity: number;
-  total: number;
-};
+// type TProduct = {
+//   productId: string;
+//   title: string;
+//   slug: string;
+//   image: {
+//     src: string;
+//     alt: string;
+//   };
+//   unitPrice: number;
+//   quantity: number;
+//   total: number;
+// };
 
-export const columns: ColumnDef<TProduct>[] = [
+export const columns: ColumnDef<Product>[] = [
   {
     accessorKey: "",
     header: "SL",
@@ -103,11 +104,10 @@ export const columns: ColumnDef<TProduct>[] = [
   // },
 ];
 
-export function OrderedProductTable({ products }: { products: TProduct[] }) {
+export function OrderedProductTable({ products }: { products: Product[] }) {
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
-
   const table = useReactTable({
     data: products,
     columns,

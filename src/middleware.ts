@@ -1,8 +1,9 @@
-import { NextRequest, NextResponse } from "next/server";
-import decodeJWT from "./utilities/decodeJWT";
-import { TUser } from "./redux/features/auth/interface";
-import getAccessToken from "./lib/getAccessToken";
 import con from "@/config/config";
+import { NextRequest, NextResponse } from "next/server";
+import getAccessToken, { getProfile } from "./lib/getAccessToken";
+import { TUser } from "./redux/features/auth/interface";
+import { permission } from "./types/order/order.interface";
+import decodeJWT from "./utilities/decodeJWT";
 
 export async function middleware(request: NextRequest) {
   const accessToken = request.cookies.get("accessToken")?.value || "";
@@ -31,13 +32,47 @@ export async function middleware(request: NextRequest) {
   }
 
   const currentUser = decodeJWT(accessToken as string) as TUser; // Decode the JWT
-  if (currentUser.role !== "admin") {
+
+  if (currentUser.role !== "admin" && currentUser.role !== "super admin") {
     return Response.redirect(new URL("/error", request.url));
   }
 
+  const { permissions } = await getProfile(accessToken);
+
   if (!request.nextUrl.pathname.startsWith("/dashboard")) {
-    return Response.redirect(new URL("/dashboard", request.url));
+    if (permissions && [...permissions].includes(permission.manageOrder)) {
+      return Response.redirect(new URL("/dashboard/orders", request.url));
+    } else if (
+      permissions &&
+      [...permissions].includes(permission.manageProcessing)
+    ) {
+      return Response.redirect(
+        new URL("/dashboard/processing-orders", request.url)
+      );
+    } else if (
+      permissions &&
+      [...permissions].includes(permission.manageCourier)
+    ) {
+      return Response.redirect(
+        new URL("/dashboard/courier-management", request.url)
+      );
+    } else return Response.redirect(new URL("/dashboard", request.url));
   }
+
+  // const { permissions } = await getProfile(accessToken)
+
+  // if (request.nextUrl.pathname === "/dashboard/orders" && permissions && [...permissions].includes(permission.manageOrder)) {
+  //   console.log("orders", permissions)
+  //   return Response.redirect(new URL("/dashboard/orders", request.url));
+  // }
+  // if (request.nextUrl.pathname.startsWith("/processing-orders") && permissions && [...permissions].includes(permission.manegeProcessing)) {
+  //   console.log("processing", permissions)
+  //   return Response.redirect(new URL("/dashboard/processing-orders", request.url));
+  // }
+  // if (request.nextUrl.pathname.startsWith("/courier-management") && permissions && [...permissions].includes(permission.manegeCourier)) {
+  //   console.log("courier", permissions)
+  //   return Response.redirect(new URL("/dashboard/orders", request.url));
+  // }
 
   return null;
 }
