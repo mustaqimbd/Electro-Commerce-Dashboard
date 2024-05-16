@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { CheckIcon } from "@radix-ui/react-icons";
 import Image from "next/image";
 import { PagePagination } from "../pagination/PagePagination";
-import { useState } from "react";
+// import { useState } from "react";
 import { setVariationThumbnail } from "@/redux/features/addProduct/variation/variationSlice";
 import config from "@/config/config";
 
@@ -50,10 +50,11 @@ const MediaLibrary = ({ click, index }: { click?: string; index?: number }) => {
     }
   };
 
-  const [currentPage, setCurrentPage] = useState(1);
+  const { page, limit } = useAppSelector(({ pagination }) => pagination);
+
   const { data } = useGetMediaImagesQuery({
-    page: currentPage,
-    limit: 2,
+    page,
+    limit,
     sort: "-createdAt",
   });
 
@@ -104,14 +105,7 @@ const MediaLibrary = ({ click, index }: { click?: string; index?: number }) => {
               </div>
             ))}
       </div>
-      {data?.meta?.totalPage > 1 && (
-        <PagePagination
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-          totalPage={data?.meta?.totalPage}
-          className="mt-2"
-        />
-      )}
+      {data?.meta?.totalPage > 1 && <PagePagination />}
     </div>
   );
 };
