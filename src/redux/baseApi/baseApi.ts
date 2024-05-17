@@ -44,7 +44,19 @@ const customBaseQueryWithRefreshToken: BaseQueryFn = async (
   return result;
 };
 
-const tags = ["images"];
+type Tags =
+  | "allOrders"
+  | "processingOrders"
+  | "processingDoneAndCourierOrders"
+  | "carts"
+  | "images";
+const tags: Tags[] = [
+  "allOrders",
+  "processingOrders",
+  "processingDoneAndCourierOrders",
+  "carts",
+  "images",
+];
 
 const baseApi = createApi({
   reducerPath: "baseApi",

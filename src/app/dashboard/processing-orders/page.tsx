@@ -9,9 +9,18 @@ import { useRouter } from "next/navigation";
 import ProcessingOrdersStatusButtons from "./components/processingOrdersStatusButtons";
 import { permission } from "@/types/order/order.interface";
 import { useEffect } from "react";
+// import { setPage } from "@/redux/features/pagination/PaginationSlice";
 
 const Orders = () => {
   const router = useRouter();
+  // const dispatch = useAppDispatch();
+  // const { page } = useAppSelector(({ pagination }) => pagination);
+  // const { processingOrders } = useAppSelector(
+  //   ({ processingOrders }) => processingOrders
+  // );
+  // if (!processingOrders.length && page > 1) {
+  //   dispatch(setPage(1));
+  // }
   const { profile } = useAppSelector(({ auth }) => auth);
   const permissions = profile?.permissions;
 

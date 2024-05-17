@@ -19,6 +19,11 @@ const updateOrderApi = baseApi.injectEndpoints({
           followUpDate: data?.followUpDate,
         },
       }),
+      invalidatesTags: [
+        "allOrders",
+        "processingOrders",
+        "processingDoneAndCourierOrders",
+      ],
     }),
     updateOrderProductQuantity: builder.mutation({
       query: (data) => ({

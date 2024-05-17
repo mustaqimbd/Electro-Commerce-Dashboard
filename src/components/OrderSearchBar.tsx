@@ -2,7 +2,7 @@
 import { Input } from "@/components/ui/input";
 import {
   setIsLoading,
-  setPage,
+  // setPage,
 } from "@/redux/features/pagination/PaginationSlice";
 import {
   setSearch,
@@ -12,7 +12,7 @@ import {
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import fetchData from "@/utilities/fetchData";
 import { Search, X } from "lucide-react";
-import { SetStateAction, useEffect } from "react";
+import { SetStateAction } from "react";
 
 const OrderSearchBar = ({ endPoint }: { endPoint: string }) => {
   const dispatch = useAppDispatch();
@@ -54,12 +54,13 @@ const OrderSearchBar = ({ endPoint }: { endPoint: string }) => {
     }
   };
 
-  useEffect(() => {
-    dispatch(setPage(1));
-    // dispatch(setSearch(false));
-    // dispatch(setSearchQuery(""));
-    // dispatch(setSearchedOrders([]));
-  }, [dispatch]);
+  // useEffect(() => {
+  // dispatch(setPage(1));
+  // console.log("set page from search 1")
+  // dispatch(setSearch(false));
+  // dispatch(setSearchQuery(""));
+  // dispatch(setSearchedOrders([]));
+  // }, [dispatch]);
 
   return (
     <div className="flex items-center justify-end">

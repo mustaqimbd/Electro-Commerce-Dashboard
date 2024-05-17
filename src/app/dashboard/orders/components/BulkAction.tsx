@@ -5,10 +5,10 @@ import { toast } from "@/components/ui/use-toast";
 import { useUpdateOrdersStatusMutation } from "@/redux/features/orders/ordersApi";
 import {
   setBulkOrder,
-  setIsOrderUpdate,
+  // setIsOrderUpdate,
 } from "@/redux/features/orders/ordersSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { refetchData } from "@/utilities/fetchData";
+// import { refetchData } from "@/utilities/fetchData";
 import statusOptions from "@/utilities/statusOptions";
 import { useState } from "react";
 
@@ -19,9 +19,7 @@ const BulkAction = () => {
     ({ orders }) => orders.bulkOrders
   );
 
-  const { selectedStatus: filter, iSOrderUpdate } = useAppSelector(
-    ({ orders }) => orders
-  );
+  const { selectedStatus: filter } = useAppSelector(({ orders }) => orders);
 
   const [bulkAction, setBulkAction] = useState("");
 
@@ -35,10 +33,10 @@ const BulkAction = () => {
       if (bulkAction) {
         const res = await updateOrderStatus(updatePayload).unwrap();
         if (res.success) {
-          refetchData("allOrders");
-          refetchData("orderStatusCount");
+          // refetchData("allOrders");
+          // refetchData("orderStatusCount");
           dispatch(setBulkOrder({ orderIds: [] }));
-          dispatch(setIsOrderUpdate(!iSOrderUpdate));
+          // dispatch(setIsOrderUpdate(!iSOrderUpdate));
           toast({
             className: "bg-success text-white text-2xl",
             title: "The orders status was successfully updated!",

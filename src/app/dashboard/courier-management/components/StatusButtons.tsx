@@ -7,7 +7,6 @@ import {
   setTotalPage,
 } from "@/redux/features/pagination/PaginationSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import fetchData from "@/utilities/fetchData";
 import { useEffect, useState } from "react";
 import {
   setProcessingDoneOrders,
@@ -20,6 +19,7 @@ import {
   setSearchQuery,
   setSearchedOrders,
 } from "@/redux/features/search/searchSlice";
+import { useGetProcessingDoneAndCourierOrdersQuery } from "@/redux/features/courierManagement/courierManagementApi";
 // import DateRangeSelector from "./DateRangeSelector";
 
 const StatusButtons = () => {
@@ -27,35 +27,68 @@ const StatusButtons = () => {
   const { page, limit, isLoading } = useAppSelector(
     ({ pagination }) => pagination
   );
-  const { selectedStatus: filter, iSOrderUpdate } = useAppSelector(
+  const { selectedStatus: filter, processingDoneOrders } = useAppSelector(
     ({ courierManagement }) => courierManagement
   );
 
+  if (!processingDoneOrders.length && page > 1) {
+    dispatch(setPage(1));
+  }
   const [orderStatusCount, setOrderStatusCount] = useState([]);
+  const {
+    data,
+    isLoading: loading,
+    error,
+  } = useGetProcessingDoneAndCourierOrdersQuery({
+    status: filter,
+    sort: "-createdAt",
+    page,
+    limit,
+  });
+
   useEffect(() => {
-    (async () => {
-      if (filter) {
-        dispatch(setIsLoading(true));
-        const { data, meta } = await fetchData({
-          endPoint: "/orders/admin/processing-done-on-courier-orders",
-          tags: ["processingDoneOrders"],
-          searchParams: {
-            status: filter,
-            sort: "-createdAt",
-            page,
-            limit,
-          },
-        });
-        dispatch(setTotalPage(meta));
-        setOrderStatusCount(data.countsByStatus);
-        dispatch(setProcessingDoneOrders(data.data));
-        dispatch(setSearch(false));
-        dispatch(setSearchQuery(""));
-        dispatch(setSearchedOrders([]));
-        dispatch(setIsLoading(false));
-      }
-    })();
-  }, [filter, page, limit, iSOrderUpdate, dispatch]);
+    if (loading) {
+      dispatch(setIsLoading(true));
+    }
+    if (data) {
+      const { meta, data: orders } = data;
+      dispatch(setTotalPage(meta));
+      setOrderStatusCount(orders?.countsByStatus);
+      dispatch(setProcessingDoneOrders(orders?.data));
+      dispatch(setSearch(false));
+      dispatch(setSearchQuery(""));
+      dispatch(setSearchedOrders([]));
+      dispatch(setIsLoading(false));
+    }
+    if (error) {
+      throw new Error("Something went wrong!");
+    }
+  }, [data, loading, error, dispatch]);
+
+  // useEffect(() => {
+  //   (async () => {
+  //     if (filter) {
+  //       dispatch(setIsLoading(true));
+  //       const { data, meta } = await fetchData({
+  //         endPoint: "/orders/admin/processing-done-on-courier-orders",
+  //         tags: ["processingDoneOrders"],
+  //         searchParams: {
+  //           status: filter,
+  //           sort: "-createdAt",
+  //           page,
+  //           limit,
+  //         },
+  //       });
+  //       dispatch(setTotalPage(meta));
+  //       setOrderStatusCount(data.countsByStatus);
+  //       dispatch(setProcessingDoneOrders(data.data));
+  //       dispatch(setSearch(false));
+  //       dispatch(setSearchQuery(""));
+  //       dispatch(setSearchedOrders([]));
+  //       dispatch(setIsLoading(false));
+  //     }
+  //   })();
+  // }, [filter, page, limit, iSOrderUpdate, dispatch]);
 
   return (
     <div className="flex flex-wrap items-center justify-start gap-5">

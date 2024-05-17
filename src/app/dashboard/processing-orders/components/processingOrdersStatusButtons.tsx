@@ -7,7 +7,7 @@ import {
   setTotalPage,
 } from "@/redux/features/pagination/PaginationSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import fetchData from "@/utilities/fetchData";
+// import fetchData from "@/utilities/fetchData";
 import { useEffect, useState } from "react";
 import {
   setProcessingOrders,
@@ -20,6 +20,7 @@ import {
   setSearchQuery,
   setSearchedOrders,
 } from "@/redux/features/search/searchSlice";
+import { useGetProcessingOrdersQuery } from "@/redux/features/processingOrders/processingOrdersApi";
 // import DateRangeSelector from "./DateRangeSelector";
 
 const ProcessingOrdersStatusButtons = () => {
@@ -27,35 +28,69 @@ const ProcessingOrdersStatusButtons = () => {
   const { page, limit, isLoading } = useAppSelector(
     ({ pagination }) => pagination
   );
-  const { selectedStatus: filter, iSOrderUpdate } = useAppSelector(
+  const { selectedStatus: filter, processingOrders } = useAppSelector(
     ({ processingOrders }) => processingOrders
   );
 
+  if (!processingOrders.length && page > 1) {
+    dispatch(setPage(1));
+  }
+
   const [orderStatusCount, setOrderStatusCount] = useState([]);
+  const {
+    data,
+    isLoading: loading,
+    error,
+  } = useGetProcessingOrdersQuery({
+    status: filter,
+    sort: "-createdAt",
+    page,
+    limit,
+  });
+
   useEffect(() => {
-    (async () => {
-      if (filter) {
-        dispatch(setIsLoading(true));
-        const { data, meta } = await fetchData({
-          endPoint: "/orders/admin/processing-orders",
-          tags: ["processingOrders"],
-          searchParams: {
-            status: filter,
-            sort: "-createdAt",
-            page,
-            limit,
-          },
-        });
-        dispatch(setTotalPage(meta));
-        setOrderStatusCount(data.countsByStatus);
-        dispatch(setProcessingOrders(data.data));
-        dispatch(setSearch(false));
-        dispatch(setSearchQuery(""));
-        dispatch(setSearchedOrders([]));
-        dispatch(setIsLoading(false));
-      }
-    })();
-  }, [filter, page, limit, iSOrderUpdate, dispatch]);
+    if (loading) {
+      dispatch(setIsLoading(true));
+    }
+    if (data) {
+      const { meta, data: orders } = data;
+      dispatch(setTotalPage(meta));
+      setOrderStatusCount(orders?.countsByStatus);
+      dispatch(setProcessingOrders(orders?.data));
+      dispatch(setSearch(false));
+      dispatch(setSearchQuery(""));
+      dispatch(setSearchedOrders([]));
+      dispatch(setIsLoading(false));
+    }
+    if (error) {
+      throw new Error("Something went wrong!");
+    }
+  }, [data, loading, error, dispatch]);
+
+  // useEffect(() => {
+  //   (async () => {
+  //     if (filter) {
+  //       dispatch(setIsLoading(true));
+  //       const { data, meta } = await fetchData({
+  //         endPoint: "/orders/admin/processing-orders",
+  //         tags: ["processingOrders"],
+  //         searchParams: {
+  //           status: filter,
+  //           sort: "-createdAt",
+  //           page,
+  //           limit,
+  //         },
+  //       });
+  //       dispatch(setTotalPage(meta));
+  //       setOrderStatusCount(data.countsByStatus);
+  //       dispatch(setProcessingOrders(data.data));
+  //       dispatch(setSearch(false));
+  //       dispatch(setSearchQuery(""));
+  //       dispatch(setSearchedOrders([]));
+  //       dispatch(setIsLoading(false));
+  //     }
+  //   })();
+  // }, [filter, page, limit, iSOrderUpdate, dispatch]);
 
   return (
     <div className="flex flex-wrap items-center justify-start gap-5">

@@ -3,9 +3,9 @@ import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
 import { useSendCourierAndUpdateStatusMutation } from "@/redux/features/courierManagement/courierManagementApi";
 import { useUpdateOrdersStatusMutation } from "@/redux/features/orders/ordersApi";
-import { setIsOrderUpdate } from "@/redux/features/orders/ordersSlice";
+// import { setIsOrderUpdate } from "@/redux/features/orders/ordersSlice";
 import { useUpdateProcessingOrderStatusMutation } from "@/redux/features/processingOrders/processingOrdersApi";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+// import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { TOrders } from "@/types/order/order.interface";
 import { refetchData } from "@/utilities/fetchData";
 import statusOptions from "@/utilities/statusOptions";
@@ -19,20 +19,15 @@ type TProps = {
 };
 
 const UpdateOrderStatus = ({ order, _id, notDisable, handleOpen }: TProps) => {
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
   const [action, setAction] = useState("");
   const [updateOrdersStatus, { isLoading }] = useUpdateOrdersStatusMutation();
   const [updateProcessingOrdersStatus, { isLoading: loading }] =
     useUpdateProcessingOrderStatusMutation();
   const [sendCourierAndUpdateStatus, { isLoading: isSendLoading }] =
     useSendCourierAndUpdateStatusMutation();
-  const iSOrderUpdate = useAppSelector(({ orders }) => orders.iSOrderUpdate);
-  // const iSProcessingOrderUpdate = useAppSelector(
-  //   ({ processingOrders }) => processingOrders.iSOrderUpdate
-  // );
-  // const iSCourierOrderUpdate = useAppSelector(
-  //   ({ courierManagement }) => courierManagement.iSOrderUpdate
-  // );
+  // const iSOrderUpdate = useAppSelector(({ orders }) => orders.iSOrderUpdate);
+
   const ordersUpdateOptions = [
     "confirmed",
     "processing",
@@ -60,9 +55,9 @@ const UpdateOrderStatus = ({ order, _id, notDisable, handleOpen }: TProps) => {
       if (ordersUpdateOptions.includes(action)) {
         const res = await updateOrdersStatus(updatePayload).unwrap();
         if (res.success) {
-          refetchData("allOrders");
+          // refetchData("allOrders");
           refetchData("singleOrder");
-          dispatch(setIsOrderUpdate(!iSOrderUpdate));
+          // dispatch(setIsOrderUpdate(!iSOrderUpdate));
           toast({
             className: "bg-success text-white text-2xl",
             title: "Order status updated successfully!",
@@ -78,9 +73,9 @@ const UpdateOrderStatus = ({ order, _id, notDisable, handleOpen }: TProps) => {
       if (processingOrdersUpdateOptions.includes(action)) {
         const res = await updateProcessingOrdersStatus(updatePayload).unwrap();
         if (res.success) {
-          refetchData("processingOrders");
+          // refetchData("processingOrders");
           refetchData("singleOrder");
-          dispatch(setIsOrderUpdate(!iSOrderUpdate));
+          // dispatch(setIsOrderUpdate(!iSOrderUpdate));
           toast({
             className: "bg-success text-white text-2xl",
             title: "Order status updated successfully!",
@@ -98,9 +93,9 @@ const UpdateOrderStatus = ({ order, _id, notDisable, handleOpen }: TProps) => {
         // const courier = await sendCourierAndUpdateStatus(orderData).unwrap();
         const res = await sendCourierAndUpdateStatus(updatePayload).unwrap();
         if (res.success) {
-          refetchData("processingDoneOrders");
+          // refetchData("processingDoneOrders");
           refetchData("singleOrder");
-          dispatch(setIsOrderUpdate(!iSOrderUpdate));
+          // dispatch(setIsOrderUpdate(!iSOrderUpdate));
           toast({
             className: "bg-success text-white text-2xl",
             title: "Order status updated successfully!",

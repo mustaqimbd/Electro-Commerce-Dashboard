@@ -90,7 +90,7 @@ export const columns: ColumnDef<TOrders>[] = [
   {
     accessorKey: "productCode",
     header: "Product Code",
-    cell: ({ row }) => <ProductCode order={row.original} disable={true} />,
+    cell: ({ row }) => <ProductCode order={row.original} disable={false} />,
   },
   {
     accessorKey: "total",

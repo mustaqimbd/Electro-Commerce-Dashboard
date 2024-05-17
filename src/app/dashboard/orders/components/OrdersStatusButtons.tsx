@@ -12,13 +12,15 @@ import {
 import {
   setIsLoading,
   setLimit,
+  setPage,
   setTotalPage,
 } from "@/redux/features/pagination/PaginationSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import backgroundColor from "@/utilities/backgroundColor";
 import borderColor from "@/utilities/borderColor";
-import fetchData from "@/utilities/fetchData";
+// import fetchData from "@/utilities/fetchData";
 import { useEffect, useState } from "react";
+import { useGetAllOrdersQuery } from "@/redux/features/orders/ordersApi";
 
 // import DateRangeSelector from "./DateRangeSelector";
 
@@ -27,35 +29,69 @@ const OrdersStatusButtons = () => {
   const { page, limit, isLoading } = useAppSelector(
     ({ pagination }) => pagination
   );
-  const { selectedStatus: filter, iSOrderUpdate } = useAppSelector(
+  const { selectedStatus: filter, orders } = useAppSelector(
     ({ orders }) => orders
   );
 
+  if (!orders.length && page > 1) {
+    dispatch(setPage(1));
+  }
   const [orderStatusCount, setOrderStatusCount] = useState([]);
+
+  const {
+    data,
+    isLoading: loading,
+    error,
+  } = useGetAllOrdersQuery({
+    status: filter,
+    sort: "-createdAt",
+    page,
+    limit,
+  });
+
   useEffect(() => {
-    (async () => {
-      if (filter) {
-        dispatch(setIsLoading(true));
-        const { data, meta } = await fetchData({
-          endPoint: "/orders/admin/all-orders",
-          tags: ["allOrders"],
-          searchParams: {
-            status: filter,
-            sort: "-createdAt",
-            page,
-            limit,
-          },
-        });
-        dispatch(setTotalPage(meta));
-        setOrderStatusCount(data?.countsByStatus);
-        dispatch(setOrders(data?.data));
-        dispatch(setSearch(false));
-        dispatch(setSearchQuery(""));
-        dispatch(setSearchedOrders([]));
-        dispatch(setIsLoading(false));
-      }
-    })();
-  }, [filter, page, limit, iSOrderUpdate, dispatch]);
+    if (loading) {
+      dispatch(setIsLoading(true));
+    }
+    if (data) {
+      const { meta, data: orders } = data;
+      dispatch(setTotalPage(meta));
+      setOrderStatusCount(orders?.countsByStatus);
+      dispatch(setOrders(orders?.data));
+      dispatch(setSearch(false));
+      dispatch(setSearchQuery(""));
+      dispatch(setSearchedOrders([]));
+      dispatch(setIsLoading(false));
+    }
+    if (error) {
+      throw new Error("Something went wrong!");
+    }
+  }, [data, loading, error, dispatch]);
+
+  // useEffect(() => {
+  //   (async () => {
+  //     if (filter) {
+  //       dispatch(setIsLoading(true));
+  //       const { data, meta } = await fetchData({
+  //         endPoint: "/orders/admin/all-orders",
+  //         tags: ["allOrders"],
+  //         searchParams: {
+  //           status: filter,
+  //           sort: "-createdAt",
+  //           page,
+  //           limit,
+  //         },
+  //       });
+  //       dispatch(setTotalPage(meta));
+  //       setOrderStatusCount(data?.countsByStatus);
+  //       dispatch(setOrders(data?.data));
+  //       dispatch(setSearch(false));
+  //       dispatch(setSearchQuery(""));
+  //       dispatch(setSearchedOrders([]));
+  //       dispatch(setIsLoading(false));
+  //     }
+  //   })();
+  // }, [filter, page, limit, iSOrderUpdate, dispatch]);
 
   return (
     <div className="flex flex-wrap items-center justify-start gap-5">

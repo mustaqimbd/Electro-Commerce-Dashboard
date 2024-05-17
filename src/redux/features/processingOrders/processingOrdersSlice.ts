@@ -12,7 +12,7 @@ const initialState: TProcessingOrdersInitialState = {
 };
 
 const processingOrdersSlice = createSlice({
-  name: "placeOrderSlice",
+  name: "processingOrderSlice",
   initialState,
   reducers: {
     setProcessingOrders: (state, action) => {

@@ -63,7 +63,7 @@ export function PagePagination() {
     <Pagination>
       <PaginationContent className="overflow-x-auto">
         <div className="flex items-center justify-start">
-          <p className="mr-24">
+          <p className="mr-20 min-w-48">
             Showing {currentPage * limit - limit} to{" "}
             {currentPage * limit < total ? currentPage * limit : total} of{" "}
             {total}

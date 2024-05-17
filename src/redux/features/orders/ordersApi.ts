@@ -10,12 +10,29 @@ const updateStatusApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["carts"],
     }),
+    getAllOrders: builder.query({
+      query: ({
+        status,
+        sort,
+        page,
+        limit,
+      }: {
+        status: string;
+        sort: string;
+        page: number;
+        limit: number;
+      }) => ({
+        url: `/orders/admin/all-orders?status=${status}&sort=${sort}&page=${page}&limit=${limit}`,
+      }),
+      providesTags: ["allOrders"],
+    }),
     updateOrdersStatus: builder.mutation({
       query: (payload: { orderIds: string[]; status: string }) => ({
         url: `/orders/update-status`,
         method: "PATCH",
         body: payload,
       }),
+      invalidatesTags: ["allOrders"],
     }),
     deleteOrders: builder.mutation({
       query: (orderIds: string[]) => ({
@@ -28,7 +45,8 @@ const updateStatusApi = baseApi.injectEndpoints({
 });
 
 export const {
+  useCreateOrderMutation,
+  useGetAllOrdersQuery,
   useUpdateOrdersStatusMutation,
   useDeleteOrdersMutation,
-  useCreateOrderMutation,
 } = updateStatusApi;

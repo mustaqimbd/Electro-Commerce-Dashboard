@@ -1,9 +1,8 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
-import { setIsOrderUpdate } from "@/redux/features/orders/ordersSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { refetchData } from "@/utilities/fetchData";
+// import { refetchData } from "@/utilities/fetchData";
 import { useState } from "react";
 import { useSendCourierAndUpdateStatusMutation } from "@/redux/features/courierManagement/courierManagementApi";
 import statusOptions from "@/utilities/statusOptions";
@@ -19,7 +18,6 @@ const CourierBulkAction = () => {
   const filter = useAppSelector(
     ({ courierManagement }) => courierManagement.selectedStatus
   );
-  const { iSOrderUpdate } = useAppSelector(({ orders }) => orders);
   const [bulkAction, setBulkAction] = useState("");
 
   const updatePayload = {
@@ -32,9 +30,9 @@ const CourierBulkAction = () => {
       if (bulkAction) {
         const res = await sendCourierAndUpdateStatus(updatePayload).unwrap();
         if (res.success) {
-          refetchData("processingDoneOrders");
+          // refetchData("processingDoneOrders");
           dispatch(setBulkOrder({ orderIds: [] }));
-          dispatch(setIsOrderUpdate(!iSOrderUpdate));
+          // dispatch(setIsOrderUpdate(!iSOrderUpdate));
 
           toast({
             className: "bg-success text-white text-2xl",

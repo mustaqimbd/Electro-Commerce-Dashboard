@@ -100,8 +100,8 @@ const ProductCode = ({
       data.order_Id = order._id;
       const res = await updateWarrantyCode(data).unwrap();
       if (res.success) {
-        refetchData("processingOrders");
-        dispatch(setIsOrderUpdate(!iSOrderUpdate));
+        // refetchData("processingOrders");
+        // dispatch(setIsOrderUpdate(!iSOrderUpdate));
         handleOpen();
         toast({
           className: "bg-success text-white text-2xl",

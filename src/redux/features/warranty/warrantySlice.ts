@@ -8,6 +8,7 @@ const WarrantySlice = baseApi.injectEndpoints({
         method: "POST",
         body: payload,
       }),
+      invalidatesTags: ["processingOrders"],
     }),
     updateWarrantyCode: builder.mutation({
       query: (payload) => ({
@@ -15,6 +16,7 @@ const WarrantySlice = baseApi.injectEndpoints({
         method: "PATCH",
         body: payload,
       }),
+      invalidatesTags: ["processingOrders"],
     }),
   }),
 });

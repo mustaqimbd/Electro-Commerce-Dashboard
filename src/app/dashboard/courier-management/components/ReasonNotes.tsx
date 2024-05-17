@@ -4,18 +4,13 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
-import { setIsOrderUpdate } from "@/redux/features/orders/ordersSlice";
 import { useUpdateOrderInfoMutation } from "@/redux/features/orders/updateOrderApi";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { TOrders } from "@/types/order/order.interface";
-import { refetchData } from "@/utilities/fetchData";
 import { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
 const ReasonNotes = ({ order }: { order: TOrders }) => {
   const { toast } = useToast();
-  const dispatch = useAppDispatch();
-  const { iSOrderUpdate } = useAppSelector(({ orders }) => orders);
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
@@ -30,8 +25,8 @@ const ReasonNotes = ({ order }: { order: TOrders }) => {
     try {
       data._id = order._id;
       await updateOrderInfo(data).unwrap();
-      refetchData("allOrders");
-      dispatch(setIsOrderUpdate(!iSOrderUpdate));
+      // refetchData("allOrders");
+      // dispatch(setIsOrderUpdate(!iSOrderUpdate));
       handleOpen();
       toast({
         className: "bg-success text-white text-2xl",
