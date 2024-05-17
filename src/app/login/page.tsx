@@ -7,7 +7,6 @@ import { setUser } from "@/redux/features/auth/authSlice";
 import { TUser } from "@/redux/features/auth/interface";
 import { useAppDispatch } from "@/redux/hooks";
 import decodeJWT from "@/utilities/decodeJWT";
-import Link from "next/link";
 // import { Metadata } from "next";
 import { useRouter } from "next/navigation";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
@@ -97,12 +96,6 @@ const LoginPage = () => {
           >
             Login
           </EcButton>
-          <p>
-            Do not have an account?{" "}
-            <Link href="/registration" className="text-blue-600">
-              Create
-            </Link>
-          </p>
         </div>
       </form>
     </div>
