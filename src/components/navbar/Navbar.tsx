@@ -1,12 +1,13 @@
 "use client";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
 import Image from "next/image";
 import logo from "../../../public/logo.png";
 // import { ModeToggle } from "../ui/ModeToggle";
-import { useAppDispatch } from "@/redux/hooks";
-import { useEffect } from "react";
 import { useGetProfileQuery } from "@/redux/features/auth/authApi";
 import { setProfile } from "@/redux/features/auth/authSlice";
+import { useAppDispatch } from "@/redux/hooks";
+import { useEffect } from "react";
+import UserMenu from "../userMenu/UserMenu";
 
 const Navbar = () => {
   const dispatch = useAppDispatch();
@@ -42,14 +43,9 @@ const Navbar = () => {
           placeholder="blur"
         />
       </div>
-      <div className="flex items-center gap-2">
+      <div className="">
         {/* <ModeToggle /> */}
-        <span>
-          <Avatar>
-            <AvatarImage src="https://github.com/shadcn.png" />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
-        </span>
+        <UserMenu user={user?.data} />
       </div>
     </div>
   );
