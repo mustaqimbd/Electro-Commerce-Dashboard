@@ -4,42 +4,30 @@ import BulkAction from "./components/BulkAction";
 import CreateOrder from "./components/CreateOrder";
 import OrdersStatusButtons from "./components/OrdersStatusButtons";
 import OrdersTable from "./components/OrdersTable";
-// import DateRangeSelector from "./components/DateRangeSelector";
 import Show from "@/components/Show";
 import { useAppSelector } from "@/redux/hooks";
 import { useRouter } from "next/navigation";
 import { permission } from "@/types/order/order.interface";
-import { useEffect } from "react";
-// import { setPage } from "@/redux/features/pagination/PaginationSlice";
 
 const Orders = () => {
   const router = useRouter();
-  // const dispatch = useAppDispatch();
-  // const { page } = useAppSelector(({ pagination }) => pagination);
-  // const { orders } = useAppSelector(({ orders }) => orders);
-  // if (!orders.length && page > 1) {
-  //   dispatch(setPage(1));
-  // }
   const { profile } = useAppSelector(({ auth }) => auth);
+  if (!profile || !profile.permissions) {
+    return (
+      <div
+        role="status"
+        className="w-full h-[calc(100vh-60px)] bg-gray-300 animate-pulse dark:bg-gray-700 z-10"
+      ></div>
+    );
+  }
   const permissions = profile?.permissions;
   const manageOrder =
     permissions &&
     (permissions.includes(permission.superAdmin) ||
       permissions.includes(permission.manageOrder));
 
-  useEffect(() => {
-    if (!manageOrder) {
-      router.push("/error");
-    }
-  }, [manageOrder, router]);
-
-  if (!permissions) {
-    return (
-      <div
-        role="status"
-        className="flex items-center justify-center h-full w-full bg-gray-300 rounded-lg animate-pulse dark:bg-gray-700"
-      ></div>
-    );
+  if (!manageOrder) {
+    router.push("/error");
   }
 
   return (

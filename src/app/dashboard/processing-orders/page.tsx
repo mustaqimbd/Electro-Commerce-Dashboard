@@ -1,47 +1,34 @@
 "use client";
 import BulkAction from "./components/BulkAction";
 import ProcessingOrdersTable from "./components/ProcessingOrdersTable";
-// import DateRangeSelector from "./components/DateRangeSelector";
 import OrderSearchBar from "@/components/OrderSearchBar";
 import Show from "@/components/Show";
 import { useAppSelector } from "@/redux/hooks";
 import { useRouter } from "next/navigation";
 import ProcessingOrdersStatusButtons from "./components/processingOrdersStatusButtons";
 import { permission } from "@/types/order/order.interface";
-import { useEffect } from "react";
-// import { setPage } from "@/redux/features/pagination/PaginationSlice";
 
 const Orders = () => {
   const router = useRouter();
-  // const dispatch = useAppDispatch();
-  // const { page } = useAppSelector(({ pagination }) => pagination);
-  // const { processingOrders } = useAppSelector(
-  //   ({ processingOrders }) => processingOrders
-  // );
-  // if (!processingOrders.length && page > 1) {
-  //   dispatch(setPage(1));
-  // }
-  const { profile } = useAppSelector(({ auth }) => auth);
-  const permissions = profile?.permissions;
 
+  const { profile } = useAppSelector(({ auth }) => auth);
+  if (!profile || !profile.permissions) {
+    return (
+      <div
+        role="status"
+        className="w-full h-[calc(100vh-60px)] bg-gray-300 animate-pulse dark:bg-gray-700 z-10"
+      ></div>
+    );
+  }
+
+  const permissions = profile?.permissions;
   const manageProcessing =
     permissions &&
     (permissions.includes(permission.superAdmin) ||
       permissions.includes(permission.manageProcessing));
 
-  useEffect(() => {
-    if (!manageProcessing) {
-      router.push("/error");
-    }
-  }, [manageProcessing, router]);
-
-  if (!permissions) {
-    return (
-      <div
-        role="status"
-        className="flex items-center justify-center h-full w-full bg-gray-300 rounded-lg animate-pulse dark:bg-gray-700"
-      ></div>
-    );
+  if (!manageProcessing) {
+    router.push("/error");
   }
 
   return (

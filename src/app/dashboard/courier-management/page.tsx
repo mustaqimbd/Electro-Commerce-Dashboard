@@ -3,46 +3,31 @@ import OrderSearchBar from "@/components/OrderSearchBar";
 import CourierBulkAction from "./components/CourierBulkAction";
 import OrdersTable from "./components/OrdersTable";
 import StatusButtons from "./components/StatusButtons";
-// import DateRangeSelector from "./components/DateRangeSelector";
 import Show from "@/components/Show";
 import { useAppSelector } from "@/redux/hooks";
 import { useRouter } from "next/navigation";
 import { permission } from "@/types/order/order.interface";
-import { useEffect } from "react";
-// import { setPage } from "@/redux/features/pagination/PaginationSlice";
 
 const Orders = () => {
   const router = useRouter();
-  // const dispatch = useAppDispatch();
-  // const { page } = useAppSelector(({ pagination }) => pagination);
-  // const { processingDoneOrders } = useAppSelector(
-  //   ({ courierManagement }) => courierManagement
-  // );
-  // if (!processingDoneOrders.length && page > 1) {
-  //   dispatch(setPage(1));
-  // }
-
   const { profile } = useAppSelector(({ auth }) => auth);
-  const permissions = profile?.permissions;
+  if (!profile || !profile.permissions) {
+    return (
+      <div
+        role="status"
+        className="w-full h-[calc(100vh-60px)] bg-gray-300 animate-pulse dark:bg-gray-700 z-10"
+      ></div>
+    );
+  }
 
+  const permissions = profile?.permissions;
   const manageCourier =
     permissions &&
     (permissions.includes(permission.superAdmin) ||
       permissions.includes(permission.manageCourier));
 
-  useEffect(() => {
-    if (!manageCourier) {
-      router.push("/error");
-    }
-  }, [manageCourier, router]);
-
-  if (!permissions) {
-    return (
-      <div
-        role="status"
-        className="flex items-center justify-center h-full w-full bg-gray-300 rounded-lg animate-pulse dark:bg-gray-700"
-      ></div>
-    );
+  if (!manageCourier) {
+    router.push("/error");
   }
 
   return (
