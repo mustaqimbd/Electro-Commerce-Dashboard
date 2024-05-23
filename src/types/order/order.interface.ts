@@ -70,3 +70,12 @@ export const permission = {
   manageCourier: "manage courier",
   superAdmin: "super admin",
 } as const;
+
+export type TOrderQuery = {
+  status: string;
+  sort: string;
+  startFrom: string;
+  endAt: string;
+  page: number;
+  limit: number;
+};

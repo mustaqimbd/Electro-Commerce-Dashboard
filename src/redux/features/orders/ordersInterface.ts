@@ -42,6 +42,8 @@ export type TUpdatePayload = {
 export type TOrdersInitialState = {
   orders: TOrders[];
   selectedStatus: string;
+  startFrom: string;
+  endAt: string;
   iSOrderUpdate: boolean;
   singleOrder: TPlaceOrder;
   bulkOrders: {

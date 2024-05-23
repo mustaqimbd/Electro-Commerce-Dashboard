@@ -21,13 +21,14 @@ import {
   setSearchedOrders,
 } from "@/redux/features/search/searchSlice";
 import { useGetProcessingOrdersQuery } from "@/redux/features/processingOrders/processingOrdersApi";
-// import DateRangeSelector from "./DateRangeSelector";
+import DateRangeSelector from "@/components/DateRangeSelector";
 
 const ProcessingOrdersStatusButtons = () => {
   const dispatch = useAppDispatch();
   const { page, limit, isLoading } = useAppSelector(
     ({ pagination }) => pagination
   );
+  const { startFrom, endAt } = useAppSelector(({ orders }) => orders);
   const { selectedStatus: filter, processingOrders } = useAppSelector(
     ({ processingOrders }) => processingOrders
   );
@@ -43,6 +44,8 @@ const ProcessingOrdersStatusButtons = () => {
     error,
   } = useGetProcessingOrdersQuery({
     status: filter,
+    startFrom,
+    endAt,
     sort: "-createdAt",
     page,
     limit,
@@ -112,7 +115,9 @@ const ProcessingOrdersStatusButtons = () => {
           </Button>
         );
       })}
-      {/* <div><DateRangeSelector /></div> */}
+      <div>
+        <DateRangeSelector />
+      </div>
     </div>
   );
 };

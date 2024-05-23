@@ -20,17 +20,17 @@ import {
   setSearchedOrders,
 } from "@/redux/features/search/searchSlice";
 import { useGetProcessingDoneAndCourierOrdersQuery } from "@/redux/features/courierManagement/courierManagementApi";
-// import DateRangeSelector from "./DateRangeSelector";
+import DateRangeSelector from "@/components/DateRangeSelector";
 
 const StatusButtons = () => {
   const dispatch = useAppDispatch();
   const { page, limit, isLoading } = useAppSelector(
     ({ pagination }) => pagination
   );
+  const { startFrom, endAt } = useAppSelector(({ orders }) => orders);
   const { selectedStatus: filter, processingDoneOrders } = useAppSelector(
     ({ courierManagement }) => courierManagement
   );
-
   if (!processingDoneOrders.length && page > 1) {
     dispatch(setPage(1));
   }
@@ -41,6 +41,8 @@ const StatusButtons = () => {
     error,
   } = useGetProcessingDoneAndCourierOrdersQuery({
     status: filter,
+    startFrom,
+    endAt,
     sort: "-createdAt",
     page,
     limit,
@@ -110,7 +112,9 @@ const StatusButtons = () => {
           </Button>
         );
       })}
-      {/* <div><DateRangeSelector /></div> */}
+      <div>
+        <DateRangeSelector />
+      </div>
     </div>
   );
 };

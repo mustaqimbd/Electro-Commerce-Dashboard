@@ -9,16 +9,18 @@ import { usePathname } from "next/navigation";
 export function Sidebar() {
   const pathname = usePathname();
   const { profile } = useAppSelector(({ auth }) => auth);
-  const permissions = profile?.permissions;
 
-  if (!permissions) {
+  // Ensure permissions are loaded on both client and server
+  if (!profile || !profile.permissions) {
     return (
       <div
         role="status"
-        className="flex items-center justify-center h-full w-[16rem] bg-gray-300 rounded-lg animate-pulse dark:bg-gray-700 z-10"
+        className="w-[17rem] h-[calc(100vh-60px)] bg-gray-300 animate-pulse dark:bg-gray-700 z-10"
       ></div>
     );
   }
+
+  const permissions = profile.permissions;
 
   const seeDashboard =
     permissions && permissions.includes(permission.superAdmin);
@@ -45,7 +47,7 @@ export function Sidebar() {
         <Link href="/dashboard">
           <span
             className={cn(
-              "group flex gap-2 items-center  px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
+              "group flex gap-2 items-center px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
               pathname === "/dashboard"
                 ? "bg-primary text-white hover:bg-primary hover:text-white"
                 : "transparent"
@@ -61,7 +63,7 @@ export function Sidebar() {
           <Link href="/dashboard/add-products">
             <span
               className={cn(
-                "group flex gap-2 items-center  px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
+                "group flex gap-2 items-center px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
                 pathname === "/dashboard/add-products"
                   ? "bg-primary text-white hover:bg-primary hover:text-white"
                   : "transparent"
@@ -74,7 +76,7 @@ export function Sidebar() {
           <Link href="/dashboard/add-category">
             <span
               className={cn(
-                "group flex gap-2 items-center  px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
+                "group flex gap-2 items-center px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
                 pathname === "/dashboard/add-category"
                   ? "bg-primary text-white hover:bg-primary hover:text-white"
                   : "transparent"
@@ -87,7 +89,7 @@ export function Sidebar() {
           <Link href="/dashboard/add-attribute">
             <span
               className={cn(
-                "group flex gap-2 items-center  px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
+                "group flex gap-2 items-center px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
                 pathname === "/dashboard/add-attribute"
                   ? "bg-primary text-white hover:bg-primary hover:text-white"
                   : "transparent"
@@ -100,7 +102,7 @@ export function Sidebar() {
           <Link href="/dashboard/all-products">
             <span
               className={cn(
-                "group flex gap-2 items-center  px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
+                "group flex gap-2 items-center px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
                 pathname === "/dashboard/all-products"
                   ? "bg-primary text-white hover:bg-primary hover:text-white"
                   : "transparent"
@@ -116,7 +118,7 @@ export function Sidebar() {
         <Link href="/dashboard/orders">
           <span
             className={cn(
-              "group flex gap-2 items-center  px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
+              "group flex gap-2 items-center px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
               pathname === "/dashboard/orders"
                 ? "bg-primary text-white hover:bg-primary hover:text-white"
                 : "transparent"

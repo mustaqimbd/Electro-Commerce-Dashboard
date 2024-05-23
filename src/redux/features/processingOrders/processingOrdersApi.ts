@@ -1,20 +1,18 @@
 import baseApi from "@/redux/baseApi/baseApi";
+import { TOrderQuery } from "@/types/order/order.interface";
 
 const processingOrdersApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getProcessingOrders: builder.query({
       query: ({
         status,
+        startFrom,
+        endAt,
         sort,
         page,
         limit,
-      }: {
-        status: string;
-        sort: string;
-        page: number;
-        limit: number;
-      }) => ({
-        url: `/orders/admin/processing-orders?status=${status}&sort=${sort}&page=${page}&limit=${limit}`,
+      }: TOrderQuery) => ({
+        url: `/orders/admin/processing-orders?status=${status}&startFrom=${startFrom}&endAt=${endAt}&sort=${sort}&page=${page}&limit=${limit}`,
       }),
       providesTags: ["processingOrders"],
     }),

@@ -21,29 +21,32 @@ import borderColor from "@/utilities/borderColor";
 // import fetchData from "@/utilities/fetchData";
 import { useEffect, useState } from "react";
 import { useGetAllOrdersQuery } from "@/redux/features/orders/ordersApi";
-
-// import DateRangeSelector from "./DateRangeSelector";
+import DateRangeSelector from "@/components/DateRangeSelector";
 
 const OrdersStatusButtons = () => {
   const dispatch = useAppDispatch();
   const { page, limit, isLoading } = useAppSelector(
     ({ pagination }) => pagination
   );
-  const { selectedStatus: filter, orders } = useAppSelector(
-    ({ orders }) => orders
-  );
+  const {
+    selectedStatus: filter,
+    orders,
+    startFrom,
+    endAt,
+  } = useAppSelector(({ orders }) => orders);
 
   if (!orders.length && page > 1) {
     dispatch(setPage(1));
   }
   const [orderStatusCount, setOrderStatusCount] = useState([]);
-
   const {
     data,
     isLoading: loading,
     error,
   } = useGetAllOrdersQuery({
     status: filter,
+    startFrom,
+    endAt,
     sort: "-createdAt",
     page,
     limit,
@@ -113,7 +116,9 @@ const OrdersStatusButtons = () => {
           </Button>
         );
       })}
-      {/* <div><DateRangeSelector /></div> */}
+      <div>
+        <DateRangeSelector />
+      </div>
     </div>
   );
 };

@@ -4,6 +4,8 @@ import { TOrdersInitialState } from "./ordersInterface";
 const initialState: TOrdersInitialState = {
   orders: [],
   selectedStatus: "all",
+  startFrom: "",
+  endAt: "",
   iSOrderUpdate: false,
   singleOrder: {
     invoice: "",
@@ -28,10 +30,12 @@ const ordersSlice = createSlice({
       state.orders = action.payload;
     },
     setSelectedStatus: (state, action) => {
-      // state.search = false
-      // state.searchQuery = "";
-      // state.searchedOrders = [];
       state.selectedStatus = action.payload;
+    },
+    setDate: (state, action) => {
+      const { startFrom, endAt } = action.payload;
+      state.startFrom = startFrom;
+      state.endAt = endAt;
     },
     setIsOrderUpdate: (state, action) => {
       state.iSOrderUpdate = action.payload;
@@ -47,6 +51,7 @@ const ordersSlice = createSlice({
 export const {
   setOrders,
   setSelectedStatus,
+  setDate,
   setIsOrderUpdate,
   setSingleOrder,
   setBulkOrder,
