@@ -12,6 +12,7 @@ import {
 import { setBulkOrder } from "@/redux/features/orders/ordersSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { TOrders } from "@/types/order/order.interface";
+import formattedOrderData from "@/utilities/formattedOrderData";
 import {
   ColumnDef,
   flexRender,
@@ -21,7 +22,6 @@ import {
 } from "@tanstack/react-table";
 import { useEffect } from "react";
 import FollowUpDate from "./FollowUpDate";
-import formattedOrderData from "@/utilities/formattedOrderData";
 import { columns } from "./OrdersColumn";
 
 export default function OrdersTable() {
@@ -43,12 +43,10 @@ export default function OrdersTable() {
         ]
       : [...columns];
 
-  const orders = useAppSelector(({ orders, search }) => {
-    return search.search ? search.searchedOrders : orders.orders;
-  });
-  const search = useAppSelector(({ search }) => {
-    return search.search;
-  });
+  const orders = useAppSelector(({ orders, search }) =>
+    search.search ? search.searchedOrders : orders.orders
+  );
+  const search = useAppSelector(({ search }) => search.search);
 
   const table = useReactTable({
     data: orders,

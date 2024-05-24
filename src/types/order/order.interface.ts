@@ -69,6 +69,7 @@ export const permission = {
   manageProcessing: "manage warehouse",
   manageCourier: "manage courier",
   superAdmin: "super admin",
+  manageWarrantyClaim: "manage warranty claim",
 } as const;
 
 export type TOrderQuery = {
