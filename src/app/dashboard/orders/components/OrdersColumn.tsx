@@ -99,7 +99,12 @@ export const columns: ColumnDef<TOrders>[] = [
   {
     accessorKey: "status",
     header: "Status",
-    cell: ({ row }) => <OrderStatus order={row.original} />,
+    cell: ({ row }) => (
+      <OrderStatus
+        order={row.original}
+        disableStatus={["processing", "deleted"]}
+      />
+    ),
   },
   {
     accessorKey: "notes",

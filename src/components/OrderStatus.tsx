@@ -6,32 +6,23 @@ import UpdateOrderStatus from "./UpdateOrderStatus";
 
 const OrderStatus = ({
   order,
-  notDisable,
+  disableStatus = [],
 }: {
   order: TOrders;
-  notDisable?: boolean;
+  disableStatus?: string[];
 }) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
     setOpen(!open);
   };
+
   const status = order.status;
-  // const isDisable =
-  //   status == "deleted" || status == "processing" ? true : false;
-  const isDisable =
-    status == "all" ||
-    status == "deleted" ||
-    status == "processing" ||
-    status == "processing done" ||
-    status == "on courier"
-      ? true
-      : false;
 
   return (
     <>
       <button
         onClick={handleOpen}
-        disabled={notDisable ? false : isDisable}
+        disabled={disableStatus.includes(status)}
         className={`capitalize px-2 pb-[2px] pt-[1px] text-white rounded ${backgroundColor(status)}`}
       >
         {status}
@@ -54,7 +45,7 @@ const OrderStatus = ({
           order={order}
           _id={order._id}
           handleOpen={handleOpen}
-          notDisable={notDisable}
+          disableStatus={disableStatus}
         />
       </CommonModal>
     </>

@@ -155,7 +155,16 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
       <div className="w-4/12">
         <Card className="p-4 space-y-3 flex flex-col">
           <SectionTitle>Update Order Status</SectionTitle>
-          <UpdateOrderStatus order={order} _id={_id} />
+          <UpdateOrderStatus
+            order={order}
+            _id={_id}
+            disableStatus={[
+              "deleted",
+              "processing",
+              "processing done",
+              "On courier",
+            ]}
+          />
           {/* <div className="mt-10">
             <p className="font-bold mb-1">Add courier note</p>
             <textarea

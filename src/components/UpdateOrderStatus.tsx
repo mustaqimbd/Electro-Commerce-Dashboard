@@ -14,11 +14,16 @@ import { useState } from "react";
 type TProps = {
   order: TOrders;
   _id: string;
-  notDisable?: boolean;
+  disableStatus?: string[];
   handleOpen?: () => void;
 };
 
-const UpdateOrderStatus = ({ order, _id, notDisable, handleOpen }: TProps) => {
+const UpdateOrderStatus = ({
+  order,
+  _id,
+  disableStatus = [],
+  handleOpen,
+}: TProps) => {
   // const dispatch = useAppDispatch();
   const [action, setAction] = useState("");
   const [updateOrdersStatus, { isLoading }] = useUpdateOrdersStatusMutation();
@@ -118,17 +123,11 @@ const UpdateOrderStatus = ({ order, _id, notDisable, handleOpen }: TProps) => {
   };
 
   const status = order.status;
-  const hidden =
-    status == "all" ||
-    status == "deleted" ||
-    status == "processing" ||
-    status == "processing done" ||
-    status == "on courier"
-      ? "hidden"
-      : "";
 
   return (
-    <div className={`flex items-center gap-5 ${notDisable ? "" : hidden}`}>
+    <div
+      className={`flex items-center gap-5 ${disableStatus.includes(status) ? "hidden" : ""}`}
+    >
       <select
         onChange={(e) => setAction(e.target.value)}
         className="h-9 border border-primary focus:outline focus:outline-primary rounded-sm capitalize"

@@ -5,7 +5,7 @@ const statusOptions = (status: string) => {
       : status === "confirmed"
         ? ["processing", "canceled"]
         : status === "processing"
-          ? ["warranty added", "canceled"]
+          ? ["processing done", "canceled"]
           : status === "warranty added"
             ? ["processing done"]
             : status === "processing done"

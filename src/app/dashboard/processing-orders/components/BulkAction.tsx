@@ -53,7 +53,8 @@ const BulkAction = () => {
     }
   };
 
-  const isBulkAction = selectedStatus == "warranty added";
+  const isBulkAction =
+    selectedStatus == "processing" || selectedStatus == "warranty added";
   return (
     <div className={"flex gap-10 items-center"}>
       {isBulkAction && (
