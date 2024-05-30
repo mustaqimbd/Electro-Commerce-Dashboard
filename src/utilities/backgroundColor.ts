@@ -17,13 +17,16 @@ const backgroundColor = (status: string) => {
                   ? "bg-[#4c84ff]"
                   : status === "canceled"
                     ? "bg-[#fe5461]"
-                    : status === "deleted"
+                    : status === "deleted" || status === "problem"
                       ? "bg-[#C70000]"
-                      : status === "completed"
+                      : status === "completed" ||
+                          status === "solved" ||
+                          status === "approved"
                         ? "bg-[#2DB224]"
                         : status === "returned"
                           ? "bg-[#E38390]"
-                          : status === "follow up"
+                          : status === "follow up" ||
+                              status === "retry required"
                             ? "bg-[#00C3C6]"
                             : "";
 };

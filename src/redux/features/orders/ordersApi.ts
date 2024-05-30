@@ -1,5 +1,5 @@
 import baseApi from "@/redux/baseApi/baseApi";
-import { TOrderQuery } from "@/types/order/order.interface";
+import { TQuery } from "@/types/order/order.interface";
 
 const updateStatusApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -12,14 +12,7 @@ const updateStatusApi = baseApi.injectEndpoints({
       invalidatesTags: ["carts"],
     }),
     getAllOrders: builder.query({
-      query: ({
-        status,
-        startFrom,
-        endAt,
-        sort,
-        page,
-        limit,
-      }: TOrderQuery) => ({
+      query: ({ status, startFrom, endAt, sort, page, limit }: TQuery) => ({
         url: `/orders/admin/all-orders?status=${status}&startFrom=${startFrom}&endAt=${endAt}&sort=${sort}&page=${page}&limit=${limit}`,
       }),
       providesTags: ["allOrders"],

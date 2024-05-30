@@ -1,11 +1,11 @@
+import config from "@/config/config";
 import {
   BaseQueryFn,
   createApi,
   fetchBaseQuery,
 } from "@reduxjs/toolkit/query/react";
-import { RootState } from "../store";
 import { logOut, setUser } from "../features/auth/authSlice";
-import config from "@/config/config";
+import { RootState } from "../store";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: `${config.base_url}/api/v1`,
@@ -49,13 +49,15 @@ type Tags =
   | "processingOrders"
   | "processingDoneAndCourierOrders"
   | "carts"
-  | "images";
+  | "images"
+  | "warrantyClaimRequests";
 const tags: Tags[] = [
   "allOrders",
   "processingOrders",
   "processingDoneAndCourierOrders",
   "carts",
   "images",
+  "warrantyClaimRequests",
 ];
 
 const baseApi = createApi({

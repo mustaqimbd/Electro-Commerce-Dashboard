@@ -70,9 +70,10 @@ export const permission = {
   manageCourier: "manage courier",
   superAdmin: "super admin",
   manageWarrantyClaim: "manage warranty claim",
+  manageProduct: "manage product",
 } as const;
 
-export type TOrderQuery = {
+export type TQuery = {
   status: string;
   sort: string;
   startFrom: string;
