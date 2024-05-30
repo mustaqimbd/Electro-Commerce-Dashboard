@@ -70,6 +70,7 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground box-border;
   }
@@ -77,17 +78,21 @@
 
 @layer utilities {
   .min-h-screen {
-    min-height: 100vh; /* Fallback */
+    min-height: 100vh;
+    /* Fallback */
     min-height: 100dvh;
   }
+
   .h-screen {
-    height: 100vh; /* Fallback */
+    height: 100vh;
+    /* Fallback */
     height: 100dvh;
   }
 
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
+
   .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -106,3 +111,11 @@
     display: block;
   }
 }  */
+
+.toast-error {
+  @apply bg-red-500 text-white text-2xl border-0
+}
+
+.toast-success {
+  @apply bg-success text-white text-2xl border-0
+}

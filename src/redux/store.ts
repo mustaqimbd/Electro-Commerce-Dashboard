@@ -16,12 +16,13 @@ import courierBaseApi from "./baseApi/courierBaseApi";
 import addProductReducer from "./features/addProduct/addProductSlice";
 import variationReducer from "./features/addProduct/variation/variationSlice";
 import authReducer from "./features/auth/authSlice";
-import ordersReducer from "./features/orders/ordersSlice";
-import processingOrdersReducer from "./features/processingOrders/processingOrdersSlice";
 import courierManagementReducer from "./features/courierManagement/courierManagementSlice";
+import ordersReducer from "./features/orders/ordersSlice";
 import updateOrderReducer from "./features/orders/updateOrderSlice";
-import searchReducer from "./features/search/searchSlice";
 import paginationReducer from "./features/pagination/PaginationSlice";
+import processingOrdersReducer from "./features/processingOrders/processingOrdersSlice";
+import searchReducer from "./features/search/searchSlice";
+import warrantyClaimSlice from "./features/warrantyClaimRequests/warrantyClaimSlice";
 import storage from "./storage";
 
 const persistConfig = {
@@ -43,6 +44,7 @@ const store = configureStore({
     updateOrder: updateOrderReducer,
     search: searchReducer,
     pagination: paginationReducer,
+    warrantyClaim: warrantyClaimSlice,
   },
   middleware: (getDefaultMiddlewares) =>
     getDefaultMiddlewares({
