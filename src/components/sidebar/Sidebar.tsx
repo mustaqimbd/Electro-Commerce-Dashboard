@@ -1,14 +1,19 @@
 "use client";
-import { cn } from "@/lib/utils";
 import { useAppSelector } from "@/redux/hooks";
 import { permission } from "@/types/order/order.interface";
 import isPermitted from "@/utilities/isPermitted";
-import { LayoutDashboard, PlusCircle } from "lucide-react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import {
+  Bike,
+  LayoutDashboard,
+  ListOrdered,
+  Loader,
+  PackageSearch,
+  PlusCircle,
+  UsersRound,
+} from "lucide-react";
+import NavLink from "../NavLink/NavLink";
 
 export function Sidebar() {
-  const pathname = usePathname();
   const { profile } = useAppSelector(({ auth }) => auth);
 
   // Ensure permissions are loaded on both client and server
@@ -31,144 +36,90 @@ export function Sidebar() {
     permission.manageProcessing
   );
   const manageCourier = isPermitted(permissions, permission.manageCourier);
-
+  const manageAdminOrStaff = isPermitted(
+    permissions,
+    permission.manageAdminOrStaff
+  );
   const manageWarrantyClaim = isPermitted(
     permissions,
     permission.manageWarrantyClaim
   );
+
+  const productManagementLinks = [
+    {
+      href: "/add-products",
+      name: "Add Products",
+      icon: <PlusCircle className="w-4 h-4" />,
+    },
+    {
+      href: "/add-category",
+      name: "Add Category",
+      icon: <PlusCircle className="w-4 h-4" />,
+    },
+    {
+      href: "/add-attribute",
+      name: "Add attribute",
+      icon: <PlusCircle className="w-4 h-4" />,
+    },
+    {
+      href: "/all-products",
+      name: "All Products",
+      icon: <PackageSearch className="w-4 h-4" />,
+    },
+  ];
+
   return (
     <div className="w-[17rem] p-2 h-[calc(100vh-60px)] border-r overflow-y-auto space-y-1">
       {seeDashboard && (
-        <Link href="/dashboard">
-          <span
-            className={cn(
-              "group flex gap-2 items-center px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
-              pathname === "/dashboard"
-                ? "bg-primary text-white hover:bg-primary hover:text-white"
-                : "transparent"
-            )}
-          >
-            <LayoutDashboard className="w-4 h-4" />
-            <span>Dashboard</span>
-          </span>
-        </Link>
+        <NavLink
+          href="/dashboard"
+          name="Dashboard"
+          icon={<LayoutDashboard className="w-4 h-4" />}
+        />
       )}
-      {manageProduct && (
-        <>
-          <Link href="/dashboard/add-products">
-            <span
-              className={cn(
-                "group flex gap-2 items-center px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
-                pathname === "/dashboard/add-products"
-                  ? "bg-primary text-white hover:bg-primary hover:text-white"
-                  : "transparent"
-              )}
-            >
-              <PlusCircle className="w-4 h-4" />
-              <span>Add Products</span>
-            </span>
-          </Link>
-          <Link href="/dashboard/add-category">
-            <span
-              className={cn(
-                "group flex gap-2 items-center px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
-                pathname === "/dashboard/add-category"
-                  ? "bg-primary text-white hover:bg-primary hover:text-white"
-                  : "transparent"
-              )}
-            >
-              <PlusCircle className="w-4 h-4" />
-              <span>Add Category</span>
-            </span>
-          </Link>
-          <Link href="/dashboard/add-attribute">
-            <span
-              className={cn(
-                "group flex gap-2 items-center px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
-                pathname === "/dashboard/add-attribute"
-                  ? "bg-primary text-white hover:bg-primary hover:text-white"
-                  : "transparent"
-              )}
-            >
-              <PlusCircle className="w-4 h-4" />
-              <span>Add attribute</span>
-            </span>
-          </Link>
-          <Link href="/dashboard/all-products">
-            <span
-              className={cn(
-                "group flex gap-2 items-center px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
-                pathname === "/dashboard/all-products"
-                  ? "bg-primary text-white hover:bg-primary hover:text-white"
-                  : "transparent"
-              )}
-            >
-              <LayoutDashboard className="w-4 h-4" />
-              <span>All Products</span>
-            </span>
-          </Link>
-        </>
-      )}
+      {manageProduct &&
+        productManagementLinks.map((item) => (
+          <NavLink
+            key={item.href}
+            href={`/dashboard${item.href}`}
+            name={item.name}
+            icon={item.icon}
+          />
+        ))}
       {manageOrder && (
-        <Link href="/dashboard/orders">
-          <span
-            className={cn(
-              "group flex gap-2 items-center px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
-              pathname === "/dashboard/orders"
-                ? "bg-primary text-white hover:bg-primary hover:text-white"
-                : "transparent"
-            )}
-          >
-            <PlusCircle className="w-4 h-4" />
-            <span>Orders</span>
-          </span>
-        </Link>
+        <NavLink
+          href="/dashboard/orders"
+          name="Orders"
+          icon={<ListOrdered className="w-4 h-4" />}
+        />
       )}
       {manageProcessing && (
-        <Link href="/dashboard/processing-orders">
-          <span
-            className={cn(
-              "group flex gap-2 items-center px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
-              pathname === "/dashboard/processing-orders"
-                ? "bg-primary text-white hover:bg-primary hover:text-white"
-                : "transparent"
-            )}
-          >
-            <PlusCircle className="w-4 h-4" />
-            <span>Processing Orders</span>
-          </span>
-        </Link>
+        <NavLink
+          href="/dashboard/processing-orders"
+          name="Processing Orders"
+          icon={<Loader className="w-4 h-4" />}
+        />
       )}
-
       {manageCourier && (
-        <Link href="/dashboard/courier-management">
-          <span
-            className={cn(
-              "group flex gap-2 items-center px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
-              pathname === "/dashboard/courier-management"
-                ? "bg-primary text-white hover:bg-primary hover:text-white"
-                : "transparent"
-            )}
-          >
-            <PlusCircle className="w-4 h-4" />
-            <span>Courier Management</span>
-          </span>
-        </Link>
+        <NavLink
+          href="/dashboard/courier-management"
+          name="Courier Management"
+          icon={<Bike className="w-4 h-4" />}
+        />
       )}
       {manageWarrantyClaim && (
-        <Link href="/dashboard/warranty-claims">
-          <span
-            className={cn(
-              "group flex gap-2 items-center  px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
-              pathname === "/dashboard/warranty-claims"
-                ? "bg-primary text-white hover:bg-primary hover:text-white"
-                : "transparent"
-            )}
-          >
-            <LayoutDashboard className="w-4 h-4" />
-            <span>Warranty claims</span>
-          </span>
-        </Link>
+        <NavLink
+          href="/dashboard/warranty-claims"
+          name="Warranty claims"
+          icon={<LayoutDashboard className="w-4 h-4" />}
+        />
+      )}
+      {manageAdminOrStaff && (
+        <NavLink
+          href="/dashboard/manage-admin-staff"
+          name="Manage employs"
+          icon={<UsersRound className="w-4 h-4" />}
+        />
       )}
     </div>
   );

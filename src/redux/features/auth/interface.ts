@@ -20,4 +20,5 @@ export type TInitialState = {
   user: null | TUser;
   token: null | string;
   profile: null | UserProfile;
+  isProfileLoading: null | boolean;
 };
