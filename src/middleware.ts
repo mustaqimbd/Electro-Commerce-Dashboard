@@ -6,8 +6,8 @@ import { permission } from "./types/order/order.interface";
 import decodeJWT from "./utilities/decodeJWT";
 
 export async function middleware(request: NextRequest) {
-  const accessToken = request.cookies.get("accessToken")?.value || "";
-  const refreshToken = request.cookies.get("refreshToken")?.value;
+  const accessToken = request.cookies.get("__app.ec.at")?.value || "";
+  const refreshToken = request.cookies.get("__app.ec.rt")?.value;
 
   if (!refreshToken) {
     return Response.redirect(new URL("/login", request.url));
@@ -24,7 +24,7 @@ export async function middleware(request: NextRequest) {
         maxAge: Number(con.token_data.access_token_cookie_expires),
       };
       const response = NextResponse.next();
-      response.cookies.set("accessToken", token, cookieOption);
+      response.cookies.set("__app.ec.at", token, cookieOption);
       return response;
     } catch (error) {
       return Response.redirect(new URL("/login", request.url));

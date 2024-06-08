@@ -64,6 +64,8 @@ export type TOrders = {
   orderSource: { name: string; url: string; lpNo: number };
 };
 
+export type TPermission = (typeof permission)[keyof typeof permission];
+
 export const permission = {
   manageOrder: "manage orders",
   manageProcessing: "manage warehouse",
@@ -71,6 +73,7 @@ export const permission = {
   superAdmin: "super admin",
   manageWarrantyClaim: "manage warranty claim",
   manageProduct: "manage product",
+  manageAdminOrStaff: "manage admin or staff",
 } as const;
 
 export type TQuery = {
