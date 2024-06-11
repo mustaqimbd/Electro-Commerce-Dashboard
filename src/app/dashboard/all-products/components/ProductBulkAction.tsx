@@ -13,7 +13,7 @@ import { toast } from "@/components/ui/use-toast";
 // import { useAppSelector } from "@/redux/hooks";
 import { useState } from "react";
 
-const ApplyButton = () => {
+const ProductBulkAction = () => {
   const [action, setAction] = useState("");
   // const [placeOrders] = usePlaceOrdersMutation();
   // const orders = useAppSelector(({ orders }) => orders.bulkOrders);
@@ -53,7 +53,7 @@ const ApplyButton = () => {
   return (
     <>
       <Select onValueChange={(value) => setAction(value)}>
-        <SelectTrigger className="w-[180px]">
+        <SelectTrigger className="w-[120px]">
           <SelectValue placeholder="Bulk Actions" />
         </SelectTrigger>
         <SelectContent>
@@ -69,4 +69,4 @@ const ApplyButton = () => {
   );
 };
 
-export default ApplyButton;
+export default ProductBulkAction;

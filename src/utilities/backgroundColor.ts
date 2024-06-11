@@ -28,7 +28,11 @@ const backgroundColor = (status: string) => {
                           : status === "follow up" ||
                               status === "retry required"
                             ? "bg-[#00C3C6]"
-                            : "";
+                            : status === "published"
+                              ? "bg-[#32CD32]"
+                              : status === "draft"
+                                ? "bg-[#808080]"
+                                : "";
 };
 
 export default backgroundColor;

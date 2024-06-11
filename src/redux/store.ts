@@ -11,6 +11,7 @@ import {
   persistStore,
 } from "redux-persist";
 // import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
+import storage from "./storage";
 import baseApi from "./baseApi/baseApi";
 import courierBaseApi from "./baseApi/courierBaseApi";
 import addProductReducer from "./features/addProduct/addProductSlice";
@@ -23,7 +24,7 @@ import paginationReducer from "./features/pagination/PaginationSlice";
 import processingOrdersReducer from "./features/processingOrders/processingOrdersSlice";
 import searchReducer from "./features/search/searchSlice";
 import warrantyClaimSlice from "./features/warrantyClaimRequests/warrantyClaimSlice";
-import storage from "./storage";
+import allProductReducer from "./features/allProducts/allProductsSlice";
 
 const persistConfig = {
   key: "auth",
@@ -38,6 +39,7 @@ const store = configureStore({
     auth: persistedAuthReducer,
     addProduct: addProductReducer,
     productVariation: variationReducer,
+    allProducts: allProductReducer,
     orders: ordersReducer,
     processingOrders: processingOrdersReducer,
     courierManagement: courierManagementReducer,
