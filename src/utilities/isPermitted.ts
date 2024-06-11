@@ -1,15 +1,17 @@
-import { permission } from "@/types/order/order.interface";
-type TPermission = (typeof permission)[keyof typeof permission];
+import { TPermission, permission } from "@/types/order/order.interface";
 
 const isPermitted = (
   permissions?: string[],
   requiredPermission?: TPermission
 ) => {
-  if (permissions?.length && requiredPermission) {
+  const neededPermission = requiredPermission
+    ? requiredPermission
+    : "super admin";
+  if (permissions?.length) {
     return (
       permissions &&
       (permissions.includes(permission.superAdmin) ||
-        permissions.includes(requiredPermission))
+        permissions.includes(neededPermission))
     );
   }
   return false;

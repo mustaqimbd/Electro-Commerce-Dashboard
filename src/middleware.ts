@@ -33,7 +33,11 @@ export async function middleware(request: NextRequest) {
 
   const currentUser = decodeJWT(accessToken as string) as TUser; // Decode the JWT
 
-  if (currentUser.role !== "admin" && currentUser.role !== "super admin") {
+  if (
+    currentUser.role !== "staff" &&
+    currentUser.role !== "admin" &&
+    currentUser.role !== "superAdmin"
+  ) {
     return Response.redirect(new URL("/error", request.url));
   }
 

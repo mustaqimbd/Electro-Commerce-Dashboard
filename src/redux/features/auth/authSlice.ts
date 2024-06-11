@@ -5,6 +5,7 @@ const initialState: TInitialState = {
   user: null,
   token: null,
   profile: null,
+  isProfileLoading: true,
 };
 
 const authSlice = createSlice({
@@ -24,8 +25,12 @@ const authSlice = createSlice({
     setProfile: (state, action) => {
       state.profile = action.payload;
     },
+    setProfileLoading: (state, { payload }) => {
+      state.isProfileLoading = payload;
+    },
   },
 });
-export const { setUser, logOut, setProfile } = authSlice.actions;
+export const { setUser, logOut, setProfile, setProfileLoading } =
+  authSlice.actions;
 
 export default authSlice.reducer;

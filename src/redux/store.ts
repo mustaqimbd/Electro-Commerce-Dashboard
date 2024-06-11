@@ -23,6 +23,7 @@ import updateOrderReducer from "./features/orders/updateOrderSlice";
 import paginationReducer from "./features/pagination/PaginationSlice";
 import processingOrdersReducer from "./features/processingOrders/processingOrdersSlice";
 import searchReducer from "./features/search/searchSlice";
+import userSlice from "./features/user/userSlice";
 import warrantyClaimSlice from "./features/warrantyClaimRequests/warrantyClaimSlice";
 import allProductReducer from "./features/allProducts/allProductsSlice";
 
@@ -47,6 +48,7 @@ const store = configureStore({
     search: searchReducer,
     pagination: paginationReducer,
     warrantyClaim: warrantyClaimSlice,
+    users: userSlice,
   },
   middleware: (getDefaultMiddlewares) =>
     getDefaultMiddlewares({

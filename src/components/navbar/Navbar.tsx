@@ -3,7 +3,7 @@ import Image from "next/image";
 import logo from "../../../public/logo.png";
 // import { ModeToggle } from "../ui/ModeToggle";
 import { useGetProfileQuery } from "@/redux/features/auth/authApi";
-import { setProfile } from "@/redux/features/auth/authSlice";
+import { setProfile, setProfileLoading } from "@/redux/features/auth/authSlice";
 import { useAppDispatch } from "@/redux/hooks";
 import { useEffect } from "react";
 import UserMenu from "../userMenu/UserMenu";
@@ -15,7 +15,8 @@ const Navbar = () => {
     if (user) {
       dispatch(setProfile(user.data));
     }
-  }, [user, dispatch]);
+    dispatch(setProfileLoading(isLoading));
+  }, [user, dispatch, isLoading]);
 
   if (isLoading) {
     return (

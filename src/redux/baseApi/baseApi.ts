@@ -50,7 +50,8 @@ type Tags =
   | "processingDoneAndCourierOrders"
   | "carts"
   | "images"
-  | "warrantyClaimRequests";
+  | "warrantyClaimRequests"
+  | "users";
 const tags: Tags[] = [
   "allOrders",
   "processingOrders",
@@ -58,6 +59,7 @@ const tags: Tags[] = [
   "carts",
   "images",
   "warrantyClaimRequests",
+  "users",
 ];
 
 const baseApi = createApi({
