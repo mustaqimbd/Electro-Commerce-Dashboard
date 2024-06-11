@@ -17,7 +17,7 @@ const AllProducts = async ({ searchParams }: TProps) => {
   // const query = queryHelper({ ...searchParams });
   // const products = await getAllProducts(query);
   // console.log(searchParams);
-  const products = await fetchData({
+  const { data: products } = await fetchData({
     endPoint: "/products/admin",
     tags: ["allProducts"],
     searchParams,

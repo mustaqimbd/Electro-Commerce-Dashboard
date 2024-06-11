@@ -1,8 +1,3 @@
-type Image = {
-  src: string;
-  alt: string;
-};
-
 type ShippingCharge = {
   name: string;
   amount: number;
@@ -25,13 +20,24 @@ type Shipping = {
   fullAddress: string;
 };
 
-type Product = {
+export type Product = {
   _id: string;
+  productId: string;
+  slug: string;
   title: string;
-  image: Image;
+  image: {
+    src: string;
+    alt: string;
+  };
   unitPrice: number;
   quantity: number;
   total: number;
+  iSWarranty: boolean;
+  warranty: {
+    warrantyCodes?: {
+      code: string;
+    }[];
+  };
 };
 
 export type TOrders = {
@@ -54,5 +60,27 @@ export type TOrders = {
   invoiceNotes?: string;
   officialNotes?: string;
   courierNotes?: string;
+  reasonNotes?: string;
   orderSource: { name: string; url: string; lpNo: number };
+};
+
+export type TPermission = (typeof permission)[keyof typeof permission];
+
+export const permission = {
+  manageOrder: "manage orders",
+  manageProcessing: "manage warehouse",
+  manageCourier: "manage courier",
+  superAdmin: "super admin",
+  manageWarrantyClaim: "manage warranty claim",
+  manageProduct: "manage product",
+  manageAdminOrStaff: "manage admin or staff",
+} as const;
+
+export type TQuery = {
+  status: string;
+  sort: string;
+  startFrom: string;
+  endAt: string;
+  page: number;
+  limit: number;
 };

@@ -1,11 +1,11 @@
+import config from "@/config/config";
 import {
   BaseQueryFn,
   createApi,
   fetchBaseQuery,
 } from "@reduxjs/toolkit/query/react";
-import { RootState } from "../store";
 import { logOut, setUser } from "../features/auth/authSlice";
-import config from "@/config/config";
+import { RootState } from "../store";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: `${config.base_url}/api/v1`,
@@ -44,7 +44,23 @@ const customBaseQueryWithRefreshToken: BaseQueryFn = async (
   return result;
 };
 
-const tags = ["images"];
+type Tags =
+  | "allOrders"
+  | "processingOrders"
+  | "processingDoneAndCourierOrders"
+  | "carts"
+  | "images"
+  | "warrantyClaimRequests"
+  | "users";
+const tags: Tags[] = [
+  "allOrders",
+  "processingOrders",
+  "processingDoneAndCourierOrders",
+  "carts",
+  "images",
+  "warrantyClaimRequests",
+  "users",
+];
 
 const baseApi = createApi({
   reducerPath: "baseApi",

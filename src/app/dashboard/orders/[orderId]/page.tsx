@@ -1,7 +1,9 @@
+import OrderIdAndDate from "@/components/OrderIdAndDate";
+import Invoice from "@/components/invoice/Invoice";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { SectionTitle } from "@/components/ui/sectionTitle";
-import { Skeleton } from "@/components/ui/skeleton";
+import backgroundColor from "@/utilities/backgroundColor";
 import {
   MapPin,
   PencilIcon,
@@ -10,30 +12,16 @@ import {
   UserRound,
 } from "lucide-react";
 import Link from "next/link";
-import DeleteOrderBtn from "../components/DeleteOrderBtn";
-import OrderIdAndDate from "../components/OrderIdAndDate";
-import UpdateStatus from "../components/UpdateStatus";
-import getSingleOrder from "../lib/getSingleOrders";
-import Invoice from "./components/Invoice";
 import { OrderedProductTable } from "./components/OrderedProductTable";
-import backgroundColor from "../utils/backgroundColor";
+import fetchData from "@/utilities/fetchData";
+import UpdateOrderStatus from "@/components/UpdateOrderStatus";
+import DeleteOrderBtn from "@/components/DeleteOrderBtn";
 
 const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
-  const order = await getSingleOrder(params.orderId);
-
-  if (!order) {
-    return (
-      <div>
-        <div className="flex flex-col space-y-3">
-          <Skeleton className="h-[125px] w-[250px] rounded-xl" />
-          <div className="space-y-2">
-            <Skeleton className="h-4 w-[250px]" />
-            <Skeleton className="h-4 w-[200px]" />
-          </div>
-        </div>
-      </div>
-    );
-  }
+  const { data: order } = await fetchData({
+    endPoint: `/orders/admin/order-id/${params.orderId}`,
+    tags: ["singleOrder"],
+  });
 
   const {
     _id,
@@ -53,8 +41,6 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
     courierNotes,
     discount,
   } = order;
-
-  // console.log(products);
 
   return (
     <div className="flex justify-between gap-3 h-screen pb-20">
@@ -100,17 +86,18 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
               <h1 className="font-bold">Customer Info</h1>
               <div>
                 <div className="flex items-start gap-2">
-                  <UserRound className="w-5" /> <span>{shipping.fullName}</span>
+                  <UserRound className="w-5" />{" "}
+                  <span>{shipping?.fullName}</span>
                 </div>
                 <div className="flex items-start gap-2">
                   <span className="w-5">
                     <MapPin className="w-5" />
                   </span>{" "}
-                  <span>{shipping.fullAddress}</span>
+                  <span>{shipping?.fullAddress}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Phone className="w-5" />
-                  <span>{shipping.phoneNumber}</span>
+                  <span>{shipping?.phoneNumber}</span>
                 </div>
               </div>
             </div>
@@ -154,7 +141,7 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
             </p>
             <p className="text-right pb-[2px] pb2">
               <span className="font-medium">Shipping Cost :</span> ৳{" "}
-              {shippingCharge.amount}
+              {shippingCharge?.amount}
             </p>
             <hr />
             <p className="text-xl font-bold text-right text-secondary">
@@ -167,8 +154,17 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
       {/* sidebar section start */}
       <div className="w-4/12">
         <Card className="p-4 space-y-3 flex flex-col">
-          <SectionTitle> Order Status</SectionTitle>
-          <UpdateStatus order={order} _id={_id} />
+          <SectionTitle>Update Order Status</SectionTitle>
+          <UpdateOrderStatus
+            order={order}
+            _id={_id}
+            disableStatus={[
+              "deleted",
+              "processing",
+              "processing done",
+              "On courier",
+            ]}
+          />
           {/* <div className="mt-10">
             <p className="font-bold mb-1">Add courier note</p>
             <textarea

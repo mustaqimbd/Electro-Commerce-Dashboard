@@ -1,13 +1,25 @@
 "use server";
 import config from "@/config/config";
 // import TGenericResponse from "./response";
-import objectToSearchParams from "./objectToSearchParams";
 import { revalidateTag } from "next/cache";
+import objectToSearchParams from "./objectToSearchParams";
+// type TEndPoint = "/orders/admin/processing-orders"
+
+type TTags =
+  | "allProducts"
+  | "ProductsName"
+  | "paymentMethod"
+  | "shippingCharge"
+  | "allOrders"
+  | "processingOrders"
+  | "processingDoneOrders"
+  | "singleOrder"
+  | "orderStatusCount";
 
 type TProps = {
   endPoint: string;
-  tags?: string[];
-  searchParams?: Record<string, string | string[] | undefined>;
+  tags?: TTags[];
+  searchParams?: Record<string, unknown>;
   cache?: RequestCache;
 };
 
@@ -53,17 +65,19 @@ const fetchData = async ({ endPoint, tags, searchParams, cache }: TProps) => {
   // }
 
   const res = await fetch(url, reqConfig);
-  const data = await res.json();
+  // const data = await res.json();
+  // if (!res.ok) {
+  //   throw new Error(data.message);
+  // }
   if (!res.ok) {
-    throw new Error(data.message);
+    throw new Error("Error when fetching data!");
   }
-
-  return data.data;
+  const data = await res.json();
+  return data;
 };
 
 export default fetchData;
 
-type TTags = "allOrders" | "singleOrder" | "orderStatusCount";
 export async function refetchData(tag: TTags) {
   revalidateTag(tag);
 }

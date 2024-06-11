@@ -4,12 +4,12 @@ import {
   setThumbnail,
 } from "@/redux/features/addProduct/addProductSlice";
 import { useGetMediaImagesQuery } from "@/redux/features/addProduct/media/mediaApi";
-import { setVariationThumbnail } from "@/redux/features/addProduct/variation/variationSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { CheckIcon } from "@radix-ui/react-icons";
 import Image from "next/image";
-import { useState } from "react";
 import { PagePagination } from "../pagination/PagePagination";
+// import { useState } from "react";
+import { setVariationThumbnail } from "@/redux/features/addProduct/variation/variationSlice";
 
 type TImage = { _id: string; src: string; alt: string };
 
@@ -50,10 +50,11 @@ const MediaLibrary = ({ click, index }: { click?: string; index?: number }) => {
     }
   };
 
-  const [currentPage, setCurrentPage] = useState(1);
+  const { page, limit } = useAppSelector(({ pagination }) => pagination);
+
   const { data } = useGetMediaImagesQuery({
-    page: currentPage,
-    limit: 10,
+    page,
+    limit,
     sort: "-createdAt",
   });
 
@@ -104,14 +105,7 @@ const MediaLibrary = ({ click, index }: { click?: string; index?: number }) => {
               </div>
             ))}
       </div>
-      {data?.meta?.totalPage > 1 && (
-        <PagePagination
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-          totalPage={data?.meta?.totalPage}
-          className="mt-2"
-        />
-      )}
+      {data?.meta?.totalPage > 1 && <PagePagination />}
     </div>
   );
 };
