@@ -4,10 +4,9 @@ import { SectionTitle } from "@/components/ui/sectionTitle";
 
 import { Pagination } from "@/components/ui/pagination";
 
-import getAllCategories from "./lib/getCategories";
-
 import AddCategoryForm from "./components/AddCategoryForm";
 import { CategoryTable } from "./components/CategoryTable";
+import getAllCategories from "./lib/getCategories";
 
 const AddCategory = async () => {
   // geeting all category
@@ -21,7 +20,7 @@ const AddCategory = async () => {
           <AddCategoryForm categories={categories} />
         </Card>
         <Card className="p-4 flex-1">
-          <SectionTitle> Added category</SectionTitle>
+          <SectionTitle> All Categories</SectionTitle>
 
           <div>
             <CategoryTable categories={categories} />

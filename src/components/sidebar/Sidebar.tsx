@@ -1,8 +1,8 @@
 "use client";
-import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { LayoutDashboard, PlusCircle } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export function Sidebar() {
   const pathname = usePathname();
@@ -34,30 +34,26 @@ export function Sidebar() {
             <span>Add Products</span>
           </span>
         </Link>
-        <Link href="/dashboard/add-category">
+        <Link href="/dashboard/category">
           <span
             className={cn(
               "group flex gap-2 items-center rounded-md px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
-              pathname === "/dashboard/add-category"
-                ? "bg-accent"
-                : "transparent"
+              pathname === "/dashboard/category" ? "bg-accent" : "transparent"
             )}
           >
             <PlusCircle className="w-4 h-4" />
-            <span>Add Category</span>
+            <span>Category</span>
           </span>
         </Link>
-        <Link href="/dashboard/add-attribute">
+        <Link href="/dashboard/attribute">
           <span
             className={cn(
               "group flex gap-2 items-center rounded-md px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
-              pathname === "/dashboard/add-attribute"
-                ? "bg-accent"
-                : "transparent"
+              pathname === "/dashboard/attribute" ? "bg-accent" : "transparent"
             )}
           >
             <PlusCircle className="w-4 h-4" />
-            <span>Add attribute</span>
+            <span>Attribute</span>
           </span>
         </Link>
         <Link href="/dashboard/all-products">

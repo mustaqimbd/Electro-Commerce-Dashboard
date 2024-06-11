@@ -1,15 +1,15 @@
+import config from "@/config/config";
 import {
   setGallery,
   setThumbnail,
 } from "@/redux/features/addProduct/addProductSlice";
 import { useGetMediaImagesQuery } from "@/redux/features/addProduct/media/mediaApi";
+import { setVariationThumbnail } from "@/redux/features/addProduct/variation/variationSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { CheckIcon } from "@radix-ui/react-icons";
 import Image from "next/image";
-import { PagePagination } from "../pagination/PagePagination";
 import { useState } from "react";
-import { setVariationThumbnail } from "@/redux/features/addProduct/variation/variationSlice";
-import config from "@/config/config";
+import { PagePagination } from "../pagination/PagePagination";
 
 type TImage = { _id: string; src: string; alt: string };
 
@@ -53,7 +53,7 @@ const MediaLibrary = ({ click, index }: { click?: string; index?: number }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const { data } = useGetMediaImagesQuery({
     page: currentPage,
-    limit: 2,
+    limit: 10,
     sort: "-createdAt",
   });
 

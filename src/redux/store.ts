@@ -16,6 +16,7 @@ import courierBaseApi from "./baseApi/courierBaseApi";
 import addProductReducer from "./features/addProduct/addProductSlice";
 import variationReducer from "./features/addProduct/variation/variationSlice";
 import authReducer from "./features/auth/authSlice";
+import addCategoryReducer from "./features/category/addCategorySlice";
 import orderReducer from "./features/order/OrderSlice";
 import updateOrderReducer from "./features/order/updateOrderSlice";
 import storage from "./storage";
@@ -32,6 +33,7 @@ const store = configureStore({
     [courierBaseApi.reducerPath]: courierBaseApi.reducer,
     auth: persistedAuthReducer,
     addProduct: addProductReducer,
+    addCategory: addCategoryReducer,
     productVariation: variationReducer,
     order: orderReducer,
     updateOrder: updateOrderReducer,
