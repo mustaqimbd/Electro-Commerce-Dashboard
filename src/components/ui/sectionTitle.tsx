@@ -1,13 +1,15 @@
+import { ReactNode } from "react";
+
 type TProps = {
-  children: string;
+  children: string | ReactNode;
   className?: string;
 };
 export function SectionTitle({ children, className }: TProps) {
   return (
-    <h2
+    <span
       className={`border-b pb-2 text-sm font-semibold tracking-tight first:mt-0 ${className}`}
     >
       {children}
-    </h2>
+    </span>
   );
 }

@@ -3,11 +3,11 @@ import baseApi from "@/redux/baseApi/baseApi";
 const categoryApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     deleteCategory: builder.mutation({
-      query: (categoryIds) => ({
+      query: (data) => ({
         url: `/categories`,
         method: "DELETE",
         body: {
-          categoryIds,
+          categoryIds: data,
         },
       }),
     }),
@@ -20,21 +20,8 @@ const categoryApi = baseApi.injectEndpoints({
         },
       }),
     }),
-    addSubCategory: builder.mutation({
-      query: (data) => ({
-        url: `/sub-categories`,
-        method: "POST",
-        body: {
-          name: data.name,
-          category: data.categoryId,
-        },
-      }),
-    }),
   }),
 });
 
-export const {
-  useDeleteCategoryMutation,
-  useAddCategoryMutation,
-  useAddSubCategoryMutation,
-} = categoryApi;
+export const { useDeleteCategoryMutation, useAddCategoryMutation } =
+  categoryApi;

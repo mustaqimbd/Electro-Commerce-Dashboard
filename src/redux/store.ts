@@ -39,6 +39,7 @@ const store = configureStore({
     [courierBaseApi.reducerPath]: courierBaseApi.reducer,
     auth: persistedAuthReducer,
     addProduct: addProductReducer,
+
     productVariation: variationReducer,
     allProducts: allProductReducer,
     orders: ordersReducer,

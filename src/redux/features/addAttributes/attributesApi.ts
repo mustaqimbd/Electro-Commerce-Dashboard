@@ -11,6 +11,15 @@ const attributesApi = baseApi.injectEndpoints({
         // },
       }),
     }),
+    deleteAttributeValue: builder.mutation({
+      query: (attributeId) => ({
+        url: `/attributes-value/${attributeId}`,
+        method: "DELETE",
+        // body: {
+        //   categoryIds: attributeId,
+        // },
+      }),
+    }),
     addAttribute: builder.mutation({
       query: (data) => ({
         url: `/attributes`,
@@ -18,8 +27,35 @@ const attributesApi = baseApi.injectEndpoints({
         body: data,
       }),
     }),
+    addAttributeValue: builder.mutation({
+      query: (data) => ({
+        url: `/attributes-value`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    updateAttribute: builder.mutation({
+      query: (data) => ({
+        url: `/attributes/${data.attributeId}`,
+        method: "PATCH",
+        body: { name: data?.name },
+      }),
+    }),
+    updateAttributeValue: builder.mutation({
+      query: (data) => ({
+        url: `/attributes-value/${data?.attributeValueId}`,
+        method: "PATCH",
+        body: { name: data?.name },
+      }),
+    }),
   }),
 });
 
-export const { useDeleteAttributeMutation, useAddAttributeMutation } =
-  attributesApi;
+export const {
+  useDeleteAttributeMutation,
+  useAddAttributeMutation,
+  useUpdateAttributeMutation,
+  useUpdateAttributeValueMutation,
+  useDeleteAttributeValueMutation,
+  useAddAttributeValueMutation,
+} = attributesApi;
