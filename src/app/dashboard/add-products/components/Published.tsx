@@ -62,8 +62,8 @@ const Published = () => {
               id="status"
               className="border h-9 border-gray-300  rounded-sm min-w-[100px] xl:w-[120px]"
             >
-              <option value="Published">Published</option>
-              <option value="Draft">Draft</option>
+              <option value="published">Published</option>
+              <option value="draft">Draft</option>
             </select>
           </div>
           <div className="flex flex-col gap-3">

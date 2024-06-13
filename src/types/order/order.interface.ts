@@ -77,10 +77,10 @@ export const permission = {
 } as const;
 
 export type TQuery = {
-  status: string;
-  sort: string;
-  startFrom: string;
-  endAt: string;
-  page: number;
-  limit: number;
+  status?: string;
+  sort?: string;
+  startFrom?: string;
+  endAt?: string;
+  page?: number;
+  limit?: number;
 };

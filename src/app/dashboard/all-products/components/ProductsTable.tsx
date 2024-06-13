@@ -1,5 +1,4 @@
 "use client";
-import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -8,41 +7,44 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-// import { setBulkOrder } from "@/redux/features/order/placeOrderSlice";
-// import { useAppDispatch } from "@/redux/hooks";
 import {
   flexRender,
   getCoreRowModel,
-  getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-// import { useEffect } from "react";
 import { columns } from "./Column";
-import { TAllProducts } from "../lib/interface";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { setBulkProduct } from "@/redux/features/allProducts/allProductsSlice";
+import { useEffect } from "react";
+import { PagePagination } from "@/components/pagination/PagePagination";
+import TableSkeleton from "@/components/skeleton/TableSkeleton";
 
-export default function OrdersTable({
-  products,
-}: {
-  products: TAllProducts[];
-}) {
-  // const dispatch = useAppDispatch();
+export default function ProductsTable() {
+  const dispatch = useAppDispatch();
+  const { isLoading } = useAppSelector(({ pagination }) => pagination);
+  const products = useAppSelector(({ allProducts }) =>
+    allProducts.search ? allProducts.searchedProducts : allProducts.products
+  );
+  const search = useAppSelector(({ allProducts }) => allProducts.search);
   const table = useReactTable({
     data: products,
-    columns,
+    columns: columns,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
+    // getPaginationRowModel: getPaginationRowModel(),
   });
 
-  //   const selectedRows = table.getFilteredSelectedRowModel().rows;
+  const selectedRows = table?.getFilteredSelectedRowModel()?.rows;
+  // const selectedProducts = formattedOrderData(selectedRows);
+  const productsIds = selectedRows.map(({ original }) => original._id);
 
-  //   useEffect(() => {
-  //     dispatch(setBulkOrder(selectedRows));
-  //   }, [selectedOrders, dispatch]);
+  useEffect(() => {
+    dispatch(setBulkProduct({ productsIds }));
+  }, [productsIds, dispatch]);
 
   return (
     <div className="w-full">
       <div className="rounded-md border">
-        <Table className="min-w-[1000px]">
+        <Table className="min-w-[1100px]">
           <TableHeader className="bg-primary text-white">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id} className="hover:bg-muted/0">
@@ -67,6 +69,7 @@ export default function OrdersTable({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  className="border-b border-cyan-400"
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id} className="text-center">
@@ -78,43 +81,33 @@ export default function OrdersTable({
                   ))}
                 </TableRow>
               ))
+            ) : isLoading ? (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
+                  <TableSkeleton />
+                </TableCell>
+              </TableRow>
             ) : (
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No product.
+                  No products
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
+      {!search && (
+        <div className="flex items-center justify-end space-x-2 py-4">
+          <PagePagination />
         </div>
-        <div className="space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            Previous
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            Next
-          </Button>
-        </div>
-      </div>
+      )}
     </div>
   );
 }
