@@ -1,5 +1,4 @@
 import { Card } from "@/components/ui/card";
-
 import { SectionTitle } from "@/components/ui/sectionTitle";
 
 import { Pagination } from "@/components/ui/pagination";
@@ -20,30 +19,29 @@ const SubCategory = async ({
   const subcategories = await getSubCategories(category);
 
   return (
-    <>
-      <div className="flex gap-4 justify-between items-start h-screen ">
-        <Card className="p-4 flex-1 space-y-4">
-          <SectionTitle>
-            {" "}
-            Add New Sub Category for{" "}
-            <span className="text-primary">{categoryName}</span>{" "}
-          </SectionTitle>
-          <AddSubCategoryForm category={category} />
-        </Card>
-        <Card className="p-4 flex-1">
-          <SectionTitle>
-            {" "}
-            Sub Categories of{" "}
-            <span className="text-primary">{categoryName}</span>{" "}
-          </SectionTitle>
+    <div className="flex gap-4 justify-between items-start h-screen ">
+      <Card className="p-4 flex-1 space-y-4">
+        <SectionTitle>
+          {" "}
+          Add New Sub Category for{" "}
+          <span className="text-primary">{categoryName}</span>{" "}
+        </SectionTitle>
+        <AddSubCategoryForm category={category} />
+      </Card>
+      <Card className="p-4 flex-1">
+        <SectionTitle>
+          {" "}
+          Sub Categories of <span className="text-primary">
+            {categoryName}
+          </span>{" "}
+        </SectionTitle>
 
-          <div>
-            <CategoryTable categories={subcategories} />
-            <Pagination />
-          </div>
-        </Card>
-      </div>
-    </>
+        <div>
+          <CategoryTable categories={subcategories} />
+          <Pagination />
+        </div>
+      </Card>
+    </div>
   );
 };
 
