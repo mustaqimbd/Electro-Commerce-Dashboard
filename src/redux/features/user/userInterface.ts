@@ -1,16 +1,8 @@
-export type TUser = {
-  _id: string;
-  uid: string;
-  permissions?: string[];
-  role: string;
-  phoneNumber: string;
-  email: string;
-  status: string;
-  fullName: string;
-  profilePicture?: string;
-};
+import { TUserProfile } from "@/types/user/user.interface";
+
+export type TUser = TUserProfile;
 
 export type TUsersInitialState = {
-  users: TUser[];
+  users: TUserProfile[];
   isUsersLoading: boolean;
 };

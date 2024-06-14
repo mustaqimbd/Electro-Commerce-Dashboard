@@ -62,8 +62,8 @@ const UserDataForm = ({
 }) => {
   const [role, setRole] = useState<null | string>(null);
   const [roleError, setRoleError] = useState<null | string>(null);
-  const [joiningDate, setJoiningDate] = useState<null | string>(null);
-  const [dateOfBirth, setDateOfBirth] = useState<null | string>(null);
+  const [joiningDate, setJoiningDate] = useState<Date | undefined>(undefined);
+  const [dateOfBirth, setDateOfBirth] = useState<Date | undefined>(undefined);
   const [open, setOpen] = useState(false);
   const [openBirthDate, setOpenBirthDate] = useState(false);
   const { toast } = useToast();
@@ -87,8 +87,8 @@ const UserDataForm = ({
 
   const restFormData = () => {
     reset();
-    setJoiningDate(null);
-    setDateOfBirth(null);
+    setJoiningDate(undefined);
+    setDateOfBirth(undefined);
   };
 
   const onSubmit: SubmitHandler<TFormInput> = async (data) => {
@@ -99,10 +99,10 @@ const UserDataForm = ({
     }
     data.role = role;
     if (joiningDate) {
-      data.joiningDate = joiningDate;
+      data.joiningDate = formatDate(joiningDate);
     }
     if (dateOfBirth) {
-      data.dateOfBirth = dateOfBirth;
+      data.dateOfBirth = formatDate(dateOfBirth);
     }
     // Create form data
 
@@ -346,10 +346,9 @@ const UserDataForm = ({
                 <div className="space-y-2 w-full">
                   <Calendar
                     mode="single"
-                    selected={new Date(joiningDate as string)}
+                    selected={joiningDate}
                     onSelect={(selectedDate) => {
-                      const formattedDate = formatDate(selectedDate as Date);
-                      setJoiningDate(formattedDate);
+                      setJoiningDate(selectedDate);
                       setOpen(false);
                     }}
                     initialFocus
@@ -383,10 +382,9 @@ const UserDataForm = ({
                 <div className="space-y-2 w-full">
                   <Calendar
                     mode="single"
-                    selected={new Date(dateOfBirth as string)}
+                    selected={dateOfBirth}
                     onSelect={(selectedDate) => {
-                      const formattedDate = formatDate(selectedDate as Date);
-                      setDateOfBirth(formattedDate);
+                      setDateOfBirth(selectedDate);
                       setOpenBirthDate(false);
                     }}
                     initialFocus
