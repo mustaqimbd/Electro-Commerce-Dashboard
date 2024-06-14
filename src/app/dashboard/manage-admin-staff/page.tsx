@@ -21,12 +21,12 @@ const ManageUser = () => {
     );
   }
 
-  const manageWarrantyClaim = isPermitted(
+  const manageAdminOrStaff = isPermitted(
     profile.permissions,
-    permission.manageWarrantyClaim
+    permission.manageAdminOrStaff
   );
 
-  if (!manageWarrantyClaim) {
+  if (!manageAdminOrStaff) {
     router.push("/error");
     return;
   }
