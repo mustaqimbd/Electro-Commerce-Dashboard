@@ -67,7 +67,7 @@ const UserDataForm = ({
   const [open, setOpen] = useState(false);
   const [openBirthDate, setOpenBirthDate] = useState(false);
   const { toast } = useToast();
-  const [createUser] = useCreateStaffOrAdminMutation();
+  const [createUser, { isLoading }] = useCreateStaffOrAdminMutation();
   const [selectedImage, setSelectedImage] = useState<FileList | null>(null);
   const handleOpen = () => {
     setOpen((prev) => !prev);
@@ -406,7 +406,9 @@ const UserDataForm = ({
             </div>
           </div>
         </div>
-        <EcButton type="submit">Create</EcButton>
+        <EcButton disabled={isLoading} loading={isLoading} type="submit">
+          Create
+        </EcButton>
       </form>
     </div>
   );
