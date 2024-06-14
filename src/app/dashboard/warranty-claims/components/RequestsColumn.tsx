@@ -1,6 +1,5 @@
 import CustomerInfo from "@/components/CustomerInfo";
 import OrderIdAndDate from "@/components/OrderIdAndDate";
-import { Checkbox } from "@/components/ui/checkbox";
 import { TWarrantyClaim } from "@/redux/features/warrantyClaimRequests/warrantyClaimInterface";
 import { ColumnDef } from "@tanstack/react-table";
 import ApprovalStatus from "./ApprovalStatus/ApprovalStatus";
@@ -12,28 +11,6 @@ import Result from "./Result/Result";
 import VideosAndImages from "./VideosAndImages/VideosAndImages";
 
 const columns: ColumnDef<TWarrantyClaim>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table?.getIsAllPageRowsSelected() ||
-          (table?.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row?.getIsSelected()}
-        onCheckedChange={(value) => row?.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: true,
-    enableHiding: false,
-  },
   {
     accessorKey: "",
     header: "SL",
