@@ -1,3 +1,4 @@
+import config from "@/config/config";
 import {
   setGallery,
   setThumbnail,
@@ -9,7 +10,6 @@ import Image from "next/image";
 import { PagePagination } from "../pagination/PagePagination";
 // import { useState } from "react";
 import { setVariationThumbnail } from "@/redux/features/addProduct/variation/variationSlice";
-import config from "@/config/config";
 
 type TImage = { _id: string; src: string; alt: string };
 

@@ -14,7 +14,8 @@ type TTags =
   | "processingOrders"
   | "processingDoneOrders"
   | "singleOrder"
-  | "orderStatusCount";
+  | "orderStatusCount"
+  | "categories";
 
 type TProps = {
   endPoint: string;

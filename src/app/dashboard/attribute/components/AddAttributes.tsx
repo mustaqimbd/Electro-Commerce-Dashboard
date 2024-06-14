@@ -7,12 +7,8 @@ import { SectionTitle } from "@/components/ui/sectionTitle";
 import { toast } from "@/components/ui/use-toast";
 import { useAddAttributeMutation } from "@/redux/features/addAttributes/attributesApi";
 import { useForm } from "react-hook-form";
+import { TAttributeForm } from "../lib/attribute.interface";
 import { refetchAttributes } from "../lib/getAttributes";
-
-type TAttributeForm = {
-  name: string;
-  values: string;
-};
 
 const resolver = async (values: TAttributeForm) => {
   return {
@@ -20,10 +16,6 @@ const resolver = async (values: TAttributeForm) => {
     errors: !values.name
       ? {
           name: {
-            type: "required",
-            message: "This is required.",
-          },
-          values: {
             type: "required",
             message: "This is required.",
           },
@@ -36,21 +28,16 @@ const AddAttribute = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<TAttributeForm>({ resolver });
 
   const [addAttributes] = useAddAttributeMutation();
   const onSubmit = async (data: TAttributeForm) => {
-    const values = data.values.split(",");
-
-    const attributeData = {
-      name: data.name,
-      values: values,
-    };
-
-    const addedAttribute = await addAttributes(attributeData).unwrap();
-    if (addedAttribute?.success) {
+    const addedAttribute = await addAttributes(data).unwrap();
+    if (addedAttribute) {
       refetchAttributes();
+      reset();
       toast({
         className: "bg-success text-white",
         title: addedAttribute?.message,
@@ -76,17 +63,7 @@ const AddAttribute = () => {
                   <span className="text-red-500">{errors.name.message}</span>
                 )}
               </div>
-              <div>
-                <FieldLebel>Value</FieldLebel>
-                <Input
-                  {...register("values")}
-                  type="text"
-                  placeholder="Use comma for multiple values (Ex: 1GB,2GB,3GB)"
-                />
-                {errors.values && (
-                  <span className="text-red-500">{errors.values.message}</span>
-                )}
-              </div>
+
               <div>
                 <Button size="sm" type="submit">
                   Add Attribute

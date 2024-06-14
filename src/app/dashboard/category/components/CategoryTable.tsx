@@ -1,9 +1,8 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 "use client";
 
-import { CaretSortIcon } from "@radix-ui/react-icons";
 import {
   ColumnDef,
-  ColumnFiltersState,
   VisibilityState,
   flexRender,
   getCoreRowModel,
@@ -12,11 +11,17 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { Trash2 } from "lucide-react";
+import { Settings, SquarePen, Trash2Icon } from "lucide-react";
 import * as React from "react";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -35,11 +40,24 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { toast } from "@/components/ui/use-toast";
+import config from "@/config/config";
 import { useDeleteCategoryMutation } from "@/redux/features/category/categoryApi";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { refetchCategories } from "../lib/getCategories";
 
 export type TCategories = {
   _id: string;
+  image: {
+    src: string;
+  };
   name: string;
   subcategories: [];
 };
@@ -68,26 +86,61 @@ export const columns: ColumnDef<TCategories>[] = [
     enableHiding: false,
   },
   {
+    accessorKey: "image",
+    header: "",
+    cell: ({ row }) => (
+      <Image
+        width={50}
+        height={50}
+        src={`${config.base_url}/${row.original.image?.src}`}
+        alt={row?.original?.name}
+      />
+    ),
+  },
+  {
     accessorKey: "name",
     header: "Name",
     cell: ({ row }) => <div className="capitalize">{row.getValue("name")}</div>,
   },
   {
     accessorKey: "items",
-    header: ({ column }) => {
+    header: "Sub Categories",
+    cell: ({ row }) => {
+      const router = useRouter();
+
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Items
-          <CaretSortIcon className="ml-2 h-4 w-4" />
-        </Button>
+        <>
+          <div className="flex items-center gap-3">
+            <div className="lowercase ml-6">
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>
+                    {row.original?.subcategories?.length}
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p className="text-white">
+                      {" "}
+                      <span className="">
+                        {row.original?.subcategories?.length}
+                      </span>{" "}
+                      Sub Categories
+                    </p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
+            <Settings
+              onClick={() =>
+                router.push(
+                  `/dashboard/category/${row.original.name.replace(/ /g, "-")}/${row.original._id}`
+                )
+              }
+              className="w-5 h-5 text-primary cursor-pointer"
+            />
+          </div>
+        </>
       );
     },
-    cell: ({ row }) => (
-      <div className="lowercase ml-6">{row.getValue("items")}</div>
-    ),
   },
   {
     id: "_id",
@@ -97,38 +150,84 @@ export const columns: ColumnDef<TCategories>[] = [
     cell: ({ row }) => {
       // eslint-disable-next-line react-hooks/rules-of-hooks
       const [deleteCategory] = useDeleteCategoryMutation();
+
       const handleDelete = async (id: string) => {
-        const res = await deleteCategory(id).unwrap();
+        const categoryIds = [id];
+
+        const res = await deleteCategory(categoryIds).unwrap();
 
         if (res?.success) {
           refetchCategories();
+          toast({
+            className: "bg-success text-white ",
+            title: "Category Successfully Deleted",
+          });
+        } else {
+          refetchCategories();
+          toast({
+            className: " bg-danger text-whit",
+            title: "Something Went Wrong",
+          });
         }
       };
       return (
         <span className="flex justify-center">
-          <TrashButton onDelete={() => handleDelete(row.getValue("_id"))} />
+          <Dialog>
+            <DialogTrigger>
+              {" "}
+              <SquarePen className="text-green-500" />
+            </DialogTrigger>
+            <DialogContent className=" h-fit">
+              <h1 className="text-3xl">Are you sure?</h1>
+              <div className="flex gap-4 items-center ">
+                <DialogClose asChild>
+                  <Button className="bg-red-500 hover:bg-red-500">
+                    Cancel
+                  </Button>
+                </DialogClose>{" "}
+                <Button
+                  onClick={() => handleDelete(row.getValue("_id"))}
+                  className=""
+                >
+                  Update
+                </Button>
+              </div>
+            </DialogContent>
+          </Dialog>
+
+          <Dialog>
+            <DialogTrigger>
+              {" "}
+              <Trash2Icon className="text-red-500" />
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px] h-fit">
+              <h1 className="text-3xl">Are you sure?</h1>
+              <div className="flex gap-4 items-center ">
+                <DialogClose asChild>
+                  <Button className="bg-red-500 hover:bg-red-500">
+                    Cancel
+                  </Button>
+                </DialogClose>{" "}
+                <Button
+                  onClick={() => handleDelete(row.getValue("_id"))}
+                  className=""
+                >
+                  Yes, Delete it!
+                </Button>
+              </div>
+            </DialogContent>
+          </Dialog>
         </span>
       );
     },
   },
 ];
 
-type TrashButtonProps = {
-  onDelete: () => void;
-};
-
-const TrashButton = ({ onDelete }: TrashButtonProps) => {
-  return <Trash2 onClick={onDelete} className="text-red-500 cursor-pointer" />;
-};
-
 export const CategoryTable = ({
   categories,
 }: {
   categories: TCategories[];
 }) => {
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
@@ -136,7 +235,6 @@ export const CategoryTable = ({
   const table = useReactTable({
     data: categories,
     columns,
-    onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -144,7 +242,6 @@ export const CategoryTable = ({
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
     state: {
-      columnFilters,
       columnVisibility,
       rowSelection,
     },
