@@ -8,17 +8,32 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useToast } from "@/components/ui/use-toast";
 import { formatDate } from "@/lib/formatDate";
 import { cn } from "@/lib/utils";
-import { useCreateStaffOrAdminMutation } from "@/redux/features/user/userApi";
+import { TPermission } from "@/redux/features/permissions/permissionInterface";
+import { useGetAllPermissionsQuery } from "@/redux/features/permissions/permissionsAPi";
+import { useUpdateStaffOrAdminMutation } from "@/redux/features/user/userApi";
 import { TUser } from "@/redux/features/user/userInterface";
+import { useAppSelector } from "@/redux/hooks";
+import { permission } from "@/types/order/order.interface";
 import { TErrorResponse, TSuccessResponse } from "@/types/response/response";
+import isPermitted from "@/utilities/isPermitted";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { CalendarIcon } from "lucide-react";
 import { Dispatch, SetStateAction, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
+import PermissionTable from "./PermissionTable";
 
 const schema = yup.object().shape({
   fullName: yup.string().optional(),
@@ -42,13 +57,23 @@ const UpdateUserForm = ({
   setEditUserModal: Dispatch<SetStateAction<boolean>>;
   user: TUser;
 }) => {
-  const [joiningDate, setJoiningDate] = useState<null | string>(null);
-  const [dateOfBirth, setDateOfBirth] = useState<null | string>(null);
+  const { data: permissionResponse, isLoading: permissionDataLoading } =
+    useGetAllPermissionsQuery({});
+  const permissionData =
+    (permissionResponse as TSuccessResponse<TPermission>)?.data || [];
+  const { profile } = useAppSelector(({ auth }) => auth);
+  const [joiningDate, setJoiningDate] = useState<
+    Date | null | string | undefined
+  >(user?.joiningDate ? new Date(user?.joiningDate) : undefined);
+  const [dateOfBirth, setDateOfBirth] = useState<
+    Date | null | string | undefined
+  >(user?.dateOfBirth ? new Date(user?.dateOfBirth) : undefined);
   const [open, setOpen] = useState(false);
   const [openBirthDate, setOpenBirthDate] = useState(false);
   const { toast } = useToast();
-  const [createUser] = useCreateStaffOrAdminMutation();
+  const [updateUser] = useUpdateStaffOrAdminMutation();
   const [selectedImage, setSelectedImage] = useState<FileList | null>(null);
+  const [status, setStatus] = useState(user.status);
   const handleOpen = () => {
     setOpen((prev) => !prev);
   };
@@ -56,6 +81,10 @@ const UpdateUserForm = ({
     setOpenBirthDate((prev) => !prev);
   };
 
+  const canMangePermission = isPermitted(
+    profile?.permissions,
+    permission.managePermission
+  );
   const {
     register,
     handleSubmit,
@@ -76,25 +105,48 @@ const UpdateUserForm = ({
 
     // Create form data
 
-    if (data?.phoneNumber) formData.append("phoneNumber", data?.phoneNumber);
-    if (data?.email) formData.append("email", data?.email);
-    if (data?.fullAddress)
+    if (data?.phoneNumber && user.phoneNumber !== data?.phoneNumber)
+      formData.append("phoneNumber", data?.phoneNumber);
+    if (data?.email && user.email !== data?.email)
+      formData.append("email", data?.email);
+    if (data?.fullAddress && data?.fullAddress !== user?.fullAddress)
       formData.append("address[fullAddress]", data?.fullAddress);
-    if (data?.fullName)
+    if (data?.fullName && data?.fullName !== user?.fullName)
       formData.append("personalInfo[fullName]", data?.fullName);
-    if (data?.emergencyContact)
+    if (
+      data?.emergencyContact &&
+      data?.emergencyContact !== user?.emergencyContact
+    )
       formData.append("personalInfo[emergencyContact]", data.emergencyContact);
-    if (data?.NIDNo) formData.append("personalInfo[NIDNo]", data?.NIDNo);
-    if (data?.birthCertificateNo)
+    if (data?.NIDNo && data?.NIDNo !== user?.NIDNo)
+      formData.append("personalInfo[NIDNo]", data?.NIDNo);
+    if (
+      data?.birthCertificateNo &&
+      data?.birthCertificateNo !== user?.birthCertificateNo
+    )
       formData.append(
         "personalInfo[birthCertificateNo]",
         data?.birthCertificateNo
       );
-    if (joiningDate) formData.append("personalInfo[joiningDate]", joiningDate);
-    if (dateOfBirth) formData.append("personalInfo[dateOfBirth]", dateOfBirth);
-    if (selectedImage) formData.append("image", selectedImage[0]);
+    const formattedJoiningData = formatDate(
+      (joiningDate as string) || undefined
+    );
+    if (formattedJoiningData && formattedJoiningData !== user.joiningDate)
+      formData.append("personalInfo[joiningDate]", formattedJoiningData);
+    const formattedDateOfBirth = formatDate(
+      (dateOfBirth as string) || undefined
+    );
+
+    if (formattedDateOfBirth && formattedDateOfBirth !== user.dateOfBirth)
+      formData.append("personalInfo[dateOfBirth]", formattedDateOfBirth);
+    if (selectedImage?.length) formData.append("image", selectedImage![0]);
+    if (status && status !== user.status) formData.append("status", status);
+
     try {
-      const result = (await createUser(formData).unwrap()) as TSuccessResponse;
+      const result = (await updateUser({
+        body: formData,
+        id: user._id,
+      }).unwrap()) as TSuccessResponse;
       toast({
         className: "toast-success",
         title: result.message,
@@ -176,7 +228,7 @@ const UpdateUserForm = ({
                 id="fullAddress"
                 placeholder="Enter full address"
                 className="w-full"
-                // defaultValue={user?.fullAddress}
+                defaultValue={user?.address?.fullAddress}
               />
               {errors.fullAddress?.message && (
                 <p className="text-red-600 font-bold text-sm">
@@ -195,7 +247,7 @@ const UpdateUserForm = ({
                 id="emergencyContact"
                 placeholder="Enter emergency contact"
                 className="w-full"
-                // defaultValue={user?.emergencyContact}
+                defaultValue={user?.emergencyContact}
               />
               {errors.emergencyContact?.message && (
                 <p className="text-red-600 font-bold text-sm">
@@ -213,7 +265,7 @@ const UpdateUserForm = ({
                 id="NIDNo"
                 placeholder="Enter emergency contact"
                 className="w-full"
-                // defaultValue={user?.NIDNo}
+                defaultValue={user?.NIDNo}
               />
               {errors.NIDNo?.message && (
                 <p className="text-red-600 font-bold text-sm">
@@ -264,10 +316,10 @@ const UpdateUserForm = ({
                 <div className="space-y-2 w-full">
                   <Calendar
                     mode="single"
-                    selected={new Date(joiningDate as string)}
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    selected={joiningDate as any}
                     onSelect={(selectedDate) => {
-                      const formattedDate = formatDate(selectedDate as Date);
-                      setJoiningDate(formattedDate);
+                      setJoiningDate(selectedDate);
                       setOpen(false);
                     }}
                     initialFocus
@@ -301,10 +353,10 @@ const UpdateUserForm = ({
                 <div className="space-y-2 w-full">
                   <Calendar
                     mode="single"
-                    selected={new Date(dateOfBirth as string)}
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    selected={dateOfBirth as any}
                     onSelect={(selectedDate) => {
-                      const formattedDate = formatDate(selectedDate as Date);
-                      setDateOfBirth(formattedDate);
+                      setDateOfBirth(selectedDate);
                       setOpenBirthDate(false);
                     }}
                     initialFocus
@@ -313,6 +365,41 @@ const UpdateUserForm = ({
               </PopoverContent>
             </Popover>
           </div>
+          {canMangePermission ? (
+            <>
+              <div className="flex flex-col gap-2">
+                <Label htmlFor="fullAddress">
+                  Change status <span className="text-red-600">*</span>
+                </Label>
+                <div className="space-y-2 w-full">
+                  <Select
+                    onValueChange={(changedValue) => setStatus(changedValue)}
+                    defaultValue={status}
+                  >
+                    <SelectTrigger className="w-full border-primary border-[1px]">
+                      <SelectValue placeholder="Role" className="capitalize" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>Status</SelectLabel>
+                        <SelectItem value="active" className="capitalize">
+                          Active
+                        </SelectItem>
+                        <SelectItem value="banned" className="capitalize">
+                          Banned
+                        </SelectItem>
+                        <SelectItem value="deleted" className="capitalize">
+                          Deleted
+                        </SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </>
+          ) : (
+            ""
+          )}
           <div className="flex flex-col gap-2">
             <Label htmlFor="image">Select profile picture</Label>
             <div className="space-y-2 w-full">
@@ -326,8 +413,18 @@ const UpdateUserForm = ({
             </div>
           </div>
         </div>
-        <EcButton type="submit">Create</EcButton>
+        <EcButton type="submit">Update profile</EcButton>
       </form>
+      {canMangePermission && !permissionDataLoading ? (
+        !permissionDataLoading ? (
+          <PermissionTable
+            permissionData={permissionData as TPermission[]}
+            user={user}
+          />
+        ) : (
+          <h2>Loading...</h2>
+        )
+      ) : null}
     </div>
   );
 };

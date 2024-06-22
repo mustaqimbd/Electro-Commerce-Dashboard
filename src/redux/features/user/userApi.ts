@@ -11,6 +11,14 @@ const userApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["users"],
     }),
+    updateStaffOrAdmin: builder.mutation({
+      query: (userInfo) => ({
+        url: `/users/update-admin-or-staff/${userInfo.id}`,
+        method: "PATCH",
+        body: userInfo.body,
+      }),
+      invalidatesTags: ["users"],
+    }),
     getAllUsers: builder.query({
       query: ({
         status,
@@ -20,11 +28,15 @@ const userApi = baseApi.injectEndpoints({
         page,
         limit,
       }: Partial<TQuery>) => ({
-        url: `/users/all-admin-staff?status=${status}&startFrom=${startFrom}&endAt=${endAt}&sort=${sort || "-createdAt"}&page=${page}&limit=${limit}`,
+        url: `/users/all-admin-staff?status=${status}&startFrom=${startFrom}&endAt=${endAt}&sort=${sort || "createdAt"}&page=${page}&limit=${limit}`,
       }),
       providesTags: ["users"],
     }),
   }),
 });
 
-export const { useCreateStaffOrAdminMutation, useGetAllUsersQuery } = userApi;
+export const {
+  useCreateStaffOrAdminMutation,
+  useGetAllUsersQuery,
+  useUpdateStaffOrAdminMutation,
+} = userApi;

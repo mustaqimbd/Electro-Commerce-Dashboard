@@ -1,4 +1,5 @@
 "use client"; // Error components must be Client Components
+import { useRouter } from "next/navigation";
 
 import { useEffect } from "react";
 type TProps = {
@@ -10,7 +11,7 @@ export default function Error({ error, reset }: TProps) {
     // Log the error to an error reporting service
     // console.error(error);
   }, [error]);
-
+  const router = useRouter();
   return (
     <div className="flex flex-col justify-center items-center gap-5 h-[100vh]">
       <h2 className="text-5xl font-bold">Oops!</h2>
@@ -25,6 +26,12 @@ export default function Error({ error, reset }: TProps) {
           }
         >
           Try again
+        </button>
+        <button
+          className="text-white py-1 px-4 bg-[#29C1F1] rounded-md"
+          onClick={() => router.push("/")}
+        >
+          Back to home
         </button>
       </div>
     </div>

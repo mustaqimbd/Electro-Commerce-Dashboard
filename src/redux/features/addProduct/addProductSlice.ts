@@ -71,7 +71,7 @@ const initialState: TProduct = {
 };
 
 const productSlice = createSlice({
-  name: "addProduct",
+  name: "addCategory",
   initialState,
   reducers: {
     setTitle: (state, action: PayloadAction<string>) => {

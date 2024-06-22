@@ -1,11 +1,11 @@
-import { Button } from "@/components/ui/button";
-import ProductsTable from "./components/ProductsTable";
-import Filter from "./components/Filter";
-import ProductBulkAction from "./components/ProductBulkAction";
 import Show from "@/components/Show";
+import { Button } from "@/components/ui/button";
 import fetchData from "@/utilities/fetchData";
 import CountByStatusButtons from "./components/CountByStatusButtons";
+import Filter from "./components/Filter";
+import ProductBulkAction from "./components/ProductBulkAction";
 import ProductSearchBar from "./components/ProductSearchBar";
+import ProductsTable from "./components/ProductsTable";
 
 const AllProducts = async () => {
   const { data: categories } = await fetchData({
