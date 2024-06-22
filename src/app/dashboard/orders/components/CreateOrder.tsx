@@ -78,7 +78,7 @@ const CreateOrder = ({ order }: { order?: TOrders }) => {
         endPoint: "/products",
         tags: ["ProductsName"],
       });
-      setProductsName(data?.products);
+      setProductsName(data);
     };
     const shippingCharge = async () => {
       const { data } = await fetchData({

@@ -9,7 +9,7 @@ const updateStatusApi = baseApi.injectEndpoints({
         method: "POST",
         body: orderData,
       }),
-      invalidatesTags: ["carts"],
+      invalidatesTags: ["carts", "allOrders"],
     }),
     getAllOrders: builder.query({
       query: ({ status, startFrom, endAt, sort, page, limit }: TQuery) => ({
@@ -31,6 +31,7 @@ const updateStatusApi = baseApi.injectEndpoints({
         method: "DELETE",
         body: { orderIds },
       }),
+      invalidatesTags: ["allOrders"],
     }),
   }),
 });
