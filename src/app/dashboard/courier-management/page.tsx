@@ -7,6 +7,7 @@ import Show from "@/components/Show";
 import { useAppSelector } from "@/redux/hooks";
 import { useRouter } from "next/navigation";
 import { permission } from "@/types/order/order.interface";
+import DateRangeSelector from "@/components/DateRangeSelector";
 
 const Orders = () => {
   const router = useRouter();
@@ -40,12 +41,11 @@ const Orders = () => {
       <div>
         {/* All,Pending,canceled,on courier etc status*/}
         <StatusButtons />
-        <div className="grid grid-cols-2 mt-5 mb-3">
+        <div className="flex items-center justify-between mt-8 mb-3">
           {/*Bulk actions and invoice print for Orders*/}
           <CourierBulkAction />
-          <div className="flex items-center justify-end gap-5">
-            <Show />
-          </div>
+          <DateRangeSelector />
+          <Show />
         </div>
         {/* <FilterAndOrdersTable/> */}
         <OrdersTable />

@@ -55,18 +55,20 @@ const ProductCode = ({
   const [updateWarrantyCode, { isLoading: loading }] =
     useUpdateWarrantyCodeMutation();
 
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => {
-    setOpen(!open);
-  };
-
   const {
     register,
+    reset,
     handleSubmit,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
   });
+
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => {
+    setOpen(!open);
+    reset();
+  };
 
   const warranty = order.products.find(({ warranty }) => {
     if (warranty?.warrantyCodes) {
@@ -116,55 +118,6 @@ const ProductCode = ({
       });
     }
   };
-
-  // const a = [
-  //   {
-  //     "_id": "6636404f45488dfe44954d88",
-  //     "codes": [
-  //       { "code": "123#4" },
-  //       { "code": "123#5" }
-  //     ]
-  //   }
-  // ];
-
-  // const b = [
-  //   {
-  //     "_id": "6636404f45488dfe44954d88",
-  //     "warranty": {
-  //       "warrantyCodes": [
-  //         { "code": "123#4", "_id": "663b48a248cd1c2eb37e9d84" },
-  //         { "code": "123#5", "_id": "663b48a248cd1c2eb37e9d85" }
-  //       ]
-  //     }
-  //   },
-  //   // {
-  //   //   "_id": "6636404f45488dfe44954d89",
-  //   //   "warranty": {
-  //   //     "warrantyCodes": [
-  //   //       { "code": "123#4", "_id": "663b48a248cd1c2eb37e9d84" },
-  //   //       { "code": "123#5", "_id": "663b48a248cd1c2eb37e9d85" }
-  //   //     ]
-  //   //   }
-  //   // }
-  // ];
-
-  // // Iterate over each element of 'a'
-  // a.forEach(aElement => {
-  //   // Find the corresponding element in 'b' by '_id'
-  //   const bElement = b.find(bItem => bItem._id === aElement._id);
-  //   if (bElement) {
-  //     // Compare codes
-  //     const codesMatch = aElement.codes.every(codeA => {
-  //       return bElement.warranty.warrantyCodes.some(codeB => codeA.code === codeB.code);
-  //     });
-
-  //     if (codesMatch) {
-  //       console.log(true);
-  //     } else {
-  //       console.log(false);
-  //     }
-  //   }
-  // });
 
   return (
     <>
@@ -236,6 +189,7 @@ const ProductCode = ({
                               id={`quantity-${productIndex}-${index}`}
                               placeholder="Enter code"
                             />
+
                             {errors.warrantyInfo?.length &&
                               errors.warrantyInfo[productIndex]?.codes
                                 ?.length &&

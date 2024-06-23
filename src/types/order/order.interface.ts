@@ -81,6 +81,8 @@ export const permission = {
 
 export type TQuery = {
   status?: string;
+  category?: string;
+  stock?: string;
   sort?: string;
   startFrom?: string;
   endAt?: string;

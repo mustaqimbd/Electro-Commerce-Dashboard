@@ -60,7 +60,7 @@ const BulkAction = () => {
   const isInvoice = filter == "processing";
 
   return (
-    <div className={"flex gap-10 items-center"}>
+    <>
       {isBulkAction && (
         <div className="flex items-center gap-2">
           <select
@@ -81,7 +81,7 @@ const BulkAction = () => {
         </div>
       )}
       {isInvoice && <Invoice orders={invoices} />}
-    </div>
+    </>
   );
 };
 

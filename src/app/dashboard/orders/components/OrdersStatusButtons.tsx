@@ -21,7 +21,7 @@ import borderColor from "@/utilities/borderColor";
 // import fetchData from "@/utilities/fetchData";
 import { useEffect, useState } from "react";
 import { useGetAllOrdersQuery } from "@/redux/features/orders/ordersApi";
-import DateRangeSelector from "@/components/DateRangeSelector";
+// import DateRangeSelector from "@/components/DateRangeSelector";
 
 const OrdersStatusButtons = () => {
   const dispatch = useAppDispatch();
@@ -116,9 +116,9 @@ const OrdersStatusButtons = () => {
           </Button>
         );
       })}
-      <div>
+      {/* <div>
         <DateRangeSelector />
-      </div>
+      </div> */}
     </div>
   );
 };

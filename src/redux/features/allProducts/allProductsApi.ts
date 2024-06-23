@@ -25,13 +25,15 @@ const allProductsApi = baseApi.injectEndpoints({
       //     meta: response.meta,
       //   };
       // },
+      providesTags: ["allProducts"],
     }),
     deleteProducts: builder.mutation({
       query: (productIds: string[]) => ({
-        url: `/products/delete-many`,
+        url: `/products/delete`,
         method: "DELETE",
         body: { productIds },
       }),
+      invalidatesTags: ["allProducts"],
     }),
   }),
 });

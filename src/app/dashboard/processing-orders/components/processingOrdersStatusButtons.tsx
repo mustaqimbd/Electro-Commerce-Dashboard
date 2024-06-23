@@ -21,7 +21,7 @@ import {
   setSearchedOrders,
 } from "@/redux/features/search/searchSlice";
 import { useGetProcessingOrdersQuery } from "@/redux/features/processingOrders/processingOrdersApi";
-import DateRangeSelector from "@/components/DateRangeSelector";
+// import DateRangeSelector from "@/components/DateRangeSelector";
 
 const ProcessingOrdersStatusButtons = () => {
   const dispatch = useAppDispatch();
@@ -115,9 +115,9 @@ const ProcessingOrdersStatusButtons = () => {
           </Button>
         );
       })}
-      <div>
+      {/* <div>
         <DateRangeSelector />
-      </div>
+      </div> */}
     </div>
   );
 };
