@@ -1,4 +1,6 @@
+import DeleteOrderBtn from "@/components/DeleteOrderBtn";
 import OrderIdAndDate from "@/components/OrderIdAndDate";
+import UpdateOrderStatus from "@/components/UpdateOrderStatus";
 import Invoice from "@/components/invoice/Invoice";
 import { Card } from "@/components/ui/card";
 import { SectionTitle } from "@/components/ui/sectionTitle";
@@ -6,8 +8,6 @@ import backgroundColor from "@/utilities/backgroundColor";
 import { MapPin, Phone, UserRound } from "lucide-react";
 import { OrderedProductTable } from "./components/OrderedProductTable";
 import fetchData from "@/utilities/fetchData";
-import UpdateOrderStatus from "@/components/UpdateOrderStatus";
-import DeleteOrderBtn from "@/components/DeleteOrderBtn";
 import EditOrder from "./components/EditOrder";
 
 const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
@@ -33,6 +33,7 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
     officialNotes,
     courierNotes,
     discount,
+    orderNotes,
   } = order;
 
   return (
@@ -147,16 +148,20 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
 
           <div>
             <div className="my-5">
+              <p className="font-bold mb-1">Customer Note</p>
+              <p className="border min-h-10 p-2 rounded-md">{orderNotes}</p>
+            </div>
+            <div className="my-5">
               <p className="font-bold mb-1">Official Note</p>
-              <p className="border h-10 p-2 rounded-md">{officialNotes}</p>
+              <p className="border min-h-10 p-2 rounded-md">{officialNotes}</p>
             </div>
             <div className="my-5">
               <p className="font-bold mb-1">Invoice Note</p>
-              <p className="border h-10 p-2 rounded-md">{invoiceNotes}</p>
+              <p className="border min-h-10 p-2 rounded-md">{invoiceNotes}</p>
             </div>
             <div className="my-5">
               <p className="font-bold mb-1">Courier Note</p>
-              <p className="border h-10 p-2 rounded-md">{courierNotes}</p>
+              <p className="border min-h-10 p-2 rounded-md">{courierNotes}</p>
             </div>
           </div>
         </Card>

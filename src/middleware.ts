@@ -56,6 +56,9 @@ export async function middleware(request: NextRequest) {
       );
     } else return Response.redirect(new URL("/error", request.url));
   }
+  if (request.nextUrl.pathname === "/dashboard/user") {
+    return Response.redirect(new URL("/dashboard/user/profile", request.url));
+  }
   return null;
 }
 
