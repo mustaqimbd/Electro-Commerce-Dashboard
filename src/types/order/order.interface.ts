@@ -57,6 +57,7 @@ export type TOrders = {
   shipping: Shipping;
   createdAt: Date;
   updatedAt: Date;
+  orderNotes?: string;
   invoiceNotes?: string;
   officialNotes?: string;
   courierNotes?: string;

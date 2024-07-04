@@ -17,6 +17,14 @@ const updateStatusApi = baseApi.injectEndpoints({
       }),
       providesTags: ["allOrders"],
     }),
+    updateOrder: builder.mutation({
+      query: ({ payload, _id }) => ({
+        url: `/orders/update-order/${_id}`,
+        method: "PATCH",
+        body: payload,
+      }),
+      invalidatesTags: ["allOrders"],
+    }),
     updateOrdersStatus: builder.mutation({
       query: (payload: { orderIds: string[]; status: string }) => ({
         url: `/orders/update-status`,
@@ -39,6 +47,7 @@ const updateStatusApi = baseApi.injectEndpoints({
 export const {
   useCreateOrderMutation,
   useGetAllOrdersQuery,
+  useUpdateOrderMutation,
   useUpdateOrdersStatusMutation,
   useDeleteOrdersMutation,
 } = updateStatusApi;

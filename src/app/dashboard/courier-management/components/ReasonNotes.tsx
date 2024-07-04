@@ -4,7 +4,7 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
-import { useUpdateOrderInfoMutation } from "@/redux/features/orders/updateOrderApi";
+import { useUpdateOrderMutation } from "@/redux/features/orders/ordersApi";
 import { TOrders } from "@/types/order/order.interface";
 import { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
@@ -17,14 +17,13 @@ const ReasonNotes = ({ order }: { order: TOrders }) => {
     setOpen(!open);
   };
 
-  const [updateOrderInfo, { isLoading }] = useUpdateOrderInfoMutation();
+  const [updateOrder, { isLoading }] = useUpdateOrderMutation();
   const { register, handleSubmit } = useForm();
 
-  const { reasonNotes } = order;
-  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+  const { reasonNotes, _id } = order;
+  const onSubmit: SubmitHandler<FieldValues> = async (payload) => {
     try {
-      data._id = order._id;
-      await updateOrderInfo(data).unwrap();
+      await updateOrder({ payload, _id }).unwrap();
       // refetchData("allOrders");
       // dispatch(setIsOrderUpdate(!iSOrderUpdate));
       handleOpen();

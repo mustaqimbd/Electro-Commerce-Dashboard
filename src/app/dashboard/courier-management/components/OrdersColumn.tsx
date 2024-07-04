@@ -79,7 +79,7 @@ export const columns: ColumnDef<TOrders>[] = [
           <p>৳ {unitPrice}</p>
           <p>Quantity : {quantity}</p>
           {length > 1 && (
-            <p>
+            <p className="text-primary">
               And {length - 1} more {length - 1 === 1 ? "item" : "items"}.
             </p>
           )}

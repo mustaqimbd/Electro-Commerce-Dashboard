@@ -1,35 +1,23 @@
-"use client";
-
-import { useAppSelector } from "@/redux/hooks";
 import { permission } from "@/types/order/order.interface";
 import isPermitted from "@/utilities/isPermitted";
-import { useRouter } from "next/navigation";
 import CreateUser from "./components/CreateUser/CreateUser";
 import GetAllUser from "./components/GetAllUser";
 import UsersTable from "./components/UsersTable";
+import { getProfile } from "@/lib/getAccessToken";
+import { redirect } from "next/navigation";
 
-const ManageUser = () => {
-  const { profile } = useAppSelector(({ auth }) => auth);
-  const router = useRouter();
-
-  if (!profile || !profile.permissions) {
-    return (
-      <div
-        role="status"
-        className="w-full h-[calc(100vh-60px)] bg-gray-300 animate-pulse dark:bg-gray-700 z-10"
-      ></div>
-    );
-  }
+const ManageUser = async () => {
+  const { permissions = [] } = await getProfile();
 
   const manageAdminOrStaff = isPermitted(
-    profile.permissions,
+    permissions,
     permission.manageAdminOrStaff
   );
 
   if (!manageAdminOrStaff) {
-    router.push("/error");
-    return;
+    redirect("/error");
   }
+
   return (
     <>
       <GetAllUser />

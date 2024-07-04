@@ -1,6 +1,3 @@
-"use client";
-
-import { useAppSelector } from "@/redux/hooks";
 import { permission } from "@/types/order/order.interface";
 import isPermitted from "@/utilities/isPermitted";
 import {
@@ -13,21 +10,10 @@ import {
   UsersRound,
 } from "lucide-react";
 import NavLink from "../NavLink/NavLink";
+import { getProfile } from "@/lib/getAccessToken";
 
-export function Sidebar() {
-  const { profile } = useAppSelector(({ auth }) => auth);
-
-  // Ensure permissions are loaded on both client and server
-  if (!profile || !profile.permissions) {
-    return (
-      <div
-        role="status"
-        className="w-[17rem] h-[calc(100vh-60px)] bg-gray-300 animate-pulse dark:bg-gray-700 z-10"
-      ></div>
-    );
-  }
-
-  const permissions = profile.permissions;
+export async function Sidebar() {
+  const { permissions = [] } = await getProfile();
 
   const seeDashboard = isPermitted(permissions);
   const manageProduct = isPermitted(permissions, permission.manageProduct);
@@ -53,13 +39,13 @@ export function Sidebar() {
       icon: <PlusCircle className="w-4 h-4" />,
     },
     {
-      href: "/add-category",
-      name: "Add Category",
+      href: "/category",
+      name: "Category",
       icon: <PlusCircle className="w-4 h-4" />,
     },
     {
-      href: "/add-attribute",
-      name: "Add attribute",
+      href: "/attribute",
+      name: "Attribute",
       icon: <PlusCircle className="w-4 h-4" />,
     },
     {

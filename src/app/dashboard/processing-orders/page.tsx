@@ -1,35 +1,23 @@
-"use client";
 import BulkAction from "./components/BulkAction";
 import ProcessingOrdersTable from "./components/ProcessingOrdersTable";
 import OrderSearchBar from "@/components/OrderSearchBar";
 import Show from "@/components/Show";
-import { useAppSelector } from "@/redux/hooks";
-import { useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import ProcessingOrdersStatusButtons from "./components/processingOrdersStatusButtons";
 import { permission } from "@/types/order/order.interface";
 import DateRangeSelector from "@/components/DateRangeSelector";
+import { getProfile } from "@/lib/getAccessToken";
 
-const Orders = () => {
-  const router = useRouter();
+const Orders = async () => {
+  const { permissions = [] } = await getProfile();
 
-  const { profile } = useAppSelector(({ auth }) => auth);
-  if (!profile || !profile.permissions) {
-    return (
-      <div
-        role="status"
-        className="w-full h-[calc(100vh-60px)] bg-gray-300 animate-pulse dark:bg-gray-700 z-10"
-      ></div>
-    );
-  }
-
-  const permissions = profile?.permissions;
   const manageProcessing =
     permissions &&
     (permissions.includes(permission.superAdmin) ||
       permissions.includes(permission.manageProcessing));
 
   if (!manageProcessing) {
-    router.push("/error");
+    redirect("/error");
   }
 
   return (

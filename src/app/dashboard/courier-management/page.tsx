@@ -1,34 +1,23 @@
-"use client";
 import OrderSearchBar from "@/components/OrderSearchBar";
 import CourierBulkAction from "./components/CourierBulkAction";
 import OrdersTable from "./components/OrdersTable";
 import StatusButtons from "./components/StatusButtons";
 import Show from "@/components/Show";
-import { useAppSelector } from "@/redux/hooks";
-import { useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import { permission } from "@/types/order/order.interface";
 import DateRangeSelector from "@/components/DateRangeSelector";
+import { getProfile } from "@/lib/getAccessToken";
 
-const Orders = () => {
-  const router = useRouter();
-  const { profile } = useAppSelector(({ auth }) => auth);
-  if (!profile || !profile.permissions) {
-    return (
-      <div
-        role="status"
-        className="w-full h-[calc(100vh-60px)] bg-gray-300 animate-pulse dark:bg-gray-700 z-10"
-      ></div>
-    );
-  }
+const Orders = async () => {
+  const { permissions = [] } = await getProfile();
 
-  const permissions = profile?.permissions;
   const manageCourier =
     permissions &&
     (permissions.includes(permission.superAdmin) ||
       permissions.includes(permission.manageCourier));
 
   if (!manageCourier) {
-    router.push("/error");
+    redirect("/error");
   }
 
   return (

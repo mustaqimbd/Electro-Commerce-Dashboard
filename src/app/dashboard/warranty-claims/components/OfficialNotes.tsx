@@ -1,3 +1,4 @@
+"use client";
 import EcButton from "@/components/EcButton/EcButton";
 import CommonModal from "@/components/modal/CommonModal";
 import { Button } from "@/components/ui/button";

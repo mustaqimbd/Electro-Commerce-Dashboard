@@ -1,4 +1,3 @@
-"use clients";
 import { TypographyH4 } from "@/components/ui/Typography";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -26,12 +25,12 @@ const AddProducts = async () => {
           <Button>View All</Button>
         </div>
       </Card>
-      {/* product data section statrted */}
+      {/* product data section started */}
       <div className="flex justify-start items-start gap-4 mt-3 w-full">
         <div className="w-[65%] space-y-3">
           {/* products title */}
           <Title />
-          {/* products descriptTion */}
+          {/* products description */}
           <Description />
           {/* product data */}
           <ProductData attributes={attributes} />

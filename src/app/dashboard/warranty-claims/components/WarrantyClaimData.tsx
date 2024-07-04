@@ -1,3 +1,4 @@
+"use client";
 import { useGetWarrantyClaimRequestsQuery } from "@/redux/features/warrantyClaimRequests/warrantyClaimApi";
 import { setRequests } from "@/redux/features/warrantyClaimRequests/warrantyClaimSlice";
 import { useAppDispatch } from "@/redux/hooks";

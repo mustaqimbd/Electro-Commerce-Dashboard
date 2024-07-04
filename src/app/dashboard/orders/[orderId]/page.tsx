@@ -1,21 +1,14 @@
 import OrderIdAndDate from "@/components/OrderIdAndDate";
 import Invoice from "@/components/invoice/Invoice";
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { SectionTitle } from "@/components/ui/sectionTitle";
 import backgroundColor from "@/utilities/backgroundColor";
-import {
-  MapPin,
-  PencilIcon,
-  Phone,
-  // SendHorizontal,
-  UserRound,
-} from "lucide-react";
-import Link from "next/link";
+import { MapPin, Phone, UserRound } from "lucide-react";
 import { OrderedProductTable } from "./components/OrderedProductTable";
 import fetchData from "@/utilities/fetchData";
 import UpdateOrderStatus from "@/components/UpdateOrderStatus";
 import DeleteOrderBtn from "@/components/DeleteOrderBtn";
+import EditOrder from "./components/EditOrder";
 
 const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
   const { data: order } = await fetchData({
@@ -61,15 +54,8 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
               </div>
             </div>
             <div className="flex gap-5 items-center">
-              {/* <Button className="bg-primary" size={"sm"}>
-                <SendHorizontal className="w-4 mr-2" /> Courier Entry
-              </Button> */}
               <Invoice orders={[order]} />
-              <Link href={`/dashboard/orders/${_id}/edit`}>
-                <Button variant={"outline"} className="" size={"sm"}>
-                  <PencilIcon className="w-4 mr-2" /> Edit Order
-                </Button>
-              </Link>
+              <EditOrder order={order} text="Edit order" />
             </div>
           </div>
           <hr className="my-2" />
@@ -108,10 +94,6 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
                   {shippingCharge?.name} ৳ {shippingCharge?.amount}
                 </span>
               </div>
-              {/* <span className="flex items-center gap-2">
-                <Phone className="w-5" />
-                {shipping.phoneNumber}
-              </span> */}
             </div>
             <div className="flex flex-col gap-2 pl-3">
               <h1 className="font-bold">Payment By</h1>
@@ -120,9 +102,6 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
                   {payment?.paymentMethod?.name}
                 </span>
               </div>
-              {/* <span className="flex items-center gap-2">
-                <MapPin className="w-5" /> {paymentMethod.amount}
-              </span> */}
             </div>
           </div>
           <hr />
@@ -165,17 +144,7 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
               "On courier",
             ]}
           />
-          {/* <div className="mt-10">
-            <p className="font-bold mb-1">Add courier note</p>
-            <textarea
-              placeholder="Enter note for courier"
-              className="text-center border"
-              name=""
-              id=""
-              cols={25}
-              rows={5}
-            ></textarea>
-          </div> */}
+
           <div>
             <div className="my-5">
               <p className="font-bold mb-1">Official Note</p>

@@ -19,7 +19,6 @@ import variationReducer from "./features/addProduct/variation/variationSlice";
 import authReducer from "./features/auth/authSlice";
 import courierManagementReducer from "./features/courierManagement/courierManagementSlice";
 import ordersReducer from "./features/orders/ordersSlice";
-import updateOrderReducer from "./features/orders/updateOrderSlice";
 import paginationReducer from "./features/pagination/PaginationSlice";
 import processingOrdersReducer from "./features/processingOrders/processingOrdersSlice";
 import searchReducer from "./features/search/searchSlice";
@@ -39,13 +38,11 @@ const store = configureStore({
     [courierBaseApi.reducerPath]: courierBaseApi.reducer,
     auth: persistedAuthReducer,
     addProduct: addProductReducer,
-
     productVariation: variationReducer,
     allProducts: allProductReducer,
     orders: ordersReducer,
     processingOrders: processingOrdersReducer,
     courierManagement: courierManagementReducer,
-    updateOrder: updateOrderReducer,
     search: searchReducer,
     pagination: paginationReducer,
     warrantyClaim: warrantyClaimSlice,
