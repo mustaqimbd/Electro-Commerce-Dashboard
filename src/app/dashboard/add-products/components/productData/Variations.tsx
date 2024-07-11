@@ -3,8 +3,8 @@ import SectionContentWrapper from "@/components/section-content-wrapper/SectionC
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { useState } from "react";
 import Inventory from "./Inventory";
-import Media from "./Media";
-import Offer from "./Offer";
+// import Media from "./Media";
+// import Offer from "./Offer";
 import Price from "./Price";
 import { TSelectedAttributeValue } from "@/redux/features/addProduct/variation/interface";
 import { setVariationAttributes } from "@/redux/features/addProduct/variation/variationSlice";
@@ -81,7 +81,7 @@ const Variations = () => {
           </div>
           <SectionContentWrapper collapse={true}>
             <div>
-              <button
+              {/* <button
                 onClick={() => handleTabClick("media")}
                 className={`${
                   activeTab === "media"
@@ -90,7 +90,7 @@ const Variations = () => {
                 }  font-semibold py-2 px-4 rounded-sm `}
               >
                 Media
-              </button>
+              </button> */}
               <button
                 onClick={() => handleTabClick("price")}
                 className={`${
@@ -111,7 +111,7 @@ const Variations = () => {
               >
                 Inventory
               </button>
-              <button
+              {/* <button
                 onClick={() => handleTabClick("offer")}
                 className={`${
                   activeTab === "offer"
@@ -120,21 +120,21 @@ const Variations = () => {
                 }  font-semibold py-2 px-4 rounded-sm`}
               >
                 Offer
-              </button>
+              </button> */}
             </div>
             <div>
-              {activeTab === "media" && (
+              {/* {activeTab === "media" && (
                 <Media isVariation={true} index={index} />
+              )} */}
+              {activeTab === "price" && (
+                <Price isVariation={true} index={index} />
               )}
               {activeTab === "inventory" && (
                 <Inventory isVariation={true} index={index} />
               )}
-              {activeTab === "price" && (
-                <Price isVariation={true} index={index} />
-              )}
-              {activeTab === "offer" && (
+              {/* {activeTab === "offer" && (
                 <Offer isVariation={true} index={index} />
-              )}
+              )} */}
             </div>
           </SectionContentWrapper>
         </div>

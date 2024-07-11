@@ -14,17 +14,33 @@ const AddNotes = ({ order }: { order: TOrders }) => {
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
+    reset();
     setOpen(!open);
   };
 
   const [updateOrder, { isLoading }] = useUpdateOrderMutation();
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    reset,
+    handleSubmit,
+    formState: { dirtyFields },
+  } = useForm();
 
   const { officialNotes, invoiceNotes, courierNotes } = order;
-  const onSubmit: SubmitHandler<FieldValues> = async (payload) => {
+  const isFormDirty = Object.keys(dirtyFields).length > 0;
+
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
+      const payload: FieldValues = {};
+      for (const key in data) {
+        if (key) {
+          payload[key] = data[key]?.trim();
+        }
+      }
+
       await updateOrder({ payload, _id: order._id }).unwrap();
       refetchData("allOrders");
+      reset();
       handleOpen();
       toast({
         className: "bg-success text-white text-2xl",
@@ -71,7 +87,7 @@ const AddNotes = ({ order }: { order: TOrders }) => {
         open={open}
         handleOpen={handleOpen}
         modalTitle="Add notes"
-        className="h-[380px] w-[500px]"
+        className="h-[400px] w-[600px]"
       >
         <form onSubmit={handleSubmit(onSubmit)}>
           <Tabs
@@ -83,7 +99,7 @@ const AddNotes = ({ order }: { order: TOrders }) => {
                 value="orderNotes"
                 className="border border-cyan-400 data-[state=active]:bg-primary data-[state=active]:text-white"
               >
-                Order Note
+                Customer Note
               </TabsTrigger>
               <TabsTrigger
                 value="officialNotes"
@@ -110,7 +126,7 @@ const AddNotes = ({ order }: { order: TOrders }) => {
                 <Textarea
                   placeholder="Empty"
                   id="orderNotes"
-                  className="min-h-40 border border-primary focus-visible:ring-primary"
+                  className="min-h-44 border border-primary focus-visible:ring-primary"
                   {...register("orderNotes")}
                   defaultValue={order?.orderNotes}
                   disabled
@@ -123,7 +139,7 @@ const AddNotes = ({ order }: { order: TOrders }) => {
                 <Textarea
                   placeholder="Type note here."
                   id="officialNotes"
-                  className="min-h-40 border border-primary focus-visible:ring-primary"
+                  className="min-h-44 border border-primary focus-visible:ring-primary"
                   {...register("officialNotes")}
                   defaultValue={order?.officialNotes}
                 />
@@ -135,7 +151,7 @@ const AddNotes = ({ order }: { order: TOrders }) => {
                 <Textarea
                   placeholder="Type note here."
                   id="invoiceNotes"
-                  className="min-h-40 border border-primary focus-visible:ring-primary"
+                  className="min-h-44 border border-primary focus-visible:ring-primary"
                   {...register("invoiceNotes")}
                   defaultValue={order?.invoiceNotes}
                 />
@@ -147,14 +163,18 @@ const AddNotes = ({ order }: { order: TOrders }) => {
                 <Textarea
                   placeholder="Type note here."
                   id="courierNotes"
-                  className="min-h-40 border border-primary focus-visible:ring-primary"
+                  className="min-h-44 border border-primary focus-visible:ring-primary"
                   {...register("courierNotes")}
                   defaultValue={order?.courierNotes}
                 />
               </div>
             </TabsContent>
             <div className="flex items-center justify-center mt-6">
-              <Button type="submit" className="w-[200px]" disabled={isLoading}>
+              <Button
+                type="submit"
+                className="w-[200px]"
+                disabled={!isFormDirty || isLoading}
+              >
                 Save
               </Button>
             </div>

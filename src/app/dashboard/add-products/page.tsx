@@ -9,12 +9,17 @@ import Tag from "./components/Tag";
 import Title from "./components/Title";
 import ProductData from "./components/productData/ProductsData";
 import getAttributes from "./lib/getAttributes";
-import getCategories from "./lib/getCategories";
 import getTags from "./lib/getTags";
+import fetchData from "@/utilities/fetchData";
 
 const AddProducts = async () => {
   const attributes = await getAttributes();
-  const categories = await getCategories();
+
+  const { data: categories } = await fetchData({
+    endPoint: "/categories",
+    tags: ["categories"],
+  });
+
   const tags = await getTags();
 
   return (

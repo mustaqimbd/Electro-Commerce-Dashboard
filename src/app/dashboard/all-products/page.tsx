@@ -16,7 +16,7 @@ const AllProducts = async () => {
   });
 
   return (
-    <div className="rounded-md shadow-md p-5 bg-white">
+    <div className="shadow-md p-5 bg-white border-l">
       {/* header section, search bar  */}
       <div className="grid grid-cols-2 justify-between items-center mb-8">
         <h1 className="text-3xl">All Products</h1>

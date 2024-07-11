@@ -38,6 +38,7 @@ export async function getProfile() {
     method: "GET",
     headers: { authorization: `Bearer ${accessToken}` },
     cache: "force-cache",
+    next: { tags: ["profile"] },
   });
   if (!res.ok) {
     throw new Error("Failed to fetch profile data");

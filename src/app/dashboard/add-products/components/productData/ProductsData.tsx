@@ -9,6 +9,7 @@ import Variations from "./Variations";
 import Attributes from "./attribute/Attributes";
 import { TSelectedAttribute } from "@/redux/features/addProduct/variation/interface";
 import Advanced from "./Advanced";
+import { Button } from "@/components/ui/button";
 
 const ProductData = ({ attributes }: { attributes: TSelectedAttribute[] }) => {
   const [activeTab, setActiveTab] = useState<string>("media");
@@ -19,78 +20,77 @@ const ProductData = ({ attributes }: { attributes: TSelectedAttribute[] }) => {
 
   return (
     <SectionContentWrapper heading={"Product Data"}>
-      <div>
-        <button
+      <div className="flex flex-wrap gap-3">
+        <Button
           onClick={() => handleTabClick("media")}
           className={`${
             activeTab === "media"
-              ? "bg-blue-500 text-white  hover:bg-blue-700"
-              : "border "
-          }  font-semibold py-2 px-4 rounded-sm `}
+              ? "bg-primary text-white  hover:bg-secondary"
+              : "border border-primary bg-inherit text-inherit hover:bg-inherit"
+          }`}
         >
           Media
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={() => handleTabClick("price")}
           className={`${
             activeTab === "price"
-              ? "bg-blue-500 text-white  hover:bg-blue-700"
-              : "border "
-          }  font-semibold py-2 px-4 rounded-sm`}
+              ? "bg-primary text-white  hover:bg-secondary"
+              : "border border-primary bg-inherit text-inherit hover:bg-inherit"
+          }`}
         >
           Price
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={() => handleTabClick("attributes")}
           className={`${
             activeTab === "attributes"
-              ? "bg-blue-500 text-white  hover:bg-blue-700"
-              : "border "
-          }  font-semibold py-2 px-4 rounded-sm`}
+              ? "bg-primary text-white  hover:bg-secondary"
+              : "border border-primary bg-inherit text-inherit hover:bg-inherit"
+          }`}
         >
           Attributes
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={() => handleTabClick("variations")}
           className={`${
             activeTab === "variations"
-              ? "bg-blue-500 text-white  hover:bg-blue-700"
-              : "border "
-          }  font-semibold py-2 px-4 rounded-sm`}
+              ? "bg-primary text-white  hover:bg-secondary"
+              : "border border-primary bg-inherit text-inherit hover:bg-inherit"
+          }`}
         >
           Variations
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={() => handleTabClick("inventory")}
           className={`${
             activeTab === "inventory"
-              ? "bg-blue-500 text-white  hover:bg-blue-700"
-              : "border "
-          }  font-semibold py-2 px-4 rounded-sm `}
+              ? "bg-primary text-white  hover:bg-secondary"
+              : "border border-primary bg-inherit text-inherit hover:bg-inherit"
+          }`}
         >
           Inventory
-        </button>
-
-        <button
+        </Button>
+        <Button
           onClick={() => handleTabClick("offer")}
           className={`${
             activeTab === "offer"
-              ? "bg-blue-500 text-white  hover:bg-blue-700"
-              : "border "
-          }  font-semibold py-2 px-4 rounded-sm`}
+              ? "bg-primary text-white  hover:bg-secondary"
+              : "border border-primary bg-inherit text-inherit hover:bg-inherit"
+          }`}
         >
           Offer
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={() => handleTabClick("advanced")}
           className={`${
             activeTab === "advanced"
-              ? "bg-blue-500 text-white  hover:bg-blue-700"
-              : "border "
-          }  font-semibold py-2 px-4 rounded-sm`}
+              ? "bg-primary text-white  hover:bg-secondary"
+              : "border border-primary bg-inherit text-inherit hover:bg-inherit"
+          }`}
         >
           Advanced
-        </button>
+        </Button>
       </div>
 
       <div>

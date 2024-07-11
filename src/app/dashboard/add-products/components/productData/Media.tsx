@@ -1,7 +1,7 @@
 "use client";
 import { TypographyH4 } from "@/components/ui/Typography";
 import { SectionTitle } from "@/components/ui/sectionTitle";
-import UploaderPopup from "@/components/uploader/UploaderPopup";
+import ImageSelectPopup from "@/components/uploader/ImageSelectPopup";
 import config from "@/config/config";
 import { useGetSingleImageQuery } from "@/redux/features/addProduct/media/mediaApi";
 import { useAppSelector } from "@/redux/hooks";
@@ -20,7 +20,7 @@ const Media = ({ isVariation, index }: TProps) => {
   };
 
   const { thumbnail, gallery } = useAppSelector(
-    ({ addProduct }) => addProduct.image
+    ({ imageSelector }) => imageSelector
   );
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -126,11 +126,11 @@ const Media = ({ isVariation, index }: TProps) => {
         </div>
         {/* modal
          */}
-        <UploaderPopup
+        <ImageSelectPopup
           open={open}
           click={click}
           handleOpen={handleOpen}
-          modalTitle={`Add image for product ${click}`}
+          modalTitle={`Add image for ${click}`}
         />
       </div>
     </>

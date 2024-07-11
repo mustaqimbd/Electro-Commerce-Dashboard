@@ -25,6 +25,7 @@ import searchReducer from "./features/search/searchSlice";
 import userSlice from "./features/user/userSlice";
 import warrantyClaimSlice from "./features/warrantyClaimRequests/warrantyClaimSlice";
 import allProductReducer from "./features/allProducts/allProductsSlice";
+import imageSelectorReducer from "./features/imageSelector/imageSelectorSlice";
 
 const persistConfig = {
   key: "auth",
@@ -40,6 +41,7 @@ const store = configureStore({
     addProduct: addProductReducer,
     productVariation: variationReducer,
     allProducts: allProductReducer,
+    imageSelector: imageSelectorReducer,
     orders: ordersReducer,
     processingOrders: processingOrdersReducer,
     courierManagement: courierManagementReducer,

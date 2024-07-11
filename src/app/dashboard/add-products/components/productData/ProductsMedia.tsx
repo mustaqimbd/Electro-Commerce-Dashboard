@@ -1,6 +1,6 @@
 import { TypographyH4 } from "@/components/ui/Typography";
 import { SectionTitle } from "@/components/ui/sectionTitle";
-import UploaderPopup from "@/components/uploader/UploaderPopup";
+import ImageSelectPopup from "@/components/uploader/ImageSelectPopup";
 
 import React from "react";
 
@@ -15,7 +15,6 @@ const ProductsMedia = () => {
       <div className="flex justify-between items-start gap-10">
         <div className="flex-1">
           <SectionTitle>Add Thumbnail</SectionTitle>
-
           <div
             onClick={handleOpen}
             className=" flex flex-col items-center justify-center p-10 bg-gray-200 w-44 h-40 my-2 border border-dotted  border-blue-gray-200"
@@ -35,14 +34,12 @@ const ProductsMedia = () => {
               />
             </svg>
             <TypographyH4 className="text-center">
-              {" "}
               Recommended: 800 * 800
             </TypographyH4>
           </div>
         </div>
         <div className="flex-1">
-          <SectionTitle>Image Galary</SectionTitle>
-
+          <SectionTitle>Image Gallery</SectionTitle>
           <div
             onClick={handleOpen}
             className=" flex flex-col items-center justify-center p-10 bg-gray-200 w-44 h-40 my-2 border border-dotted  border-blue-gray-200"
@@ -106,15 +103,11 @@ const ProductsMedia = () => {
               </svg>
             </div>
             <TypographyH4 className="text-center">
-              {" "}
               Recommended: 800 * 800
             </TypographyH4>
           </div>
         </div>
-        {/* modal
-         */}
-
-        <UploaderPopup
+        <ImageSelectPopup
           open={open}
           handleOpen={handleOpen}
           modalTitle="Media Upload"

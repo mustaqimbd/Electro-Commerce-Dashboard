@@ -33,15 +33,16 @@ const schema = yup.object().shape({
     .transform((value, originalValue) => (originalValue === "" ? 0 : value))
     .min(0, "Discount must be a positive number")
     .optional(),
-  products: yup.array(
+  productDetails: yup.array(
     yup.object().shape({
-      productId: yup.string().optional(),
+      id: yup.string().optional(),
+      newProductId: yup.string().optional(),
       quantity: yup.number().optional(),
     })
   ),
-  officialNotes: yup.string().optional(),
-  invoiceNotes: yup.string().optional(),
-  courierNotes: yup.string().optional(),
+  officialNotes: yup.string().trim().optional(),
+  invoiceNotes: yup.string().trim().optional(),
+  courierNotes: yup.string().trim().optional(),
 });
 
 export type TEditOrderFormInput = yup.InferType<typeof schema>;
@@ -62,10 +63,6 @@ const EditOrder = ({
 
   const [open, setOpen] = useState(false);
 
-  const handleOpen = () => {
-    setOpen(!open);
-  };
-
   const {
     register,
     handleSubmit,
@@ -77,6 +74,11 @@ const EditOrder = ({
   } = useForm({
     resolver: yupResolver(schema),
   });
+
+  const handleOpen = () => {
+    reset();
+    setOpen(!open);
+  };
 
   const isFormDirty = Object.keys(dirtyFields).length > 0;
 
@@ -92,16 +94,15 @@ const EditOrder = ({
   const onSubmit: SubmitHandler<TEditOrderFormInput> = async (data) => {
     try {
       const payload = dirtyValues(dirtyFields, data);
-      // console.log("payload", payload);
-
       await updateOrder({ payload, _id }).unwrap();
       dispatch(setIsOrderUpdate(!iSOrderUpdate));
       refetchData("allOrders");
+      refetchData("singleOrder");
       reset();
       handleOpen();
       toast({
         className: "bg-success text-white text-2xl",
-        title: "Order created successfully!",
+        title: "Order edited successfully!",
       });
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
@@ -129,7 +130,6 @@ const EditOrder = ({
             d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
           />
         </svg>
-        {"  "}
         {text}
       </Button>
       <CommonModal
@@ -191,7 +191,7 @@ const EditOrder = ({
             </div>
             <div className="space-y-4">
               <div className="grid w-full gap-1.5">
-                <Label htmlFor="orderNotes">Order Note</Label>
+                <Label htmlFor="orderNotes">Customer Note</Label>
                 <Textarea
                   placeholder="Empty"
                   defaultValue={orderNotes}
@@ -232,11 +232,7 @@ const EditOrder = ({
             </div>
           </div>
           <div className="flex items-center justify-end mt-6">
-            <Button
-              type="submit"
-              className="w-32"
-              disabled={!isFormDirty || isLoading}
-            >
+            <Button type="submit" disabled={!isFormDirty || isLoading}>
               Update order
             </Button>
           </div>

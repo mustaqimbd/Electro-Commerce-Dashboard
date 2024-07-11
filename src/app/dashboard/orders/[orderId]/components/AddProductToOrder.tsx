@@ -42,21 +42,22 @@ const AddProductToOrder = ({
 
   const { remove } = useFieldArray({
     control,
-    name: "products",
+    name: "productDetails",
   });
 
-  const selectedProduct = watch("products");
+  const selectedProduct = order?.products;
+  // const selectedProduct = watch("productDetails");
   // const length = selectedProduct?.filter(({ productId }) => {
   //   if (productId) return productId;
   // });
   // console.log("selectedProduct", length);
   useEffect(() => {
-    const slToRemove = new Set(selectedProduct?.map((item) => item.productId));
+    const slToRemove = new Set(selectedProduct?.map((item) => item._id));
     // console.log(slToRemove);
     const filteredArray = products.filter((item) => !slToRemove.has(item._id));
     // console.log("filteredArray", filteredArray);
     setProductsName(filteredArray);
-  }, [products, selectedProduct]);
+  }, [selectedProduct, products]);
 
   const handleRemoveProduct = (index: number) => {
     const productIndex = [...addProduct];
@@ -76,8 +77,8 @@ const AddProductToOrder = ({
   return (
     <>
       {addProduct.map((index) => {
-        const updatedQty = watch(`products.${index}.quantity`);
-        const productId = watch(`products.${index}.productId`);
+        const updatedQty = watch(`productDetails.${index}.quantity`);
+        const productId = watch(`productDetails.${index}.newProductId`);
         const product = productsName.find(({ _id }) => _id === productId);
         const unitPrice = product?.salePrice;
         const updatedTotal = updatedQty && unitPrice && updatedQty * unitPrice;
@@ -95,7 +96,7 @@ const AddProductToOrder = ({
               className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
             >
               <select
-                {...register(`products.${index}.productId`)}
+                {...register(`productDetails.${index}.newProductId`)}
                 className=" h-9 border focus:outline-none rounded"
                 required
               >
@@ -114,7 +115,7 @@ const AddProductToOrder = ({
                   type="number"
                   defaultValue={1}
                   min={1}
-                  {...register(`products.${index}.quantity`)}
+                  {...register(`productDetails.${index}.quantity`)}
                   id="quantity"
                   className="w-full px-1 text-center"
                   required
@@ -156,9 +157,6 @@ const AddProductToOrder = ({
             <p className="font-normal text-right">
               Sub Total : ৳ {updatedSubTotal}
             </p>
-            <p className="font-normal text-right">
-              Shipping Fee : ৳ {shippingCharge?.amount}
-            </p>
             <div className="flex items-center justify-end gap-2">
               <span>Discount</span>
               <Input
@@ -177,13 +175,17 @@ const AddProductToOrder = ({
                 defaultValue={advance}
                 min={0}
                 {...register("advance")}
-                id="cost"
+                id="advance"
                 className="w-14 px-1 text-center"
               />
             </div>
+            <p className="font-normal text-right">
+              Shipping Cost : ৳ {updatedSubTotal && charge}
+            </p>
             <hr />
             <p className="font-semibold text-right">
-              Total : ৳ {updatedSubTotal + charge - totalMinus}
+              Total : ৳{" "}
+              {updatedSubTotal && updatedSubTotal + charge - totalMinus}
             </p>
           </div>
         </td>

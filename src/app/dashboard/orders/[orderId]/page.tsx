@@ -36,141 +36,158 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
     orderNotes,
   } = order;
 
+  const isEdit = [
+    "pending",
+    "confirmed",
+    "follow up",
+    "processing",
+    "warranty processing",
+  ].includes(status);
+
+  const isInvoice = ["processing"].includes(status);
+
+  const isStatusUpdateDisabled = [
+    "deleted",
+    "processing",
+    "processing done",
+    "On courier",
+  ].includes(status);
+
+  const isDeleted = ["pending", "follow up"].includes(status);
+
   return (
-    <div className="flex justify-between gap-3 h-screen pb-20">
-      <div className="w-3/4 ">
-        <Card className="p-7">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-10">
-              <div>
-                <span className="font-bold">Order Id :</span> {orderId}
+    <div className="flex justify-between gap-3 mb-10">
+      <Card className="w-3/4 p-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-10">
+            <div>
+              <span className="font-bold">Order Id :</span> {orderId}
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="font-bold min-w-[60px]">Status : </span>
+              <span
+                className={`capitalize px-2 pb-[2px] pt-[1px] text-white rounded ${backgroundColor(status)}`}
+              >
+                {status}
+              </span>
+            </div>
+          </div>
+          <div className="flex gap-5 items-center">
+            {isInvoice && <Invoice orders={[order]} />}
+            {isEdit && <EditOrder order={order} text="Edit order" />}
+          </div>
+        </div>
+        <hr className="my-2" />
+        <div className="flex items-center gap-2">
+          <span className="font-bold">Date :</span>
+          <OrderIdAndDate
+            timestamp={createdAt}
+            className="flex items-center gap-5"
+          />
+        </div>
+        <hr className="my-2" />
+        <div className="grid grid-cols-3 divide-x-2 pb-3">
+          <div className="flex flex-col gap-2">
+            <h1 className="font-bold">Customer Info</h1>
+            <div>
+              <div className="flex items-start gap-2">
+                <UserRound className="w-5" /> <span>{shipping?.fullName}</span>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="w-5">
+                  <MapPin className="w-5" />
+                </span>{" "}
+                <span>{shipping?.fullAddress}</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="font-bold min-w-[60px]">Status : </span>
-                <span
-                  className={`capitalize px-2 pb-[2px] pt-[1px] text-white rounded ${backgroundColor(status)}`}
-                >
-                  {status}
-                </span>
-              </div>
-            </div>
-            <div className="flex gap-5 items-center">
-              <Invoice orders={[order]} />
-              <EditOrder order={order} text="Edit order" />
-            </div>
-          </div>
-          <hr className="my-2" />
-          <h1 className="flex items-center gap-2">
-            <span className="font-bold">Date :</span>
-            <OrderIdAndDate
-              timestamp={createdAt}
-              className="flex items-center gap-5"
-            />
-          </h1>
-          <hr className="my-2" />
-          <div className="grid grid-cols-3 divide-x-2 pb-3">
-            <div className="flex flex-col gap-2">
-              <h1 className="font-bold">Customer Info</h1>
-              <div>
-                <div className="flex items-start gap-2">
-                  <UserRound className="w-5" />{" "}
-                  <span>{shipping?.fullName}</span>
-                </div>
-                <div className="flex items-start gap-2">
-                  <span className="w-5">
-                    <MapPin className="w-5" />
-                  </span>{" "}
-                  <span>{shipping?.fullAddress}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Phone className="w-5" />
-                  <span>{shipping?.phoneNumber}</span>
-                </div>
-              </div>
-            </div>
-            <div className="flex flex-col gap-2 pl-3">
-              <h1 className="font-bold">Shipping charge</h1>
-              <div>
-                <span>
-                  {shippingCharge?.name} ৳ {shippingCharge?.amount}
-                </span>
-              </div>
-            </div>
-            <div className="flex flex-col gap-2 pl-3">
-              <h1 className="font-bold">Payment By</h1>
-              <div>
-                <span className="flex items-center gap-2">
-                  {payment?.paymentMethod?.name}
-                </span>
+                <Phone className="w-5" />
+                <span>{shipping?.phoneNumber}</span>
               </div>
             </div>
           </div>
-          <hr />
-          {/* Single order table */}
-          <OrderedProductTable products={products} />
-          <hr />
-          <div className="space-y-[2px] space-y2 text-sm bg-light p-5">
-            <p className="text-right pt-[2px] pt2">
-              <span className="font-medium">Sub Total :</span> ৳ {subtotal}
-            </p>
-            <p className="text-right">
-              <span className="font-medium">Discount : </span>৳ {discount}
-            </p>
-            <p className="text-right">
-              <span className="font-medium">Advance : </span>৳ {advance}
-            </p>
-            <p className="text-right pb-[2px] pb2">
-              <span className="font-medium">Shipping Cost :</span> ৳{" "}
-              {shippingCharge?.amount}
-            </p>
-            <hr />
-            <p className="text-xl font-bold text-right text-secondary">
-              Total : ৳ {total}
-            </p>
-          </div>
-        </Card>
-      </div>
-
-      {/* sidebar section start */}
-      <div className="w-4/12">
-        <Card className="p-4 space-y-3 flex flex-col">
-          <SectionTitle>Update Order Status</SectionTitle>
-          <UpdateOrderStatus
-            order={order}
-            _id={_id}
-            disableStatus={[
-              "deleted",
-              "processing",
-              "processing done",
-              "On courier",
-            ]}
-          />
-
-          <div>
-            <div className="my-5">
-              <p className="font-bold mb-1">Customer Note</p>
-              <p className="border min-h-10 p-2 rounded-md">{orderNotes}</p>
-            </div>
-            <div className="my-5">
-              <p className="font-bold mb-1">Official Note</p>
-              <p className="border min-h-10 p-2 rounded-md">{officialNotes}</p>
-            </div>
-            <div className="my-5">
-              <p className="font-bold mb-1">Invoice Note</p>
-              <p className="border min-h-10 p-2 rounded-md">{invoiceNotes}</p>
-            </div>
-            <div className="my-5">
-              <p className="font-bold mb-1">Courier Note</p>
-              <p className="border min-h-10 p-2 rounded-md">{courierNotes}</p>
+          <div className="flex flex-col gap-2 pl-3">
+            <h1 className="font-bold">Shipping charge</h1>
+            <div>
+              <span>
+                {shippingCharge?.name} ৳ {shippingCharge?.amount}
+              </span>
             </div>
           </div>
-        </Card>
-        <div className="h-[300px] pr-4 pb-10 flex flex-col justify-end">
-          <DeleteOrderBtn _id={_id} variant="destructive">
-            Delete
-          </DeleteOrderBtn>
+          <div className="flex flex-col gap-2 pl-3">
+            <h1 className="font-bold">Payment By</h1>
+            <div>
+              <span className="flex items-center gap-2">
+                {payment?.paymentMethod?.name}
+              </span>
+            </div>
+          </div>
         </div>
-      </div>
+        <hr />
+        {/* Single order table */}
+        <OrderedProductTable products={products} />
+        <hr />
+        <div className="space-y-[2px] space-y2 text-sm bg-light mt-1">
+          <p className="text-right pt-[2px] pt2">
+            <span className="font-medium">Sub Total :</span> ৳ {subtotal}
+          </p>
+          <p className="text-right">
+            <span className="font-medium">Discount : </span>৳ {discount}
+          </p>
+          <p className="text-right">
+            <span className="font-medium">Advance : </span>৳ {advance}
+          </p>
+          <p className="text-right pb-[2px] pb2">
+            <span className="font-medium">Shipping Cost :</span> ৳{" "}
+            {shippingCharge?.amount}
+          </p>
+          <hr />
+          <p className="text-xl font-bold text-right text-secondary">
+            Total : ৳ {total}
+          </p>
+        </div>
+      </Card>
+      {/* sidebar section start */}
+      <Card className="w-4/12 space-y-3 flex flex-col p-4">
+        {!isStatusUpdateDisabled && (
+          <>
+            <SectionTitle>Update Order Status</SectionTitle>
+            <UpdateOrderStatus _id={_id} status={status} />
+          </>
+        )}
+        <div className="space-y-3">
+          <div>
+            <p className="font-bold mb-1">Customer Note</p>
+            <p className="min-h-10 border p-2 rounded-md block break-words">
+              {orderNotes}
+            </p>
+          </div>
+          <div>
+            <p className="font-bold mb-1">Official Note</p>
+            <p className="min-h-10 border p-2 rounded-md block break-words">
+              {officialNotes}
+            </p>
+          </div>
+          <div>
+            <p className="font-bold mb-1">Invoice Note</p>
+            <p className="min-h-10 border p-2 rounded-md block break-words">
+              {invoiceNotes}
+            </p>
+          </div>
+          <div>
+            <p className="font-bold mb-1">Courier Note</p>
+            <p className="min-h-10 border p-2 rounded-md block break-words">
+              {courierNotes}
+            </p>
+          </div>
+        </div>
+        {isDeleted && (
+          <div className="pr-4 flex flex-col justify-end h-full">
+            <DeleteOrderBtn _id={_id} variant="destructive">
+              Delete
+            </DeleteOrderBtn>
+          </div>
+        )}
+      </Card>
     </div>
   );
 };

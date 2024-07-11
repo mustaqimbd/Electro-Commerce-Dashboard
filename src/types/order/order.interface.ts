@@ -33,6 +33,7 @@ export type Product = {
   quantity: number;
   total: number;
   iSWarranty: boolean;
+  isWarrantyClaim: boolean;
   warranty: {
     warrantyCodes?: {
       code: string;

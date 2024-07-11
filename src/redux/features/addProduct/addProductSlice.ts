@@ -71,7 +71,7 @@ const initialState: TProduct = {
 };
 
 const productSlice = createSlice({
-  name: "addCategory",
+  name: "addProduct",
   initialState,
   reducers: {
     setTitle: (state, action: PayloadAction<string>) => {
@@ -80,13 +80,13 @@ const productSlice = createSlice({
     setDescription: (state, action: PayloadAction<string>) => {
       state.description = action.payload;
     },
-    setThumbnail: (state, action: PayloadAction<string>) => {
-      state.image.thumbnail = action.payload;
-    },
-    setGallery: (state, action: PayloadAction<string[]>) => {
-      state.image.gallery = [];
-      state.image.gallery.push(...action.payload);
-    },
+    // setThumbnail: (state, action: PayloadAction<string>) => {
+    //   state.image.thumbnail = action.payload;
+    // },
+    // setGallery: (state, action: PayloadAction<string[]>) => {
+    //   state.image.gallery = [];
+    //   state.image.gallery.push(...action.payload);
+    // },
     setAttribute: (state, action: PayloadAction<TAttribute[]>) => {
       state.attribute = action.payload;
     },
@@ -135,8 +135,8 @@ const productSlice = createSlice({
 export const {
   setTitle,
   setDescription,
-  setThumbnail,
-  setGallery,
+  // setThumbnail,
+  // setGallery,
   setAttribute,
   setPrice,
   setInventory,

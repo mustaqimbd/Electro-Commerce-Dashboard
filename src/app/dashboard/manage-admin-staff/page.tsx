@@ -21,7 +21,7 @@ const ManageUser = async () => {
   return (
     <>
       <GetAllUser />
-      <div className="rounded-md shadow-md p-5 bg-white">
+      <div className="shadow-md p-5 bg-white border-l">
         <div className="grid grid-cols-2 justify-between items-center mb-8">
           <h2 className="text-3xl">Manage employs</h2>
         </div>

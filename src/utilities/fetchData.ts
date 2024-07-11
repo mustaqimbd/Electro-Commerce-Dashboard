@@ -15,7 +15,9 @@ type TTags =
   | "processingDoneOrders"
   | "singleOrder"
   | "orderStatusCount"
-  | "categories";
+  | "categories"
+  | "attributes"
+  | "tags";
 
 type TProps = {
   endPoint: string;
@@ -27,7 +29,7 @@ type TProps = {
 const fetchData = async ({ endPoint, tags, searchParams, cache }: TProps) => {
   let url = `${config.base_url}/api/v1${endPoint}`;
   const reqConfig = {
-    cache: cache,
+    cache: cache || "default",
     next: { tags: tags },
   };
 
@@ -74,6 +76,7 @@ const fetchData = async ({ endPoint, tags, searchParams, cache }: TProps) => {
     throw new Error("Error when fetching data!");
   }
   const data = await res.json();
+
   return data;
 };
 

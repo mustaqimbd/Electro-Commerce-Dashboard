@@ -64,14 +64,19 @@ const EditOrderTable = ({
           </thead>
           <tbody>
             {products?.map(
-              ({ productId, title, unitPrice, quantity }, index) => {
+              ({ _id, title, unitPrice, quantity, isWarrantyClaim }, index) => {
                 const updatedQty =
-                  watch(`products.${index}.quantity`) || quantity;
+                  watch(`productDetails.${index}.quantity`) || quantity;
                 const amount = unitPrice * updatedQty;
-                existingSubTotal += amount;
+                if (isWarrantyClaim) {
+                  existingSubTotal = 0;
+                } else {
+                  existingSubTotal += amount;
+                }
+
                 return (
                   <tr
-                    key={title}
+                    key={_id}
                     className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
                   >
                     <td
@@ -80,8 +85,8 @@ const EditOrderTable = ({
                     >
                       <input
                         type="text"
-                        value={productId}
-                        {...register(`products.${index}.productId`)}
+                        value={_id}
+                        {...register(`productDetails.${index}.id`)}
                         className="hidden"
                       />
                       {title}
@@ -93,7 +98,7 @@ const EditOrderTable = ({
                           type="number"
                           defaultValue={quantity}
                           min={1}
-                          {...register(`products.${index}.quantity`)}
+                          {...register(`productDetails.${index}.quantity`)}
                           id="quantity"
                           className="w-full px-1 text-center"
                           required
@@ -112,7 +117,7 @@ const EditOrderTable = ({
               register={register}
               watch={watch}
               control={control}
-              existingSubTotal={existingSubTotal || 0}
+              existingSubTotal={existingSubTotal}
             />
           </tbody>
         </table>
