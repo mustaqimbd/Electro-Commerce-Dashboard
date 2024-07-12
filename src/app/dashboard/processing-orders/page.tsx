@@ -1,15 +1,15 @@
-import BulkAction from "./components/BulkAction";
-import ProcessingOrdersTable from "./components/ProcessingOrdersTable";
+import DateRangeSelector from "@/components/DateRangeSelector";
 import OrderSearchBar from "@/components/OrderSearchBar";
 import Show from "@/components/Show";
-import { redirect } from "next/navigation";
-import ProcessingOrdersStatusButtons from "./components/processingOrdersStatusButtons";
+import { getPermission } from "@/lib/getAccessToken";
 import { permission } from "@/types/order/order.interface";
-import DateRangeSelector from "@/components/DateRangeSelector";
-import { getProfile } from "@/lib/getAccessToken";
+import { redirect } from "next/navigation";
+import BulkAction from "./components/BulkAction";
+import ProcessingOrdersStatusButtons from "./components/processingOrdersStatusButtons";
+import ProcessingOrdersTable from "./components/ProcessingOrdersTable";
 
-const Orders = async () => {
-  const { permissions = [] } = await getProfile();
+const Orders = () => {
+  const { permissions = [] } = getPermission();
 
   const manageProcessing =
     permissions &&

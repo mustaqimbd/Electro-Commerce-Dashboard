@@ -1,11 +1,13 @@
 import baseApi from "@/redux/baseApi/baseApi";
 import { TQuery } from "@/types/order/order.interface";
+import searchParams from "@/utilities/searchParams";
 
 const updateStatusApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getProcessingDoneAndCourierOrders: builder.query({
-      query: ({ status, startFrom, endAt, sort, page, limit }: TQuery) => ({
-        url: `/orders/admin/processing-done-on-courier-orders?status=${status}&startFrom=${startFrom}&endAt=${endAt}&sort=${sort}&page=${page}&limit=${limit}`,
+      query: (args: TQuery) => ({
+        url: "/orders/admin/processing-done-on-courier-orders",
+        params: searchParams(args),
       }),
       providesTags: ["processingDoneAndCourierOrders"],
     }),

@@ -1,15 +1,15 @@
+import DateRangeSelector from "@/components/DateRangeSelector";
 import OrderSearchBar from "@/components/OrderSearchBar";
 import Show from "@/components/Show";
+import { getPermission } from "@/lib/getAccessToken";
 import { permission } from "@/types/order/order.interface";
+import { redirect } from "next/navigation";
 import BulkAction from "./components/BulkAction";
 import CreateOrder from "./components/CreateOrder";
 import OrdersStatusButtons from "./components/OrdersStatusButtons";
 import OrdersTable from "./components/OrdersTable";
-import DateRangeSelector from "@/components/DateRangeSelector";
-import { getProfile } from "@/lib/getAccessToken";
-import { redirect } from "next/navigation";
-const Orders = async () => {
-  const { permissions = [] } = await getProfile();
+const Orders = () => {
+  const { permissions = [] } = getPermission();
 
   const manageOrder =
     permissions &&

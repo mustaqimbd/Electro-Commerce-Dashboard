@@ -1,24 +1,15 @@
 import baseApi from "@/redux/baseApi/baseApi";
 import { TQuery } from "@/types/order/order.interface";
+import searchParams from "@/utilities/searchParams";
 
 const allProductsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllProducts: builder.query({
-      query: (args: TQuery) => {
-        const params = new URLSearchParams();
-        if (args) {
-          Object.entries(args).forEach(([key, value]) => {
-            if (value !== undefined) {
-              params.append(key, value.toString());
-            }
-          });
-        }
-        return {
-          url: "/products/admin",
-          method: "GET",
-          params: params,
-        };
-      },
+      query: (args: TQuery) => ({
+        url: "/products/admin",
+        method: "GET",
+        params: searchParams(args),
+      }),
       // transformResponse: (response:unknown) => {
       //   return {
       //     data: response.data,
@@ -33,7 +24,7 @@ const allProductsApi = baseApi.injectEndpoints({
         method: "DELETE",
         body: { productIds },
       }),
-      invalidatesTags: ["allProducts"],
+      invalidatesTags: ["allProducts", "availableProducts"],
     }),
   }),
 });

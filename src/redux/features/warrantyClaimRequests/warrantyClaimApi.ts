@@ -1,18 +1,13 @@
 import baseApi from "@/redux/baseApi/baseApi";
 import { TQuery } from "@/types/order/order.interface";
+import searchParams from "@/utilities/searchParams";
 
 const warrantyClaimReq = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getWarrantyClaimRequests: builder.query({
-      query: ({
-        status,
-        startFrom,
-        endAt,
-        sort,
-        page,
-        limit,
-      }: Partial<TQuery>) => ({
-        url: `/warranty-claim?status=${status}&startFrom=${startFrom}&endAt=${endAt}&sort=${sort}&page=${page}&limit=${limit}`,
+      query: (args: Partial<TQuery>) => ({
+        url: "/warranty-claim",
+        params: searchParams(args),
       }),
       providesTags: ["warrantyClaimRequests"],
     }),

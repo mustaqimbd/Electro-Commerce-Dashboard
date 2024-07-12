@@ -1,3 +1,4 @@
+import { getPermission } from "@/lib/getAccessToken";
 import { permission } from "@/types/order/order.interface";
 import isPermitted from "@/utilities/isPermitted";
 import {
@@ -10,10 +11,9 @@ import {
   UsersRound,
 } from "lucide-react";
 import NavLink from "../NavLink/NavLink";
-import { getProfile } from "@/lib/getAccessToken";
 
-export async function Sidebar() {
-  const { permissions = [] } = await getProfile();
+export function Sidebar() {
+  const { permissions = [] } = getPermission();
 
   const seeDashboard = isPermitted(permissions);
   const manageProduct = isPermitted(permissions, permission.manageProduct);

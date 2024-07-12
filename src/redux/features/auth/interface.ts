@@ -1,6 +1,7 @@
 export type TUser = {
   userId: string;
   role: string;
+  permissions: string[];
   iat: number;
   exp: number;
 };

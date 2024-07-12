@@ -1,7 +1,7 @@
+import { getProfile } from "@/lib/getAccessToken";
 import Image from "next/image";
 import logo from "../../../public/logo.png";
 import UserMenu from "../userMenu/UserMenu";
-import { getProfile } from "@/lib/getAccessToken";
 
 const Navbar = async () => {
   const user = await getProfile();

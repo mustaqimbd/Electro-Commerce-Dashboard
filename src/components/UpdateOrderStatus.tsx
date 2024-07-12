@@ -55,6 +55,7 @@ const UpdateOrderStatus = ({ _id, status, handleOpen }: TProps) => {
         if (res.success) {
           // refetchData("allOrders");
           refetchData("singleOrder");
+          refetchData("customerOrderHistory");
           // dispatch(setIsOrderUpdate(!iSOrderUpdate));
           toast({
             className: "bg-success text-white text-2xl",
@@ -73,6 +74,7 @@ const UpdateOrderStatus = ({ _id, status, handleOpen }: TProps) => {
         if (res.success) {
           // refetchData("processingOrders");
           refetchData("singleOrder");
+          refetchData("customerOrderHistory");
           // dispatch(setIsOrderUpdate(!iSOrderUpdate));
           toast({
             className: "bg-success text-white text-2xl",
@@ -93,6 +95,7 @@ const UpdateOrderStatus = ({ _id, status, handleOpen }: TProps) => {
         if (res.success) {
           // refetchData("processingDoneOrders");
           refetchData("singleOrder");
+          refetchData("customerOrderHistory");
           // dispatch(setIsOrderUpdate(!iSOrderUpdate));
           toast({
             className: "bg-success text-white text-2xl",

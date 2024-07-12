@@ -77,11 +77,12 @@ const EditOrderTable = ({
                 return (
                   <tr
                     key={_id}
-                    className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
+                    className={`odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 ${isWarrantyClaim && "text-red-600"}`}
+                    title={`${isWarrantyClaim && "Warranty product"}`}
                   >
                     <td
                       scope="row"
-                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                      className={`px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white ${isWarrantyClaim && "text-red-600"}`}
                     >
                       <input
                         type="text"

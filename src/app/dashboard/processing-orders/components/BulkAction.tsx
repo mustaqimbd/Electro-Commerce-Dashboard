@@ -33,6 +33,7 @@ const BulkAction = () => {
         const res = await updateProcessingOrderStatus(updatePayload).unwrap();
         if (res.success) {
           refetchData("processingOrders");
+          refetchData("customerOrderHistory");
           dispatch(setIsOrderUpdate(!iSOrderUpdate));
           dispatch(setBulkOrder({ orderIds: [] }));
           toast({

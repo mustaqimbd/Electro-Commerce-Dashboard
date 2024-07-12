@@ -24,7 +24,13 @@ const LoginPage = () => {
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
-      const res = await login(data).unwrap();
+      const payload: FieldValues = {};
+      for (const key in data) {
+        if (key) {
+          payload[key] = data[key]?.trim();
+        }
+      }
+      const res = await login(payload).unwrap();
       const user = decodeJWT(res.data.accessToken) as TUser;
       dispatch(setUser({ user: user, token: res.data.accessToken }));
       toast({

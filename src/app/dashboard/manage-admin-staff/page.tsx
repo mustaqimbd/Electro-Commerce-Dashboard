@@ -1,13 +1,13 @@
+import { getPermission } from "@/lib/getAccessToken";
 import { permission } from "@/types/order/order.interface";
 import isPermitted from "@/utilities/isPermitted";
+import { redirect } from "next/navigation";
 import CreateUser from "./components/CreateUser/CreateUser";
 import GetAllUser from "./components/GetAllUser";
 import UsersTable from "./components/UsersTable";
-import { getProfile } from "@/lib/getAccessToken";
-import { redirect } from "next/navigation";
 
-const ManageUser = async () => {
-  const { permissions = [] } = await getProfile();
+const ManageUser = () => {
+  const { permissions = [] } = getPermission();
 
   const manageAdminOrStaff = isPermitted(
     permissions,

@@ -1,5 +1,7 @@
 "use server";
 import config from "@/config/config";
+import { TUser } from "@/redux/features/auth/interface";
+import decodeJWT from "@/utilities/decodeJWT";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -46,3 +48,15 @@ export async function getProfile() {
   const data = await res.json();
   return data?.data;
 }
+
+export const getPermission = () => {
+  const accessToken = cookies().get("__app.ec.at")?.value;
+  if (accessToken) {
+    const user = decodeJWT(accessToken);
+    return user as TUser;
+  } else {
+    return {
+      permissions: [],
+    };
+  }
+};

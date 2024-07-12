@@ -1,6 +1,6 @@
 "use server";
 import { NextRequest } from "next/server";
-import getAccessToken, { getProfile } from "./lib/getAccessToken";
+import getAccessToken, { getPermission } from "./lib/getAccessToken";
 import { TUser } from "./redux/features/auth/interface";
 import { permission } from "./types/order/order.interface";
 import decodeJWT from "./utilities/decodeJWT";
@@ -29,7 +29,7 @@ export async function middleware(request: NextRequest) {
     return Response.redirect(new URL("/error", request.url));
   }
 
-  const { permissions } = await getProfile();
+  const { permissions } = getPermission();
 
   if (!request.nextUrl.pathname.startsWith("/dashboard")) {
     if (isPermitted(permissions)) {

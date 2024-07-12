@@ -1,12 +1,12 @@
+import { getPermission } from "@/lib/getAccessToken";
 import { permission } from "@/types/order/order.interface";
 import isPermitted from "@/utilities/isPermitted";
 import { redirect } from "next/navigation";
 import WarrantyClaimData from "./components/WarrantyClaimData";
 import WarrantyClaimTable from "./components/WarrantyClaimTable";
-import { getProfile } from "@/lib/getAccessToken";
 
-const AllClaimRequestPage = async () => {
-  const { permissions = [] } = await getProfile();
+const AllClaimRequestPage = () => {
+  const { permissions = [] } = getPermission();
 
   const manageWarrantyClaim = isPermitted(
     permissions,
