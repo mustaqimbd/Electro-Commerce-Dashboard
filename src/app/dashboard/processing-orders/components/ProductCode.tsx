@@ -1,21 +1,21 @@
 "use client";
 import CommonModal from "@/components/modal/CommonModal";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
-import { TOrders } from "@/types/order/order.interface";
-import { refetchData } from "@/utilities/fetchData";
-import { useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import { Input } from "@/components/ui/input";
+import { setIsOrderUpdate } from "@/redux/features/orders/ordersSlice";
 import {
   useAddWarrantyCodeMutation,
   useUpdateWarrantyCodeMutation,
 } from "@/redux/features/warranty/warrantySlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { setIsOrderUpdate } from "@/redux/features/orders/ordersSlice";
+import { TOrders } from "@/types/order/order.interface";
+import { refetchData } from "@/utilities/fetchData";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import * as yup from "yup";
 
 const schema = yup.object().shape({
   order_Id: yup.string().optional(),
@@ -151,13 +151,16 @@ const ProductCode = ({
           className="space-y-5"
         >
           {order.products.map(
-            ({ _id, title, quantity, iSWarranty, warranty }, productIndex) => (
+            (
+              { _id, title, quantity, isProductWarrantyAvailable, warranty },
+              productIndex
+            ) => (
               <div key={productIndex}>
                 <h1 className="text-lg">{title}</h1>
                 <p>
                   <strong>Quantity : </strong> <span>{quantity}</span>
                 </p>
-                {iSWarranty ? (
+                {isProductWarrantyAvailable ? (
                   <>
                     <input
                       type="text"
