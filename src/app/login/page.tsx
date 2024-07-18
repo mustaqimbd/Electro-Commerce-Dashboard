@@ -6,13 +6,18 @@ import { useLoginMutation } from "@/redux/features/auth/authApi";
 import { setUser } from "@/redux/features/auth/authSlice";
 import { TUser } from "@/redux/features/auth/interface";
 import { useAppDispatch } from "@/redux/hooks";
+import { TErrorMessages, TErrorResponse } from "@/types/response/response";
 import decodeJWT from "@/utilities/decodeJWT";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
 const LoginPage = () => {
   const dispatch = useAppDispatch();
   const [login, { isLoading }] = useLoginMutation();
+  const [serverMessage, setServerMessage] = useState<null | TErrorMessages[]>(
+    null
+  );
   const router = useRouter();
   const { toast } = useToast();
 
@@ -23,6 +28,7 @@ const LoginPage = () => {
   } = useForm();
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    setServerMessage(null);
     try {
       const payload: FieldValues = {};
       for (const key in data) {
@@ -38,12 +44,11 @@ const LoginPage = () => {
         title: res.message,
       });
       router.push("/");
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: error?.data?.message,
-      });
+    } catch (error) {
+      const err = (error as { data: TErrorResponse }).data;
+      if (err.errorMessages.length) {
+        setServerMessage(err.errorMessages);
+      }
     }
   };
 
@@ -89,6 +94,15 @@ const LoginPage = () => {
               required
             />
           </div>
+          {serverMessage ? (
+            <div className="ml-5 mb-6">
+              <ul className="list-disc font-semibold text-red-600">
+                {serverMessage.map(({ message }) => (
+                  <li key={message}>{message}</li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
           <div className="flex flex-col items-center justify-between gap-5">
             <EcButton
               type="submit"
