@@ -1,3 +1,4 @@
+"use client";
 import CommonModal from "@/components/modal/CommonModal";
 import { Button } from "@/components/ui/button";
 import { TWarrantyClaim } from "@/redux/features/warrantyClaimRequests/warrantyClaimInterface";

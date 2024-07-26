@@ -90,10 +90,18 @@ const DateRangeSelector = () => {
       }
     };
 
-    if (selectedFilter !== "Select date" && selectedFilter !== "custom") {
+    if (
+      selectedFilter !== "Select date" &&
+      selectedFilter !== "custom" &&
+      selectedFilter !== "custom_range"
+    ) {
       calculateDateRange();
     }
-    if (selectedFilter == "Select date" || selectedFilter == "custom") {
+    if (
+      selectedFilter == "Select date" ||
+      selectedFilter == "custom" ||
+      selectedFilter == "custom_range"
+    ) {
       dispatch(
         setDate({
           startFrom: "",
@@ -106,7 +114,7 @@ const DateRangeSelector = () => {
   }, [selectedFilter, dispatch]);
 
   const handleFilterChange = (v: string) => {
-    if (v === "custom") {
+    if (v === "custom" || v === "custom_range") {
       setOpen(true);
     } else {
       setOpen(false);
@@ -114,9 +122,29 @@ const DateRangeSelector = () => {
     setSelectedFilter(v);
   };
 
+  const [date, setSingleDate] = React.useState<Date>();
+
   const handleDateSelect = (dateRange: DateRange | undefined) => {
     setDateRange(dateRange);
     const { from, to } = dateRange as DateRange;
+    if (from && to) {
+      dispatch(
+        setDate({
+          startFrom: format(from, "yyyy-MM-dd"),
+          endAt: format(to, "yyyy-MM-dd"),
+        })
+      );
+      setFormattedDate(
+        `${format(from, "dd/MM/yy")} - ${format(to, "dd/MM/yy")}`
+      );
+      setOpen(false);
+    }
+  };
+  const handleDate = (date: Date | undefined) => {
+    setSingleDate(date);
+
+    const from = date;
+    const to = date;
     if (from && to) {
       dispatch(
         setDate({
@@ -149,24 +177,32 @@ const DateRangeSelector = () => {
             <SelectItem value="this_year">This Year</SelectItem>
             <SelectItem value="last_year">Last Year</SelectItem>
             <SelectItem value="custom">Custom</SelectItem>
+            <SelectItem value="custom_range">Custom Range</SelectItem>
           </SelectGroup>
         </SelectContent>
       </Select>
-      {selectedFilter === "custom" && (
-        <Popover open={open}>
-          <PopoverTrigger>
-            <button style={{ display: "none" }} />
-          </PopoverTrigger>
-          <PopoverContent className="w-auto p-0">
+      <Popover open={open}>
+        <PopoverTrigger asChild>
+          <button></button>
+        </PopoverTrigger>
+        <PopoverContent className="w-auto p-0">
+          {selectedFilter === "custom" ? (
+            <Calendar
+              mode="single"
+              selected={date}
+              onSelect={handleDate}
+              initialFocus
+            />
+          ) : (
             <Calendar
               mode="range"
               selected={dateRange}
               onSelect={handleDateSelect}
               initialFocus
             />
-          </PopoverContent>
-        </Popover>
-      )}
+          )}
+        </PopoverContent>
+      </Popover>
       {formattedDate !== "Select date" && <span>{formattedDate}</span>}
     </div>
   );

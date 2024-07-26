@@ -42,10 +42,10 @@ const OrderStatus = ({
           </span>
         </div>
         <UpdateOrderStatus
-          order={order}
+          status={order.status}
           _id={order._id}
           handleOpen={handleOpen}
-          disableStatus={disableStatus}
+          // disableStatus={disableStatus}
         />
       </CommonModal>
     </>

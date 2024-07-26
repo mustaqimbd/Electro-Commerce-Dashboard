@@ -1,35 +1,10 @@
-"use client";
+import { getProfile } from "@/lib/getAccessToken";
 import Image from "next/image";
 import logo from "../../../public/logo.png";
-// import { ModeToggle } from "../ui/ModeToggle";
-import { useGetProfileQuery } from "@/redux/features/auth/authApi";
-import { setProfile, setProfileLoading } from "@/redux/features/auth/authSlice";
-import { useAppDispatch } from "@/redux/hooks";
-import { useEffect } from "react";
 import UserMenu from "../userMenu/UserMenu";
 
-const Navbar = () => {
-  const dispatch = useAppDispatch();
-  const { data: user, error, isLoading } = useGetProfileQuery(undefined);
-  useEffect(() => {
-    if (user) {
-      dispatch(setProfile(user.data));
-    }
-    dispatch(setProfileLoading(isLoading));
-  }, [user, dispatch, isLoading]);
-
-  if (isLoading) {
-    return (
-      <div
-        role="status"
-        className="flex items-center justify-center h-14 w-full bg-gray-300 animate-pulse dark:bg-gray-700"
-      ></div>
-    );
-  }
-
-  if (error) {
-    throw new Error("Something went wrong!");
-  }
+const Navbar = async () => {
+  const user = await getProfile();
 
   return (
     <div className="w-full flex bg-white justify-between items-center  border-b py-1 px-6 top-0 sticky z-10">
@@ -44,7 +19,7 @@ const Navbar = () => {
       </div>
       <div className="">
         {/* <ModeToggle /> */}
-        <UserMenu user={user?.data} />
+        <UserMenu user={user} />
       </div>
     </div>
   );

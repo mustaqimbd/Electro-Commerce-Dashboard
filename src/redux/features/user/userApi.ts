@@ -1,5 +1,6 @@
 import baseApi from "@/redux/baseApi/baseApi";
 import { TQuery } from "@/types/order/order.interface";
+import searchParams from "@/utilities/searchParams";
 
 const userApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -11,20 +12,26 @@ const userApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["users"],
     }),
+    updateStaffOrAdmin: builder.mutation({
+      query: (userInfo) => ({
+        url: `/users/update-admin-or-staff/${userInfo.id}`,
+        method: "PATCH",
+        body: userInfo.body,
+      }),
+      invalidatesTags: ["users"],
+    }),
     getAllUsers: builder.query({
-      query: ({
-        status,
-        startFrom,
-        endAt,
-        sort,
-        page,
-        limit,
-      }: Partial<TQuery>) => ({
-        url: `/users/all-admin-staff?status=${status}&startFrom=${startFrom}&endAt=${endAt}&sort=${sort || "-createdAt"}&page=${page}&limit=${limit}`,
+      query: (args: Partial<TQuery>) => ({
+        url: "/users/all-admin-staff",
+        params: searchParams(args),
       }),
       providesTags: ["users"],
     }),
   }),
 });
 
-export const { useCreateStaffOrAdminMutation, useGetAllUsersQuery } = userApi;
+export const {
+  useCreateStaffOrAdminMutation,
+  useGetAllUsersQuery,
+  useUpdateStaffOrAdminMutation,
+} = userApi;

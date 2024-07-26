@@ -1,5 +1,6 @@
 import baseApi from "@/redux/baseApi/baseApi";
 import { TQuery } from "@/types/order/order.interface";
+import searchParams from "@/utilities/searchParams";
 
 const updateStatusApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -9,13 +10,28 @@ const updateStatusApi = baseApi.injectEndpoints({
         method: "POST",
         body: orderData,
       }),
-      invalidatesTags: ["carts"],
+      invalidatesTags: ["carts", "allOrders"],
     }),
     getAllOrders: builder.query({
-      query: ({ status, startFrom, endAt, sort, page, limit }: TQuery) => ({
-        url: `/orders/admin/all-orders?status=${status}&startFrom=${startFrom}&endAt=${endAt}&sort=${sort}&page=${page}&limit=${limit}`,
+      query: (args: TQuery) => ({
+        url: "/orders/admin/all-orders",
+        params: searchParams(args),
       }),
+      // transformResponse: (response:unknown) => {
+      //   return {
+      //     data: response.data,
+      //     meta: response.meta,
+      //   };
+      // },
       providesTags: ["allOrders"],
+    }),
+    updateOrder: builder.mutation({
+      query: ({ payload, _id }) => ({
+        url: `/orders/update-order/${_id}`,
+        method: "PATCH",
+        body: payload,
+      }),
+      invalidatesTags: ["allOrders"],
     }),
     updateOrdersStatus: builder.mutation({
       query: (payload: { orderIds: string[]; status: string }) => ({
@@ -31,6 +47,7 @@ const updateStatusApi = baseApi.injectEndpoints({
         method: "DELETE",
         body: { orderIds },
       }),
+      invalidatesTags: ["allOrders"],
     }),
   }),
 });
@@ -38,6 +55,7 @@ const updateStatusApi = baseApi.injectEndpoints({
 export const {
   useCreateOrderMutation,
   useGetAllOrdersQuery,
+  useUpdateOrderMutation,
   useUpdateOrdersStatusMutation,
   useDeleteOrdersMutation,
 } = updateStatusApi;

@@ -2,7 +2,7 @@ import Image from "next/image";
 import logo from "../../public/logo.png";
 import loadingGif from "../../public/loading.gif";
 
-const loading = () => {
+const Loading = () => {
   return (
     <div className="flex flex-col items-center justify-center gap-5 h-[100vh]">
       <Image src={logo} alt="logo" width={100} priority={true}></Image>
@@ -12,4 +12,4 @@ const loading = () => {
   );
 };
 
-export default loading;
+export default Loading;

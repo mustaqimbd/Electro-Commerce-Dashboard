@@ -1,16 +1,15 @@
-import config from "@/config/config";
 import {
   TSelectValue,
   TSelectedAttribute,
 } from "@/redux/features/addProduct/variation/interface";
+import fetchData from "@/utilities/fetchData";
 
 const getAttributes = async () => {
-  const res = await fetch(`${config.base_url}/api/v1/attributes`);
-  const data = await res.json();
-  if (!res.ok) {
-    throw new Error("Error when fetching attributes!");
-  }
-  const attributes: TSelectedAttribute[] = data?.data?.map(
+  const { data = [] } = await fetchData({
+    endPoint: "/attributes",
+    tags: ["attributes"],
+  });
+  const attributes: TSelectedAttribute[] = data?.map(
     ({ name, values }: { name: string; values: string[] }) => ({
       label: name,
       value: name,
@@ -19,6 +18,7 @@ const getAttributes = async () => {
       ),
     })
   );
+
   return attributes;
 };
 

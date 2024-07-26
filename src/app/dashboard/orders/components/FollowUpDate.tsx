@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/popover";
 import { useToast } from "@/components/ui/use-toast";
 import { cn } from "@/lib/utils";
-import { useUpdateOrderInfoMutation } from "@/redux/features/orders/updateOrderApi";
+import { useUpdateOrderMutation } from "@/redux/features/orders/ordersApi";
 import { TOrders } from "@/types/order/order.interface";
 import { refetchData } from "@/utilities/fetchData";
 import { Calendar as CalendarIcon } from "lucide-react";
@@ -16,7 +16,7 @@ import { SetStateAction, useEffect, useState } from "react";
 
 const FollowUpDate = ({ order }: { order: TOrders }) => {
   const { toast } = useToast();
-  const [updateOrderInfo, { isLoading }] = useUpdateOrderInfoMutation();
+  const [updateOrder, { isLoading }] = useUpdateOrderMutation();
   function formatDate(date: string | number | Date) {
     // const d = new Date(date);
     // const day = d.getDate();
@@ -44,11 +44,10 @@ const FollowUpDate = ({ order }: { order: TOrders }) => {
     if (date) {
       const updateHandle = async () => {
         const payload = {
-          _id: order._id,
           followUpDate: date && formatDate(date),
         };
         try {
-          await updateOrderInfo(payload).unwrap();
+          await updateOrder({ payload, _id: order._id }).unwrap();
           refetchData("allOrders");
           toast({
             className: "bg-success text-white text-2xl",

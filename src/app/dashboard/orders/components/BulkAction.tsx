@@ -8,6 +8,7 @@ import {
   // setIsOrderUpdate,
 } from "@/redux/features/orders/ordersSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { refetchData } from "@/utilities/fetchData";
 // import { refetchData } from "@/utilities/fetchData";
 import statusOptions from "@/utilities/statusOptions";
 import { useState } from "react";
@@ -33,8 +34,8 @@ const BulkAction = () => {
       if (bulkAction) {
         const res = await updateOrderStatus(updatePayload).unwrap();
         if (res.success) {
-          // refetchData("allOrders");
-          // refetchData("orderStatusCount");
+          refetchData("allOrders");
+          refetchData("customerOrderHistory");
           dispatch(setBulkOrder({ orderIds: [] }));
           // dispatch(setIsOrderUpdate(!iSOrderUpdate));
           toast({
@@ -60,7 +61,7 @@ const BulkAction = () => {
   const isInvoice = filter == "processing";
 
   return (
-    <div className={"flex gap-10 items-center"}>
+    <>
       {isBulkAction && (
         <div className="flex items-center gap-2">
           <select
@@ -81,7 +82,7 @@ const BulkAction = () => {
         </div>
       )}
       {isInvoice && <Invoice orders={invoices} />}
-    </div>
+    </>
   );
 };
 

@@ -1,4 +1,3 @@
-"use clients";
 import { TypographyH4 } from "@/components/ui/Typography";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -10,12 +9,17 @@ import Tag from "./components/Tag";
 import Title from "./components/Title";
 import ProductData from "./components/productData/ProductsData";
 import getAttributes from "./lib/getAttributes";
-import getCategories from "./lib/getCategories";
 import getTags from "./lib/getTags";
+import fetchData from "@/utilities/fetchData";
 
 const AddProducts = async () => {
   const attributes = await getAttributes();
-  const categories = await getCategories();
+
+  const { data: categories } = await fetchData({
+    endPoint: "/categories",
+    tags: ["categories"],
+  });
+
   const tags = await getTags();
 
   return (
@@ -26,12 +30,12 @@ const AddProducts = async () => {
           <Button>View All</Button>
         </div>
       </Card>
-      {/* product data section statrted */}
+      {/* product data section started */}
       <div className="flex justify-start items-start gap-4 mt-3 w-full">
         <div className="w-[65%] space-y-3">
           {/* products title */}
           <Title />
-          {/* products descriptTion */}
+          {/* products description */}
           <Description />
           {/* product data */}
           <ProductData attributes={attributes} />

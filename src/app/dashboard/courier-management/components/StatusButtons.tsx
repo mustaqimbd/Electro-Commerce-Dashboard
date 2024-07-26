@@ -20,7 +20,7 @@ import {
   setSearchedOrders,
 } from "@/redux/features/search/searchSlice";
 import { useGetProcessingDoneAndCourierOrdersQuery } from "@/redux/features/courierManagement/courierManagementApi";
-import DateRangeSelector from "@/components/DateRangeSelector";
+// import DateRangeSelector from "@/components/DateRangeSelector";
 
 const StatusButtons = () => {
   const dispatch = useAppDispatch();
@@ -112,9 +112,9 @@ const StatusButtons = () => {
           </Button>
         );
       })}
-      <div>
+      {/* <div>
         <DateRangeSelector />
-      </div>
+      </div> */}
     </div>
   );
 };

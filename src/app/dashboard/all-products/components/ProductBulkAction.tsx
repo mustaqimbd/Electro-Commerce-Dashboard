@@ -9,49 +9,35 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "@/components/ui/use-toast";
-// import { usePlaceOrdersMutation } from "@/redux/features/order/placeOrderApi";
-// import { useAppSelector } from "@/redux/hooks";
+import { useDeleteProductsMutation } from "@/redux/features/allProducts/allProductsApi";
+import { useAppSelector } from "@/redux/hooks";
 import { useState } from "react";
 
 const ProductBulkAction = () => {
   const [action, setAction] = useState("");
-  // const [placeOrders] = usePlaceOrdersMutation();
-  // const orders = useAppSelector(({ orders }) => orders.bulkOrders);
+  const [deleteProducts, { isLoading }] = useDeleteProductsMutation();
+  const { productsIds } = useAppSelector(
+    ({ allProducts }) => allProducts.bulkProducts
+  );
   const handleSubmit = async () => {
-    // const payload = [
-    //   {
-    //     invoice: "Aa12-das6",
-    //     recipient_name: "Demo Order",
-    //     recipient_phone: "01234567890",
-    //     recipient_address:
-    //       "Fla# A1, House# 17/1, Road# 3/A, Dhanmondi, Dhaka-1209",
-    //     cod_amount: 1060,
-    //     note: "Deliver within 3 PM",
-    //   },
-    // ];
-    // console.log(action);
     try {
-      if (action === "On courier") {
-        // await placeOrders(orders).unwrap();
+      if (action === "delete") {
+        await deleteProducts(productsIds).unwrap();
         toast({
           className: "bg-success text-white text-2xl",
-          title: "Courier entry is successful!",
+          title: "Products successfully deleted!",
         });
-      }
-      if (action === "delete") {
-        // const response = await placeOrders(payload).unwrap();
-        // console.log(response);
       }
     } catch (error) {
       toast({
         variant: "destructive",
-        title: "Courier entry is failed!",
+        title: "Products deleted failed!",
       });
     }
   };
 
   return (
-    <>
+    <div className={"flex gap-2 items-center"}>
       <Select onValueChange={(value) => setAction(value)}>
         <SelectTrigger className="w-[120px]">
           <SelectValue placeholder="Bulk Actions" />
@@ -64,8 +50,10 @@ const ProductBulkAction = () => {
           </SelectGroup>
         </SelectContent>
       </Select>
-      <Button onClick={handleSubmit}>Apply</Button>
-    </>
+      <Button onClick={handleSubmit} disabled={isLoading}>
+        Apply
+      </Button>
+    </div>
   );
 };
 

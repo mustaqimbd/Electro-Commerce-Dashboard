@@ -1,5 +1,6 @@
 "use server";
 import config from "@/config/config";
+import { cookies } from "next/headers";
 // import TGenericResponse from "./response";
 import { revalidateTag } from "next/cache";
 import objectToSearchParams from "./objectToSearchParams";
@@ -15,7 +16,10 @@ type TTags =
   | "processingDoneOrders"
   | "singleOrder"
   | "orderStatusCount"
-  | "categories";
+  | "customerOrderHistory"
+  | "categories"
+  | "attributes"
+  | "tags";
 
 type TProps = {
   endPoint: string;
@@ -26,8 +30,10 @@ type TProps = {
 
 const fetchData = async ({ endPoint, tags, searchParams, cache }: TProps) => {
   let url = `${config.base_url}/api/v1${endPoint}`;
+  const accessToken = cookies().get("__app.ec.at")?.value;
   const reqConfig = {
-    cache: cache,
+    headers: { authorization: `Bearer ${accessToken}` },
+    cache: cache || "default",
     next: { tags: tags },
   };
 
@@ -74,6 +80,7 @@ const fetchData = async ({ endPoint, tags, searchParams, cache }: TProps) => {
     throw new Error("Error when fetching data!");
   }
   const data = await res.json();
+
   return data;
 };
 

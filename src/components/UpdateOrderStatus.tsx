@@ -6,24 +6,17 @@ import { useUpdateOrdersStatusMutation } from "@/redux/features/orders/ordersApi
 // import { setIsOrderUpdate } from "@/redux/features/orders/ordersSlice";
 import { useUpdateProcessingOrderStatusMutation } from "@/redux/features/processingOrders/processingOrdersApi";
 // import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { TOrders } from "@/types/order/order.interface";
 import { refetchData } from "@/utilities/fetchData";
 import statusOptions from "@/utilities/statusOptions";
 import { useState } from "react";
 
 type TProps = {
-  order: TOrders;
   _id: string;
-  disableStatus?: string[];
+  status: string;
   handleOpen?: () => void;
 };
 
-const UpdateOrderStatus = ({
-  order,
-  _id,
-  disableStatus = [],
-  handleOpen,
-}: TProps) => {
+const UpdateOrderStatus = ({ _id, status, handleOpen }: TProps) => {
   // const dispatch = useAppDispatch();
   const [action, setAction] = useState("");
   const [updateOrdersStatus, { isLoading }] = useUpdateOrdersStatusMutation();
@@ -62,6 +55,7 @@ const UpdateOrderStatus = ({
         if (res.success) {
           // refetchData("allOrders");
           refetchData("singleOrder");
+          refetchData("customerOrderHistory");
           // dispatch(setIsOrderUpdate(!iSOrderUpdate));
           toast({
             className: "bg-success text-white text-2xl",
@@ -80,6 +74,7 @@ const UpdateOrderStatus = ({
         if (res.success) {
           // refetchData("processingOrders");
           refetchData("singleOrder");
+          refetchData("customerOrderHistory");
           // dispatch(setIsOrderUpdate(!iSOrderUpdate));
           toast({
             className: "bg-success text-white text-2xl",
@@ -100,6 +95,7 @@ const UpdateOrderStatus = ({
         if (res.success) {
           // refetchData("processingDoneOrders");
           refetchData("singleOrder");
+          refetchData("customerOrderHistory");
           // dispatch(setIsOrderUpdate(!iSOrderUpdate));
           toast({
             className: "bg-success text-white text-2xl",
@@ -122,18 +118,14 @@ const UpdateOrderStatus = ({
     }
   };
 
-  const status = order.status;
-
   return (
-    <div
-      className={`flex items-center gap-5 ${disableStatus.includes(status) ? "hidden" : ""}`}
-    >
+    <div className="flex items-center gap-5">
       <select
         onChange={(e) => setAction(e.target.value)}
         className="h-9 border border-primary focus:outline focus:outline-primary rounded-sm capitalize"
       >
         <option value="">Update status</option>
-        {statusOptions(order.status).map((status) => (
+        {statusOptions(status).map((status) => (
           <option value={status} key={status}>
             {status}
           </option>

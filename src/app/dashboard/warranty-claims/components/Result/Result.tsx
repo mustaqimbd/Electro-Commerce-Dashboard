@@ -1,3 +1,4 @@
+"use client";
 import CommonModal from "@/components/modal/CommonModal";
 import { TWarrantyClaim } from "@/redux/features/warrantyClaimRequests/warrantyClaimInterface";
 import backgroundColor from "@/utilities/backgroundColor";

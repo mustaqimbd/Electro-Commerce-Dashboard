@@ -32,7 +32,8 @@ export type Product = {
   unitPrice: number;
   quantity: number;
   total: number;
-  iSWarranty: boolean;
+  isProductWarrantyAvailable: boolean;
+  isWarrantyClaim: boolean;
   warranty: {
     warrantyCodes?: {
       code: string;
@@ -57,6 +58,7 @@ export type TOrders = {
   shipping: Shipping;
   createdAt: Date;
   updatedAt: Date;
+  orderNotes?: string;
   invoiceNotes?: string;
   officialNotes?: string;
   courierNotes?: string;
@@ -64,20 +66,25 @@ export type TOrders = {
   orderSource: { name: string; url: string; lpNo: number };
 };
 
-export type TPermission = (typeof permission)[keyof typeof permission];
+export type TPermissionEnum = (typeof permission)[keyof typeof permission];
 
 export const permission = {
+  manageAdminOrStaff: "manage admin or staff",
+  superAdmin: "super admin",
+  manageShippingCharges: "manage shipping charges",
+  manageCoupon: "manage coupon",
+  managePermission: "manage permission",
   manageOrder: "manage orders",
   manageProcessing: "manage warehouse",
   manageCourier: "manage courier",
-  superAdmin: "super admin",
   manageWarrantyClaim: "manage warranty claim",
   manageProduct: "manage product",
-  manageAdminOrStaff: "manage admin or staff",
 } as const;
 
 export type TQuery = {
   status?: string;
+  category?: string;
+  stock?: string;
   sort?: string;
   startFrom?: string;
   endAt?: string;

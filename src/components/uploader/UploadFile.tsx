@@ -7,7 +7,7 @@ import { useToast } from "@/components/ui/use-toast";
 
 const UploadFile = () => {
   const { toast } = useToast();
-  const [uploadImage] = useUploadImageMutation();
+  const [uploadImage, { isLoading }] = useUploadImageMutation();
   // const [images, setImages] = useState(""); // for single
   const [images, setImages] = useState<File[]>([]);
 
@@ -60,7 +60,7 @@ const UploadFile = () => {
       {images.length > 0 ? (
         <div className="h-full flex flex-col gap-4">
           <div
-            className="h-full border-2 border-dashed border-gray-300 cursor-pointer"
+            className="h-full border-2 border-dashed border-gray-300 cursor-pointer p-2"
             onClick={() => document.getElementById("fileInput")?.click()}
             onDrop={handleDrop}
             onDragOver={(e) => e.preventDefault()}
@@ -106,7 +106,9 @@ const UploadFile = () => {
             </Button> */}
           </div>
           <div className="flex justify-end">
-            <Button onClick={handleUpload}>Upload Files</Button>
+            <Button onClick={handleUpload} disabled={isLoading}>
+              Upload Files
+            </Button>
           </div>
         </div>
       ) : (
@@ -127,8 +129,8 @@ const UploadFile = () => {
               id="fileInput"
               multiple
             />
-            <Button>Select Files</Button>
-            <p>Maximum upload file size: 2 MB.</p>
+            <Button size={"sm"}>Select Files</Button>
+            <p>Maximum upload file size: 1 MB.</p>
           </div>
         </div>
       )}

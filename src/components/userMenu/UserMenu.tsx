@@ -1,8 +1,5 @@
+"use client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useToast } from "@/components/ui/use-toast";
-import { LogOut, Settings, User } from "lucide-react";
-import dummyUser from "../../../public/icons/user.jpg";
-
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,18 +9,23 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useToast } from "@/components/ui/use-toast";
 import config from "@/config/config";
 import { useLogOutMutation } from "@/redux/features/auth/authApi";
 import { logOut } from "@/redux/features/auth/authSlice";
 import { useAppDispatch } from "@/redux/hooks";
+import { TErrorResponse } from "@/types/response/response";
 import { TUserProfile } from "@/types/user/user.interface";
+import { LogOut, Settings, User } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import dummyUser from "../../../public/icons/user.jpg";
 
 const listItems = [
   {
     name: "Profile",
     icon: <User className="mr-2 h-4 w-4" />,
-    href: "/",
+    href: "/dashboard/user",
   },
   {
     name: "Settings",
@@ -33,6 +35,7 @@ const listItems = [
 ];
 
 const UserMenu = ({ user }: { user: TUserProfile }) => {
+  const router = useRouter();
   const { toast } = useToast();
   const { fullName, profilePicture } = user;
   const dispatch = useAppDispatch();
@@ -47,12 +50,12 @@ const UserMenu = ({ user }: { user: TUserProfile }) => {
     try {
       await logoutUser({}).unwrap();
       dispatch(logOut());
-      window.location.assign("/login");
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
+      router.push("/login");
+    } catch (error) {
+      const err = (error as { data: TErrorResponse }).data;
       toast({
         variant: "destructive",
-        title: error?.data?.message,
+        title: err?.message,
       });
     }
   };

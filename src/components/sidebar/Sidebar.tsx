@@ -1,12 +1,4 @@
-"use client";
-
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import { useAppSelector } from "@/redux/hooks";
+import { getPermission } from "@/lib/getAccessToken";
 import { permission } from "@/types/order/order.interface";
 import isPermitted from "@/utilities/isPermitted";
 import {
@@ -22,21 +14,15 @@ import {
   UsersRound,
 } from "lucide-react";
 import NavLink from "../NavLink/NavLink";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "../ui/accordion";
 
 export function Sidebar() {
-  const { profile } = useAppSelector(({ auth }) => auth);
-
-  // Ensure permissions are loaded on both client and server
-  if (!profile || !profile.permissions) {
-    return (
-      <div
-        role="status"
-        className="w-[17rem] h-[calc(100vh-60px)] bg-gray-300 animate-pulse dark:bg-gray-700 z-10"
-      ></div>
-    );
-  }
-
-  const permissions = profile.permissions;
+  const { permissions = [] } = getPermission();
 
   const seeDashboard = isPermitted(permissions);
   const manageProduct = isPermitted(permissions, permission.manageProduct);
@@ -64,12 +50,12 @@ export function Sidebar() {
     {
       href: "/category",
       name: "Category",
-      icon: <Shapes className="w-4 h-4" />,
+      icon: <PlusCircle className="w-4 h-4" />,
     },
     {
       href: "/attribute",
-      name: "Attributes",
-      icon: <LayoutList className="w-4 h-4" />,
+      name: "Attribute",
+      icon: <PlusCircle className="w-4 h-4" />,
     },
     {
       href: "/all-products",
@@ -97,7 +83,7 @@ export function Sidebar() {
   ];
 
   return (
-    <div className="w-[17rem] p-2 h-[calc(100vh-60px)] border-r overflow-y-auto space-y-1">
+    <div className="w-[17rem] p-2 h-[calc(100vh-60px)] border-r overflow-y-auto space-y-4">
       {seeDashboard && (
         <NavLink
           href="/dashboard"

@@ -1,25 +1,12 @@
-"use client";
-import OrderSearchBar from "@/components/OrderSearchBar";
-import { useAppSelector } from "@/redux/hooks";
+import { getPermission } from "@/lib/getAccessToken";
 import { permission } from "@/types/order/order.interface";
 import isPermitted from "@/utilities/isPermitted";
-import { useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import WarrantyClaimData from "./components/WarrantyClaimData";
 import WarrantyClaimTable from "./components/WarrantyClaimTable";
 
 const AllClaimRequestPage = () => {
-  const router = useRouter();
-  const { profile } = useAppSelector(({ auth }) => auth);
-  if (!profile || !profile.permissions) {
-    return (
-      <div
-        role="status"
-        className="w-full h-[calc(100vh-60px)] bg-gray-300 animate-pulse dark:bg-gray-700 z-10"
-      ></div>
-    );
-  }
-
-  const permissions = profile?.permissions;
+  const { permissions = [] } = getPermission();
 
   const manageWarrantyClaim = isPermitted(
     permissions,
@@ -27,14 +14,15 @@ const AllClaimRequestPage = () => {
   );
 
   if (!manageWarrantyClaim) {
-    router.push("/error");
+    redirect("/error");
   }
+
   return (
-    <div className="rounded-md shadow-md p-5 bg-white">
+    <div className="shadow-md p-5 bg-white border-l">
       {/* header section , search bar  */}
       <div className="grid grid-cols-2 justify-between items-center mb-8">
         <h2 className="text-3xl">Warranty claim requests</h2>
-        <OrderSearchBar endPoint="/orders/admin/processing-orders" />
+        {/* <OrderSearchBar endPoint="/orders/admin/processing-orders" /> */}
         <WarrantyClaimData />
       </div>
       <div>

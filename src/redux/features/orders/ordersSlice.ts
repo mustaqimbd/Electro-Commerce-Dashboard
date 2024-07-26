@@ -23,7 +23,7 @@ const initialState: TOrdersInitialState = {
 };
 
 const ordersSlice = createSlice({
-  name: "allProducts",
+  name: "allOrders",
   initialState,
   reducers: {
     setOrders: (state, action) => {

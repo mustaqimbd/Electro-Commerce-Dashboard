@@ -4,7 +4,7 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
-import { useUpdateOrderInfoMutation } from "@/redux/features/orders/updateOrderApi";
+import { useUpdateOrderMutation } from "@/redux/features/orders/ordersApi";
 import { TOrders } from "@/types/order/order.interface";
 import { refetchData } from "@/utilities/fetchData";
 import { useState } from "react";
@@ -14,18 +14,33 @@ const AddNotes = ({ order }: { order: TOrders }) => {
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
+    reset();
     setOpen(!open);
   };
 
-  const [updateOrderInfo, { isLoading }] = useUpdateOrderInfoMutation();
-  const { register, handleSubmit } = useForm();
+  const [updateOrder, { isLoading }] = useUpdateOrderMutation();
+  const {
+    register,
+    reset,
+    handleSubmit,
+    formState: { dirtyFields },
+  } = useForm();
 
   const { officialNotes, invoiceNotes, courierNotes } = order;
+  const isFormDirty = Object.keys(dirtyFields).length > 0;
+
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
-      data._id = order._id;
-      await updateOrderInfo(data).unwrap();
+      const payload: FieldValues = {};
+      for (const key in data) {
+        if (key) {
+          payload[key] = data[key]?.trim();
+        }
+      }
+
+      await updateOrder({ payload, _id: order._id }).unwrap();
       refetchData("allOrders");
+      reset();
       handleOpen();
       toast({
         className: "bg-success text-white text-2xl",
@@ -72,71 +87,94 @@ const AddNotes = ({ order }: { order: TOrders }) => {
         open={open}
         handleOpen={handleOpen}
         modalTitle="Add notes"
-        className="h-[300px] w-[400px]"
+        className="h-[400px] w-[600px]"
       >
         <form onSubmit={handleSubmit(onSubmit)}>
           <Tabs
-            defaultValue="orderNote"
+            defaultValue="orderNotes"
             // onChange={(e) => handleTabClick(e.target)}
           >
-            <TabsList className="grid w-full grid-cols-3 gap-4 bg-cyan-50">
+            <TabsList className="grid w-full grid-cols-4 gap-4 bg-cyan-50">
               <TabsTrigger
-                value="orderNote"
+                value="orderNotes"
+                className="border border-cyan-400 data-[state=active]:bg-primary data-[state=active]:text-white"
+              >
+                Customer Note
+              </TabsTrigger>
+              <TabsTrigger
+                value="officialNotes"
                 className="border border-cyan-400 data-[state=active]:bg-primary data-[state=active]:text-white"
               >
                 Official Note
               </TabsTrigger>
               <TabsTrigger
-                value="invoiceNote"
+                value="invoiceNotes"
                 className="border border-cyan-400 data-[state=active]:bg-primary data-[state=active]:text-white"
               >
                 Invoice Note
               </TabsTrigger>
               <TabsTrigger
-                value="courierNote"
+                value="courierNotes"
                 className="border border-cyan-400 data-[state=active]:bg-primary data-[state=active]:text-white"
               >
                 Courier Note
               </TabsTrigger>
             </TabsList>
-            <TabsContent value="orderNote">
+            <TabsContent value="orderNotes">
               <div className="grid w-full gap-1.5">
-                <Label htmlFor="orderNote">Note</Label>
+                <Label htmlFor="orderNotes">Note</Label>
+                <Textarea
+                  placeholder="Empty"
+                  id="orderNotes"
+                  className="min-h-44 border border-primary focus-visible:ring-primary"
+                  {...register("orderNotes")}
+                  defaultValue={order?.orderNotes}
+                  disabled
+                />
+              </div>
+            </TabsContent>
+            <TabsContent value="officialNotes">
+              <div className="grid w-full gap-1.5">
+                <Label htmlFor="officialNotes">Note</Label>
                 <Textarea
                   placeholder="Type note here."
-                  id="orderNote"
-                  className="min-h-20 border border-primary focus-visible:ring-primary"
+                  id="officialNotes"
+                  className="min-h-44 border border-primary focus-visible:ring-primary"
                   {...register("officialNotes")}
                   defaultValue={order?.officialNotes}
                 />
               </div>
             </TabsContent>
-            <TabsContent value="invoiceNote">
+            <TabsContent value="invoiceNotes">
               <div className="grid w-full gap-1.5">
-                <Label htmlFor="invoiceNote">Note</Label>
+                <Label htmlFor="invoiceNotes">Note</Label>
                 <Textarea
                   placeholder="Type note here."
-                  id="invoiceNote"
-                  className="min-h-20 border border-primary focus-visible:ring-primary"
+                  id="invoiceNotes"
+                  className="min-h-44 border border-primary focus-visible:ring-primary"
                   {...register("invoiceNotes")}
                   defaultValue={order?.invoiceNotes}
                 />
               </div>
             </TabsContent>
-            <TabsContent value="courierNote">
+            <TabsContent value="courierNotes">
               <div className="grid w-full gap-1.5">
-                <Label htmlFor="courierNote">Note</Label>
+                <Label htmlFor="courierNotes">Note</Label>
                 <Textarea
                   placeholder="Type note here."
-                  id="courierNote"
-                  className="min-h-20 border border-primary focus-visible:ring-primary"
+                  id="courierNotes"
+                  className="min-h-44 border border-primary focus-visible:ring-primary"
                   {...register("courierNotes")}
                   defaultValue={order?.courierNotes}
                 />
               </div>
             </TabsContent>
             <div className="flex items-center justify-center mt-6">
-              <Button type="submit" className="w-[200px]" disabled={isLoading}>
+              <Button
+                type="submit"
+                className="w-[200px]"
+                disabled={!isFormDirty || isLoading}
+              >
                 Save
               </Button>
             </div>

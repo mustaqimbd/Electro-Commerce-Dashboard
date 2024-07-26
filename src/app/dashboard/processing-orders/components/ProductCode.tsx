@@ -1,21 +1,21 @@
 "use client";
 import CommonModal from "@/components/modal/CommonModal";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
-import { TOrders } from "@/types/order/order.interface";
-import { refetchData } from "@/utilities/fetchData";
-import { useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import { Input } from "@/components/ui/input";
+import { setIsOrderUpdate } from "@/redux/features/orders/ordersSlice";
 import {
   useAddWarrantyCodeMutation,
   useUpdateWarrantyCodeMutation,
 } from "@/redux/features/warranty/warrantySlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { setIsOrderUpdate } from "@/redux/features/orders/ordersSlice";
+import { TOrders } from "@/types/order/order.interface";
+import { refetchData } from "@/utilities/fetchData";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import * as yup from "yup";
 
 const schema = yup.object().shape({
   order_Id: yup.string().optional(),
@@ -55,18 +55,20 @@ const ProductCode = ({
   const [updateWarrantyCode, { isLoading: loading }] =
     useUpdateWarrantyCodeMutation();
 
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => {
-    setOpen(!open);
-  };
-
   const {
     register,
+    reset,
     handleSubmit,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
   });
+
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => {
+    setOpen(!open);
+    reset();
+  };
 
   const warranty = order.products.find(({ warranty }) => {
     if (warranty?.warrantyCodes) {
@@ -117,55 +119,6 @@ const ProductCode = ({
     }
   };
 
-  // const a = [
-  //   {
-  //     "_id": "6636404f45488dfe44954d88",
-  //     "codes": [
-  //       { "code": "123#4" },
-  //       { "code": "123#5" }
-  //     ]
-  //   }
-  // ];
-
-  // const b = [
-  //   {
-  //     "_id": "6636404f45488dfe44954d88",
-  //     "warranty": {
-  //       "warrantyCodes": [
-  //         { "code": "123#4", "_id": "663b48a248cd1c2eb37e9d84" },
-  //         { "code": "123#5", "_id": "663b48a248cd1c2eb37e9d85" }
-  //       ]
-  //     }
-  //   },
-  //   // {
-  //   //   "_id": "6636404f45488dfe44954d89",
-  //   //   "warranty": {
-  //   //     "warrantyCodes": [
-  //   //       { "code": "123#4", "_id": "663b48a248cd1c2eb37e9d84" },
-  //   //       { "code": "123#5", "_id": "663b48a248cd1c2eb37e9d85" }
-  //   //     ]
-  //   //   }
-  //   // }
-  // ];
-
-  // // Iterate over each element of 'a'
-  // a.forEach(aElement => {
-  //   // Find the corresponding element in 'b' by '_id'
-  //   const bElement = b.find(bItem => bItem._id === aElement._id);
-  //   if (bElement) {
-  //     // Compare codes
-  //     const codesMatch = aElement.codes.every(codeA => {
-  //       return bElement.warranty.warrantyCodes.some(codeB => codeA.code === codeB.code);
-  //     });
-
-  //     if (codesMatch) {
-  //       console.log(true);
-  //     } else {
-  //       console.log(false);
-  //     }
-  //   }
-  // });
-
   return (
     <>
       {warranty ? (
@@ -198,13 +151,16 @@ const ProductCode = ({
           className="space-y-5"
         >
           {order.products.map(
-            ({ _id, title, quantity, iSWarranty, warranty }, productIndex) => (
+            (
+              { _id, title, quantity, isProductWarrantyAvailable, warranty },
+              productIndex
+            ) => (
               <div key={productIndex}>
                 <h1 className="text-lg">{title}</h1>
                 <p>
                   <strong>Quantity : </strong> <span>{quantity}</span>
                 </p>
-                {iSWarranty ? (
+                {isProductWarrantyAvailable ? (
                   <>
                     <input
                       type="text"
@@ -236,6 +192,7 @@ const ProductCode = ({
                               id={`quantity-${productIndex}-${index}`}
                               placeholder="Enter code"
                             />
+
                             {errors.warrantyInfo?.length &&
                               errors.warrantyInfo[productIndex]?.codes
                                 ?.length &&

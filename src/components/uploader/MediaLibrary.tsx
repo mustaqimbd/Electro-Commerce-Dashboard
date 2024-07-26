@@ -2,7 +2,7 @@ import config from "@/config/config";
 import {
   setGallery,
   setThumbnail,
-} from "@/redux/features/addProduct/addProductSlice";
+} from "@/redux/features/imageSelector/imageSelectorSlice";
 import { useGetMediaImagesQuery } from "@/redux/features/addProduct/media/mediaApi";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { CheckIcon } from "@radix-ui/react-icons";
@@ -17,7 +17,7 @@ type TImage = { _id: string; src: string; alt: string };
 const MediaLibrary = ({ click, index }: { click?: string; index?: number }) => {
   const dispatch = useAppDispatch();
   const { thumbnail, gallery } = useAppSelector(
-    ({ addProduct }) => addProduct.image
+    ({ imageSelector }) => imageSelector
   );
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   // const image = useAppSelector(
@@ -44,6 +44,8 @@ const MediaLibrary = ({ click, index }: { click?: string; index?: number }) => {
       if (gallery.includes(imageId)) {
         const restItem = gallery.filter((item: string) => item !== imageId);
         dispatch(setGallery(restItem));
+      } else if (gallery.length === 5) {
+        alert("You can select maximum 5 gallery images");
       } else {
         dispatch(setGallery([...gallery, imageId]));
       }
@@ -59,8 +61,8 @@ const MediaLibrary = ({ click, index }: { click?: string; index?: number }) => {
   });
 
   return (
-    <div>
-      <div className="flex flex-wrap gap-4">
+    <>
+      <div className="flex flex-wrap gap-4 p-2">
         {click === "thumbnail" || click === "variation"
           ? data?.data?.map((image: TImage) => (
               <div
@@ -83,7 +85,7 @@ const MediaLibrary = ({ click, index }: { click?: string; index?: number }) => {
                 )}
               </div>
             ))
-          : data?.data.map((image: TImage) => (
+          : data?.data?.map((image: TImage) => (
               <div
                 key={image._id}
                 onClick={() => selectImage(image._id)}
@@ -105,8 +107,10 @@ const MediaLibrary = ({ click, index }: { click?: string; index?: number }) => {
               </div>
             ))}
       </div>
-      {data?.meta?.totalPage > 1 && <PagePagination />}
-    </div>
+      <div className="flex items-center justify-end space-x-2 py-4 h-40">
+        {data?.meta?.totalPage > 1 && <PagePagination />}
+      </div>
+    </>
   );
 };
 

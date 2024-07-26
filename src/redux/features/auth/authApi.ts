@@ -9,11 +9,11 @@ const authApi = baseApi.injectEndpoints({
         body: userInfo,
       }),
     }),
-    getProfile: builder.query({
-      query: () => ({
-        url: "/users/profile",
-      }),
-    }),
+    // getProfile: builder.query({
+    //   query: () => ({
+    //     url: "/users/profile",
+    //   }),
+    // }),
     logOut: builder.mutation({
       query: () => ({
         url: "/auth/logout",
@@ -23,5 +23,4 @@ const authApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useLoginMutation, useGetProfileQuery, useLogOutMutation } =
-  authApi;
+export const { useLoginMutation, useLogOutMutation } = authApi;

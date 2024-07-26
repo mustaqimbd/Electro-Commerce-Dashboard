@@ -8,12 +8,15 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import { useCreateOrderMutation } from "@/redux/features/orders/ordersApi";
 import { setIsOrderUpdate } from "@/redux/features/orders/ordersSlice";
+import { useGetPaymentMethodQuery } from "@/redux/features/paymentMethod/paymentMethodAPI";
+import { useGetAvailableProductsQuery } from "@/redux/features/products/productsAPI";
+import { useGetShippingChargeQuery } from "@/redux/features/shippingCharge/shippingCharge";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { TOrders } from "@/types/order/order.interface";
-import fetchData, { refetchData } from "@/utilities/fetchData";
+import { refetchData } from "@/utilities/fetchData";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Minus, Plus } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -66,38 +69,12 @@ const CreateOrder = ({ order }: { order?: TOrders }) => {
   const dispatch = useAppDispatch();
   const { iSOrderUpdate } = useAppSelector(({ orders }) => orders);
   const [createOrder, { isLoading }] = useCreateOrderMutation();
-  const [productsName, setProductsName] = useState([]);
-  const [shippingCharges, setShippingCharges] = useState([]);
-  const [paymentMethods, setPaymentMethods] = useState([]);
   const [open, setOpen] = useState(false);
   const [product, setProduct] = useState(1);
 
-  useEffect(() => {
-    const productsName = async () => {
-      const { data } = await fetchData({
-        endPoint: "/products",
-        tags: ["ProductsName"],
-      });
-      setProductsName(data?.products);
-    };
-    const shippingCharge = async () => {
-      const { data } = await fetchData({
-        endPoint: "/shipping-charges",
-        tags: ["shippingCharge"],
-      });
-      setShippingCharges(data);
-    };
-    const paymentMethod = async () => {
-      const { data } = await fetchData({
-        endPoint: "/payment-method",
-        tags: ["paymentMethod"],
-      });
-      setPaymentMethods(data);
-    };
-    productsName();
-    shippingCharge();
-    paymentMethod();
-  }, []);
+  const { data: productsName } = useGetAvailableProductsQuery({});
+  const { data: shippingCharges } = useGetShippingChargeQuery({});
+  const { data: paymentMethods } = useGetPaymentMethodQuery({});
 
   const handleOpen = () => {
     setOpen(!open);
@@ -214,15 +191,25 @@ const CreateOrder = ({ order }: { order?: TOrders }) => {
                   className="w-full h-9 border border-gray-300  rounded-sm"
                 >
                   <option value="">Shipping charge</option>
-                  {shippingCharges.map(({ _id, name, amount }) => (
-                    <option
-                      key={_id}
-                      value={_id}
-                      className="flex items-center gap-5"
-                    >
-                      {name + " " + amount}
-                    </option>
-                  ))}
+                  {shippingCharges?.data?.map(
+                    ({
+                      _id,
+                      name,
+                      amount,
+                    }: {
+                      _id: string;
+                      name: string;
+                      amount: string;
+                    }) => (
+                      <option
+                        key={_id}
+                        value={_id}
+                        className="flex items-center gap-5"
+                      >
+                        {name + " " + amount}
+                      </option>
+                    )
+                  )}
                 </select>
                 {errors.shippingCharge?.message && (
                   <p className="text-red-600">
@@ -241,15 +228,17 @@ const CreateOrder = ({ order }: { order?: TOrders }) => {
                   className="w-full h-9 border border-gray-300  rounded-sm"
                 >
                   <option value="">Payment</option>
-                  {paymentMethods.map(({ _id, name }) => (
-                    <option
-                      key={_id}
-                      value={_id}
-                      className="flex items-center gap-5"
-                    >
-                      {name}
-                    </option>
-                  ))}
+                  {paymentMethods?.data?.map(
+                    ({ _id, name }: { _id: string; name: string }) => (
+                      <option
+                        key={_id}
+                        value={_id}
+                        className="flex items-center gap-5"
+                      >
+                        {name}
+                      </option>
+                    )
+                  )}
                 </select>
                 {errors.payment?.paymentMethod?.message && (
                   <p className="text-red-600">
@@ -326,11 +315,13 @@ const CreateOrder = ({ order }: { order?: TOrders }) => {
                       className="w-full h-9 border border-gray-300  rounded-sm"
                     >
                       <option value="">Select product</option>
-                      {productsName?.map(({ _id, title }) => (
-                        <option value={_id} key={_id}>
-                          {title}
-                        </option>
-                      ))}
+                      {productsName?.data?.map(
+                        ({ _id, title }: { _id: string; title: string }) => (
+                          <option value={_id} key={_id}>
+                            {title}
+                          </option>
+                        )
+                      )}
                     </select>
                     {errors.orderedProducts &&
                       errors.orderedProducts[index] &&

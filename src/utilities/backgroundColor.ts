@@ -23,14 +23,14 @@ const backgroundColor = (status: string) => {
                           status === "solved" ||
                           status === "approved"
                         ? "bg-[#2DB224]"
-                        : status === "returned"
+                        : status === "returned" || status === "partly returned"
                           ? "bg-[#E38390]"
                           : status === "follow up" ||
                               status === "retry required"
                             ? "bg-[#00C3C6]"
-                            : status === "published"
+                            : status === "Published"
                               ? "bg-[#32CD32]"
-                              : status === "draft"
+                              : status === "Draft"
                                 ? "bg-[#808080]"
                                 : status === "admin"
                                   ? "bg-teal-500"

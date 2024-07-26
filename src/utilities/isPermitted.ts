@@ -1,8 +1,8 @@
-import { TPermission, permission } from "@/types/order/order.interface";
+import { TPermissionEnum, permission } from "@/types/order/order.interface";
 
 const isPermitted = (
   permissions?: string[],
-  requiredPermission?: TPermission
+  requiredPermission?: TPermissionEnum
 ) => {
   const neededPermission = requiredPermission
     ? requiredPermission
