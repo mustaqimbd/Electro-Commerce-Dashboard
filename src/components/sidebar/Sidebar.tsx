@@ -1,15 +1,24 @@
 "use client";
 
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { useAppSelector } from "@/redux/hooks";
 import { permission } from "@/types/order/order.interface";
 import isPermitted from "@/utilities/isPermitted";
 import {
   Bike,
+  ImagePlusIcon,
   LayoutDashboard,
+  LayoutList,
   ListOrdered,
   Loader,
   PackageSearch,
   PlusCircle,
+  Shapes,
   UsersRound,
 } from "lucide-react";
 import NavLink from "../NavLink/NavLink";
@@ -53,19 +62,37 @@ export function Sidebar() {
       icon: <PlusCircle className="w-4 h-4" />,
     },
     {
-      href: "/add-category",
-      name: "Add Category",
-      icon: <PlusCircle className="w-4 h-4" />,
+      href: "/category",
+      name: "Category",
+      icon: <Shapes className="w-4 h-4" />,
     },
     {
-      href: "/add-attribute",
-      name: "Add attribute",
-      icon: <PlusCircle className="w-4 h-4" />,
+      href: "/attribute",
+      name: "Attributes",
+      icon: <LayoutList className="w-4 h-4" />,
     },
     {
       href: "/all-products",
       name: "All Products",
       icon: <PackageSearch className="w-4 h-4" />,
+    },
+  ];
+
+  const themeOptionLinks = [
+    {
+      href: "/slider-section",
+      name: "Slider Section",
+      icon: <ImagePlusIcon className="w-4 h-4" />,
+    },
+    {
+      href: "/contact",
+      name: "Contact & Social",
+      icon: <Shapes className="w-4 h-4" />,
+    },
+    {
+      href: "/contents",
+      name: "Text Contents",
+      icon: <LayoutList className="w-4 h-4" />,
     },
   ];
 
@@ -122,6 +149,24 @@ export function Sidebar() {
           icon={<UsersRound className="w-4 h-4" />}
         />
       )}
+
+      <Accordion type="single" collapsible>
+        <AccordionItem value="item-1">
+          <AccordionTrigger className="no-underline px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground transparent">
+            Theme Option
+          </AccordionTrigger>
+          <AccordionContent>
+            {themeOptionLinks.map((item) => (
+              <NavLink
+                key={item.href}
+                href={`/dashboard${item.href}`}
+                name={item.name}
+                icon={item.icon}
+              />
+            ))}
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
     </div>
   );
 }
