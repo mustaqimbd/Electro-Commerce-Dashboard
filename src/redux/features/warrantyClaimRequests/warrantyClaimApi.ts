@@ -11,14 +11,6 @@ const warrantyClaimReq = baseApi.injectEndpoints({
       }),
       providesTags: ["warrantyClaimRequests"],
     }),
-    updateWarrantyClamReqStatus: builder.mutation({
-      query: (orderData) => ({
-        url: "/warranty-claim/update-contact-status",
-        method: "PATCH",
-        body: orderData,
-      }),
-      invalidatesTags: ["warrantyClaimRequests"],
-    }),
     updateWarrantyClamReq: builder.mutation({
       query: (orderData) => ({
         url: `/warranty-claim/update-request/${orderData.id}`,
@@ -40,7 +32,6 @@ const warrantyClaimReq = baseApi.injectEndpoints({
 
 export const {
   useGetWarrantyClaimRequestsQuery,
-  useUpdateWarrantyClamReqStatusMutation,
   useUpdateWarrantyClamReqMutation,
   useCreateWarrantyClamOrderMutation,
 } = warrantyClaimReq;
