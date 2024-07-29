@@ -9,7 +9,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "@/components/ui/use-toast";
-import { useUpdateWarrantyClamReqStatusMutation } from "@/redux/features/warrantyClaimRequests/warrantyClaimApi";
+import { useUpdateWarrantyClamReqMutation } from "@/redux/features/warrantyClaimRequests/warrantyClaimApi";
 import { TWarrantyClaimContactStatus } from "@/redux/features/warrantyClaimRequests/warrantyClaimInterface";
 import { Dispatch, SetStateAction, useState } from "react";
 const UpdateWarrantyClaimContactStatus = ({
@@ -21,8 +21,7 @@ const UpdateWarrantyClaimContactStatus = ({
   _id: string;
   setOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const [updateStatus, { isLoading }] =
-    useUpdateWarrantyClamReqStatusMutation();
+  const [updateStatus, { isLoading }] = useUpdateWarrantyClamReqMutation();
   const [value, setValue] = useState(contactStatus);
   const contactsStatus: TWarrantyClaimContactStatus[] = [
     "pending",
@@ -32,8 +31,8 @@ const UpdateWarrantyClaimContactStatus = ({
 
   const handleContactChange = async () => {
     const updateData = {
-      warrantyClaimedReqIds: [_id],
-      status: value,
+      id: _id,
+      contactStatus: value,
     };
     try {
       const result = await updateStatus(updateData).unwrap();
