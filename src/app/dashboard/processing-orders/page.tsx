@@ -21,7 +21,7 @@ const Orders = () => {
   }
 
   return (
-    <div className="shadow-md p-5 bg-white border-l">
+    <div className="p-5 bg-white">
       {/* header section , search bar  */}
       <div className="grid grid-cols-2 justify-between items-center mb-8">
         <h1 className="text-3xl">Processing orders</h1>
