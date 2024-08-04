@@ -9,6 +9,7 @@ const searchParams = (
       }
     });
   }
+
   return params;
 };
 
