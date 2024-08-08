@@ -47,7 +47,7 @@ const OrdersChart = ({
         <DateRangeSelector
           handlerFN={handlerFN}
           selectedPeriod="Today"
-          displayDate={false}
+          displayDate={true}
           disableFirstOPT={true}
         />
       </CardHeader>

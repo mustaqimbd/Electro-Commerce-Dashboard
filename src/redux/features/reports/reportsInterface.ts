@@ -10,3 +10,18 @@ export type TReportOrdersCount = {
   id: string;
   name: string;
 };
+
+export type TOrderSource =
+  | "Website"
+  | "Landing Page"
+  | "App"
+  | "Phone Call"
+  | "Social Media"
+  | "From Office"
+  | "Warranty Claimed";
+
+export type TReportPlatformCount = {
+  source: TOrderSource;
+  count: number;
+  percentage: number;
+};

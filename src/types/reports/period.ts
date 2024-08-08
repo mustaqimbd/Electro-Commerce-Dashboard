@@ -1,5 +1,6 @@
 export type TPeriod =
   | "Select date"
+  | "allTime"
   | "today"
   | "yesterday"
   | "thisWeek"

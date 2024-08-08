@@ -1,77 +1,48 @@
 "use client";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartLegend,
-  ChartLegendContent,
-} from "@/components/ui/chart";
-import { Pie, PieChart } from "recharts";
-const chartData = [
-  { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
-  { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
-  { browser: "firefox", visitors: 187, fill: "var(--color-firefox)" },
-  { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
-  { browser: "other", visitors: 90, fill: "var(--color-other)" },
-];
-const chartConfig = {
-  visitors: {
-    label: "Visitors",
-  },
-  chrome: {
-    label: "Chrome",
-    color: "hsl(var(--chart-1))",
-  },
-  safari: {
-    label: "Safari",
-    color: "hsl(var(--chart-2))",
-  },
-  firefox: {
-    label: "Firefox",
-    color: "hsl(var(--chart-3))",
-  },
-  edge: {
-    label: "Edge",
-    color: "hsl(var(--chart-4))",
-  },
-  other: {
-    label: "Other",
-    color: "hsl(var(--chart-5))",
-  },
-} satisfies ChartConfig;
-
+import { TDateRangeSelectorHandlerFN } from "@/components/DateRangeSelector";
+import { Card } from "@/components/ui/card";
+import { useGetOrdersByPlatformCountQuery } from "@/redux/features/reports/reportsApi";
+import { TReportPlatformCount } from "@/redux/features/reports/reportsInterface";
+import { TSuccessResponse } from "@/types/response/response";
+import { useState } from "react";
+import SalesByPlatformChart from "./SalesByPlatformChart";
 const SalesByPlatform = () => {
+  const [query, setQuery] = useState<{
+    type: string;
+    startDate?: string;
+    endDate?: string;
+    customDate?: string;
+  }>({
+    type: "allTime",
+    startDate: undefined,
+    endDate: undefined,
+  });
+  const { data } = useGetOrdersByPlatformCountQuery(query);
+  const salesByPlatformCounts =
+    (data as TSuccessResponse<TReportPlatformCount[]>)?.data || [];
+
+  const handlerFN = (payload: TDateRangeSelectorHandlerFN) => {
+    const { selectedPeriod, start, end } = payload;
+    if (selectedPeriod === "Select date") return;
+    setQuery({
+      type: selectedPeriod,
+      customDate: start,
+      startDate: start,
+      endDate: end,
+    });
+  };
   return (
-    <Card className="p-4 shadow-none rounded-xl">
-      <h2 className="text-xl font-bold">Sales by platform</h2>
-      <div className="flex flex-col">
-        <CardHeader className="items-center pb-0">
-          <CardTitle>Pie Chart - Legend</CardTitle>
-          <CardDescription>January - June 2024</CardDescription>
-        </CardHeader>
-        <CardContent className="flex-1 pb-0">
-          <ChartContainer
-            config={chartConfig}
-            className="mx-auto aspect-square max-h-[300px]"
-          >
-            <PieChart>
-              <Pie data={chartData} dataKey="visitors" />
-              <ChartLegend
-                content={<ChartLegendContent nameKey="browser" />}
-                className="-translate-y-2 flex-wrap gap-2 [&>*]:basis-1/4 [&>*]:justify-center"
-              />
-            </PieChart>
-          </ChartContainer>
-        </CardContent>
-      </div>
-    </Card>
+    <div>
+      <Card className="p-4 shadow-none rounded-xl space-y-5">
+        <h2 className="text-xl font-bold">Orders by platform</h2>
+        <hr className="!mt-2" />
+        <SalesByPlatformChart
+          handlerFN={handlerFN}
+          salesByPlatformCounts={salesByPlatformCounts}
+        />
+      </Card>
+    </div>
   );
 };
 

@@ -20,6 +20,7 @@ import {
   endOfWeek,
   endOfYear,
   format,
+  parse,
   startOfMonth,
   startOfWeek,
   startOfYear,
@@ -33,8 +34,8 @@ import { DateRange } from "react-day-picker";
 
 export type TDateRangeSelectorHandlerFN = {
   selectedPeriod: TPeriod;
-  start: string;
-  end: string;
+  start?: string;
+  end?: string;
 };
 
 const DateRangeSelector = ({
@@ -42,11 +43,13 @@ const DateRangeSelector = ({
   selectedPeriod,
   displayDate = true,
   disableFirstOPT = false,
+  showAllTime = false,
 }: {
   handlerFN: (payload: TDateRangeSelectorHandlerFN) => void;
   selectedPeriod?: string;
   displayDate?: boolean;
   disableFirstOPT?: boolean;
+  showAllTime?: boolean;
 }) => {
   const dispatch = useAppDispatch();
   const [selectedFilter, setSelectedFilter] = useState("Select date");
@@ -63,6 +66,10 @@ const DateRangeSelector = ({
         case "today":
           start = end = today;
           selectedValue = "today";
+          break;
+        case "allTime":
+          start = end = today;
+          selectedValue = "allTime";
           break;
         case "yesterday":
           start = end = subDays(today, 1);
@@ -126,6 +133,7 @@ const DateRangeSelector = ({
 
     if (
       selectedFilter !== "Select date" &&
+      selectedFilter !== "allTime" &&
       selectedFilter !== "custom" &&
       selectedFilter !== "custom_range"
     ) {
@@ -151,6 +159,13 @@ const DateRangeSelector = ({
       });
       setDateRange({ from: undefined, to: undefined });
       setFormattedDate("Select date");
+    }
+
+    if (selectedFilter === "allTime") {
+      setFormattedDate("allTime");
+      handlerFN({
+        selectedPeriod: "allTime",
+      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedFilter, dispatch]);
@@ -214,6 +229,18 @@ const DateRangeSelector = ({
       setOpen(false);
     }
   };
+  const [newStartDate, newEndDate] = formattedDate.split("-");
+  const startFormattedDate =
+    formattedDate && !["allTime", "Select date"].includes(formattedDate)
+      ? format(
+          parse(newStartDate.trim(), "dd/MM/yy", new Date()),
+          "dd MMM, yyyy"
+        )
+      : undefined;
+  const endFormattedDate =
+    formattedDate && !["allTime", "Select date"].includes(formattedDate)
+      ? format(parse(newEndDate.trim(), "dd/MM/yy", new Date()), "dd MMM, yyyy")
+      : undefined;
 
   return (
     <div className="flex items-center gap-2">
@@ -226,6 +253,7 @@ const DateRangeSelector = ({
             <SelectItem value="Select date" disabled={disableFirstOPT}>
               Select date
             </SelectItem>
+            {showAllTime && <SelectItem value="allTime">All time</SelectItem>}
             <SelectItem value="today">Today</SelectItem>
             <SelectItem value="yesterday">Yesterday</SelectItem>
             <SelectItem value="this_week">This Week</SelectItem>
@@ -262,7 +290,16 @@ const DateRangeSelector = ({
         </PopoverContent>
       </Popover>
       {displayDate
-        ? formattedDate !== "Select date" && <span>{formattedDate}</span>
+        ? !["allTime", "Select date"].includes(formattedDate) && (
+            <>
+              <span>
+                {startFormattedDate}
+                {startFormattedDate !== endFormattedDate ? (
+                  <>{` - ${endFormattedDate}`}</>
+                ) : null}
+              </span>
+            </>
+          )
         : null}
     </div>
   );

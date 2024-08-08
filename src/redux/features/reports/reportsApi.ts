@@ -14,7 +14,17 @@ const reportsApi = baseApi.injectEndpoints({
         params: searchParams(args),
       }),
     }),
+    getOrdersByPlatformCount: builder.query({
+      query: (args) => ({
+        url: "/reports/orders-source-count",
+        params: searchParams(args),
+      }),
+    }),
   }),
 });
 
-export const { useGetStatsQuery, useGetOrdersCountQuery } = reportsApi;
+export const {
+  useGetStatsQuery,
+  useGetOrdersCountQuery,
+  useGetOrdersByPlatformCountQuery,
+} = reportsApi;
