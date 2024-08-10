@@ -1,6 +1,4 @@
-import StatisticsCard from "./components/StatisticsCard";
-import { Button } from "@/components/ui/button";
-import BestSellingProducts from "./components/BestSellingProducts";
+import { getProfile } from "@/lib/getAccessToken";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -8,26 +6,14 @@ export const metadata: Metadata = {
   description: "Oneself",
 };
 
-const Dashboard = () => {
+const Dashboard = async () => {
+  const user = await getProfile();
+
   return (
-    <div>
-      <div className="space-y-5 w-full px-2">
-        <div className="grid grid-cols-4 gap-3">
-          <StatisticsCard />
-          <StatisticsCard />
-          <StatisticsCard />
-          <StatisticsCard />
-        </div>
-        <div className="flex justify-start gap-3">
-          <div className="w-2/3 "></div>
-          <div className="w-1/3">
-            <BestSellingProducts />
-            <div>
-              <Button>Click me</Button>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div className="flex justify-center items-center h-full">
+      <h2 className="text-center font-bold text-2xl">
+        Welcome, {user.fullName}
+      </h2>
     </div>
   );
 };

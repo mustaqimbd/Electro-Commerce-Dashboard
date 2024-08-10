@@ -64,7 +64,7 @@ const UsersTable = () => {
           ) : (
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center">
-                {isUsersLoading ? "Loading..." : "No claim requests found"}
+                {isUsersLoading ? "Loading..." : null}
               </TableCell>
             </TableRow>
           )}

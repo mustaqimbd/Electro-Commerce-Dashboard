@@ -1,10 +1,10 @@
-import DateRangeSelector from "@/components/DateRangeSelector";
 import OrderSearchBar from "@/components/OrderSearchBar";
 import Show from "@/components/Show";
 import { getPermission } from "@/lib/getAccessToken";
 import { permission } from "@/types/order/order.interface";
 import { redirect } from "next/navigation";
 import BulkAction from "./components/BulkAction";
+import ProcessingOrderDateRange from "./components/ProcessingOrderDateRange";
 import ProcessingOrdersStatusButtons from "./components/processingOrdersStatusButtons";
 import ProcessingOrdersTable from "./components/ProcessingOrdersTable";
 
@@ -21,7 +21,7 @@ const Orders = () => {
   }
 
   return (
-    <div className="shadow-md p-5 bg-white border-l">
+    <div className="p-5 bg-white">
       {/* header section , search bar  */}
       <div className="grid grid-cols-2 justify-between items-center mb-8">
         <h1 className="text-3xl">Processing orders</h1>
@@ -33,7 +33,7 @@ const Orders = () => {
         <div className="flex items-center justify-between mt-8 mb-3">
           {/*Bulk actions and invoice print for Orders*/}
           <BulkAction />
-          <DateRangeSelector />
+          <ProcessingOrderDateRange />
           <Show />
         </div>
         {/* <FilterAndOrdersTable/> */}
