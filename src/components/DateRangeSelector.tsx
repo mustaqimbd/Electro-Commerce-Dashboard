@@ -244,6 +244,18 @@ const DateRangeSelector = ({
 
   return (
     <div className="flex items-center gap-2">
+      {displayDate
+        ? !["allTime", "Select date"].includes(formattedDate) && (
+            <>
+              <span>
+                {startFormattedDate}
+                {startFormattedDate !== endFormattedDate ? (
+                  <>{` - ${endFormattedDate}`}</>
+                ) : null}
+              </span>
+            </>
+          )
+        : null}
       <Select onValueChange={(v) => handleFilterChange(v)}>
         <SelectTrigger className="w-[120px]">
           <SelectValue placeholder={selectedPeriod || formattedDate} />
@@ -289,18 +301,6 @@ const DateRangeSelector = ({
           )}
         </PopoverContent>
       </Popover>
-      {displayDate
-        ? !["allTime", "Select date"].includes(formattedDate) && (
-            <>
-              <span>
-                {startFormattedDate}
-                {startFormattedDate !== endFormattedDate ? (
-                  <>{` - ${endFormattedDate}`}</>
-                ) : null}
-              </span>
-            </>
-          )
-        : null}
     </div>
   );
 };

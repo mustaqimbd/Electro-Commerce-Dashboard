@@ -20,6 +20,12 @@ const reportsApi = baseApi.injectEndpoints({
         params: searchParams(args),
       }),
     }),
+    getOrderStatusChangeCount: builder.query({
+      query: (date) => ({
+        url: "/reports/orders-status-change-count",
+        params: searchParams({ date }),
+      }),
+    }),
   }),
 });
 
@@ -27,4 +33,5 @@ export const {
   useGetStatsQuery,
   useGetOrdersCountQuery,
   useGetOrdersByPlatformCountQuery,
+  useGetOrderStatusChangeCountQuery,
 } = reportsApi;

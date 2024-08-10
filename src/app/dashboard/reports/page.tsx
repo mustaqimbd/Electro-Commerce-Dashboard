@@ -1,6 +1,7 @@
 // import BestSellingProducts from "./components/BestSellingProducts";
 import PageTitle from "@/components/pageTitle/PageTitle";
 import OrdersCount from "./components/ordersCounts/OrdersCount";
+import OrderStatusChangeCount from "./components/OrderStatusChangeCount/OrderStatusChangeCount";
 import SalesByPlatform from "./components/SalesByPlatform/SalesByPlatform";
 import Stats from "./components/stats/Stats";
 
@@ -13,6 +14,9 @@ const Reports = () => {
         <div className="grid grid-cols-3 gap-5">
           <OrdersCount />
           <SalesByPlatform />
+        </div>
+        <div className="grid grid-cols-2 gap-5">
+          <OrderStatusChangeCount />
         </div>
       </div>
     </>

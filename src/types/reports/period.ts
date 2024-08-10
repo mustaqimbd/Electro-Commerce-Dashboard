@@ -19,3 +19,9 @@ export type TReportsQuery = {
   startDate?: string;
   endDate?: string;
 };
+
+export type TOrderStatusChangeCount = {
+  date: string;
+  status: string;
+  count: number;
+};
