@@ -1,3 +1,5 @@
+"use client";
+import { TBestSellingProduct } from "@/types/reports/period";
 import {
   ColumnDef,
   flexRender,
@@ -6,6 +8,7 @@ import {
 } from "@tanstack/react-table";
 
 import TableSkeleton from "@/components/skeleton/TableSkeleton";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Table,
   TableBody,
@@ -14,9 +17,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { TOrderStatusChangeCount } from "@/types/reports/period";
 
-export const columns: ColumnDef<TOrderStatusChangeCount>[] = [
+export type Payment = {
+  id: string;
+  amount: number;
+  status: "pending" | "processing" | "success" | "failed";
+  email: string;
+};
+
+export const columns: ColumnDef<TBestSellingProduct>[] = [
   {
     accessorKey: "",
     header: () => <h4 className="text-center">SL. No.</h4>,
@@ -28,28 +37,53 @@ export const columns: ColumnDef<TOrderStatusChangeCount>[] = [
     ),
   },
   {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => <div className="capitalize">{row.original.status}</div>,
+    accessorKey: "productImage",
+    header: "Name",
+    cell: ({ row }) => (
+      <Avatar>
+        <AvatarImage src={row.original.productImage} />
+        <AvatarFallback>{row.original.productName}</AvatarFallback>
+      </Avatar>
+    ),
   },
   {
-    accessorKey: "count",
-    header: "Total order",
-    cell: ({ row }) => {
-      return <div className="font-medium">{row.original.count}</div>;
-    },
+    accessorKey: "name",
+    header: "Name",
+    cell: ({ row }) => (
+      <div className="capitalize">{row.original.productName}</div>
+    ),
+  },
+  {
+    accessorKey: "stockQuantity",
+    header: "Stock",
+    cell: ({ row }) => (
+      <div className="lowercase">{row.original.stockQuantity}</div>
+    ),
+  },
+  {
+    accessorKey: "totalWarrantyClaims",
+    header: () => <h2 className="text-right">Total warranty</h2>,
+    cell: ({ row }) => (
+      <div className="text-center">{row.original.totalWarrantyClaims}</div>
+    ),
+  },
+  {
+    accessorKey: "totalSales",
+    header: () => <h2 className="text-right">Total sales</h2>,
+    cell: ({ row }) => (
+      <div className="font-medium text-right">{row.original.totalSales}</div>
+    ),
   },
 ];
-
-const StatusChangeTable = ({
-  statusChangeCountData,
+const BestSellingProductsTable = ({
+  bestSellingProductData,
   isLoading,
 }: {
-  statusChangeCountData: TOrderStatusChangeCount[];
+  bestSellingProductData: TBestSellingProduct[];
   isLoading: boolean;
 }) => {
   const table = useReactTable({
-    data: statusChangeCountData,
+    data: bestSellingProductData,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
@@ -58,7 +92,7 @@ const StatusChangeTable = ({
     <div className="w-full">
       <div className="rounded-md border overflow-hidden">
         <Table className="min-w-[500px]">
-          <TableHeader className="bg-primary text-white">
+          <TableHeader className="bg-primary text-white rounded-full">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id} className="hover:bg-muted/0">
                 {headerGroup.headers.map((header) => {
@@ -76,7 +110,7 @@ const StatusChangeTable = ({
               </TableRow>
             ))}
           </TableHeader>
-          <TableBody className="max-h-[521.5px] overflow-x-scroll">
+          <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
@@ -109,7 +143,7 @@ const StatusChangeTable = ({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No orders
+                  No data found
                 </TableCell>
               </TableRow>
             )}
@@ -120,4 +154,4 @@ const StatusChangeTable = ({
   );
 };
 
-export default StatusChangeTable;
+export default BestSellingProductsTable;

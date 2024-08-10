@@ -25,3 +25,12 @@ export type TOrderStatusChangeCount = {
   status: string;
   count: number;
 };
+
+export type TBestSellingProduct = {
+  productId: string;
+  productName: string;
+  productImage: string;
+  stockQuantity: number;
+  totalSales: number;
+  totalWarrantyClaims: number;
+};
