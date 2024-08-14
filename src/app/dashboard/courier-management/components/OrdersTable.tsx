@@ -9,8 +9,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { setBulkOrder } from "@/redux/features/courierManagement/courierManagementSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { TOrders } from "@/types/order/order.interface";
+import formattedOrderData from "@/utilities/formattedOrderData";
 import {
   ColumnDef,
   flexRender,
@@ -19,10 +21,8 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useEffect } from "react";
-import ReasonNotes from "./ReasonNotes";
 import { columns } from "./OrdersColumn";
-import formattedOrderData from "@/utilities/formattedOrderData";
-import { setBulkOrder } from "@/redux/features/courierManagement/courierManagementSlice";
+import ReasonNotes from "./ReasonNotes";
 
 export default function OrdersTable() {
   const dispatch = useAppDispatch();
@@ -69,7 +69,7 @@ export default function OrdersTable() {
 
   return (
     <div className="w-full">
-      <div className="rounded-md border">
+      <div className="rounded-md border overflow-hidden">
         <Table className="min-w-[1100px]">
           <TableHeader className="bg-primary text-white">
             {table?.getHeaderGroups()?.map((headerGroup) => (
@@ -95,7 +95,7 @@ export default function OrdersTable() {
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
-                  className="border-b border-cyan-400"
+                  className="border-b"
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id} className="text-center">

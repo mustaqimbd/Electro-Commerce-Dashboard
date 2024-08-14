@@ -9,7 +9,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { setBulkOrder } from "@/redux/features/processingOrders/processingOrdersSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import formattedOrderData from "@/utilities/formattedOrderData";
 import {
   flexRender,
   getCoreRowModel,
@@ -18,8 +20,6 @@ import {
 } from "@tanstack/react-table";
 import { useEffect } from "react";
 import { columns } from "./OrderColumn";
-import formattedOrderData from "@/utilities/formattedOrderData";
-import { setBulkOrder } from "@/redux/features/processingOrders/processingOrdersSlice";
 
 export default function ProcessingOrdersTable() {
   const dispatch = useAppDispatch();
@@ -50,7 +50,7 @@ export default function ProcessingOrdersTable() {
 
   return (
     <div className="w-full">
-      <div className="rounded-md border">
+      <div className="rounded-lg border overflow-hidden">
         <Table className="min-w-[1100px]">
           <TableHeader className="bg-primary text-white">
             {table.getHeaderGroups().map((headerGroup) => (
@@ -76,7 +76,7 @@ export default function ProcessingOrdersTable() {
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
-                  className="border-b border-cyan-400"
+                  className="border-b"
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id} className="text-center">

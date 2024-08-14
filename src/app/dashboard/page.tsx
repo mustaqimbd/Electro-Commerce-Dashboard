@@ -8,7 +8,6 @@ export const metadata: Metadata = {
 
 const Dashboard = async () => {
   const user = await getProfile();
-
   return (
     <div className="flex justify-center items-center h-full">
       <h2 className="text-center font-bold text-2xl">

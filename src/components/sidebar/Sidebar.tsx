@@ -9,7 +9,7 @@ import {
   Loader,
   PackageSearch,
   PlusCircle,
-  Settings,
+  User,
   UsersRound,
 } from "lucide-react";
 import NavLink from "../NavLink/NavLink";
@@ -118,9 +118,9 @@ export function Sidebar() {
       <hr />
       <span className="block mb-5"></span>
       <NavLink
-        href="/dashboard"
-        name="Settings"
-        icon={<Settings className="w-4 h-4" />}
+        href="/dashboard/accounts"
+        name="Accounts"
+        icon={<User className="w-4 h-4" />}
       />
     </div>
   );
