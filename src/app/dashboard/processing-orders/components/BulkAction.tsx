@@ -63,7 +63,7 @@ const BulkAction = () => {
           <select
             defaultValue={bulkAction}
             onChange={(e) => setBulkAction(e.target.value)}
-            className="h-9 border border-primary focus:outline focus:outline-primary rounded-sm capitalize"
+            className="h-9 border focus:outline focus:outline-primary rounded-sm capitalize w-40 pl-2"
           >
             <option value="">Bulk Actions</option>
             {statusOptions(selectedStatus).map((status) => (

@@ -64,7 +64,7 @@ export default function OrdersTable() {
 
   return (
     <div className="w-full">
-      <div className="rounded-md border">
+      <div className="rounded-lg overflow-hidden border">
         <Table className="min-w-[1100px]">
           <TableHeader className="bg-primary text-white">
             {table.getHeaderGroups().map((headerGroup) => (
@@ -90,7 +90,7 @@ export default function OrdersTable() {
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
-                  className="border-b border-cyan-400"
+                  className="border-b"
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id} className="text-center">

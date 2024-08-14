@@ -3,11 +3,11 @@ import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 // import { refetchData } from "@/utilities/fetchData";
-import { useState } from "react";
 import { useSendCourierAndUpdateStatusMutation } from "@/redux/features/courierManagement/courierManagementApi";
-import statusOptions from "@/utilities/statusOptions";
 import { setBulkOrder } from "@/redux/features/courierManagement/courierManagementSlice";
 import { refetchData } from "@/utilities/fetchData";
+import statusOptions from "@/utilities/statusOptions";
+import { useState } from "react";
 
 const CourierBulkAction = () => {
   const dispatch = useAppDispatch();
@@ -58,7 +58,7 @@ const CourierBulkAction = () => {
           <select
             defaultValue={bulkAction}
             onChange={(e) => setBulkAction(e.target.value)}
-            className="h-9 border border-primary focus:outline focus:outline-primary rounded-sm capitalize"
+            className="h-9 border focus:outline focus:outline-primary rounded-sm capitalize w-40 pl-2"
           >
             <option value="">Bulk Actions</option>
             {statusOptions(filter).map((status) => (
