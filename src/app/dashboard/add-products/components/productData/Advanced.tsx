@@ -1,61 +1,120 @@
 "use client";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { setAdvanced } from "@/redux/features/addProduct/addProductSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-// import { yupResolver } from "@hookform/resolvers/yup";
-// import { SubmitHandler, useForm } from "react-hook-form";
-// import * as yup from "yup";
-
-// const schema = yup.object().shape({
-//   review: yup.boolean().default(false),
-//   featured: yup.boolean().default(false),
-// });
-
-// type TFormInput = yup.InferType<typeof schema>;
+import { Textarea } from "@/components/ui/textarea";
 
 const Advanced = () => {
   const dispatch = useAppDispatch();
-  const { review, featured } = useAppSelector(({ addProduct }) => addProduct);
+  const {
+    featured,
+    warranty,
+    warrantyInfo: { duration, terms },
+  } = useAppSelector(({ addProduct }) => addProduct);
 
-  const handleChange = (event: {
+  const handleCheckedChange = (event: {
     target: { name: string; checked: boolean };
   }) => {
     const { name, checked } = event.target;
     dispatch(setAdvanced({ [name]: checked }));
   };
 
+  const handleChange = (e: { target: { name: string; value: unknown } }) => {
+    const { name, value } = e.target;
+    dispatch(setAdvanced({ [name]: value }));
+  };
+
   return (
-    <form>
+    <div>
       <div className="flex items-center gap-3 mb-3">
-        <Label className="flex gap-3 w-40" htmlFor="review">
-          Enable reviews
-        </Label>
-        <div className="space-y-2">
-          <Input
-            type="checkbox"
-            checked={review}
-            onChange={handleChange}
-            name="review"
-            id="review"
-          />
-        </div>
-      </div>
-      <div className="flex items-center gap-3 mb-3">
-        <Label className="flex gap-3 w-40" htmlFor="featured">
+        <Label className="w-40" htmlFor="featured">
           Featured
         </Label>
-        <div className="space-y-2">
+        <div>
           <Input
             type="checkbox"
-            checked={featured}
-            onChange={handleChange}
+            defaultChecked={featured}
+            onChange={handleCheckedChange}
             name="featured"
             id="featured"
           />
         </div>
       </div>
-    </form>
+      <div className="flex items-center gap-3 mb-3">
+        <Label className="w-40" htmlFor="warranty">
+          Warranty
+        </Label>
+        <div>
+          <Input
+            type="checkbox"
+            defaultChecked={warranty}
+            onChange={handleCheckedChange}
+            name="warranty"
+            id="warranty"
+          />
+        </div>
+      </div>
+      {warranty && (
+        <>
+          <div className="flex items-center gap-3 mb-3">
+            <Label className="w-40" htmlFor="warrantyDuration">
+              Warranty duration
+            </Label>
+            <div className="flex items-center gap-4">
+              <Input
+                type="number"
+                // {...register("duration")}
+                onChange={handleChange}
+                defaultValue={duration.quantity}
+                name="quantity"
+                id="warrantyDuration"
+                className="w-14 px-1 text-center"
+              />
+              <Select
+                onValueChange={(v) =>
+                  handleChange({ target: { name: "unit", value: v } })
+                }
+                defaultValue={duration.unit}
+              >
+                <SelectTrigger className="w-[120px] border-primary focus:ring-0">
+                  <SelectValue placeholder={"select"} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value="days">Days</SelectItem>
+                    <SelectItem value="weeks">Weeks</SelectItem>
+                    <SelectItem value="months">Months</SelectItem>
+                    <SelectItem value="years">Years</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <div className="flex items-center gap-3 pt-3">
+            <Label className="w-40" htmlFor="terms">
+              Terms
+            </Label>
+            <Textarea
+              placeholder="Type warranty terms here."
+              name="terms"
+              onChange={handleChange}
+              defaultValue={terms}
+              id="terms"
+              className="min-h-10 border border-primary focus-visible:ring-primary"
+            />
+          </div>
+        </>
+      )}
+    </div>
   );
 };
 

@@ -25,36 +25,15 @@ const Attributes = ({ attributes }: { attributes: TSelectedAttribute[] }) => {
   };
 
   const handleAttributeValue = (
-    label: string,
+    index: number,
     value: MultiValue<TSelectValue>
   ) => {
     const mutableValue: TSelectValue[] = Array.from(value);
-    dispatch(setSelectedAttributeValue({ label, child: mutableValue }));
+    dispatch(setSelectedAttributeValue({ index, child: mutableValue }));
   };
-
-  // Function to handle change event
-  //   const handleChange = (newValue: React.SetStateAction<string>) => {
-  //     console.log(newValue);
-  //
-  //   };
 
   return (
     <div className="space-y-2">
-      {/* <div className="mb-4 w-full">
-        <Select onValueChange={handleChange}>
-          <SelectTrigger value={selectedValue}>
-            <SelectValue placeholder="Select Property" />
-          </SelectTrigger>
-          <SelectContent>
-            {attributesData.map((item) => (
-              <SelectItem value={item.name} key={item.name}>
-                {item.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div> */}
-
       <div className="space-y-1">
         <Label>Select Attribute</Label>
         <Select
@@ -67,7 +46,7 @@ const Attributes = ({ attributes }: { attributes: TSelectedAttribute[] }) => {
         />
       </div>
       {defaultAttribute.length > 0 &&
-        defaultAttribute.map(({ label, child }) => (
+        defaultAttribute.map(({ label, child }, index) => (
           <div className="space-y-1" key={label}>
             <Label>Select {label}</Label>
             <Select
@@ -77,9 +56,9 @@ const Attributes = ({ attributes }: { attributes: TSelectedAttribute[] }) => {
                 label: item.label,
                 value: String(item.value),
               }))}
-              defaultValue={defaultAttributeValue[label]}
+              defaultValue={defaultAttributeValue[index]?.child}
               onChange={(selectedOptions) =>
-                handleAttributeValue(label, selectedOptions)
+                handleAttributeValue(index, selectedOptions)
               }
               placeholder={`Select ${label}...`}
             />

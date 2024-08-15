@@ -1,7 +1,7 @@
 export type TAllProducts = {
   _id: string;
   title: string;
-  image: {
+  thumbnail: {
     _id: string;
     src: string;
     alt: string;
@@ -10,10 +10,11 @@ export type TAllProducts = {
     _id: string;
     name: string;
   };
-  price: number;
+  regularPrice: number;
+  salePrice: number;
   sku: string;
   sales: number;
-  stock: string;
+  stockStatus: string;
   stockAvailable: number;
   totalReview: number;
   averageRating: number | null;

@@ -20,6 +20,7 @@ export async function middleware(request: NextRequest) {
   }
 
   const currentUser = decodeJWT(accessToken as string) as TUser; // Decode the JWT
+  // const currentUser = { role: "admin" }; // Decode the JWT
 
   if (
     currentUser.role !== "staff" &&

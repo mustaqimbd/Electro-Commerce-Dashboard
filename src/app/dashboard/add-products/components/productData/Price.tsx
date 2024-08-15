@@ -25,8 +25,8 @@ const schema = yup.object().shape({
     .transform((value, originalValue) => (originalValue === "" ? 0 : value))
     .min(0, "Sale price must be a positive number")
     .optional(),
-  start: yup.string().optional().default(""),
-  end: yup.string().optional().default(""),
+  // start: yup.string().optional().default(""),
+  // end: yup.string().optional().default(""),
 });
 
 type TFormInput = yup.InferType<typeof schema>;
@@ -36,7 +36,7 @@ type TProps = {
 };
 const Price = ({ isVariation, index }: TProps) => {
   const dispatch = useAppDispatch();
-  const { regularPrice, discountPercent, salePrice, date } = useAppSelector(
+  const { regularPrice, discountPercent, salePrice } = useAppSelector(
     ({ addProduct, productVariation }) => {
       if (isVariation) {
         return productVariation.variations[index || 0]?.price || {};
@@ -55,8 +55,10 @@ const Price = ({ isVariation, index }: TProps) => {
   });
 
   const [regular, setRegularPrice] = useState(regularPrice);
-  const [discount, setDiscountPercent] = useState(discountPercent);
-  const [sale, setSalePrice] = useState(salePrice);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [discount, setDiscountPercent] = useState<any>(discountPercent);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [sale, setSalePrice] = useState<any>(salePrice);
 
   const handleRegularPriceChange = (e: { target: { value: string } }) => {
     const price = parseFloat(e.target.value);
@@ -79,27 +81,6 @@ const Price = ({ isVariation, index }: TProps) => {
     setSalePrice(0);
   };
 
-  const handleDiscountChange = (e: { target: { value: string } }) => {
-    dispatch(
-      isVariation
-        ? setVariationPrice({
-            index,
-            regularPrice: regular,
-            discountPercent: 0,
-            salePrice: 0,
-          })
-        : setPrice({
-            regularPrice: regular,
-            discountPercent: 0,
-            salePrice: 0,
-          })
-    );
-    const discount = parseFloat(e.target.value);
-    const calculatedSalePrice = regular - (regular * discount) / 100;
-    setDiscountPercent(discount);
-    setSalePrice(calculatedSalePrice);
-  };
-
   const handleSalePriceChange = (e: { target: { value: string } }) => {
     dispatch(
       isVariation
@@ -118,30 +99,52 @@ const Price = ({ isVariation, index }: TProps) => {
     const price = parseFloat(e.target.value);
     const calculatedDiscount = ((regular - price) / regular) * 100;
     setSalePrice(price);
-    setDiscountPercent(calculatedDiscount);
+    setDiscountPercent(parseFloat(calculatedDiscount.toFixed(2)));
   };
 
-  const onSubmit: SubmitHandler<TFormInput> = ({ start, end }) => {
+  const handleDiscountChange = (e: { target: { value: string } }) => {
+    dispatch(
+      isVariation
+        ? setVariationPrice({
+            index,
+            regularPrice: regular,
+            discountPercent: 0,
+            salePrice: 0,
+          })
+        : setPrice({
+            regularPrice: regular,
+            discountPercent: 0,
+            salePrice: 0,
+          })
+    );
+    const discount = parseFloat(e.target.value);
+    const calculatedSalePrice = regular - (regular * discount) / 100;
+    setDiscountPercent(discount);
+    setSalePrice(parseFloat(calculatedSalePrice.toFixed()));
+  };
+
+  // const onSubmit: SubmitHandler<TFormInput> = ({ start, end }) => {
+  const onSubmit: SubmitHandler<TFormInput> = () => {
     dispatch(
       isVariation
         ? setVariationPrice({
             index,
             regularPrice: regular || regularPrice,
-            discountPercent: discount,
-            salePrice: sale,
-            date: {
-              start,
-              end,
-            },
+            salePrice: isNaN(sale) ? 0 : sale,
+            discountPercent: isNaN(discount) ? 0 : discount,
+            // date: {
+            //   start,
+            //   end,
+            // },
           })
         : setPrice({
             regularPrice: regular || regularPrice,
-            discountPercent: discount,
-            salePrice: sale,
-            date: {
-              start,
-              end,
-            },
+            salePrice: isNaN(sale) ? 0 : sale,
+            discountPercent: isNaN(discount) ? 0 : discount,
+            // date: {
+            //   start,
+            //   end,
+            // },
           })
     );
   };
@@ -150,7 +153,7 @@ const Price = ({ isVariation, index }: TProps) => {
     <form onBlur={handleSubmit(onSubmit)} className="pt-2">
       <div className="flex items-center gap-3">
         <Label className="w-40" htmlFor="regularPrice">
-          Regular Price
+          Price
         </Label>
         <div className="w-full">
           <Input
@@ -167,25 +170,6 @@ const Price = ({ isVariation, index }: TProps) => {
       {errors.regularPrice?.message && (
         <p className="text-red-600 ml-44 mt-2">
           {errors.regularPrice?.message as string}
-        </p>
-      )}
-      <div className="flex items-center gap-3 mt-3">
-        <Label className="w-40" htmlFor="discount">
-          Discount
-        </Label>
-        <Input
-          type="number"
-          min={1}
-          {...register("discountPercent")}
-          value={discount || ""}
-          onChange={handleDiscountChange}
-          placeholder="Enter discount percentage"
-          id="discount"
-        />
-      </div>
-      {errors.discountPercent?.message && (
-        <p className="text-red-600 ml-44 mt-2">
-          {errors.discountPercent?.message as string}
         </p>
       )}
       <div className="flex items-center gap-3 mt-3">
@@ -207,7 +191,27 @@ const Price = ({ isVariation, index }: TProps) => {
           {errors.salePrice?.message as string}
         </p>
       )}
-      <div>
+      <div className="flex items-center gap-3 mt-3">
+        <Label className="w-40" htmlFor="discount">
+          Discount
+        </Label>
+        <Input
+          type="number"
+          min={1}
+          {...register("discountPercent")}
+          value={discount || ""}
+          onChange={handleDiscountChange}
+          placeholder="Enter discount percentage"
+          id="discount"
+        />
+      </div>
+      {errors.discountPercent?.message && (
+        <p className="text-red-600 ml-44 mt-2">
+          {errors.discountPercent?.message as string}
+        </p>
+      )}
+
+      {/* <div>
         <div className="grid grid-cols-3 items-center mt-3">
           <Label className="col-span-1" htmlFor="startDate">
             Sale price date
@@ -235,7 +239,7 @@ const Price = ({ isVariation, index }: TProps) => {
         {errors.end?.message && (
           <p className="text-red-600 mt-2">{errors.end?.message as string}</p>
         )}
-      </div>
+      </div> */}
     </form>
   );
 };

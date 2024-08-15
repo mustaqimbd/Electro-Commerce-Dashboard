@@ -35,7 +35,8 @@ import { TInventory, TOffer, TPrice } from "../interface";
 
 const initialState: TVariationInitialState = {
   selectedAttribute: [],
-  selectedAttributeValue: {},
+  selectedAttributeValue: [],
+  generatedVariations: [],
   variations: [],
 };
 
@@ -47,20 +48,46 @@ const variationSlice = createSlice({
       state,
       action: PayloadAction<TSelectedAttribute[]>
     ) => {
+      state.generatedVariations = [];
+      state.variations = [];
       state.selectedAttribute = action.payload;
-      const labelSet = new Set(action.payload.map((label) => label.label));
-      state.selectedAttributeValue = Object.fromEntries(
-        Object.entries(state.selectedAttributeValue).filter(([key]) =>
-          labelSet.has(key)
-        )
+      const newArray = state.selectedAttributeValue.filter((itemB) =>
+        action.payload.some((itemA) => itemA.value === itemB.value)
       );
+      state.selectedAttributeValue = newArray;
     },
     setSelectedAttributeValue: (
       state,
-      action: PayloadAction<TSelectedAttribute>
+      action: PayloadAction<TSelectedAttribute & { index: number }>
     ) => {
-      const { label, child } = action.payload;
-      state.selectedAttributeValue[label] = child;
+      state.generatedVariations = [];
+      state.variations = [];
+      const { index, child } = action.payload;
+      if (state.selectedAttributeValue[index]) {
+        state.selectedAttributeValue[index].child = child;
+      } else {
+        const attributes = { ...state.selectedAttribute[index] };
+        attributes.child = child;
+        state.selectedAttributeValue.push(attributes);
+      }
+    },
+    setGeneratedVariations: (
+      state,
+      action: PayloadAction<
+        {
+          [x: string]: string;
+        }[]
+      >
+    ) => {
+      state.generatedVariations = action.payload;
+      state.variations = [];
+    },
+    setRemoveSingleVariation: (state, action: PayloadAction<number>) => {
+      const i = action.payload;
+      state.generatedVariations = state.generatedVariations.filter(
+        (item, index) => index !== i
+      );
+      state.variations = [];
     },
     setVariationAttributes: (
       state,
@@ -73,15 +100,15 @@ const variationSlice = createSlice({
         // If variations[index] does not exist, push a new object with attributes
         state.variations.push({
           attributes: item,
-          image: "",
+          // image: "",
           price: {
             regularPrice: 0,
             salePrice: 0,
             discountPercent: 0,
-            date: {
-              start: "",
-              end: "",
-            },
+            // date: {
+            //   start: "",
+            //   end: "",
+            // },
           },
           inventory: {
             sku: "",
@@ -90,16 +117,16 @@ const variationSlice = createSlice({
             productCode: "",
             lowStockWarning: 0,
             manageStock: false,
-            showStockQuantity: false,
-            showStockWithText: false,
+            // showStockQuantity: false,
+            // showStockWithText: false,
             hideStock: false,
-            soldIndividually: false,
+            // soldIndividually: false,
           },
-          offer: {
-            flash: false,
-            today: false,
-            featured: false,
-          },
+          // offer: {
+          //   flash: false,
+          //   today: false,
+          //   featured: false,
+          // },
         });
       }
     },
@@ -111,12 +138,22 @@ const variationSlice = createSlice({
       state.variations[index].image = image;
     },
     setVariationPrice: (state, action: PayloadAction<TPrice>) => {
-      state.variations[action.payload.index || 0].price = { ...action.payload };
+      const { index, ...remainingData } = action.payload;
+      state.variations[index || 0].price = { ...remainingData };
     },
-    setVariationInventory: (state, action: PayloadAction<TInventory>) => {
-      state.variations[action.payload.index || 0].inventory = {
-        ...action.payload,
-      };
+    setVariationInventory: (
+      state,
+      action: PayloadAction<Partial<TInventory>>
+    ) => {
+      const data = action.payload;
+      for (const key in data) {
+        const typedKey = key as keyof TInventory;
+        const value = data[typedKey];
+        if (value !== undefined) {
+          state.variations[action.payload.index || 0].inventory[typedKey] =
+            value as never;
+        }
+      }
     },
     setVariationOffer: (state, action: PayloadAction<TOffer>) => {
       state.variations[action.payload.index || 0].offer = { ...action.payload };
@@ -127,6 +164,8 @@ const variationSlice = createSlice({
 export const {
   setSelectedAttribute,
   setSelectedAttributeValue,
+  setGeneratedVariations,
+  setRemoveSingleVariation,
   setVariationAttributes,
   setVariationThumbnail,
   // setVariationGallery,

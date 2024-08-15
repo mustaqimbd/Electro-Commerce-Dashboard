@@ -34,7 +34,7 @@ const listItems = [
 
 const UserMenu = ({ user }: { user: TUserProfile }) => {
   const { toast } = useToast();
-  const { fullName, profilePicture } = user;
+  const { fullName, profilePicture } = user || {};
   const dispatch = useAppDispatch();
   const profilePicUrl = profilePicture
     ? `${config.base_url}/${profilePicture}`

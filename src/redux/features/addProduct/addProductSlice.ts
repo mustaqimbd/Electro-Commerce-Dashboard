@@ -12,56 +12,63 @@ import { TSelectValue } from "./variation/interface";
 
 const initialState: TProduct = {
   title: "",
-  permalink: "",
-  slug: "",
-  type: "simple",
+  // permalink: "",
+  // slug: "",
+  // type: "simple",
   description: "",
-  shortDescription: "",
-  featured: false,
-  downloadable: false,
-  review: false,
+  // shortDescription: "",
   price: {
     regularPrice: 0,
     salePrice: 0,
     discountPercent: 0,
-    date: {
-      start: "",
-      end: "",
-    },
+    save: 0,
+    // date: {
+    //   start: "",
+    //   end: "",
+    // },
   },
   image: {
     thumbnail: "",
     gallery: [],
   },
   inventory: {
-    sku: "",
-    stockStatus: "",
+    // sku: "",
+    stockStatus: "In stock",
     stockQuantity: 0,
-    productCode: "",
-    lowStockWarning: 0,
+    // productCode: "",
     manageStock: false,
-    showStockQuantity: false,
-    showStockWithText: false,
+    lowStockWarning: 0,
+    // showStockQuantity: false,
+    // showStockWithText: false,
     hideStock: false,
-    soldIndividually: false,
+    // soldIndividually: false,
   },
-  offer: {
-    flash: false,
-    today: false,
-    featured: false,
-  },
-  attribute: [],
-  brand: [],
+  // offer: {
+  //   flash: false,
+  //   today: false,
+  //   featured: false,
+  // },
+  attributes: [],
+  variations: [],
+  brand: undefined,
   category: {
-    _id: "",
-    subcategories: [],
+    name: "",
+    subCategory: undefined,
   },
-  tag: [],
-  seoData: {
-    focusKeyphrase: "",
-    metaTitle: "",
-    slug: "",
-    metaDescription: "",
+  // tag: [],
+  // seoData: {
+  //   focusKeyphrase: "",
+  //   metaTitle: "",
+  //   slug: "",
+  //   metaDescription: "",
+  // },
+  featured: false,
+  // downloadable: false,
+  // review: false,
+  warranty: false,
+  warrantyInfo: {
+    duration: { quantity: "", unit: "" },
+    terms: "",
   },
   publishedStatus: {
     status: "Published",
@@ -87,26 +94,35 @@ const productSlice = createSlice({
     //   state.image.gallery = [];
     //   state.image.gallery.push(...action.payload);
     // },
-    setAttribute: (state, action: PayloadAction<TAttribute[]>) => {
-      state.attribute = action.payload;
+    setAttributes: (state, action: PayloadAction<TAttribute[]>) => {
+      state.attributes = action.payload;
     },
     setPrice: (state, action: PayloadAction<TPrice>) => {
       state.price = { ...action.payload };
     },
-    setInventory: (state, action: PayloadAction<TInventory>) => {
-      state.inventory = { ...action.payload };
+    setInventory: (state, action: PayloadAction<Partial<TInventory>>) => {
+      const data = action.payload;
+      for (const key in data) {
+        if (key === "manageStock" && data[key] === false) {
+          state.inventory["lowStockWarning"] = 0;
+        }
+        const typedKey = key as keyof TInventory;
+        const value = data[typedKey];
+        if (value !== undefined) {
+          state.inventory[typedKey] = value as never;
+        }
+      }
     },
     setOffer: (state, action: PayloadAction<TOffer>) => {
       state.offer = { ...action.payload };
     },
     setCategory: (state, action: PayloadAction<string>) => {
-      state.category._id = action.payload;
+      state.category.name = action.payload;
     },
-    setSubcategory: (state, action: PayloadAction<string[]>) => {
-      state.category.subcategories = [];
-      state.category.subcategories.push(...action.payload);
+    setSubcategory: (state, action: PayloadAction<string | undefined>) => {
+      state.category.subCategory = action.payload;
     },
-    setBrand: (state, action: PayloadAction<string[]>) => {
+    setBrand: (state, action: PayloadAction<string | undefined>) => {
       state.brand = action.payload;
     },
     setTag: (state, action: PayloadAction<TSelectValue[]>) => {
@@ -118,10 +134,23 @@ const productSlice = createSlice({
     setPublishedStatus: (state, action: PayloadAction<TPublishedStatus>) => {
       state.publishedStatus = { ...action.payload };
     },
-    setAdvanced: (state, action: PayloadAction<Partial<TProduct>>) => {
-      const { review, featured } = action.payload;
-      state.review = review as boolean;
-      state.featured = featured as boolean;
+    setAdvanced: (state, action: PayloadAction<Record<string, unknown>>) => {
+      const { featured, warranty, quantity, unit, terms } = action.payload;
+      if (featured !== undefined) {
+        state.featured = featured as boolean;
+      }
+      if (warranty !== undefined) {
+        state.warranty = warranty as boolean;
+      }
+      if (quantity !== undefined) {
+        state.warrantyInfo.duration.quantity = quantity as string;
+      }
+      if (unit !== undefined) {
+        state.warrantyInfo.duration.unit = unit as string;
+      }
+      if (terms !== undefined) {
+        state.warrantyInfo.terms = terms as string;
+      }
     },
     setProduct: (state, action: PayloadAction<TProduct>) => {
       return action.payload;
@@ -137,7 +166,7 @@ export const {
   setDescription,
   // setThumbnail,
   // setGallery,
-  setAttribute,
+  setAttributes,
   setPrice,
   setInventory,
   setOffer,
@@ -149,6 +178,7 @@ export const {
   setPublishedStatus,
   setAdvanced,
   setProduct,
+  resetProduct,
 } = productSlice.actions;
 
 export default productSlice.reducer;

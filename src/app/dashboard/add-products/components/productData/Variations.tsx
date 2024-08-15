@@ -1,144 +1,122 @@
 "use client";
-import SectionContentWrapper from "@/components/section-content-wrapper/SectionContentWrapper";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { useState } from "react";
-import Inventory from "./Inventory";
-// import Media from "./Media";
-// import Offer from "./Offer";
-import Price from "./Price";
-import { TSelectedAttributeValue } from "@/redux/features/addProduct/variation/interface";
-import { setVariationAttributes } from "@/redux/features/addProduct/variation/variationSlice";
+import { useEffect } from "react";
+import { TSelectedAttribute } from "@/redux/features/addProduct/variation/interface";
+import {
+  setGeneratedVariations,
+  setVariationAttributes,
+} from "@/redux/features/addProduct/variation/variationSlice";
+import { Button } from "@/components/ui/button";
+import SingleVariation from "./SingleVariation";
 
 const Variations = () => {
   const dispatch = useAppDispatch();
-  const defaultAttributeValue = useAppSelector(
-    ({ productVariation }) => productVariation.selectedAttributeValue
+  const { generatedVariations, selectedAttributeValue } = useAppSelector(
+    ({ productVariation }) => productVariation
   );
 
-  // const variations = {
-  //   Size: [
-  //     { label: "M", value: "M" },
-  //     { label: "L", value: "L" },
-  //   ],
-  //   Color: [
-  //     { label: "white", value: "white" },
-  //     { label: "Green", value: "Green" },
-  //   ],
+  // const generateVariations = (variations: TSelectedAttribute[]) => {
+  //   const keys = variations;
+  //   const firstKey = keys[0];
+  //   const restKeys = keys.slice(1);
+
+  //   const result: { [x: string]: string }[] = [];
+
+  //   const generateCombination = (
+  //     index: number,
+  //     combination: { [x: string]: string }
+  //   ) => {
+  //     if (index === restKeys.length) {
+  //       result.push(combination);
+  //       return;
+  //     }
+
+  //     const currentKey = restKeys[index];
+  //     // variations?.forEach(({ child }) => (
+  //       variations[1]?.child?.forEach((option) => {
+  //         const newCombination = { ...combination, [option.label]: option.label };
+  //         generateCombination(index + 1, newCombination);
+  //       })
+  //     // ));
+  //   };
+
+  //   // variations[0]?.forEach(({ child }) => (
+  //     variations[0]?.child?.forEach((option) => {
+  //       const combination = { [option.label]: option.label };
+  //       generateCombination(0, combination);
+  //     })
+  //   // ));
+
+  //   return result;
   // };
 
-  const generateVariations = (variations: TSelectedAttributeValue) => {
-    const keys = Object.keys(variations);
-    const firstKey = keys[0];
-    const restKeys = keys.slice(1);
-
+  const generateVariations = (variations: TSelectedAttribute[]) => {
     const result: { [x: string]: string }[] = [];
-
     const generateCombination = (
       index: number,
       combination: { [x: string]: string }
     ) => {
-      if (index === restKeys.length) {
+      if (index === variations.length) {
         result.push(combination);
         return;
       }
-
-      const currentKey = restKeys[index];
-      variations[currentKey].forEach((option) => {
-        const newCombination = { ...combination, [currentKey]: option.value };
+      const currentKey = variations[index];
+      currentKey.child?.forEach((option) => {
+        const newCombination = {
+          ...combination,
+          [currentKey.label as string]: option.label,
+        };
         generateCombination(index + 1, newCombination);
       });
     };
-
-    variations[firstKey]?.forEach((option) => {
-      const combination = { [firstKey]: option.value };
-      generateCombination(0, combination);
-    });
-
+    generateCombination(0, {});
     return result;
   };
-  const generatedVariations = generateVariations(defaultAttributeValue);
 
-  const [activeTab, setActiveTab] = useState<string>("media");
-  const handleTabClick = (tab: string) => {
-    setActiveTab(tab);
+  const variation = () => {
+    const generatedData = generateVariations([...selectedAttributeValue]);
+    if (generatedData.length < 2) {
+      alert(
+        "Selected attribute value have to be more than one to generate variations!"
+      );
+    } else {
+      dispatch(setGeneratedVariations(generatedData));
+    }
   };
 
-  generatedVariations.map((item, index) =>
-    dispatch(setVariationAttributes({ index, item }))
-  );
+  useEffect(() => {
+    generatedVariations.map((item, index) =>
+      dispatch(setVariationAttributes({ index, item }))
+    );
+  }, [dispatch, generatedVariations]);
+
+  const showText =
+    Object.keys(selectedAttributeValue).length < 1 &&
+    generatedVariations.length < 1;
+  const showBtn =
+    Object.keys(selectedAttributeValue).length > 0 &&
+    generatedVariations.length < 1;
+
+  const removeVariation = () => {
+    dispatch(setGeneratedVariations([]));
+  };
 
   return (
-    <div className="space-y-2">
-      {generatedVariations.map((item, index) => (
-        <div key={index} className="relative">
-          <div className="flex items-center gap-5 absolute top-3 left-10">
-            {/* Map over the keys of each item */}
-            {Object.keys(item).map((key) => (
-              <span className="py-2" key={key}>
-                {item[key]}
-              </span>
-            ))}
-          </div>
-          <SectionContentWrapper collapse={true}>
-            <div>
-              {/* <button
-                onClick={() => handleTabClick("media")}
-                className={`${
-                  activeTab === "media"
-                    ? "bg-blue-500 text-white  hover:bg-blue-700"
-                    : "border "
-                }  font-semibold py-2 px-4 rounded-sm `}
-              >
-                Media
-              </button> */}
-              <button
-                onClick={() => handleTabClick("price")}
-                className={`${
-                  activeTab === "price"
-                    ? "bg-blue-500 text-white  hover:bg-blue-700"
-                    : "border "
-                }  font-semibold py-2 px-4 rounded-sm`}
-              >
-                Price
-              </button>
-              <button
-                onClick={() => handleTabClick("inventory")}
-                className={`${
-                  activeTab === "inventory"
-                    ? "bg-blue-500 text-white  hover:bg-blue-700"
-                    : "border "
-                }  font-semibold py-2 px-4 rounded-sm `}
-              >
-                Inventory
-              </button>
-              {/* <button
-                onClick={() => handleTabClick("offer")}
-                className={`${
-                  activeTab === "offer"
-                    ? "bg-blue-500 text-white  hover:bg-blue-700"
-                    : "border "
-                }  font-semibold py-2 px-4 rounded-sm`}
-              >
-                Offer
-              </button> */}
-            </div>
-            <div>
-              {/* {activeTab === "media" && (
-                <Media isVariation={true} index={index} />
-              )} */}
-              {activeTab === "price" && (
-                <Price isVariation={true} index={index} />
-              )}
-              {activeTab === "inventory" && (
-                <Inventory isVariation={true} index={index} />
-              )}
-              {/* {activeTab === "offer" && (
-                <Offer isVariation={true} index={index} />
-              )} */}
-            </div>
-          </SectionContentWrapper>
-        </div>
-      ))}
+    <div className="space-y-2 min-h-20 flex flex-col items-center justify-center">
+      {showText ? (
+        <p>Select attributes to generate product variations.</p>
+      ) : showBtn ? (
+        <Button onClick={variation}>Generate variations</Button>
+      ) : (
+        <>
+          <Button onClick={removeVariation} className="mb-2">
+            Remove variation
+          </Button>
+          {generatedVariations.map((item, index) => (
+            <SingleVariation item={item} index={index} key={index} />
+          ))}
+        </>
+      )}
     </div>
   );
 };

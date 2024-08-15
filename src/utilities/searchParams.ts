@@ -9,7 +9,7 @@ const searchParams = (
       }
     });
   }
-  return params;
+  return params.toString();
 };
 
 export default searchParams;

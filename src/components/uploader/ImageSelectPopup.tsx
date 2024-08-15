@@ -1,14 +1,9 @@
 "use client";
-import {
-  setGallery,
-  setThumbnail,
-} from "@/redux/features/imageSelector/imageSelectorSlice";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import CommonModal from "../modal/CommonModal";
 import MediaLibrary from "./MediaLibrary";
 import UploadFile from "./UploadFile";
 import { Button } from "../ui/button";
-import { useAppDispatch } from "@/redux/hooks";
 
 type TProps = {
   open: boolean;
@@ -17,17 +12,11 @@ type TProps = {
   modalTitle: string;
 };
 const ImageSelectPopup = ({ open, click, handleOpen, modalTitle }: TProps) => {
-  const dispatch = useAppDispatch();
   const [activeTab, setActiveTab] = useState<string>("uploadFile");
 
   const handleTabClick = (tab: string) => {
     setActiveTab(tab);
   };
-
-  useEffect(() => {
-    dispatch(setThumbnail(""));
-    dispatch(setGallery([]));
-  }, [dispatch]);
 
   return (
     <CommonModal

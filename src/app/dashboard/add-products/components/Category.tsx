@@ -20,21 +20,18 @@ const Category = ({ categories }: { categories: TCategories[] }) => {
   );
 
   const toggleCategory = (categoryId: string) => {
-    if (selectCategory._id === categoryId) {
+    if (selectCategory.name === categoryId) {
       dispatch(setCategory(""));
     } else {
       dispatch(setCategory(categoryId));
     }
-    dispatch(setSubcategory([]));
+    dispatch(setSubcategory(undefined));
   };
   const toggleSubcategory = (categoryId: string) => {
-    if (selectCategory.subcategories.includes(categoryId)) {
-      const restItem = selectCategory.subcategories.filter(
-        (item) => item !== categoryId
-      );
-      dispatch(setSubcategory(restItem));
+    if (selectCategory.subCategory === categoryId) {
+      dispatch(setSubcategory(undefined));
     } else {
-      dispatch(setSubcategory([...selectCategory.subcategories, categoryId]));
+      dispatch(setSubcategory(categoryId));
     }
   };
 
@@ -49,13 +46,13 @@ const Category = ({ categories }: { categories: TCategories[] }) => {
       <input
         type="checkbox"
         id={category._id as string}
-        checked={selectCategory._id == category._id}
+        checked={selectCategory.name == category._id}
         onChange={() => toggleCategory(category._id)}
         className="mr-1 size-4 "
       />
       <label
         htmlFor={category._id as string}
-        className={`text-gray-800 ${selectCategory._id == category._id ? "font-bold" : ""}`}
+        className={`text-gray-800 ${selectCategory.name == category._id ? "font-bold" : ""}`}
       >
         <span>{category.name}</span>
         {/* <PlusIcon /> */}
@@ -73,13 +70,13 @@ const Category = ({ categories }: { categories: TCategories[] }) => {
       <input
         type="checkbox"
         id={category._id as string}
-        checked={selectCategory.subcategories.includes(category._id)}
+        checked={selectCategory.subCategory === category._id}
         onChange={() => toggleSubcategory(category._id)}
         className="mr-1 size-4 "
       />
       <label
         htmlFor={category._id as string}
-        className={`text-gray-800  ${selectCategory.subcategories.includes(category._id) ? "font-bold" : ""}`}
+        className={`text-gray-800  ${selectCategory.subCategory === category._id ? "font-bold" : ""}`}
       >
         {category.name}
       </label>
@@ -103,7 +100,7 @@ const Category = ({ categories }: { categories: TCategories[] }) => {
             {categories.map((category: TCategories) => (
               <li className="p-2" key={category._id}>
                 {renderCategory(category)}
-                {selectCategory._id == category._id &&
+                {selectCategory.name == category._id &&
                   category.subcategories &&
                   renderSubcategories(category.subcategories)}
               </li>

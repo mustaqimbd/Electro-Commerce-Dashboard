@@ -29,4 +29,5 @@ export type TProductsInitialState = {
   search: boolean;
   searchQuery: string;
   searchedProducts: TProduct[];
+  productDataErrors: string[];
 };

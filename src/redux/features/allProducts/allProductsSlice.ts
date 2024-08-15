@@ -10,6 +10,7 @@ const initialState: TProductsInitialState = {
   search: false,
   searchQuery: "",
   searchedProducts: [],
+  productDataErrors: [],
 };
 
 const allProductSlice = createSlice({
@@ -34,6 +35,9 @@ const allProductSlice = createSlice({
     setSearchedProducts: (state, action) => {
       state.searchedProducts = action.payload;
     },
+    setProductDataErrors: (state, action) => {
+      state.productDataErrors = action.payload;
+    },
   },
 });
 
@@ -44,6 +48,7 @@ export const {
   setSearch,
   setSearchQuery,
   setSearchedProducts,
+  setProductDataErrors,
 } = allProductSlice.actions;
 
 export default allProductSlice.reducer;

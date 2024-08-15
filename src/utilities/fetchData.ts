@@ -3,7 +3,7 @@ import config from "@/config/config";
 import { cookies } from "next/headers";
 // import TGenericResponse from "./response";
 import { revalidateTag } from "next/cache";
-import objectToSearchParams from "./objectToSearchParams";
+import objectToSearchParams from "./searchParams";
 // type TEndPoint = "/orders/admin/processing-orders"
 
 type TTags =
@@ -19,6 +19,7 @@ type TTags =
   | "customerOrderHistory"
   | "categories"
   | "attributes"
+  | "brands"
   | "tags";
 
 type TProps = {

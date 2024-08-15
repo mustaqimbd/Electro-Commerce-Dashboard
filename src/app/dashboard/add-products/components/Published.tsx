@@ -1,102 +1,124 @@
 "use client";
 import SectionContentWrapper from "@/components/section-content-wrapper/SectionContentWrapper";
 import { Button } from "@/components/ui/button";
-// import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { setPublishedStatus } from "@/redux/features/addProduct/addProductSlice";
 import { TPublishedStatus } from "@/redux/features/addProduct/interface";
-// import {
-//   Select,
-//   SelectContent,
-//   SelectItem,
-//   SelectTrigger,
-//   SelectValue,
-// } from "@/components/ui/select";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { useCreateProductMutation } from "@/redux/features/allProducts/allProductsApi";
+import { useAppSelector } from "@/redux/hooks";
 import { SubmitHandler, useForm } from "react-hook-form";
+import modifiedVariations from "../lib/modifiedVariations";
+import ProductSchema from "../lib/productValidation";
+import { toast } from "@/components/ui/use-toast";
 
 const Published = () => {
-  const dispatch = useAppDispatch();
+  const [createProduct] = useCreateProductMutation();
   const publishedStatus = useAppSelector(
     ({ addProduct }) => addProduct.publishedStatus
   );
-  // Function to handle change event
-  // const handleChange = (newValue: React.SetStateAction<string>) => {
-  //   console.log(newValue);
-  // };
+  const product = useAppSelector(({ addProduct }) => addProduct);
+  const productData = { ...product };
+  const image = useAppSelector(({ imageSelector }) => imageSelector);
+  const { variations, selectedAttributeValue, selectedAttribute } =
+    useAppSelector(({ productVariation }) => productVariation);
+  // const [errors, setErrors] = useState([])
+
   const {
     register,
     handleSubmit,
     // formState: { errors },
   } = useForm<TPublishedStatus>();
 
-  const onSubmit: SubmitHandler<TPublishedStatus> = (data) => {
-    dispatch(setPublishedStatus(data));
+  const onSubmit: SubmitHandler<TPublishedStatus> = async (data) => {
+    productData.attributes = selectedAttributeValue.map(({ value, child }) => ({
+      name: value as string,
+      values: child.map(({ value }) => value as string),
+    }));
+    productData.image = image;
+    productData.variations = modifiedVariations(variations, product);
+    productData.publishedStatus = data;
+
+    try {
+      const validatedData = await ProductSchema.validate(productData, {
+        abortEarly: false,
+      });
+      if (selectedAttribute.length !== selectedAttributeValue.length) {
+        throw new Error("Attribute value is required");
+      }
+
+      const res = await createProduct(validatedData).unwrap();
+
+      toast({
+        className: "bg-success text-white text-2xl",
+        title: res.message,
+      });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      let errors = [];
+      if (err.errors) {
+        errors = err.errors;
+      } else {
+        const e =
+          err?.data?.errorMessages && err?.data?.errorMessages[0]?.message;
+        errors.push(err.message || e);
+      }
+      toast({
+        className: "bg-red-600 text-white text-2xl",
+        title: errors[0],
+      });
+      // setErrors(error)
+    }
   };
 
   return (
-    <SectionContentWrapper heading="Published" className="text-center">
-      <form onChange={handleSubmit(onSubmit)} className="space-y-4">
-        <div className="flex items-center justify-between">
-          <div className="flex flex-col gap-3">
-            <Label htmlFor="status">Status</Label>
-            {/* <Controller
-        name="status"
-        control={control}
-        defaultValue={publishedStatus.status}
-        render={({ field }) => (
-          <Select onValueChange={field.onChange} >
-            <SelectTrigger >
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="Published">Published</SelectItem>
-              <SelectItem value="Draft">Draft</SelectItem>
-            </SelectContent>
-          </Select>
-        )}
-      /> */}
-            <select
-              defaultValue={publishedStatus.status}
-              {...register("status")}
-              id="status"
-              className="border h-9 border-gray-300  rounded-sm min-w-[100px] xl:w-[120px]"
-            >
-              <option value="Published">Published</option>
-              <option value="Draft">Draft</option>
-            </select>
+    <>
+      {/* {errors.map((msg: string) => (
+        <p key={msg} className="bg-red-600 text-white text-sm absolute top-1 z-10">{msg}</p>
+      ))} */}
+      <SectionContentWrapper heading="Published" className="text-center">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+          <div className="flex items-center justify-evenly gap-10">
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="status">Status</Label>
+              <select
+                defaultValue={publishedStatus.status}
+                {...register("status")}
+                id="status"
+                className="border h-9 border-gray-300  rounded-sm min-w-[100px] xl:w-[120px]"
+              >
+                <option value="Published">Published</option>
+                <option value="Draft">Draft</option>
+              </select>
+            </div>
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="visibility">Visibility</Label>
+              <select
+                defaultValue={publishedStatus.visibility}
+                {...register("visibility")}
+                id="visibility"
+                className="border h-9 border-gray-300  rounded-sm"
+              >
+                <option value="Public">Public</option>
+                {/* <option value="Password protected">Password protected</option> */}
+                <option value="Private">Private</option>
+              </select>
+            </div>
           </div>
-          <div className="flex flex-col gap-3">
-            <Label htmlFor="visibility">Visibility</Label>
-            <select
-              defaultValue={publishedStatus.visibility}
-              {...register("visibility")}
-              id="visibility"
-              className="border h-9 border-gray-300  rounded-sm"
-            >
-              <option value="Public">Public</option>
-              <option value="Password protected">Password protected</option>
-              <option value="Private">Private</option>
-            </select>
+          <div className="flex items-center justify-evenly gap-4">
+            <Label htmlFor="date">Published on :</Label>
+            <input
+              type="date"
+              defaultValue={publishedStatus.date}
+              {...register("date")}
+              id="date"
+              className="border h-9 border-gray-300  rounded-sm w-[125px]"
+            />
           </div>
-        </div>
-
-        <div className="flex items-center justify-between gap-4 mb-3">
-          <Label htmlFor="date">Published on:</Label>
-          <input
-            type="date"
-            defaultValue={publishedStatus.date}
-            {...register("date")}
-            id="date"
-            className="border h-9 border-gray-300  rounded-sm"
-          />
-        </div>
-      </form>
-      <div className="flex gap-4 items-center justify-center pt-3">
-        <Button>Save</Button>
-        <Button>Publish</Button>
-      </div>
-    </SectionContentWrapper>
+          <div className="flex gap-4 items-center justify-center">
+            <Button>Save</Button>
+          </div>
+        </form>
+      </SectionContentWrapper>
+    </>
   );
 };
 
