@@ -5,9 +5,9 @@ const layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <section>
       <Navbar></Navbar>
-      <div className="flex gap-4">
+      <div className="flex">
         <Sidebar></Sidebar>
-        <div className="w-full h-[calc(100vh-60px)] overflow-y-auto">
+        <div className="w-full h-[calc(100vh-63px)] overflow-y-auto bg-gray-50">
           {children}
         </div>
       </div>

@@ -27,7 +27,13 @@ const ActiveLink = ({
       : "";
   return (
     <Link href={href}>
-      <span className={cn("group flex gap-2 items-center", className, acClass)}>
+      <span
+        className={cn(
+          "group flex gap-2 items-center rounded-lg",
+          className,
+          acClass
+        )}
+      >
         {icon}
         <span>{name}</span>
       </span>

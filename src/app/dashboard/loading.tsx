@@ -1,9 +1,11 @@
+import Image from "next/image";
+import loadingGif from "../../../public/loading.gif";
+
 const Loading = () => {
   return (
-    <div
-      role="status"
-      className="w-full h-[calc(100vh-60px)] bg-gray-300 animate-pulse dark:bg-gray-700 z-10"
-    ></div>
+    <div className="flex flex-col items-center justify-center gap-5 h-[100vh]">
+      <Image src={loadingGif} alt="loading" priority={true}></Image>
+    </div>
   );
 };
 

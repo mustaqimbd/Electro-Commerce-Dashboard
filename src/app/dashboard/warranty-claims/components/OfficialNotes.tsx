@@ -1,6 +1,7 @@
 "use client";
 import EcButton from "@/components/EcButton/EcButton";
 import CommonModal from "@/components/modal/CommonModal";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/use-toast";
@@ -50,10 +51,17 @@ const OfficialNotes = ({ reqData }: { reqData: TWarrantyClaim }) => {
     <div>
       <Button
         onClick={handleOpen}
-        className="bg-inherit text-inherit hover:bg-inherit"
+        className="bg-inherit text-inherit hover:bg-inherit relative"
+        title={reqData?.officialNotes}
       >
         Notes
+        {reqData?.officialNotes ? (
+          <Badge className="w-3 h-3 rounded-full p-0 m-0 absolute -top-1 -right-1"></Badge>
+        ) : (
+          ""
+        )}
       </Button>
+
       <CommonModal
         open={open}
         handleOpen={handleOpen}

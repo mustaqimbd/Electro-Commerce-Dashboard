@@ -24,7 +24,7 @@ const WarrantyClaimTable = () => {
     getCoreRowModel: getCoreRowModel(),
   });
   return (
-    <div>
+    <div className="rounded-lg overflow-hidden">
       <Table className="min-w-[1100px]">
         <TableHeader className="bg-primary text-white">
           {table?.getHeaderGroups()?.map((headerGroup) => (
@@ -50,7 +50,7 @@ const WarrantyClaimTable = () => {
               <TableRow
                 key={row?.id}
                 data-state={row?.getIsSelected() && "selected"}
-                className="border-b border-cyan-400"
+                className="border-b"
               >
                 {row?.getVisibleCells()?.map((cell) => (
                   <TableCell key={cell?.id} className="text-center">

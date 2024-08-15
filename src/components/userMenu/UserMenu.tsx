@@ -14,25 +14,28 @@ import config from "@/config/config";
 import { useLogOutMutation } from "@/redux/features/auth/authApi";
 import { logOut } from "@/redux/features/auth/authSlice";
 import { useAppDispatch } from "@/redux/hooks";
+import { TErrorResponse } from "@/types/response/response";
 import { TUserProfile } from "@/types/user/user.interface";
-import { LogOut, Settings, User } from "lucide-react";
+import { Key, LogOut, User } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import dummyUser from "../../../public/icons/user.jpg";
 
 const listItems = [
   {
-    name: "Profile",
+    name: "Accounts",
     icon: <User className="mr-2 h-4 w-4" />,
-    href: "/dashboard/user",
+    href: "/dashboard/accounts",
   },
   {
     name: "Settings",
-    icon: <Settings className="mr-2 h-4 w-4" />,
-    href: "/",
+    icon: <Key className="mr-2 h-4 w-4" />,
+    href: "/dashboard/accounts/change-password",
   },
 ];
 
 const UserMenu = ({ user }: { user: TUserProfile }) => {
+  const router = useRouter();
   const { toast } = useToast();
   const { fullName, profilePicture } = user || {};
   const dispatch = useAppDispatch();
@@ -47,12 +50,12 @@ const UserMenu = ({ user }: { user: TUserProfile }) => {
     try {
       await logoutUser({}).unwrap();
       dispatch(logOut());
-      window.location.assign("/login");
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
+      router.push("/login");
+    } catch (error) {
+      const err = (error as { data: TErrorResponse }).data;
       toast({
         variant: "destructive",
-        title: error?.data?.message,
+        title: err?.message,
       });
     }
   };

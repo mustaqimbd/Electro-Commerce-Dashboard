@@ -32,7 +32,7 @@ export type Product = {
   unitPrice: number;
   quantity: number;
   total: number;
-  iSWarranty: boolean;
+  isProductWarrantyAvailable: boolean;
   isWarrantyClaim: boolean;
   warranty: {
     warrantyCodes?: {

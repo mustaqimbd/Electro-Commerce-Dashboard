@@ -1,3 +1,4 @@
+import { Card } from "@/components/ui/card";
 import { getPermission } from "@/lib/getAccessToken";
 import { permission } from "@/types/order/order.interface";
 import isPermitted from "@/utilities/isPermitted";
@@ -21,7 +22,7 @@ const ManageUser = () => {
   return (
     <>
       <GetAllUser />
-      <div className="shadow-md p-5 bg-white border-l">
+      <Card className="p-5 m-5 rounded-lg">
         <div className="grid grid-cols-2 justify-between items-center mb-8">
           <h2 className="text-3xl">Manage employs</h2>
         </div>
@@ -29,7 +30,7 @@ const ManageUser = () => {
           <CreateUser />
           <UsersTable />
         </div>
-      </div>
+      </Card>
     </>
   );
 };
