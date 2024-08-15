@@ -3,7 +3,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import Image from "next/image";
 import config from "@/config/config";
 import Actions from "./Actions";
-import { TAllProducts } from "../lib/interface";
+import { TAllProducts } from "@/redux/features/allProducts/allProductsInterface";
 
 export const columns: ColumnDef<TAllProducts>[] = [
   {
