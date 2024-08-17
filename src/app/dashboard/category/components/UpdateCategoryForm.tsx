@@ -1,5 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { DialogClose } from "@/components/ui/dialog";
 import {
   Form,
   FormField,
@@ -9,14 +10,14 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
-import { useAddCategoryMutation } from "@/redux/features/category/categoryApi";
+import { useUpdateCategoryMutation } from "@/redux/features/category/categoryApi";
 import { setThumbnail } from "@/redux/features/imageSelector/imageSelectorSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { refetchCategories } from "../lib/getCategories";
-import AddCategoryMedia from "./AddCategoryMedia";
+import UpdateCategoryMedia from "./UpdateCategoryMedia";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -30,12 +31,22 @@ type TCategoryForm = {
   name: string;
   image?: string;
 };
-
-const AddCategoryForm = () => {
+type TCategoryImage = {
+  src: string;
+};
+const UpdateCategoryForm = ({
+  id,
+  name,
+  image,
+}: {
+  id: string;
+  name: string;
+  image: TCategoryImage;
+}) => {
   const { thumbnail } = useAppSelector(({ imageSelector }) => imageSelector);
   const dispatch = useAppDispatch();
 
-  const [addCategory] = useAddCategoryMutation();
+  const [updateCategory] = useUpdateCategoryMutation();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -48,22 +59,22 @@ const AddCategoryForm = () => {
 
   const onSubmit = async (data: TCategoryForm) => {
     data.image = thumbnail || undefined;
-    const addedCategory = await addCategory(data).unwrap();
-    if (addedCategory?.success) {
-      refetchCategories();
+
+    const updatedCategory = await updateCategory({ id, data }).unwrap();
+    if (updatedCategory?.success) {
       form.reset();
+      refetchCategories();
       dispatch(setThumbnail(""));
 
       toast({
         className: "bg-success text-white text-2xl",
-        title: addedCategory?.message,
+        title: updatedCategory?.message,
       });
     }
   };
 
-  //handle Rest
-  const handleReset = () => {
-    form.reset();
+  //handle close button for remove setThumbnail in thumbnail select slice
+  const handleClose = () => {
     dispatch(setThumbnail(""));
   };
 
@@ -77,25 +88,25 @@ const AddCategoryForm = () => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Name</FormLabel>
-                <Input placeholder="Category Name" {...field} />
+                <Input placeholder={name} {...field} />
                 <FormMessage />
               </FormItem>
             )}
           />
 
-          <AddCategoryMedia />
+          <UpdateCategoryMedia image={image} />
 
           <div className="flex gap-3 items-center">
             <Button type="submit" className="">
-              Add Category
+              Update Category
             </Button>
-            <Button
-              type="reset"
-              className="bg-transparent border border-red-100 text-black hover:bg-red-500 hover:text-white"
-              onClick={() => handleReset()}
-            >
-              Reset
-            </Button>
+            <div className="flex gap-4 items-center ">
+              <DialogClose asChild>
+                <Button onClick={() => handleClose()} className="bg-black">
+                  Done
+                </Button>
+              </DialogClose>{" "}
+            </div>
           </div>
           <div></div>
         </form>
@@ -104,4 +115,4 @@ const AddCategoryForm = () => {
   );
 };
 
-export default AddCategoryForm;
+export default UpdateCategoryForm;

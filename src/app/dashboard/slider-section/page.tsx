@@ -23,7 +23,7 @@ const SliderSection = () => {
     setItems([...items, { id: items.length + 1 }]);
   };
   // Function to remove an accordion item by its id
-  const handleRemove = (id) => {
+  const handleRemove = (id: number) => {
     setItems(items.filter((item) => item.id !== id));
   };
   return (
@@ -57,7 +57,7 @@ const SliderSection = () => {
 
                   <Trash2
                     className="align-bottom text-red-500 mt-4 "
-                    onClick={() => handleRemove(item.id)}
+                    onClick={() => handleRemove(item?.id)}
                   />
                 </div>
               </>

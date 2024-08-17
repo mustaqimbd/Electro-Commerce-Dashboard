@@ -11,25 +11,28 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
   Form,
-  FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { setThumbnail } from "@/redux/features/imageSelector/imageSelectorSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { useForm } from "react-hook-form";
+import AddCategoryMedia from "../../components/AddCategoryMedia";
 
 const formSchema = z.object({
   name: z.string().min(2, {
     message: "Subcategory Name must be at least 2 characters.",
   }),
   image: z.string().optional(),
+  category: z.string(),
 });
 
 type TSubCategoryForm = {
   name: string;
-  category?: string;
+  category: string;
   image?: string;
 };
 
@@ -40,14 +43,28 @@ type TSubCategoryForm = {
 
 const AddSubCategoryForm = ({ category }: { category: string }) => {
   const [addSubCategory] = useAddSubCategoryMutation();
+  const dispatch = useAppDispatch();
+  const { thumbnail } = useAppSelector(({ imageSelector }) => imageSelector);
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      image: "",
+      category: "",
+    },
+  });
 
   const onSubmit = async (data: TSubCategoryForm) => {
     if (category) {
       data.category = category;
+      data.image = thumbnail || undefined;
 
       const addedSubCategory = await addSubCategory(data).unwrap();
       if (addedSubCategory?.success) {
         refetchCategories();
+        form.reset();
+        dispatch(setThumbnail(""));
         toast({
           className: "bg-success text-white text-2xl",
           title: addedSubCategory?.message,
@@ -61,13 +78,11 @@ const AddSubCategoryForm = ({ category }: { category: string }) => {
     }
   };
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-      image: "",
-    },
-  });
+  //handle Rest
+  const handleReset = () => {
+    form.reset();
+    dispatch(setThumbnail(""));
+  };
 
   return (
     <div>
@@ -79,41 +94,29 @@ const AddSubCategoryForm = ({ category }: { category: string }) => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Name</FormLabel>
-                <FormControl>
-                  <Input placeholder="Enter Sub Category Name" {...field} />
-                </FormControl>
-
+                <Input placeholder="Sub Category Name" {...field} />
                 <FormMessage />
               </FormItem>
             )}
           />
 
-          <FormField
-            control={form.control}
-            name="image"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Thumbnail Link</FormLabel>
-                <FormControl>
-                  <Input placeholder="Thumbnail image" {...field} />
-                </FormControl>
+          <AddCategoryMedia />
 
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <Button type="submit">Add Category</Button>
-
+          <div className="flex gap-3 items-center">
+            <Button type="submit" className="">
+              Add Sub Category
+            </Button>
+            <Button
+              type="reset"
+              className="bg-transparent border border-red-100 text-black hover:bg-red-500 hover:text-white"
+              onClick={() => handleReset()}
+            >
+              Reset
+            </Button>
+          </div>
           <div></div>
         </form>
       </Form>
-      {/* <UploaderPopup
-        open={open}
-        click={click}
-        handleOpen={handleOpen}
-        modalTitle={`Add image for Category ${click}`}
-      /> */}
     </div>
   );
 };

@@ -46,6 +46,7 @@ import { useDeleteSubCategoryMutation } from "@/redux/features/category/subCateg
 import Image from "next/image";
 import { refetchCategories } from "../../lib/getCategories";
 import { refetchSubCategories } from "../../lib/getSubcategories";
+import UpdateSubCategoryForm from "./UpdateSubcategoryForm";
 
 export type TSubCategories = {
   _id: string;
@@ -106,9 +107,9 @@ export const columns: ColumnDef<TSubCategories>[] = [
       const [deleteSubCategory] = useDeleteSubCategoryMutation();
 
       const handleDelete = async (id: string) => {
-        const categoryIds = [id];
+        const subCategoryIds = [id];
 
-        const res = await deleteSubCategory(categoryIds).unwrap();
+        const res = await deleteSubCategory(subCategoryIds).unwrap();
 
         if (res?.success) {
           refetchSubCategories();
@@ -133,20 +134,15 @@ export const columns: ColumnDef<TSubCategories>[] = [
               {" "}
               <SquarePen className="text-green-500" />
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px] h-fit">
-              <h1 className="text-3xl">Are you sure?</h1>
-              <div className="flex gap-4 items-center ">
-                <DialogClose asChild>
-                  <Button className="bg-red-500 hover:bg-red-500">
-                    Cancel
-                  </Button>
-                </DialogClose>{" "}
-                <Button
-                  onClick={() => handleDelete(row.getValue("_id"))}
-                  className=""
-                >
-                  Yes, Delete it!
-                </Button>
+            <DialogContent className=" h-fit">
+              <h1 className="text-2xl font-semibold">Update Sub Category</h1>
+
+              <div>
+                <UpdateSubCategoryForm
+                  id={row.getValue("_id")}
+                  name={row.getValue("name")}
+                  image={row.getValue("image")}
+                />
               </div>
             </DialogContent>
           </Dialog>

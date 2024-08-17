@@ -52,6 +52,7 @@ import { useDeleteCategoryMutation } from "@/redux/features/category/categoryApi
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { refetchCategories } from "../lib/getCategories";
+import UpdateCategoryForm from "./UpdateCategoryForm";
 
 export type TCategories = {
   _id: string;
@@ -178,19 +179,14 @@ export const columns: ColumnDef<TCategories>[] = [
               <SquarePen className="text-green-500" />
             </DialogTrigger>
             <DialogContent className=" h-fit">
-              <h1 className="text-3xl">Are you sure?</h1>
-              <div className="flex gap-4 items-center ">
-                <DialogClose asChild>
-                  <Button className="bg-red-500 hover:bg-red-500">
-                    Cancel
-                  </Button>
-                </DialogClose>{" "}
-                <Button
-                  onClick={() => handleDelete(row.getValue("_id"))}
-                  className=""
-                >
-                  Update
-                </Button>
+              <h1 className="text-2xl font-semibold">Update Category</h1>
+
+              <div>
+                <UpdateCategoryForm
+                  id={row.getValue("_id")}
+                  name={row.getValue("name")}
+                  image={row.getValue("image")}
+                />
               </div>
             </DialogContent>
           </Dialog>
