@@ -6,27 +6,29 @@ export type TSelectValue = {
 };
 
 export type TSelectedAttribute = {
-  label: string;
+  label?: string;
   value?: string;
   child: TSelectValue[];
 };
 
-export type TSelectedAttributeValue = {
-  [key: string]: TSelectValue[];
-};
+// export type TSelectedAttributeValue = {
+//   [key: string]: TSelectValue[];
+// };
 
 export type TVariation = {
   attributes: {
     [key: string]: string;
   };
   price: TPrice;
-  image: string;
+  image?: string;
   inventory: TInventory;
-  offer: TOffer;
+  offer?: TOffer;
 };
 
 export type TVariationInitialState = {
   selectedAttribute: TSelectedAttribute[];
-  selectedAttributeValue: TSelectedAttributeValue;
+  // selectedAttributeValue: TSelectedAttributeValue;
+  selectedAttributeValue: TSelectedAttribute[];
+  generatedVariations: { [key: string]: string }[];
   variations: TVariation[];
 };

@@ -3,6 +3,7 @@ import { permission } from "@/types/order/order.interface";
 import isPermitted from "@/utilities/isPermitted";
 import {
   Bike,
+  Home,
   ImagePlusIcon,
   LayoutDashboard,
   LayoutList,
@@ -11,6 +12,7 @@ import {
   PackageSearch,
   PlusCircle,
   Shapes,
+  User,
   UsersRound,
 } from "lucide-react";
 import NavLink from "../NavLink/NavLink";
@@ -24,7 +26,7 @@ import {
 export function Sidebar() {
   const { permissions = [] } = getPermission();
 
-  const seeDashboard = isPermitted(permissions);
+  const isSuperAdmin = isPermitted(permissions);
   const manageProduct = isPermitted(permissions, permission.manageProduct);
   const manageOrder = isPermitted(permissions, permission.manageOrder);
   const manageProcessing = isPermitted(
@@ -83,11 +85,16 @@ export function Sidebar() {
   ];
 
   return (
-    <div className="w-[17rem] p-2 h-[calc(100vh-60px)] border-r overflow-y-auto space-y-4">
-      {seeDashboard && (
+    <div className="w-[17rem] p-2 h-[calc(100vh-63px)] border-r overflow-y-auto space-y-4">
+      <NavLink
+        href="/dashboard"
+        name="Home"
+        icon={<Home className="w-4 h-4" />}
+      />
+      {isSuperAdmin && (
         <NavLink
-          href="/dashboard"
-          name="Dashboard"
+          href="/dashboard/reports"
+          name="Reports"
           icon={<LayoutDashboard className="w-4 h-4" />}
         />
       )}
@@ -153,6 +160,13 @@ export function Sidebar() {
           </AccordionContent>
         </AccordionItem>
       </Accordion>
+      <hr />
+      <span className="block mb-5"></span>
+      <NavLink
+        href="/dashboard/accounts"
+        name="Accounts"
+        icon={<User className="w-4 h-4" />}
+      />
     </div>
   );
 }

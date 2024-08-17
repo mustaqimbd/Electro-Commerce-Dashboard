@@ -61,7 +61,7 @@ const UpdateUserForm = ({
     useGetAllPermissionsQuery({});
   const permissionData =
     (permissionResponse as TSuccessResponse<TPermission>)?.data || [];
-  const { profile } = useAppSelector(({ auth }) => auth);
+  const { user: loggedInUser } = useAppSelector(({ auth }) => auth);
   const [joiningDate, setJoiningDate] = useState<
     Date | null | string | undefined
   >(user?.joiningDate ? new Date(user?.joiningDate) : undefined);
@@ -82,7 +82,7 @@ const UpdateUserForm = ({
   };
 
   const canMangePermission = isPermitted(
-    profile?.permissions,
+    loggedInUser?.permissions,
     permission.managePermission
   );
   const {
@@ -161,6 +161,7 @@ const UpdateUserForm = ({
       });
     }
   };
+
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -415,6 +416,7 @@ const UpdateUserForm = ({
         </div>
         <EcButton type="submit">Update profile</EcButton>
       </form>
+
       {canMangePermission && !permissionDataLoading ? (
         !permissionDataLoading ? (
           <PermissionTable

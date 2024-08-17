@@ -4,6 +4,14 @@ import searchParams from "@/utilities/searchParams";
 
 const allProductsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
+    createProduct: builder.mutation({
+      query: (payload) => ({
+        url: `/products`,
+        method: "POST",
+        body: payload,
+      }),
+      invalidatesTags: ["allProducts"],
+    }),
     getAllProducts: builder.query({
       query: (args: TQuery) => ({
         url: "/products/admin",
@@ -29,5 +37,8 @@ const allProductsApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetAllProductsQuery, useDeleteProductsMutation } =
-  allProductsApi;
+export const {
+  useCreateProductMutation,
+  useGetAllProductsQuery,
+  useDeleteProductsMutation,
+} = allProductsApi;

@@ -1,16 +1,17 @@
-import { TypographyH4 } from "@/components/ui/Typography";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import Category from "./components/Category";
 import Description from "./components/Description";
 import Published from "./components/Published";
-import SeoData from "./components/SeoData";
-import Tag from "./components/Tag";
+// import SeoData from "./components/SeoData";
+// import Tag from "./components/Tag";
 import Title from "./components/Title";
 import ProductData from "./components/productData/ProductsData";
 import getAttributes from "./lib/getAttributes";
-import getTags from "./lib/getTags";
+// import getTags from "./lib/getTags";
 import fetchData from "@/utilities/fetchData";
+import Brand from "./components/Brand";
+// import getBrands from "./lib/getBrands";
 
 const AddProducts = async () => {
   const attributes = await getAttributes();
@@ -19,14 +20,18 @@ const AddProducts = async () => {
     endPoint: "/categories",
     tags: ["categories"],
   });
+  const { data: brands } = await fetchData({
+    endPoint: "/brands",
+    tags: ["brands"],
+  });
 
-  const tags = await getTags();
+  // const brands = await getBrands();
 
   return (
     <>
       <Card>
         <div className="flex gap-3 justify-between items-center bg-white rounded-md p-4  ">
-          <TypographyH4> Add Product</TypographyH4>
+          <h1 className="text-3xl">Add Product</h1>
           <Button>View All</Button>
         </div>
       </Card>
@@ -39,13 +44,14 @@ const AddProducts = async () => {
           <Description />
           {/* product data */}
           <ProductData attributes={attributes} />
-          <SeoData />
+          {/* <SeoData /> */}
         </div>
         {/* right Sidebar of add products */}
         <div className="w-2/6 space-y-10">
           <Published />
           <Category categories={categories} />
-          <Tag tags={tags} />
+          {/* <Tag tags={tags} /> */}
+          <Brand brands={brands} />
         </div>
       </div>
     </>

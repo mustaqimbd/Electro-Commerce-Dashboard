@@ -5,6 +5,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import ApprovalStatus from "./ApprovalStatus/ApprovalStatus";
 
 import ContactStatus from "./ContactStatus/ContactStatus";
+import EditRequest from "./EditRequest/EditRequest";
 import OfficialNotes from "./OfficialNotes";
 import ProblemDetails from "./ProblemDetails";
 import Result from "./Result/Result";
@@ -86,6 +87,14 @@ const columns: ColumnDef<TWarrantyClaim>[] = [
     header: "Approval status",
     cell: ({ row }) => {
       return <ApprovalStatus reqData={row.original} />;
+    },
+  },
+  {
+    id: "Edit",
+    header: "Edit",
+    enableHiding: false,
+    cell: ({ row }) => {
+      return <EditRequest reqData={row.original} />;
     },
   },
 ];

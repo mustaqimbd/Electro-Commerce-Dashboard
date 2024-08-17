@@ -2,18 +2,9 @@ import baseApi from "@/redux/baseApi/baseApi";
 
 const subcategoryApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    deleteSubCategory: builder.mutation({
-      query: (data) => ({
-        url: `/sub-categories`,
-        method: "DELETE",
-        body: {
-          subCategoryIds: data,
-        },
-      }),
-    }),
     addSubCategory: builder.mutation({
       query: (data) => ({
-        url: `/sub-categories`,
+        url: `/attributes`,
         method: "POST",
         body: data,
       }),
@@ -23,6 +14,15 @@ const subcategoryApi = baseApi.injectEndpoints({
         url: `/sub-categories/${id}`,
         method: "UPDATE",
         body: data,
+      }),
+    }),
+    deleteSubCategory: builder.mutation({
+      query: (data) => ({
+        url: `/sub-categories`,
+        method: "DELETE",
+        body: {
+          subCategoryIds: data,
+        },
       }),
     }),
   }),

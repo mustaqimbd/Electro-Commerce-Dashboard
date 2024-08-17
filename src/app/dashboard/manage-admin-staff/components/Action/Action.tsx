@@ -25,7 +25,7 @@ const Action = ({ user }: { user: TUser }) => {
     <>
       <div className="flex justify-center">
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
+          <DropdownMenuTrigger asChild className="cursor-pointer">
             <DotsVerticalIcon />
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56">

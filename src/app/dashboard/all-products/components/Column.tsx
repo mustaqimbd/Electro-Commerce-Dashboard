@@ -3,7 +3,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import Image from "next/image";
 import config from "@/config/config";
 import Actions from "./Actions";
-import { TAllProducts } from "../lib/interface";
+import { TAllProducts } from "@/redux/features/allProducts/allProductsInterface";
 
 export const columns: ColumnDef<TAllProducts>[] = [
   {
@@ -41,14 +41,14 @@ export const columns: ColumnDef<TAllProducts>[] = [
     accessorKey: "image",
     header: "Image",
     cell: ({ row }) => {
-      const { image } = row.original;
+      const { thumbnail } = row.original;
       return (
         <div className="flex justify-start items-center gap-3 rounded">
           <Image
             width={50}
             height={50}
-            src={`${config.base_url}/${image.src}`}
-            alt={image.alt}
+            src={`${config.base_url}/${thumbnail.src}`}
+            alt={thumbnail.alt}
           />
         </div>
       );
@@ -90,12 +90,12 @@ export const columns: ColumnDef<TAllProducts>[] = [
     cell: ({ row }) => (
       <div className="flex flex-col gap-1 justify-center items-center min-w-[90px]">
         <span>{row.original.stockAvailable}</span>
-        {row.original.stock === "In stock" ? (
-          <span className="text-green-500">{row.original.stock}</span>
-        ) : row.original.stock === "Out of stock" ? (
-          <span className="text-red-700">{row.original.stock}</span>
+        {row.original.stockStatus === "In stock" ? (
+          <span className="text-green-500">{row.original.stockStatus}</span>
+        ) : row.original.stockStatus === "Out of stock" ? (
+          <span className="text-red-700">{row.original.stockStatus}</span>
         ) : (
-          <span className="text-yellow-700">{row.original.stock}</span>
+          <span className="text-yellow-700">{row.original.stockStatus}</span>
         )}
       </div>
     ),
@@ -103,7 +103,9 @@ export const columns: ColumnDef<TAllProducts>[] = [
   {
     accessorKey: "price",
     header: "Price",
-    cell: ({ row }) => <span>৳ {row.original.price}</span>,
+    cell: ({ row: { original } }) => (
+      <span>৳ {original.salePrice || original.regularPrice}</span>
+    ),
   },
   // {
   //   accessorKey: "sales",

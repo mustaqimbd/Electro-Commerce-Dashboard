@@ -23,7 +23,7 @@ const UsersTable = () => {
     getCoreRowModel: getCoreRowModel(),
   });
   return (
-    <div>
+    <div className="rounded-lg overflow-hidden">
       <Table className="min-w-[1100px]">
         <TableHeader className="bg-primary text-white">
           {table?.getHeaderGroups()?.map((headerGroup) => (
@@ -49,7 +49,7 @@ const UsersTable = () => {
               <TableRow
                 key={row?.id}
                 data-state={row?.getIsSelected() && "selected"}
-                className="border-b border-cyan-400"
+                className="border-b"
               >
                 {row?.getVisibleCells()?.map((cell) => (
                   <TableCell key={cell?.id} className="text-center">
@@ -64,7 +64,7 @@ const UsersTable = () => {
           ) : (
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center">
-                {isUsersLoading ? "Loading..." : "No claim requests found"}
+                {isUsersLoading ? "Loading..." : null}
               </TableCell>
             </TableRow>
           )}

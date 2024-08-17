@@ -1,3 +1,5 @@
+import { TVariation } from "./variation/interface";
+
 type TSelectValue = {
   label: string;
   value: string;
@@ -13,6 +15,7 @@ export type TPrice = {
   regularPrice: number;
   salePrice?: number;
   discountPercent?: number;
+  save?: number;
   date?: PriceDate;
 };
 
@@ -23,16 +26,16 @@ export type TImage = {
 
 export type TInventory = {
   index?: number;
-  sku: string;
+  sku?: string;
   stockStatus: string;
   stockQuantity: number;
-  productCode: string;
-  lowStockWarning: number;
+  productCode?: string;
   manageStock: boolean;
-  showStockQuantity: boolean;
-  showStockWithText: boolean;
+  lowStockWarning: number;
+  // showStockQuantity?: boolean;
+  // showStockWithText?: boolean;
   hideStock: boolean;
-  soldIndividually: boolean;
+  // soldIndividually?: boolean;
 };
 
 export type TOffer = {
@@ -48,8 +51,8 @@ export type TAttribute = {
 };
 
 export type TCategory = {
-  _id: string;
-  subcategories: string[];
+  name: string;
+  subCategory: string | undefined;
 };
 
 export type TSeoData = {
@@ -57,6 +60,11 @@ export type TSeoData = {
   metaTitle: string;
   slug: string;
   metaDescription: string;
+};
+
+export type TWarrantyInfo = {
+  duration: { quantity: string; unit: string };
+  terms: string;
 };
 
 export type TPublishedStatus = {
@@ -67,22 +75,25 @@ export type TPublishedStatus = {
 
 export type TProduct = {
   title: string;
-  permalink: string;
-  slug: string;
-  type: string;
+  permalink?: string;
+  slug?: string;
+  type?: string;
   description: string;
-  shortDescription: string;
-  featured: boolean;
-  downloadable: boolean;
-  review: boolean;
+  shortDescription?: string;
   price: TPrice;
   image: TImage;
   inventory: TInventory;
-  attribute: TAttribute[];
-  brand: string[];
+  attributes: TAttribute[];
+  variations: TVariation[];
+  brand: string | undefined;
   category: TCategory;
-  tag: TSelectValue[];
-  seoData: TSeoData;
+  tag?: TSelectValue[];
+  seoData?: TSeoData;
+  offer?: TOffer;
+  featured: boolean;
+  downloadable?: boolean;
+  review?: boolean;
+  warranty: boolean;
+  warrantyInfo: TWarrantyInfo;
   publishedStatus: TPublishedStatus;
-  offer: TOffer;
 };

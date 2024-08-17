@@ -4,17 +4,23 @@ import {
 } from "@/redux/features/addProduct/variation/interface";
 import fetchData from "@/utilities/fetchData";
 
+type TVlues = {
+  _id: string;
+  name: string;
+  values: { _id: string; name: string }[];
+};
+
 const getAttributes = async () => {
   const { data = [] } = await fetchData({
     endPoint: "/attributes",
     tags: ["attributes"],
   });
   const attributes: TSelectedAttribute[] = data?.map(
-    ({ name, values }: { name: string; values: string[] }) => ({
+    ({ _id, name, values }: TVlues) => ({
       label: name,
-      value: name,
+      value: _id,
       child: values.map(
-        (value) => ({ label: String(value), value: value }) as TSelectValue
+        ({ _id, name }) => ({ label: String(name), value: _id }) as TSelectValue
       ),
     })
   );

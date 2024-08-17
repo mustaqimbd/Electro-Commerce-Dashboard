@@ -62,7 +62,7 @@ const PermissionTable = ({
   const formFieldData = [
     {
       ...permissionData.find((item) => item.name === "super admin"),
-      description: "Can do anything. Do give this to anyone.",
+      description: "Can do anything. Do not give this to anyone.",
       fieldName: "superAdmin",
       warn: "Be careful",
     },

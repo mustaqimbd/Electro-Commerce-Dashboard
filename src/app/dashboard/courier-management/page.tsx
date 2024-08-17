@@ -1,10 +1,10 @@
-import DateRangeSelector from "@/components/DateRangeSelector";
 import OrderSearchBar from "@/components/OrderSearchBar";
 import Show from "@/components/Show";
 import { getPermission } from "@/lib/getAccessToken";
 import { permission } from "@/types/order/order.interface";
 import { redirect } from "next/navigation";
 import CourierBulkAction from "./components/CourierBulkAction";
+import ProcessingOrderDateRange from "./components/CourierDateRange";
 import OrdersTable from "./components/OrdersTable";
 import StatusButtons from "./components/StatusButtons";
 
@@ -33,7 +33,7 @@ const Orders = () => {
         <div className="flex items-center justify-between mt-8 mb-3">
           {/*Bulk actions and invoice print for Orders*/}
           <CourierBulkAction />
-          <DateRangeSelector />
+          <ProcessingOrderDateRange />
           <Show />
         </div>
         {/* <FilterAndOrdersTable/> */}

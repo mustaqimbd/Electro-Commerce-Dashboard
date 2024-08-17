@@ -1,7 +1,6 @@
 "use client";
-import { Card } from "@/components/ui/card";
+import SectionContentWrapper from "@/components/section-content-wrapper/SectionContentWrapper";
 import { Input } from "@/components/ui/input";
-import { SectionTitle } from "@/components/ui/sectionTitle";
 import { setTitle } from "@/redux/features/addProduct/addProductSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 
@@ -14,14 +13,13 @@ const Title = () => {
   };
 
   return (
-    <Card className="p-4 rounded-sm space-y-2 bg-white">
-      <SectionTitle>Add Product Title</SectionTitle>
+    <SectionContentWrapper heading={"Product Title"}>
       <Input
         placeholder="Product Title"
         defaultValue={title}
         onChange={handleTitleChange}
       />
-    </Card>
+    </SectionContentWrapper>
   );
 };
 

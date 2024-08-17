@@ -5,5 +5,15 @@
     "source.organizeImports": "explicit",
     "source.fixAll.eslint": "explicit"
   },
-  "cSpell.words": ["hookform", "lucide", "Valuehandler"]
+  "cSpell.words": [
+    "hookform",
+    "lucide",
+    "Valuehandler"
+  ],
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  }
 }

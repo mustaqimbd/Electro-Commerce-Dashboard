@@ -1,4 +1,6 @@
 "use client";
+import { PagePagination } from "@/components/pagination/PagePagination";
+import TableSkeleton from "@/components/skeleton/TableSkeleton";
 import {
   Table,
   TableBody,
@@ -7,17 +9,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { setBulkProduct } from "@/redux/features/allProducts/allProductsSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import {
   flexRender,
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { columns } from "./Column";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { setBulkProduct } from "@/redux/features/allProducts/allProductsSlice";
 import { useEffect } from "react";
-import { PagePagination } from "@/components/pagination/PagePagination";
-import TableSkeleton from "@/components/skeleton/TableSkeleton";
+import { columns } from "./Column";
 
 export default function ProductsTable() {
   const dispatch = useAppDispatch();
@@ -43,7 +43,7 @@ export default function ProductsTable() {
 
   return (
     <div className="w-full">
-      <div className="rounded-md border">
+      <div className="rounded-lg overflow-hidden border">
         <Table className="min-w-[1100px]">
           <TableHeader className="bg-primary text-white">
             {table.getHeaderGroups().map((headerGroup) => (
@@ -69,7 +69,7 @@ export default function ProductsTable() {
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
-                  className="border-b border-cyan-400"
+                  className="border-b"
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id} className="text-center">

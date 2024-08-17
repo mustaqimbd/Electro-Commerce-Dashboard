@@ -1,26 +1,49 @@
 "use client";
 import SectionContentWrapper from "@/components/section-content-wrapper/SectionContentWrapper";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Inventory from "./Inventory";
 import Media from "./Media";
-import Offer from "./Offer";
+// import Offer from "./Offer";
 import Price from "./Price";
 import Variations from "./Variations";
 import Attributes from "./attribute/Attributes";
 import { TSelectedAttribute } from "@/redux/features/addProduct/variation/interface";
 import Advanced from "./Advanced";
 import { Button } from "@/components/ui/button";
+import { useAppDispatch } from "@/redux/hooks";
+import {
+  setGallery,
+  setThumbnail,
+} from "@/redux/features/imageSelector/imageSelectorSlice";
 
 const ProductData = ({ attributes }: { attributes: TSelectedAttribute[] }) => {
+  const dispatch = useAppDispatch();
   const [activeTab, setActiveTab] = useState<string>("media");
 
   const handleTabClick = (tab: string) => {
     setActiveTab(tab);
   };
 
+  useEffect(() => {
+    dispatch(setThumbnail(""));
+    dispatch(setGallery([]));
+  }, [dispatch]);
+
+  // const [bulkAction, setBulkAction] = useState("");
+
   return (
     <SectionContentWrapper heading={"Product Data"}>
-      <div className="flex flex-wrap gap-3">
+      {/* <div className="absolute top-0 left-[45%]">
+        <select
+         defaultValue={bulkAction}
+         onChange={(e) => setBulkAction(e.target.value)}
+         className="w-[100px] h-9 border border-primary focus:outline focus:outline-primary rounded-sm"
+        >
+          <option value="simple">Simple</option>
+          <option value="variable">Variable</option>
+        </select>
+      </div> */}
+      <div className="flex flex-wrap gap-3 py-2">
         <Button
           onClick={() => handleTabClick("media")}
           className={`${
@@ -52,16 +75,6 @@ const ProductData = ({ attributes }: { attributes: TSelectedAttribute[] }) => {
           Attributes
         </Button>
         <Button
-          onClick={() => handleTabClick("variations")}
-          className={`${
-            activeTab === "variations"
-              ? "bg-primary text-white  hover:bg-secondary"
-              : "border border-primary bg-inherit text-inherit hover:bg-inherit"
-          }`}
-        >
-          Variations
-        </Button>
-        <Button
           onClick={() => handleTabClick("inventory")}
           className={`${
             activeTab === "inventory"
@@ -72,6 +85,16 @@ const ProductData = ({ attributes }: { attributes: TSelectedAttribute[] }) => {
           Inventory
         </Button>
         <Button
+          onClick={() => handleTabClick("variations")}
+          className={`${
+            activeTab === "variations"
+              ? "bg-primary text-white  hover:bg-secondary"
+              : "border border-primary bg-inherit text-inherit hover:bg-inherit"
+          }`}
+        >
+          Variations
+        </Button>
+        {/* <Button
           onClick={() => handleTabClick("offer")}
           className={`${
             activeTab === "offer"
@@ -80,7 +103,7 @@ const ProductData = ({ attributes }: { attributes: TSelectedAttribute[] }) => {
           }`}
         >
           Offer
-        </Button>
+        </Button> */}
         <Button
           onClick={() => handleTabClick("advanced")}
           className={`${
@@ -92,14 +115,13 @@ const ProductData = ({ attributes }: { attributes: TSelectedAttribute[] }) => {
           Advanced
         </Button>
       </div>
-
       <div>
         {activeTab === "media" && <Media />}
         {activeTab === "inventory" && <Inventory />}
         {activeTab === "price" && <Price />}
         {activeTab === "attributes" && <Attributes attributes={attributes} />}
         {activeTab === "variations" && <Variations />}
-        {activeTab === "offer" && <Offer />}
+        {/* {activeTab === "offer" && <Offer />} */}
         {activeTab === "advanced" && <Advanced />}
       </div>
     </SectionContentWrapper>

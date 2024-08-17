@@ -1,3 +1,4 @@
+import { Card } from "@/components/ui/card";
 import { getPermission } from "@/lib/getAccessToken";
 import { permission } from "@/types/order/order.interface";
 import isPermitted from "@/utilities/isPermitted";
@@ -18,17 +19,15 @@ const AllClaimRequestPage = () => {
   }
 
   return (
-    <div className="shadow-md p-5 bg-white border-l">
-      {/* header section , search bar  */}
+    <Card className="p-5 m-5 rounded-lg">
       <div className="grid grid-cols-2 justify-between items-center mb-8">
-        <h2 className="text-3xl">Warranty claim requests</h2>
-        {/* <OrderSearchBar endPoint="/orders/admin/processing-orders" /> */}
+        <h2 className="text-3xl">Claim requests</h2>
         <WarrantyClaimData />
       </div>
       <div>
         <WarrantyClaimTable />
       </div>
-    </div>
+    </Card>
   );
 };
 

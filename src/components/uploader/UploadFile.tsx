@@ -38,8 +38,8 @@ const UploadFile = () => {
       images.forEach((image) => {
         formData.append(`images`, image);
       });
-      const res = await uploadImage(formData);
-      if (res) {
+      const res = await uploadImage(formData).unwrap();
+      if (!res.error) {
         setImages([]);
       }
       toast({
