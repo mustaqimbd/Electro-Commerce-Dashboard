@@ -1,23 +1,25 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
-import { useAddAttributeValueMutation } from "@/redux/features/addAttributes/attributesApi";
+
+import { useUpdateAttributeMutation } from "@/redux/features/addAttributes/attributesApi";
 import { useForm } from "react-hook-form";
+import { TAttributeValueItem } from "../lib/attribute.interface";
 import { refetchAttributes } from "../lib/getAttributes";
 
 type TAttributeValueForm = {
-  name: string;
+  value: string[];
 };
 
 const AddNewAttributeValue = ({ attributeId }: { attributeId: string }) => {
-  const [addAttributeValue] = useAddAttributeValueMutation();
+  const [updateAttribute] = useUpdateAttributeMutation();
 
   const resolver = async (values: TAttributeValueForm) => {
     return {
-      values: values.name ? values : {},
-      errors: !values.name
+      values: values.value ? values : {},
+      errors: !values.value
         ? {
-            name: {
+            value: {
               type: "required",
               message: "This is required.",
             },
@@ -27,22 +29,25 @@ const AddNewAttributeValue = ({ attributeId }: { attributeId: string }) => {
   };
 
   const {
-    register,
     handleSubmit,
     reset,
     formState: { errors },
+    setValue,
   } = useForm<TAttributeValueForm>({ resolver });
 
   //handle onsubmit
 
   const onSubmit = async (data: TAttributeValueForm) => {
-    const attributeValues = data?.name?.split(",");
+    const formattedValues: TAttributeValueItem[] = data?.value?.map((x) => ({
+      name: x,
+    }));
+
     const attributeValueData = {
-      attribute: attributeId,
-      names: attributeValues,
+      attributeId: attributeId,
+      values: formattedValues,
     };
 
-    const res = await addAttributeValue(attributeValueData).unwrap();
+    const res = await updateAttribute(attributeValueData).unwrap();
     if (res?.success) {
       refetchAttributes();
       reset();
@@ -58,21 +63,26 @@ const AddNewAttributeValue = ({ attributeId }: { attributeId: string }) => {
     }
   };
 
+  const handleValuesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValues = e.target.value.split(",").map((value) => value.trim());
+    setValue("value", inputValues);
+  };
+
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="flex gap-3 items-center ">
           <Input
-            {...register("name")}
             type="text"
             placeholder="Enter Multiple Value | Ex: green,Blue,white"
             className="col-span-3"
+            onChange={handleValuesChange}
           />
 
           <Button type="submit">Add</Button>
         </div>
-        {errors.name && (
-          <span className="text-red-500">{errors.name.message}</span>
+        {errors.value && (
+          <span className="text-red-500">{errors.value.message}</span>
         )}
       </form>
     </>
