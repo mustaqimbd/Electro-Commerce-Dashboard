@@ -13,7 +13,7 @@ export default async function getSubCategories(category: string) {
   }
   const categories = await subCategoriesResponse.json(); // Await the promise
 
-  return categories.data;
+  return categories?.data;
 }
 
 export async function refetchSubCategories() {

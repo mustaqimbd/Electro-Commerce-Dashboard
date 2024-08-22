@@ -4,14 +4,14 @@ const subcategoryApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     addSubCategory: builder.mutation({
       query: (data) => ({
-        url: `/attributes`,
+        url: `/sub-categories/`,
         method: "POST",
         body: data,
       }),
     }),
     updateSubCategory: builder.mutation({
-      query: (data) => ({
-        url: `/sub-categories`,
+      query: ({ id, data }) => ({
+        url: `/sub-categories/${id}`,
         method: "UPDATE",
         body: data,
       }),

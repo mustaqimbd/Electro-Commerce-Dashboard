@@ -12,16 +12,24 @@ const categoryApi = baseApi.injectEndpoints({
       }),
     }),
     addCategory: builder.mutation({
-      query: (categoryName) => ({
+      query: (data) => ({
         url: `/categories`,
         method: "POST",
-        body: {
-          name: categoryName,
-        },
+        body: data,
+      }),
+    }),
+    updateCategory: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `/categories/${id}`,
+        method: "PATCH",
+        body: data,
       }),
     }),
   }),
 });
 
-export const { useDeleteCategoryMutation, useAddCategoryMutation } =
-  categoryApi;
+export const {
+  useDeleteCategoryMutation,
+  useAddCategoryMutation,
+  useUpdateCategoryMutation,
+} = categoryApi;

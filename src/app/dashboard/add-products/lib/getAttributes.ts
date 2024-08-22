@@ -19,7 +19,7 @@ const getAttributes = async () => {
     ({ _id, name, values }: TVlues) => ({
       label: name,
       value: _id,
-      child: values.map(
+      child: values?.map(
         ({ _id, name }) => ({ label: String(name), value: _id }) as TSelectValue
       ),
     })

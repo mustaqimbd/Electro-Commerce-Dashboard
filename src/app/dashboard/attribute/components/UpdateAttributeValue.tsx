@@ -2,7 +2,7 @@ import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
 import {
   useDeleteAttributeValueMutation,
-  useUpdateAttributeValueMutation,
+  useUpdateAttributeMutation,
 } from "@/redux/features/addAttributes/attributesApi";
 import { Save, TrashIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
@@ -13,7 +13,7 @@ import {
 import { refetchAttributes } from "../lib/getAttributes";
 
 const UpdateAttributeValue = ({ item }: { item: TAttributeValueItem }) => {
-  const [updateAttributeValue] = useUpdateAttributeValueMutation();
+  const [updateAttribute] = useUpdateAttributeMutation();
   const [deleteAttributeValue] = useDeleteAttributeValueMutation();
 
   //Add attribute Value handler
@@ -61,10 +61,10 @@ const UpdateAttributeValue = ({ item }: { item: TAttributeValueItem }) => {
   //update Attribute Value
   const onSubmit = async (data: TAttributeValueForm) => {
     const updatedData = {
-      attributeValueId: item?._id,
-      name: data?.name,
+      attributeId: item?._id,
+      values: data?.name,
     };
-    const res = await updateAttributeValue(updatedData).unwrap();
+    const res = await updateAttribute(updatedData).unwrap();
     if (res?.success) {
       refetchAttributes();
       reset();

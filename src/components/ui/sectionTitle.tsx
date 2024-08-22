@@ -6,10 +6,13 @@ type TProps = {
 };
 export function SectionTitle({ children, className }: TProps) {
   return (
-    <span
-      className={`border-b pb-2 text-sm font-semibold tracking-tight first:mt-0 ${className}`}
-    >
-      {children}
-    </span>
+    <>
+      <span
+        className={`w-full pb-2 text-sm font-semibold tracking-tight first:mt-0 ${className}`}
+      >
+        {children}
+      </span>
+      <hr />
+    </>
   );
 }

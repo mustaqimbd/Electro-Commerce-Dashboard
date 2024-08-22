@@ -36,9 +36,9 @@ const attributesApi = baseApi.injectEndpoints({
     }),
     updateAttribute: builder.mutation({
       query: (data) => ({
-        url: `/attributes/${data.attributeId}`,
+        url: `/attributes/${data?.attributeId}`,
         method: "PATCH",
-        body: { name: data?.name },
+        body: { values: data?.values },
       }),
     }),
     updateAttributeValue: builder.mutation({

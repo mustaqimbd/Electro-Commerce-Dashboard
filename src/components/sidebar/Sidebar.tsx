@@ -4,15 +4,24 @@ import isPermitted from "@/utilities/isPermitted";
 import {
   Bike,
   Home,
+  ImagePlusIcon,
   LayoutDashboard,
+  LayoutList,
   ListOrdered,
   Loader,
   PackageSearch,
   PlusCircle,
+  Shapes,
   User,
   UsersRound,
 } from "lucide-react";
 import NavLink from "../NavLink/NavLink";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "../ui/accordion";
 
 export function Sidebar() {
   const { permissions = [] } = getPermission();
@@ -54,6 +63,24 @@ export function Sidebar() {
       href: "/all-products",
       name: "All Products",
       icon: <PackageSearch className="w-4 h-4" />,
+    },
+  ];
+
+  const themeOptionLinks = [
+    {
+      href: "/slider-section",
+      name: "Slider Section",
+      icon: <ImagePlusIcon className="w-4 h-4" />,
+    },
+    {
+      href: "/contact",
+      name: "Contact & Social",
+      icon: <Shapes className="w-4 h-4" />,
+    },
+    {
+      href: "/contents",
+      name: "Text Contents",
+      icon: <LayoutList className="w-4 h-4" />,
     },
   ];
 
@@ -115,6 +142,24 @@ export function Sidebar() {
           icon={<UsersRound className="w-4 h-4" />}
         />
       )}
+
+      <Accordion type="single" collapsible>
+        <AccordionItem value="item-1">
+          <AccordionTrigger className="no-underline px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground transparent">
+            Theme Option
+          </AccordionTrigger>
+          <AccordionContent>
+            {themeOptionLinks.map((item) => (
+              <NavLink
+                key={item.href}
+                href={`/dashboard${item.href}`}
+                name={item.name}
+                icon={item.icon}
+              />
+            ))}
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
       <hr />
       <span className="block mb-5"></span>
       <NavLink
