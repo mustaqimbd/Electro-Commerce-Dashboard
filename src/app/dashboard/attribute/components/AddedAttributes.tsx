@@ -30,7 +30,7 @@ import { PencilIcon, Settings, TrashIcon } from "lucide-react";
 import { useState } from "react";
 import { TAttribute } from "../lib/attribute.interface";
 import { refetchAttributes } from "../lib/getAttributes";
-import AttributeValueUpdate from "./AttributeValueUpdate";
+import AttributeValueUpdateModal from "./AttributeValueUpdateModal";
 
 const AddedAttributes = ({ attributes }: { attributes: TAttribute[] }) => {
   const [attributeName, setAttributeName] = useState("");
@@ -166,7 +166,9 @@ const AddedAttributes = ({ attributes }: { attributes: TAttribute[] }) => {
                         <Settings className="cursor-pointer" />
                       </DialogTrigger>
                       <DialogContent className="  h-fit">
-                        <AttributeValueUpdate attribute={singleAttribute} />
+                        <AttributeValueUpdateModal
+                          attribute={singleAttribute}
+                        />
                       </DialogContent>
                     </Dialog>
                   </div>

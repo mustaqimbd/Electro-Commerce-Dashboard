@@ -6,10 +6,11 @@ export type TAttribute = {
 
 export type TAttributeForm = {
   name: string;
+  values: string[];
 };
 
 export type TAttributeValueItem = {
-  _id: string;
+  _id?: string;
   name: string;
 };
 export type TAttributeValueForm = {

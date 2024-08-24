@@ -52,7 +52,7 @@ const Attributes = ({ attributes }: { attributes: TSelectedAttribute[] }) => {
             <Select
               isMulti
               isSearchable
-              options={child.map((item) => ({
+              options={child?.map((item) => ({
                 label: item.label,
                 value: String(item.value),
               }))}
