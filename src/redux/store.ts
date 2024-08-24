@@ -33,33 +33,64 @@ const persistConfig = {
 };
 const persistedAuthReducer = persistReducer(persistConfig, authReducer);
 
-const store = configureStore({
-  reducer: {
-    [baseApi.reducerPath]: baseApi.reducer,
-    [courierBaseApi.reducerPath]: courierBaseApi.reducer,
-    auth: persistedAuthReducer,
-    addProduct: addProductReducer,
-    productVariation: variationReducer,
-    allProducts: allProductReducer,
-    imageSelector: imageSelectorReducer,
-    orders: ordersReducer,
-    processingOrders: processingOrdersReducer,
-    courierManagement: courierManagementReducer,
-    search: searchReducer,
-    pagination: paginationReducer,
-    warrantyClaim: warrantyClaimSlice,
-    users: userSlice,
-  },
-  middleware: (getDefaultMiddlewares) =>
-    getDefaultMiddlewares({
-      serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-      },
-    }).concat(baseApi.middleware, courierBaseApi.middleware),
-});
+export const createStore = () => {
+  return configureStore({
+    reducer: {
+      [baseApi.reducerPath]: baseApi.reducer,
+      [courierBaseApi.reducerPath]: courierBaseApi.reducer,
+      auth: persistedAuthReducer,
+      addProduct: addProductReducer,
+      productVariation: variationReducer,
+      allProducts: allProductReducer,
+      imageSelector: imageSelectorReducer,
+      orders: ordersReducer,
+      processingOrders: processingOrdersReducer,
+      courierManagement: courierManagementReducer,
+      search: searchReducer,
+      pagination: paginationReducer,
+      warrantyClaim: warrantyClaimSlice,
+      users: userSlice,
+    },
+    middleware: (getDefaultMiddlewares) =>
+      getDefaultMiddlewares({
+        serializableCheck: {
+          ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+        },
+      }).concat(baseApi.middleware, courierBaseApi.middleware),
+  });
+};
+
+export const store = createStore();
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 
-export default store;
 persistStore(store);
+
+export default store;
+
+// const store = configureStore({
+//   reducer: {
+//     [baseApi.reducerPath]: baseApi.reducer,
+//     [courierBaseApi.reducerPath]: courierBaseApi.reducer,
+//     auth: persistedAuthReducer,
+//     addProduct: addProductReducer,
+//     editProduct: editProductReducer,
+//     productVariation: variationReducer,
+//     allProducts: allProductReducer,
+//     imageSelector: imageSelectorReducer,
+//     orders: ordersReducer,
+//     processingOrders: processingOrdersReducer,
+//     courierManagement: courierManagementReducer,
+//     search: searchReducer,
+//     pagination: paginationReducer,
+//     warrantyClaim: warrantyClaimSlice,
+//     users: userSlice,
+//   },
+//   middleware: (getDefaultMiddlewares) =>
+//     getDefaultMiddlewares({
+//       serializableCheck: {
+//         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+//       },
+//     }).concat(baseApi.middleware, courierBaseApi.middleware),
+// });

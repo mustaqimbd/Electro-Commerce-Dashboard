@@ -1,9 +1,9 @@
+import { useUploadImageMutation } from "@/redux/features/imageSelector/imageApi";
+import { useToast } from "@/components/ui/use-toast";
+import { Cross2Icon } from "@radix-ui/react-icons";
+import Image from "next/image";
 import { ChangeEvent, useState } from "react";
 import { Button } from "../ui/button";
-import { useUploadImageMutation } from "@/redux/features/addProduct/media/mediaApi";
-import Image from "next/image";
-import { Cross2Icon } from "@radix-ui/react-icons";
-import { useToast } from "@/components/ui/use-toast";
 
 const UploadFile = () => {
   const { toast } = useToast();

@@ -51,7 +51,7 @@ const Actions = ({ _id }: { _id: string }) => {
             </DropdownMenuItem>
             <DropdownMenuItem>
               <Link
-                href={`${config.base_client_url}/product/${_id}/edit`}
+                href={`/dashboard/products/${_id}/edit`}
                 className="text-green-500 hover:text-green-700 flex items-center gap-1"
               >
                 {/* Edit Icon */}

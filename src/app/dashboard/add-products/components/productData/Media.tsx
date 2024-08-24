@@ -12,7 +12,7 @@ type TProps = {
   isVariation?: boolean;
   index?: number;
 };
-const Media = ({ isVariation, index }: TProps) => {
+const Media = ({ isVariation }: TProps) => {
   const [open, setOpen] = useState(false);
   const [click, setClick] = useState<string>("");
   const handleOpen = () => {
@@ -23,10 +23,9 @@ const Media = ({ isVariation, index }: TProps) => {
     ({ imageSelector }) => imageSelector
   );
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const image = useAppSelector(
-    ({ productVariation }) => productVariation.variations[index || 0]?.image
-  );
+  // const image = useAppSelector(
+  //   ({ productVariation }) => productVariation.variations[index || 0]?.image
+  // );
 
   const { data: thumbnailImage } = useGetSingleImageQuery(
     thumbnail || undefined
@@ -49,10 +48,10 @@ const Media = ({ isVariation, index }: TProps) => {
             }}
             className="flex flex-col items-center justify-center mx-auto mt-5 bg-gray-200 w-48 h-48 border border-dotted  border-blue-gray-200 cursor-pointer relative rounded-sm"
           >
-            {thumbnailImage?.data ? (
+            {thumbnailImage?.data && thumbnail ? (
               <Image
                 src={`${config.base_url}/${thumbnailImage.data.src}`}
-                alt={thumbnailImage.data.alt}
+                alt={thumbnailImage.data.alt || "Thumbnail"}
                 fill={true}
                 className="object-cover rounded-sm"
                 sizes="(max-width: 208px) 100vw,"
@@ -91,11 +90,11 @@ const Media = ({ isVariation, index }: TProps) => {
             }}
             className="flex flex-col items-center justify-center mx-auto mt-5 bg-gray-200 w-48 h-48 border border-dotted  border-blue-gray-200 cursor-pointer relative rounded-sm group"
           >
-            {galleryImage?.data ? (
+            {galleryImage?.data && gallery.length ? (
               <>
                 <Image
                   src={`${config.base_url}/${galleryImage.data.src}`}
-                  alt={galleryImage.data.alt}
+                  alt={galleryImage.data.alt || "Gallery"}
                   fill={true}
                   className="object-cover rounded-sm"
                   sizes="(max-width: 208px) 100vw,"

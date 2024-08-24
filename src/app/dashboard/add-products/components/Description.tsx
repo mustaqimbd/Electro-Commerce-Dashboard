@@ -35,7 +35,7 @@ const Description = () => {
         placeholder="Type product description here."
         name="description"
         onChange={handleChange}
-        defaultValue={description}
+        value={description}
         id="description"
         className="min-h-14 border border-primary focus-visible:ring-primary"
       />

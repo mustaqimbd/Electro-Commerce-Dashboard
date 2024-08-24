@@ -51,7 +51,7 @@ export function Sidebar() {
       icon: <PlusCircle className="w-4 h-4" />,
     },
     {
-      href: "/all-products",
+      href: "/products",
       name: "All Products",
       icon: <PackageSearch className="w-4 h-4" />,
     },

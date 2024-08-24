@@ -20,6 +20,13 @@ const imageSelectorSlice = createSlice({
       state.gallery = [];
       state.gallery.push(...action.payload);
     },
+    // setUpdateThumbnail: (state, action: PayloadAction<string>) => {
+    //   state.updatedThumbnail = action.payload;
+    // },
+    // setUpdateGallery: (state, action: PayloadAction<string[]>) => {
+    //   state.updatedGallery = [];
+    //   state.updatedGallery.push(...action.payload);
+    // },
   },
 });
 

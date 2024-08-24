@@ -8,6 +8,7 @@ import objectToSearchParams from "./searchParams";
 
 type TTags =
   | "allProducts"
+  | "singleProduct"
   | "ProductsName"
   | "paymentMethod"
   | "shippingCharge"

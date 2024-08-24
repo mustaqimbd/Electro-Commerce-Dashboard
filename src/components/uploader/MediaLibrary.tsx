@@ -1,15 +1,14 @@
 import config from "@/config/config";
+import { setVariationThumbnail } from "@/redux/features/addProduct/variation/variationSlice";
 import {
   setGallery,
   setThumbnail,
 } from "@/redux/features/imageSelector/imageSelectorSlice";
-import { useGetMediaImagesQuery } from "@/redux/features/addProduct/media/mediaApi";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { CheckIcon } from "@radix-ui/react-icons";
 import Image from "next/image";
 import { PagePagination } from "../pagination/PagePagination";
-// import { useState } from "react";
-import { setVariationThumbnail } from "@/redux/features/addProduct/variation/variationSlice";
+import { useGetImagesQuery } from "@/redux/features/imageSelector/imageApi";
 
 type TImage = { _id: string; src: string; alt: string };
 
@@ -19,7 +18,7 @@ const MediaLibrary = ({ click, index }: { click?: string; index?: number }) => {
   const { thumbnail, gallery } = useAppSelector(
     ({ imageSelector }) => imageSelector
   );
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
   // const image = useAppSelector(
   //   ({ productVariation }) =>
   //     productVariation.variations[index || 0]?.image || {}
@@ -33,6 +32,7 @@ const MediaLibrary = ({ click, index }: { click?: string; index?: number }) => {
         dispatch(setThumbnail(imageId));
       }
     }
+
     if (click === "variation") {
       if (thumbnail === imageId) {
         dispatch(setVariationThumbnail({ index: 0, image: "" }));
@@ -54,7 +54,7 @@ const MediaLibrary = ({ click, index }: { click?: string; index?: number }) => {
 
   const { page, limit } = useAppSelector(({ pagination }) => pagination);
 
-  const { data } = useGetMediaImagesQuery({
+  const { data } = useGetImagesQuery({
     page,
     limit,
     sort: "-createdAt",

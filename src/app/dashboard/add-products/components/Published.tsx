@@ -3,15 +3,34 @@ import SectionContentWrapper from "@/components/section-content-wrapper/SectionC
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { TPublishedStatus } from "@/redux/features/addProduct/interface";
-import { useCreateProductMutation } from "@/redux/features/allProducts/allProductsApi";
-import { useAppSelector } from "@/redux/hooks";
+import {
+  useCreateProductMutation,
+  useUpdateProductMutation,
+} from "@/redux/features/allProducts/allProductsApi";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { SubmitHandler, useForm } from "react-hook-form";
 import modifiedVariations from "../lib/modifiedVariations";
 import ProductSchema from "../lib/productValidation";
 import { toast } from "@/components/ui/use-toast";
+import {
+  setDefaultSelectedAttributeValue,
+  setDefaultVariation,
+  setGeneratedVariations,
+  setSelectedAttribute,
+} from "@/redux/features/addProduct/variation/variationSlice";
+import { resetProduct } from "@/redux/features/addProduct/addProductSlice";
+import { useRouter } from "next/navigation";
+import {
+  setGallery,
+  setThumbnail,
+} from "@/redux/features/imageSelector/imageSelectorSlice";
 
-const Published = () => {
-  const [createProduct] = useCreateProductMutation();
+const Published = ({ productId }: { productId: string }) => {
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+  const [createProduct, { isLoading }] = useCreateProductMutation();
+  const [updateProduct, { isLoading: isUpdateLoading }] =
+    useUpdateProductMutation();
   const publishedStatus = useAppSelector(
     ({ addProduct }) => addProduct.publishedStatus
   );
@@ -20,13 +39,8 @@ const Published = () => {
   const image = useAppSelector(({ imageSelector }) => imageSelector);
   const { variations, selectedAttributeValue, selectedAttribute } =
     useAppSelector(({ productVariation }) => productVariation);
-  // const [errors, setErrors] = useState([])
 
-  const {
-    register,
-    handleSubmit,
-    // formState: { errors },
-  } = useForm<TPublishedStatus>();
+  const { register, handleSubmit } = useForm<TPublishedStatus>();
 
   const onSubmit: SubmitHandler<TPublishedStatus> = async (data) => {
     productData.attributes = selectedAttributeValue.map(({ value, child }) => ({
@@ -38,19 +52,48 @@ const Published = () => {
     productData.publishedStatus = data;
 
     try {
-      const validatedData = await ProductSchema.validate(productData, {
-        abortEarly: false,
-      });
-      if (selectedAttribute.length !== selectedAttributeValue.length) {
-        throw new Error("Attribute value is required");
+      if (productId) {
+        const validatedData = await ProductSchema.validate(productData, {
+          abortEarly: false,
+        });
+        if (selectedAttribute.length !== selectedAttributeValue.length) {
+          throw new Error("Attribute value is required");
+        }
+
+        const res = await updateProduct({
+          id: productId,
+          payload: validatedData,
+        }).unwrap();
+
+        // dispatch(resetProduct())
+        toast({
+          className: "bg-success text-white text-2xl",
+          title: res.message,
+        });
+        router.push("/dashboard/products");
+      } else {
+        const validatedData = await ProductSchema.validate(productData, {
+          abortEarly: false,
+        });
+        if (selectedAttribute.length !== selectedAttributeValue.length) {
+          throw new Error("Attribute value is required");
+        }
+
+        const res = await createProduct(validatedData).unwrap();
+
+        toast({
+          className: "bg-success text-white text-2xl",
+          title: res.message,
+        });
+        dispatch(resetProduct());
+        dispatch(setThumbnail(""));
+        dispatch(setGallery([]));
+        dispatch(setDefaultSelectedAttributeValue([]));
+        dispatch(setDefaultVariation([]));
+        dispatch(setGeneratedVariations([]));
+        dispatch(setSelectedAttribute([]));
+        // router.push("/dashboard/products")
       }
-
-      const res = await createProduct(validatedData).unwrap();
-
-      toast({
-        className: "bg-success text-white text-2xl",
-        title: res.message,
-      });
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       let errors = [];
@@ -65,15 +108,11 @@ const Published = () => {
         className: "bg-red-600 text-white text-2xl",
         title: errors[0],
       });
-      // setErrors(error)
     }
   };
 
   return (
     <>
-      {/* {errors.map((msg: string) => (
-        <p key={msg} className="bg-red-600 text-white text-sm absolute top-1 z-10">{msg}</p>
-      ))} */}
       <SectionContentWrapper heading="Published" className="text-center">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
           <div className="flex items-center justify-evenly gap-10">
@@ -103,7 +142,7 @@ const Published = () => {
               </select>
             </div>
           </div>
-          <div className="flex items-center justify-evenly gap-4">
+          {/* <div className="flex items-center justify-evenly gap-4">
             <Label htmlFor="date">Published on :</Label>
             <input
               type="date"
@@ -112,9 +151,11 @@ const Published = () => {
               id="date"
               className="border h-9 border-gray-300  rounded-sm w-[125px]"
             />
-          </div>
+          </div> */}
           <div className="flex gap-4 items-center justify-center">
-            <Button>Save</Button>
+            <Button disabled={isLoading || isUpdateLoading}>
+              {productId ? "Update" : "Save"}
+            </Button>
           </div>
         </form>
       </SectionContentWrapper>

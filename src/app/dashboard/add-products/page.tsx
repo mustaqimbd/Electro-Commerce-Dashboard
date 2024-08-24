@@ -11,9 +11,10 @@ import getAttributes from "./lib/getAttributes";
 // import getTags from "./lib/getTags";
 import fetchData from "@/utilities/fetchData";
 import Brand from "./components/Brand";
+import Link from "next/link";
 // import getBrands from "./lib/getBrands";
 
-const AddProducts = async () => {
+const AddProducts = async ({ productId }: { productId: string }) => {
   const attributes = await getAttributes();
 
   const { data: categories } = await fetchData({
@@ -31,8 +32,12 @@ const AddProducts = async () => {
     <>
       <Card>
         <div className="flex gap-3 justify-between items-center bg-white rounded-md p-4  ">
-          <h1 className="text-3xl">Add Product</h1>
-          <Button>View All</Button>
+          <h1 className="text-3xl">
+            {productId ? "Edit Product" : "Add Product"}
+          </h1>
+          <Link href={"/dashboard/products"} passHref>
+            <Button>View All</Button>
+          </Link>
         </div>
       </Card>
       {/* product data section started */}
@@ -48,7 +53,7 @@ const AddProducts = async () => {
         </div>
         {/* right Sidebar of add products */}
         <div className="w-2/6 space-y-10">
-          <Published />
+          <Published productId={productId} />
           <Category categories={categories} />
           {/* <Tag tags={tags} /> */}
           <Brand brands={brands} />

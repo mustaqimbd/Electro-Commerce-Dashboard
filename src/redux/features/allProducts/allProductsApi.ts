@@ -12,6 +12,24 @@ const allProductsApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["allProducts"],
     }),
+    getAProduct: builder.query({
+      query: (id: string) => ({
+        url: `/products/${id}`,
+      }),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      transformResponse: (response: any) => {
+        return response?.data;
+      },
+      providesTags: ["singleProduct"],
+    }),
+    updateProduct: builder.mutation({
+      query: ({ id, payload }) => ({
+        url: `/products/${id}`,
+        method: "PATCH",
+        body: payload,
+      }),
+      invalidatesTags: ["singleProduct", "allProducts"],
+    }),
     getAllProducts: builder.query({
       query: (args: TQuery) => ({
         url: "/products/admin",
@@ -39,6 +57,8 @@ const allProductsApi = baseApi.injectEndpoints({
 
 export const {
   useCreateProductMutation,
+  useGetAProductQuery,
   useGetAllProductsQuery,
+  useUpdateProductMutation,
   useDeleteProductsMutation,
 } = allProductsApi;

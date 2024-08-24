@@ -36,7 +36,7 @@ export async function middleware(request: NextRequest) {
     if (isPermitted(permissions)) {
       return Response.redirect(new URL("/dashboard", request.url));
     } else if (isPermitted(permissions, permission.manageProduct)) {
-      return Response.redirect(new URL("/dashboard/all-products", request.url));
+      return Response.redirect(new URL("/dashboard/products", request.url));
     } else if (isPermitted(permissions, permission.manageOrder)) {
       return Response.redirect(new URL("/dashboard/orders", request.url));
     } else if (isPermitted(permissions, permission.manageProcessing)) {

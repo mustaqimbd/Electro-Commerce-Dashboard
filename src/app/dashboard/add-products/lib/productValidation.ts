@@ -23,11 +23,6 @@ const InventoryValidationSchema = Yup.object().shape({
     .required(),
   // productCode: Yup.string().trim().optional(),
   manageStock: Yup.boolean().optional(),
-  // lowStockWarning: Yup.number().when('manageStock', {
-  //     is: true,
-  //     then: () => Yup.number().min(1, 'Low stock warning is required').required(),
-  //     otherwise: () => Yup.number().notRequired(),
-  // }),
   lowStockWarning: Yup.number().when("manageStock", {
     is: true,
     then: () =>
@@ -55,7 +50,6 @@ const AttributeSchema = Yup.object().shape({
     then: () => Yup.array().min(1, "Attribute value is required").required(),
     otherwise: () => Yup.array().notRequired(),
   }),
-  // values: Yup.array().of(Yup.string().required('Attribute value is required')),
 });
 
 const VariationSchema = Yup.object().shape({
@@ -82,11 +76,10 @@ const WarrantyInfoSchema = Yup.object().shape({
 const PublishedStatusSchema = Yup.object().shape({
   status: Yup.string().required("Status is required"),
   visibility: Yup.string().required("Visibility is required"),
-  date: Yup.string().required("Published date is required!"),
+  // date: Yup.string().required("Published date is required!"),
 });
 
 const ProductSchema = Yup.object().shape({
-  // title: Yup.string().trim().min(1, 'Title is required!'),
   title: Yup.string().trim().required("Title is required"),
   description: Yup.string().trim().optional(),
   image: ImageValidationSchema.required(),

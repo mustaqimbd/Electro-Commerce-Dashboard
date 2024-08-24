@@ -153,7 +153,25 @@ const productSlice = createSlice({
       }
     },
     setProduct: (state, action: PayloadAction<TProduct>) => {
-      return action.payload;
+      const {
+        title,
+        description,
+        price,
+        // image,
+        inventory,
+        // attributes,
+        // brand,
+        // category,
+        publishedStatus,
+      } = action.payload;
+      state.title = title;
+      state.description = description;
+      state.price = price;
+      state.inventory = inventory;
+      // state.attributes = attributes;
+      // state.brand = brand;
+      // state.category = category;
+      state.publishedStatus = publishedStatus;
     },
     resetProduct: () => {
       return initialState;
@@ -182,44 +200,3 @@ export const {
 } = productSlice.actions;
 
 export default productSlice.reducer;
-// setProduct: (state, action: PayloadAction<TProduct>) => {
-//   const {
-//     title,
-//     permalink,
-//     slug,
-//     type,
-//     description,
-//     shortDescription,
-//     featured,
-//     downloadable,
-// review,
-// price,
-// image,
-// inventory,
-// attribute,
-// brand,
-// category,
-// tag,
-// seoData,
-// publishedStatus
-//   } = action.payload;
-
-//   state.title = title;
-//   state.permalink = permalink;
-//   state.slug = slug;
-//   state.type = type;
-//   state.description = description;
-//   state.shortDescription = shortDescription;
-//   state.featured = featured;
-//   state.downloadable = downloadable;
-// state.review = review;
-// state.price = price;
-// state.image = image;
-// state.inventory = inventory;
-// state.attribute = attribute;
-// state.brand = brand;
-// state.category = category;
-// state.tag = tag;
-// state.seoData = seoData;
-// state.publishedStatus = publishedStatus;
-// }

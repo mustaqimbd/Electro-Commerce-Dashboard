@@ -46,6 +46,7 @@ const customBaseQueryWithRefreshToken: BaseQueryFn = async (
 
 type Tags =
   | "allProducts"
+  | "singleProduct"
   | "availableProducts"
   | "allOrders"
   | "processingOrders"
@@ -58,6 +59,7 @@ type Tags =
   | "users";
 const tags: Tags[] = [
   "allProducts",
+  "singleProduct",
   "availableProducts",
   "allOrders",
   "processingOrders",

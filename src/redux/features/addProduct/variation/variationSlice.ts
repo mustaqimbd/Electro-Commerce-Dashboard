@@ -71,6 +71,12 @@ const variationSlice = createSlice({
         state.selectedAttributeValue.push(attributes);
       }
     },
+    setDefaultSelectedAttributeValue: (
+      state,
+      action: PayloadAction<TSelectedAttribute[]>
+    ) => {
+      state.selectedAttributeValue = action.payload;
+    },
     setGeneratedVariations: (
       state,
       action: PayloadAction<
@@ -130,6 +136,9 @@ const variationSlice = createSlice({
         });
       }
     },
+    setDefaultVariation: (state, action) => {
+      state.variations = action.payload;
+    },
     setVariationThumbnail: (
       state,
       action: PayloadAction<{ index: number; image: string }>
@@ -164,6 +173,7 @@ const variationSlice = createSlice({
 export const {
   setSelectedAttribute,
   setSelectedAttributeValue,
+  setDefaultSelectedAttributeValue,
   setGeneratedVariations,
   setRemoveSingleVariation,
   setVariationAttributes,
@@ -172,6 +182,7 @@ export const {
   setVariationPrice,
   setVariationInventory,
   setVariationOffer,
+  setDefaultVariation,
 } = variationSlice.actions;
 
 export default variationSlice.reducer;
