@@ -9,11 +9,23 @@ import { CheckIcon } from "@radix-ui/react-icons";
 import Image from "next/image";
 import { PagePagination } from "../pagination/PagePagination";
 import { useGetImagesQuery } from "@/redux/features/imageSelector/imageApi";
+import { Button } from "../ui/button";
+import {
+  setIsLoading,
+  setTotalPage,
+} from "@/redux/features/pagination/PaginationSlice";
+import { useEffect } from "react";
+import Show from "../Show";
 
 type TImage = { _id: string; src: string; alt: string };
+type TProps = {
+  click?: string;
+  index?: number;
+  handleOpen: (open: boolean) => void;
+};
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const MediaLibrary = ({ click, index }: { click?: string; index?: number }) => {
+const MediaLibrary = ({ click, index, handleOpen }: TProps) => {
   const dispatch = useAppDispatch();
   const { thumbnail, gallery } = useAppSelector(
     ({ imageSelector }) => imageSelector
@@ -54,61 +66,81 @@ const MediaLibrary = ({ click, index }: { click?: string; index?: number }) => {
 
   const { page, limit } = useAppSelector(({ pagination }) => pagination);
 
-  const { data } = useGetImagesQuery({
+  const { data, isLoading, error } = useGetImagesQuery({
     page,
     limit,
     sort: "-createdAt",
   });
 
+  useEffect(() => {
+    if (isLoading) {
+      dispatch(setIsLoading(true));
+    }
+    if (data) {
+      const { meta } = data;
+      dispatch(setTotalPage(meta));
+      dispatch(setIsLoading(false));
+    }
+    if (error) {
+      throw new Error("Something went wrong!");
+    }
+  }, [data, error, isLoading, dispatch]);
+
   return (
     <>
-      <div className="flex flex-wrap gap-4 p-2">
-        {click === "thumbnail" || click === "variation"
-          ? data?.data?.map((image: TImage) => (
-              <div
-                key={image._id}
-                onClick={() => selectImage(image._id)}
-                className={`w-[140px] h-[140px] relative cursor-pointer rounded-sm ${thumbnail === image._id && "border-2 border-blue-600"}`}
-              >
-                <Image
-                  src={`${config.base_url}/${image.src}`}
-                  alt={image.alt}
-                  fill={true}
-                  className="object-cover rounded-sm"
-                  sizes="(max-width: 208px) 100vw,"
-                />
-                {thumbnail === image._id && (
-                  <button className="bg-white text-green-500 absolute right-1 bottom-1 p-1 rounded-full opacity-70 ring-offset-background transition-opacity hover:opacity-100 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground z-10">
-                    {/* <Cross2Icon className="h-5 w-5" /> */}
-                    <CheckIcon className="h-5 w-5" />
-                  </button>
-                )}
-              </div>
-            ))
-          : data?.data?.map((image: TImage) => (
-              <div
-                key={image._id}
-                onClick={() => selectImage(image._id)}
-                className={`w-[140px] h-[140px] relative cursor-pointer rounded-sm ${gallery.includes(image._id) && "border-2 border-blue-600"}`}
-              >
-                <Image
-                  src={`${config.base_url}/${image.src}`}
-                  alt={image.alt}
-                  fill={true}
-                  className="object-cover rounded-sm"
-                  sizes="(max-width: 208px) 100vw,"
-                />
-                {gallery.includes(image._id) && (
-                  <button className="bg-white text-green-500 absolute right-1 bottom-1 p-1 rounded-full opacity-70 ring-offset-background transition-opacity hover:opacity-100 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground z-10">
-                    {/* <Cross2Icon className="h-5 w-5" /> */}
-                    <CheckIcon className="h-5 w-5" />
-                  </button>
-                )}
-              </div>
-            ))}
-      </div>
-      <div className="flex items-center justify-end space-x-2 py-4 h-40">
-        {data?.meta?.totalPage > 1 && <PagePagination />}
+      <Show className="absolute right-10 top-20" />
+      <div className="flex flex-col h-full relative">
+        <div className="flex flex-wrap gap-4 p-2 h-full border border-gray-300">
+          {click === "thumbnail" || click === "variation"
+            ? data?.data?.map((image: TImage) => (
+                <div
+                  key={image._id}
+                  onClick={() => selectImage(image._id)}
+                  className={`w-[140px] h-[140px] relative cursor-pointer rounded-sm ${thumbnail === image._id && "border-2 border-blue-600"}`}
+                >
+                  <Image
+                    src={`${config.base_url}/${image.src}`}
+                    alt={image.alt}
+                    fill={true}
+                    className="object-cover rounded-sm"
+                    sizes="(max-width: 208px) 100vw,"
+                  />
+                  {thumbnail === image._id && (
+                    <button className="bg-white text-green-500 absolute right-1 bottom-1 p-1 rounded-full opacity-70 ring-offset-background transition-opacity hover:opacity-100 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground z-10">
+                      {/* <Cross2Icon className="h-5 w-5" /> */}
+                      <CheckIcon className="h-5 w-5" />
+                    </button>
+                  )}
+                </div>
+              ))
+            : data?.data?.map((image: TImage) => (
+                <div
+                  key={image._id}
+                  onClick={() => selectImage(image._id)}
+                  className={`w-[140px] h-[140px] relative cursor-pointer rounded-sm ${gallery.includes(image._id) && "border-2 border-blue-600"}`}
+                >
+                  <Image
+                    src={`${config.base_url}/${image.src}`}
+                    alt={image.alt}
+                    fill={true}
+                    className="object-cover rounded-sm"
+                    sizes="(max-width: 208px) 100vw,"
+                  />
+                  {gallery.includes(image._id) && (
+                    <button className="bg-white text-green-500 absolute right-1 bottom-1 p-1 rounded-full opacity-70 ring-offset-background transition-opacity hover:opacity-100 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground z-10">
+                      {/* <Cross2Icon className="h-5 w-5" /> */}
+                      <CheckIcon className="h-5 w-5" />
+                    </button>
+                  )}
+                </div>
+              ))}
+        </div>
+        <div className="flex items-center justify-end space-x-2 h-20">
+          {data?.meta?.totalPage > 1 && <PagePagination />}
+          <div className="flex justify-end">
+            <Button onClick={() => handleOpen(false)}>Done</Button>
+          </div>
+        </div>
       </div>
     </>
   );

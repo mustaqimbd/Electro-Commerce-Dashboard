@@ -16,7 +16,13 @@ import {
   setThumbnail,
 } from "@/redux/features/imageSelector/imageSelectorSlice";
 
-const ProductData = ({ attributes }: { attributes: TSelectedAttribute[] }) => {
+const ProductData = ({
+  attributes,
+  productId,
+}: {
+  attributes: TSelectedAttribute[];
+  productId: string;
+}) => {
   const dispatch = useAppDispatch();
   const [activeTab, setActiveTab] = useState<string>("media");
 
@@ -117,7 +123,7 @@ const ProductData = ({ attributes }: { attributes: TSelectedAttribute[] }) => {
       </div>
       <div>
         {activeTab === "media" && <Media />}
-        {activeTab === "inventory" && <Inventory />}
+        {activeTab === "inventory" && <Inventory productId={productId} />}
         {activeTab === "price" && <Price />}
         {activeTab === "attributes" && <Attributes attributes={attributes} />}
         {activeTab === "variations" && <Variations />}

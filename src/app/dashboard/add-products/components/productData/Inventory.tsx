@@ -52,9 +52,10 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 type TProps = {
   isVariation?: boolean;
   index?: number;
+  productId?: string;
 };
 
-const Inventory = ({ isVariation, index }: TProps) => {
+const Inventory = ({ isVariation, index, productId }: TProps) => {
   const dispatch = useAppDispatch();
   const {
     // sku,
@@ -122,6 +123,9 @@ const Inventory = ({ isVariation, index }: TProps) => {
 
   const handleChange = (e: { target: { name: string; value: unknown } }) => {
     const { name, value } = e.target;
+    if (name === "stockQuantity" && value === "" && productId) {
+      return;
+    }
     dispatch(
       isVariation
         ? setVariationInventory({ index, [name]: value })
@@ -230,24 +234,26 @@ const Inventory = ({ isVariation, index }: TProps) => {
           )}
         </div>
       </div> */}
-      <div className="flex items-center gap-3 mb-3">
-        <Label className="flex gap-3 w-48" htmlFor="manageStock">
-          Manage Stock
-          <span title="Lorem Ipsum is simply dummy text.">
-            <i className="fa-solid fa-circle-question">i</i>
-          </span>
-        </Label>
-        <div className="space-y-2">
-          <Input
-            type="checkbox"
-            checked={manageStock}
-            // {...register("manageStock")}
-            onChange={handleCheckedChange}
-            name="manageStock"
-            id="manageStock"
-          />
+      {stockQuantity > 0 && (
+        <div className="flex items-center gap-3 mb-3">
+          <Label className="flex gap-3 w-48" htmlFor="manageStock">
+            Manage Stock
+            <span title="Lorem Ipsum is simply dummy text.">
+              <i className="fa-solid fa-circle-question">i</i>
+            </span>
+          </Label>
+          <div className="space-y-2">
+            <Input
+              type="checkbox"
+              checked={manageStock}
+              // {...register("manageStock")}
+              onChange={handleCheckedChange}
+              name="manageStock"
+              id="manageStock"
+            />
+          </div>
         </div>
-      </div>
+      )}
       {manageStock && (
         <div className="flex items-center gap-3 mb-3">
           <Label className="flex gap-3 w-48" htmlFor="lowStockWarning">
@@ -268,31 +274,33 @@ const Inventory = ({ isVariation, index }: TProps) => {
               className="w-full"
             />
             {/* {errors.lowStockWarning?.message && (
-              <p className="text-red-600">
-                {errors.lowStockWarning?.message}
-              </p>
-            )} */}
+               <p className="text-red-600">
+                 {errors.lowStockWarning?.message}
+               </p>
+             )} */}
           </div>
         </div>
       )}
-      <div className="flex items-center gap-3 mb-3">
-        <Label className="flex gap-3 w-48" htmlFor="hideStock">
-          Hide stock
-          <span title="Lorem Ipsum is simply dummy text.">
-            <i className="fa-solid fa-circle-question">i</i>
-          </span>
-        </Label>
-        <div className="space-y-2">
-          <Input
-            type="checkbox"
-            // {...register("hideStock")}
-            defaultChecked={hideStock}
-            onChange={handleCheckedChange}
-            name="hideStock"
-            id="hideStock"
-          />
+      {stockQuantity > 0 && (
+        <div className="flex items-center gap-3 mb-3">
+          <Label className="flex gap-3 w-48" htmlFor="hideStock">
+            Hide stock
+            <span title="Lorem Ipsum is simply dummy text.">
+              <i className="fa-solid fa-circle-question">i</i>
+            </span>
+          </Label>
+          <div className="space-y-2">
+            <Input
+              type="checkbox"
+              // {...register("hideStock")}
+              defaultChecked={hideStock}
+              onChange={handleCheckedChange}
+              name="hideStock"
+              id="hideStock"
+            />
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

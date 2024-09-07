@@ -22,19 +22,6 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import * as React from "react";
-//this is type
-// type TProduct = {
-//   productId: string;
-//   title: string;
-//   slug: string;
-//   image: {
-//     src: string;
-//     alt: string;
-//   };
-//   unitPrice: number;
-//   quantity: number;
-//   total: number;
-// };
 
 export const columns: ColumnDef<Product>[] = [
   {
@@ -50,7 +37,8 @@ export const columns: ColumnDef<Product>[] = [
     accessorKey: "image",
     header: "Products",
     cell: ({ row }) => {
-      const { image, title, productId, slug } = row.original;
+      const { image, title, productId, slug, variation } = row.original;
+      const attributes = variation?.attributes || {};
       return (
         <div className="flex justify-start items-center gap-3">
           <div>
@@ -68,6 +56,8 @@ export const columns: ColumnDef<Product>[] = [
               target="_blank"
             >
               {title}
+              <br />
+              {Object.keys(attributes).map((key) => `${attributes[key] + " "}`)}
             </Link>
           </div>
         </div>

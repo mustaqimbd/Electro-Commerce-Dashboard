@@ -64,7 +64,10 @@ const EditOrderTable = ({
           </thead>
           <tbody>
             {products?.map(
-              ({ _id, title, unitPrice, quantity, isWarrantyClaim }, index) => {
+              (
+                { _id, title, unitPrice, quantity, isWarrantyClaim, variation },
+                index
+              ) => {
                 const updatedQty =
                   watch(`productDetails.${index}.quantity`) || quantity;
                 const amount = unitPrice * updatedQty;
@@ -73,12 +76,13 @@ const EditOrderTable = ({
                 } else {
                   existingSubTotal += amount;
                 }
+                const attributes = variation?.attributes || {};
 
                 return (
                   <tr
                     key={_id}
                     className={`odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 ${isWarrantyClaim && "text-red-600"}`}
-                    title={`${isWarrantyClaim && "Warranty product"}`}
+                    title={isWarrantyClaim ? "Warranty product" : undefined}
                   >
                     <td
                       scope="row"
@@ -91,6 +95,10 @@ const EditOrderTable = ({
                         className="hidden"
                       />
                       {title}
+                      <br />
+                      {Object.keys(attributes).map(
+                        (key) => `${attributes[key] + " "}`
+                      )}
                     </td>
                     <td className="px-6 py-4">{unitPrice}</td>
                     <td className="px-6 py-4">

@@ -21,7 +21,7 @@ const initialState: TProduct = {
     regularPrice: 0,
     salePrice: 0,
     discountPercent: 0,
-    save: 0,
+    priceSave: 0,
     // date: {
     //   start: "",
     //   end: "",
@@ -35,6 +35,8 @@ const initialState: TProduct = {
     // sku: "",
     stockStatus: "In stock",
     stockQuantity: 0,
+    stockAvailable: 0,
+    preStockQuantity: 0,
     // productCode: "",
     manageStock: false,
     lowStockWarning: 0,
@@ -102,6 +104,14 @@ const productSlice = createSlice({
     },
     setInventory: (state, action: PayloadAction<Partial<TInventory>>) => {
       const data = action.payload;
+
+      const stockQuantity = data.stockQuantity as string | number;
+      if (stockQuantity == "") {
+        state.inventory.manageStock = false;
+        state.inventory.lowStockWarning = 0;
+        state.inventory.hideStock = false;
+      }
+
       for (const key in data) {
         if (key === "manageStock" && data[key] === false) {
           state.inventory["lowStockWarning"] = 0;
@@ -167,7 +177,10 @@ const productSlice = createSlice({
       state.title = title;
       state.description = description;
       state.price = price;
-      state.inventory = inventory;
+      state.inventory = {
+        ...inventory,
+        preStockQuantity: inventory?.stockQuantity,
+      };
       // state.attributes = attributes;
       // state.brand = brand;
       // state.category = category;

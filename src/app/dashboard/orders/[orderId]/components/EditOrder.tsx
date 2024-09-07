@@ -38,6 +38,7 @@ const schema = yup.object().shape({
       id: yup.string().optional(),
       newProductId: yup.string().optional(),
       quantity: yup.number().optional(),
+      variation: yup.string().optional(),
     })
   ),
   officialNotes: yup.string().trim().optional(),

@@ -18,11 +18,12 @@ const CustomerInfo = ({ customer }: TProps) => {
 
   return (
     <>
-      <div
-        className="capitalize flex flex-col mx-auto w-[155px] cursor-pointer"
-        onClick={handleOpen}
-      >
-        <div className="flex items-center gap-1" title={customer.fullName}>
+      <div className="capitalize flex flex-col mx-auto w-[155px]">
+        <div
+          className="flex items-center gap-1 cursor-pointer"
+          title={customer.fullName}
+          onClick={handleOpen}
+        >
           <UserRound className="w-4" />
           <span>
             {customer.fullName.length > 15

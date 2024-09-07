@@ -49,6 +49,7 @@ const UpdateOrderStatus = ({ _id, status, handleOpen }: TProps) => {
       orderIds: [_id],
       status: action,
     };
+
     try {
       if (ordersUpdateOptions.includes(action)) {
         const res = await updateOrdersStatus(updatePayload).unwrap();
@@ -113,7 +114,7 @@ const UpdateOrderStatus = ({ _id, status, handleOpen }: TProps) => {
     } catch (error: any) {
       toast({
         variant: "destructive",
-        title: error?.message,
+        title: error?.message || error?.data?.message,
       });
     }
   };

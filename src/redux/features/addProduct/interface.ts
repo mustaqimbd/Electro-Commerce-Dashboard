@@ -15,7 +15,7 @@ export type TPrice = {
   regularPrice: number;
   salePrice?: number;
   discountPercent?: number;
-  save?: number;
+  priceSave?: number;
   date?: PriceDate;
 };
 
@@ -29,6 +29,8 @@ export type TInventory = {
   sku?: string;
   stockStatus: string;
   stockQuantity: number;
+  stockAvailable: number;
+  preStockQuantity: number;
   productCode?: string;
   manageStock: boolean;
   lowStockWarning: number;
