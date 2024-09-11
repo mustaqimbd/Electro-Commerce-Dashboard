@@ -1,6 +1,7 @@
 import config from "@/config/config";
-import { setVariationThumbnail } from "@/redux/features/addProduct/variation/variationSlice";
+// import { setVariationThumbnail } from "@/redux/features/addProduct/variation/variationSlice";
 import {
+  setDeleteImage,
   setGallery,
   setThumbnail,
 } from "@/redux/features/imageSelector/imageSelectorSlice";
@@ -16,18 +17,23 @@ import {
 } from "@/redux/features/pagination/PaginationSlice";
 import { useEffect } from "react";
 import Show from "../Show";
+import { useDeleteImageMutation } from "@/redux/features/imageSelector/imageApi";
+import { useToast } from "@/components/ui/use-toast";
 
 type TImage = { _id: string; src: string; alt: string };
 type TProps = {
   click?: string;
   index?: number;
-  handleOpen: (open: boolean) => void;
+  handleOpen?: (open: boolean) => void;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const MediaLibrary = ({ click, index, handleOpen }: TProps) => {
   const dispatch = useAppDispatch();
-  const { thumbnail, gallery } = useAppSelector(
+  const { toast } = useToast();
+  const [deleteImage, { isLoading: loading }] = useDeleteImageMutation();
+
+  const { thumbnail, gallery, deleteImages } = useAppSelector(
     ({ imageSelector }) => imageSelector
   );
 
@@ -44,14 +50,13 @@ const MediaLibrary = ({ click, index, handleOpen }: TProps) => {
         dispatch(setThumbnail(imageId));
       }
     }
-
-    if (click === "variation") {
-      if (thumbnail === imageId) {
-        dispatch(setVariationThumbnail({ index: 0, image: "" }));
-      } else {
-        dispatch(setVariationThumbnail({ index: 0, image: imageId }));
-      }
-    }
+    // if (click === "variation") {
+    //   if (thumbnail === imageId) {
+    //     dispatch(setVariationThumbnail({ index: 0, image: "" }));
+    //   } else {
+    //     dispatch(setVariationThumbnail({ index: 0, image: imageId }));
+    //   }
+    // }
     if (click === "gallery") {
       if (gallery.includes(imageId)) {
         const restItem = gallery.filter((item: string) => item !== imageId);
@@ -60,6 +65,18 @@ const MediaLibrary = ({ click, index, handleOpen }: TProps) => {
         alert("You can select maximum 5 gallery images");
       } else {
         dispatch(setGallery([...gallery, imageId]));
+      }
+    }
+    if (click === "delete") {
+      if (deleteImages.includes(imageId)) {
+        const restItem = deleteImages.filter(
+          (item: string) => item !== imageId
+        );
+        dispatch(setDeleteImage(restItem));
+      } else if (deleteImages.length === 50) {
+        alert("You can select maximum 50 images");
+      } else {
+        dispatch(setDeleteImage([...deleteImages, imageId]));
       }
     }
   };
@@ -86,12 +103,38 @@ const MediaLibrary = ({ click, index, handleOpen }: TProps) => {
     }
   }, [data, error, isLoading, dispatch]);
 
+  const handleDelete = async () => {
+    try {
+      if (!deleteImages.length) {
+        alert("Please select images.");
+        return;
+      } else {
+        alert("Are you sure to delete the images?");
+      }
+      const res = await deleteImage(deleteImages).unwrap();
+      if (!res.error) {
+        dispatch(setDeleteImage([]));
+      }
+      toast({
+        className: "bg-success text-white text-2xl",
+        title: "Images deleted successfully!",
+      });
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Images delete is failed!",
+        description: "Something went wrong.",
+      });
+    }
+  };
+
   return (
     <>
       <Show className="absolute right-10 top-20" />
       <div className="flex flex-col h-full relative">
         <div className="flex flex-wrap gap-4 p-2 h-full border border-gray-300">
-          {click === "thumbnail" || click === "variation"
+          {/* {click === "thumbnail" || click === "variation" */}
+          {click === "thumbnail"
             ? data?.data?.map((image: TImage) => (
                 <div
                   key={image._id}
@@ -117,7 +160,7 @@ const MediaLibrary = ({ click, index, handleOpen }: TProps) => {
                 <div
                   key={image._id}
                   onClick={() => selectImage(image._id)}
-                  className={`w-[140px] h-[140px] relative cursor-pointer rounded-sm ${gallery.includes(image._id) && "border-2 border-blue-600"}`}
+                  className={`w-[140px] h-[140px] relative cursor-pointer rounded-sm ${gallery.includes(image._id) || (deleteImages.includes(image._id) && "border-2 border-blue-600")}`}
                 >
                   <Image
                     src={`${config.base_url}/${image.src}`}
@@ -126,19 +169,25 @@ const MediaLibrary = ({ click, index, handleOpen }: TProps) => {
                     className="object-cover rounded-sm"
                     sizes="(max-width: 208px) 100vw,"
                   />
-                  {gallery.includes(image._id) && (
-                    <button className="bg-white text-green-500 absolute right-1 bottom-1 p-1 rounded-full opacity-70 ring-offset-background transition-opacity hover:opacity-100 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground z-10">
-                      {/* <Cross2Icon className="h-5 w-5" /> */}
-                      <CheckIcon className="h-5 w-5" />
-                    </button>
-                  )}
+                  {gallery.includes(image._id) ||
+                    (deleteImages.includes(image._id) && (
+                      <button className="bg-white text-green-500 absolute right-1 bottom-1 p-1 rounded-full opacity-70 ring-offset-background transition-opacity hover:opacity-100 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground z-10">
+                        {/* <Cross2Icon className="h-5 w-5" /> */}
+                        <CheckIcon className="h-5 w-5" />
+                      </button>
+                    ))}
                 </div>
               ))}
         </div>
         <div className="flex items-center justify-end space-x-2 h-20">
           {data?.meta?.totalPage > 1 && <PagePagination />}
           <div className="flex justify-end">
-            <Button onClick={() => handleOpen(false)}>Done</Button>
+            <Button
+              onClick={() => (handleOpen ? handleOpen(false) : handleDelete())}
+              disabled={loading}
+            >
+              {click === "delete" ? "Delete" : "Done"}
+            </Button>
           </div>
         </div>
       </div>

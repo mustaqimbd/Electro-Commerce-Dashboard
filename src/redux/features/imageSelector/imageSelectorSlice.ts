@@ -2,11 +2,13 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 type TInitialState = {
   thumbnail: string;
   gallery: string[];
+  deleteImages: string[];
 };
 
 const initialState: TInitialState = {
   thumbnail: "",
   gallery: [],
+  deleteImages: [],
 };
 
 const imageSelectorSlice = createSlice({
@@ -20,6 +22,10 @@ const imageSelectorSlice = createSlice({
       state.gallery = [];
       state.gallery.push(...action.payload);
     },
+    setDeleteImage: (state, action: PayloadAction<string[]>) => {
+      state.deleteImages = [];
+      state.deleteImages.push(...action.payload);
+    },
     // setUpdateThumbnail: (state, action: PayloadAction<string>) => {
     //   state.updatedThumbnail = action.payload;
     // },
@@ -30,5 +36,6 @@ const imageSelectorSlice = createSlice({
   },
 });
 
-export const { setThumbnail, setGallery } = imageSelectorSlice.actions;
+export const { setThumbnail, setGallery, setDeleteImage } =
+  imageSelectorSlice.actions;
 export default imageSelectorSlice.reducer;
