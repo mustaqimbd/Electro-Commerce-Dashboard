@@ -75,7 +75,7 @@ const AddedAttributes = ({ attributes }: { attributes: TAttribute[] }) => {
 
   return (
     <div className="w-full">
-      <Card className="md:col-span-6 sm:col-span-12 p-4 space-y-4">
+      <Card className="p-4 shadow-none rounded-xl space-y-5">
         <SectionTitle>Configure Attribute Value</SectionTitle>
         <Table>
           <TableHeader>
