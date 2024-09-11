@@ -12,6 +12,7 @@ import Advanced from "./Advanced";
 import { Button } from "@/components/ui/button";
 import { useAppDispatch } from "@/redux/hooks";
 import {
+  setDeleteImage,
   setGallery,
   setThumbnail,
 } from "@/redux/features/imageSelector/imageSelectorSlice";
@@ -33,6 +34,7 @@ const ProductData = ({
   useEffect(() => {
     dispatch(setThumbnail(""));
     dispatch(setGallery([]));
+    dispatch(setDeleteImage([]));
   }, [dispatch]);
 
   // const [bulkAction, setBulkAction] = useState("");

@@ -21,6 +21,7 @@ import {
 import { resetProduct } from "@/redux/features/addProduct/addProductSlice";
 import { useRouter } from "next/navigation";
 import {
+  setDeleteImage,
   setGallery,
   setThumbnail,
 } from "@/redux/features/imageSelector/imageSelectorSlice";
@@ -88,6 +89,7 @@ const Published = ({ productId }: { productId: string }) => {
         dispatch(resetProduct());
         dispatch(setThumbnail(""));
         dispatch(setGallery([]));
+        dispatch(setDeleteImage([]));
         dispatch(setDefaultSelectedAttributeValue([]));
         dispatch(setDefaultVariation([]));
         dispatch(setGeneratedVariations([]));

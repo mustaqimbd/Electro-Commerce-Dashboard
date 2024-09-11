@@ -6,6 +6,7 @@ import * as React from "react";
 
 import { cn } from "@/lib/utils";
 import {
+  setDeleteImage,
   setGallery,
   setThumbnail,
 } from "@/redux/features/imageSelector/imageSelectorSlice";
@@ -43,6 +44,7 @@ const DialogContent = React.forwardRef<
   const handleClose = () => {
     dispatch(setThumbnail(""));
     dispatch(setGallery([]));
+    dispatch(setDeleteImage([]));
   };
 
   return (
