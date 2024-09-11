@@ -95,7 +95,7 @@ const UpdateAttributeValue = ({ item }: { item: TAttributeValueItem }) => {
           </button>
 
           <TrashIcon
-            onClick={() => deleteAttributeValuehandler(item._id)}
+            onClick={() => deleteAttributeValuehandler(item._id as string)}
             className="text-red-500 cursor-pointer"
           />
         </div>

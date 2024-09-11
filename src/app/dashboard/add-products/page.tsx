@@ -48,7 +48,7 @@ const AddProducts = async ({ productId }: { productId: string }) => {
           {/* products description */}
           <Description />
           {/* product data */}
-          <ProductData attributes={attributes} />
+          <ProductData attributes={attributes} productId={productId} />
           {/* <SeoData /> */}
         </div>
         {/* right Sidebar of add products */}

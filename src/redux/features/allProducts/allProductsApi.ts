@@ -10,7 +10,6 @@ const allProductsApi = baseApi.injectEndpoints({
         method: "POST",
         body: payload,
       }),
-      invalidatesTags: ["allProducts"],
     }),
     getAProduct: builder.query({
       query: (id: string) => ({
@@ -44,13 +43,27 @@ const allProductsApi = baseApi.injectEndpoints({
       // },
       providesTags: ["allProducts"],
     }),
+    getCustomerProducts: builder.query({
+      query: (args: TQuery) => ({
+        url: "/products",
+        method: "GET",
+        params: searchParams(args),
+      }),
+      //   transformResponse: (response:any) => {
+      //     return {
+      //       data: response.data,
+      //       meta: response.meta,
+      //     };
+      //   },
+      providesTags: ["allCustomerProducts"],
+    }),
     deleteProducts: builder.mutation({
       query: (productIds: string[]) => ({
         url: `/products/delete`,
         method: "DELETE",
         body: { productIds },
       }),
-      invalidatesTags: ["allProducts", "availableProducts"],
+      invalidatesTags: ["allProducts", "allCustomerProducts"],
     }),
   }),
 });
@@ -59,6 +72,7 @@ export const {
   useCreateProductMutation,
   useGetAProductQuery,
   useGetAllProductsQuery,
+  useGetCustomerProductsQuery,
   useUpdateProductMutation,
   useDeleteProductsMutation,
 } = allProductsApi;

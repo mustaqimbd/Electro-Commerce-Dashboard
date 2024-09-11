@@ -6,10 +6,10 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
+import { useGetCustomerProductsQuery } from "@/redux/features/allProducts/allProductsApi";
 import { useCreateOrderMutation } from "@/redux/features/orders/ordersApi";
 import { setIsOrderUpdate } from "@/redux/features/orders/ordersSlice";
 import { useGetPaymentMethodQuery } from "@/redux/features/paymentMethod/paymentMethodAPI";
-import { useGetAvailableProductsQuery } from "@/redux/features/products/productsAPI";
 import { useGetShippingChargeQuery } from "@/redux/features/shippingCharge/shippingCharge";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { TOrders } from "@/types/order/order.interface";
@@ -17,8 +17,9 @@ import { refetchData } from "@/utilities/fetchData";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Minus, Plus } from "lucide-react";
 import { useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import * as yup from "yup";
+import VariationOptions from "./VariationOptions";
 
 const schema = yup.object().shape({
   shipping: yup.object().shape({
@@ -48,6 +49,7 @@ const schema = yup.object().shape({
         .min(1, "Stock quantity must be a positive number")
         .required("Stock quantity is required!")
         .typeError("Stock quantity is required!"),
+      variation: yup.string().optional(),
     })
   ),
   orderSource: yup.object().shape({
@@ -72,7 +74,7 @@ const CreateOrder = ({ order }: { order?: TOrders }) => {
   const [open, setOpen] = useState(false);
   const [product, setProduct] = useState(1);
 
-  const { data: productsName } = useGetAvailableProductsQuery({});
+  const { data: productsName } = useGetCustomerProductsQuery({});
   const { data: shippingCharges } = useGetShippingChargeQuery({});
   const { data: paymentMethods } = useGetPaymentMethodQuery({});
 
@@ -83,10 +85,17 @@ const CreateOrder = ({ order }: { order?: TOrders }) => {
   const {
     register,
     handleSubmit,
+    control,
+    watch,
     reset,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
+  });
+
+  const { remove } = useFieldArray({
+    control,
+    name: "orderedProducts",
   });
 
   const onSubmit: SubmitHandler<TFormInput> = async (data) => {
@@ -304,69 +313,97 @@ const CreateOrder = ({ order }: { order?: TOrders }) => {
           </div>
           <div className="flex gap-4">
             <div className="space-y-5">
-              {Array.from({ length: product }).map((_, index) => (
-                <div className="grid grid-cols-3 gap-5" key={index}>
-                  <div className="flex flex-col col-span-2 gap-2">
-                    <Label>
-                      Product name <span className="text-red-600">*</span>
-                    </Label>
-                    <select
-                      {...register(`orderedProducts.${index}.product`)}
-                      className="w-full h-9 border border-gray-300  rounded-sm"
-                    >
-                      <option value="">Select product</option>
-                      {productsName?.data?.map(
-                        ({ _id, title }: { _id: string; title: string }) => (
-                          <option value={_id} key={_id}>
-                            {title}
-                          </option>
-                        )
-                      )}
-                    </select>
-                    {errors.orderedProducts &&
-                      errors.orderedProducts[index] &&
-                      errors.orderedProducts[index]?.product && (
-                        <p className="text-red-600">
-                          {errors.orderedProducts[index]?.product?.message}
-                        </p>
-                      )}
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <Label htmlFor="quantity">
-                      Product Quantity <span className="text-red-600">*</span>
-                    </Label>
-                    <div className="space-y-2 w-full">
-                      <Input
-                        type="number"
-                        defaultValue={1}
-                        min={1}
-                        {...register(`orderedProducts.${index}.quantity`)}
-                        id="quantity"
-                        placeholder="Enter quantity"
-                        className="w-full"
-                      />
-                      {errors.orderedProducts &&
-                        errors.orderedProducts[index] &&
-                        errors.orderedProducts[index]?.quantity && (
-                          <p className="text-red-600">
-                            {errors.orderedProducts[index]?.quantity?.message}
-                          </p>
-                        )}
+              {Array.from({ length: product }).map((_, index) => {
+                const id = watch(`orderedProducts.${index}.product`);
+                return (
+                  <div className="space-y-2" key={index}>
+                    <div className="grid grid-cols-3 gap-5">
+                      <div className="flex flex-col col-span-2 gap-2">
+                        <Label>
+                          Product name <span className="text-red-600">*</span>
+                        </Label>
+                        <select
+                          {...register(`orderedProducts.${index}.product`)}
+                          className="w-full h-9 border border-gray-300  rounded-sm"
+                        >
+                          <option value="">Select product</option>
+                          {productsName?.data?.map(
+                            ({
+                              _id,
+                              title,
+                            }: {
+                              _id: string;
+                              title: string;
+                            }) => (
+                              <option value={_id} key={_id}>
+                                {title}
+                              </option>
+                            )
+                          )}
+                        </select>
+                        {errors.orderedProducts &&
+                          errors.orderedProducts[index] &&
+                          errors.orderedProducts[index]?.product && (
+                            <p className="text-red-600">
+                              {errors.orderedProducts[index]?.product?.message}
+                            </p>
+                          )}
+                      </div>
+                      <div className="flex flex-col gap-2">
+                        <Label htmlFor="quantity">
+                          Product Quantity{" "}
+                          <span className="text-red-600">*</span>
+                        </Label>
+                        <div className="space-y-2 w-full">
+                          <Input
+                            type="number"
+                            defaultValue={1}
+                            min={1}
+                            {...register(`orderedProducts.${index}.quantity`)}
+                            id="quantity"
+                            placeholder="Enter quantity"
+                            className="w-full"
+                          />
+                          {errors.orderedProducts &&
+                            errors.orderedProducts[index] &&
+                            errors.orderedProducts[index]?.quantity && (
+                              <p className="text-red-600">
+                                {
+                                  errors.orderedProducts[index]?.quantity
+                                    ?.message
+                                }
+                              </p>
+                            )}
+                        </div>
+                      </div>
                     </div>
+                    {id && (
+                      <VariationOptions<TFormInput>
+                        id={id}
+                        index={index}
+                        register={register}
+                        orderedProducts="orderedProducts"
+                      />
+                    )}
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
             <div className="flex items-end gap-2">
               <div
-                onClick={() => setProduct(product + 1)}
+                onClick={() => {
+                  setProduct(product + 1);
+                }}
                 className="w-[140px] flex items-center gap-1 rounded-md text-sm font-medium transition-colors bg-primary hover:bg-secondary text-white  shadow cursor-pointer h-9 px-2 py-2"
               >
                 <Plus /> <span>Add Product</span>
               </div>
               {product > 1 && (
                 <span
-                  onClick={() => setProduct(product - 1)}
+                  onClick={() => {
+                    remove(product - 1);
+                    setProduct(product - 1);
+                  }}
                   className="text-red-600 bg-white hover:bg-slate-100 h-9 px-2 py-2  cursor-pointer"
                 >
                   <Minus />

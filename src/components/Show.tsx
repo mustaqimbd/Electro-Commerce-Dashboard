@@ -10,12 +10,14 @@ import {
 import { setLimit } from "@/redux/features/pagination/PaginationSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 
-const Show = () => {
+const Show = ({ className }: { className?: string }) => {
   const dispatch = useAppDispatch();
   const { limit } = useAppSelector(({ pagination }) => pagination);
 
   return (
-    <div className="flex items-center gap-1 text-muted-foreground">
+    <div
+      className={`flex items-center gap-1 text-muted-foreground ${className}`}
+    >
       <span>Show</span>
       <Select onValueChange={(v) => dispatch(setLimit(parseInt(v)))}>
         <SelectTrigger className="w-[60px] h-[30px] border-primary focus:ring-0">

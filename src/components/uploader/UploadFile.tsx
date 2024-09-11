@@ -46,10 +46,11 @@ const UploadFile = () => {
         className: "bg-success text-white text-2xl",
         title: "Images uploaded successfully!",
       });
-    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
       toast({
         variant: "destructive",
-        title: "Images upload is failed! Something went wrong.",
+        title: err?.data?.message || "Images upload is failed!",
         description: "There was a problem with your request.",
       });
     }

@@ -5,9 +5,9 @@ import Inventory from "./Inventory";
 // import Offer from "./Offer";
 import Price from "./Price";
 import { Button } from "@/components/ui/button";
-import { useAppDispatch } from "@/redux/hooks";
-import { setRemoveSingleVariation } from "@/redux/features/addProduct/variation/variationSlice";
-import { Trash2Icon } from "lucide-react";
+// import { useAppDispatch } from "@/redux/hooks";
+// import { setRemoveSingleVariation } from "@/redux/features/addProduct/variation/variationSlice";
+// import { Trash2Icon } from "lucide-react";
 
 type TProps = {
   item: {
@@ -17,15 +17,15 @@ type TProps = {
 };
 
 const SingleVariation = ({ item, index }: TProps) => {
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
   const [activeTab, setActiveTab] = useState<string>("price");
   const handleTabClick = (tab: string) => {
     setActiveTab(tab);
   };
 
-  const removeSingleVariation = (index: number) => {
-    dispatch(setRemoveSingleVariation(index));
-  };
+  // const removeSingleVariation = (index: number) => {
+  //   dispatch(setRemoveSingleVariation(index));
+  // };
 
   return (
     <div className="relative w-full">
@@ -36,9 +36,9 @@ const SingleVariation = ({ item, index }: TProps) => {
             {item[key]}
           </span>
         ))}
-        <button onClick={() => removeSingleVariation(index)} title="Remove">
+        {/* <button onClick={() => removeSingleVariation(index)} title="Remove">
           <Trash2Icon size={20} className="text-red-500" />
-        </button>
+        </button> */}
       </div>
       <SectionContentWrapper collapse={true}>
         <div className="flex flex-wrap gap-3">

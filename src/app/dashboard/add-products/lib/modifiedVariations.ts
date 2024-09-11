@@ -4,13 +4,17 @@ import { TVariation } from "@/redux/features/addProduct/variation/interface";
 const modifiedVariations = (variations: TVariation[], product: TProduct) => {
   return [...variations].map(({ attributes, price, inventory }) => {
     const { regularPrice, salePrice, discountPercent } = product.price;
-    const { hideStock, stockQuantity, stockStatus } = product.inventory;
+    const {
+      stockStatus,
+      stockQuantity,
+      stockAvailable,
+      manageStock,
+      lowStockWarning,
+      hideStock,
+    } = product.inventory;
 
     const modifiedPrice = { ...price };
     const modifiedInventory = { ...inventory };
-
-    const save = regularPrice - (salePrice || 0);
-    modifiedPrice.save = save === regularPrice ? 0 : save;
 
     if (!modifiedPrice.regularPrice) {
       modifiedPrice.regularPrice = regularPrice;
@@ -21,7 +25,8 @@ const modifiedVariations = (variations: TVariation[], product: TProduct) => {
     if (!modifiedPrice.discountPercent) {
       modifiedPrice.discountPercent = discountPercent;
     }
-
+    const save = modifiedPrice.regularPrice - (modifiedPrice.salePrice || 0);
+    modifiedPrice.priceSave = save === modifiedPrice.regularPrice ? 0 : save;
     // if (modifiedInventory.sku === "") {
     //     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     //     delete (modifiedInventory as any).sku;
@@ -32,6 +37,25 @@ const modifiedVariations = (variations: TVariation[], product: TProduct) => {
     if (!modifiedInventory.stockQuantity) {
       modifiedInventory.stockQuantity = stockQuantity;
     }
+    if (!modifiedInventory.manageStock) {
+      modifiedInventory.manageStock = manageStock;
+      modifiedInventory.lowStockWarning = lowStockWarning;
+    }
+    if (!modifiedInventory.stockAvailable) {
+      modifiedInventory.stockAvailable =
+        stockAvailable || modifiedInventory.stockQuantity;
+    }
+
+    const stockQuantityIncrease =
+      modifiedInventory.stockQuantity - modifiedInventory.preStockQuantity;
+
+    if (
+      modifiedInventory.stockQuantity != stockQuantityIncrease &&
+      stockQuantityIncrease != 0
+    ) {
+      modifiedInventory.stockAvailable += stockQuantityIncrease;
+    }
+
     if (!modifiedInventory.hideStock && hideStock) {
       modifiedInventory.hideStock = hideStock;
     }

@@ -4,6 +4,7 @@ import fetchData from "@/utilities/fetchData";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { TEditOrderProps } from "./EditOrderTable";
 import { useFieldArray } from "react-hook-form";
+import VariationOptions from "../../components/VariationOptions";
 
 type TEditOrderProps2 = {
   addProduct: number[];
@@ -85,6 +86,7 @@ const AddProductToOrder = ({
         if (updatedTotal) {
           updatedSubTotal += updatedTotal;
         }
+        const id = watch(`productDetails.${index}.newProductId`);
 
         return (
           <tr
@@ -93,7 +95,7 @@ const AddProductToOrder = ({
           >
             <td
               scope="row"
-              className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+              className="px-6 py-4 space-y-1 font-medium text-gray-900 whitespace-nowrap dark:text-white"
             >
               <select
                 {...register(`productDetails.${index}.newProductId`)}
@@ -107,6 +109,14 @@ const AddProductToOrder = ({
                   </option>
                 ))}
               </select>
+              {id && (
+                <VariationOptions
+                  id={id}
+                  index={index}
+                  register={register}
+                  orderedProducts="productDetails"
+                />
+              )}
             </td>
             <td className="px-6 py-4">{unitPrice}</td>
             <td className="px-6 py-4">

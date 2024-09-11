@@ -17,10 +17,23 @@ const ImageValidationSchema = Yup.object().shape({
 const InventoryValidationSchema = Yup.object().shape({
   // sku: Yup.string().optional(),
   stockStatus: Yup.string().required("Stock status is required"),
+  // stockQuantity: Yup.number()
+  //   .min(1, "Stock quantity is required")
+  //   .typeError("Stock quantity is required")
+  //   .required(),
   stockQuantity: Yup.number()
-    .min(1, "Stock quantity is required")
-    .typeError("Stock quantity is required")
-    .required(),
+    .transform((value, originalValue) => (originalValue === "" ? 0 : value))
+    .default(0)
+    .test(
+      "is-less-than-quantity",
+      "Low stock warning cannot be equal or greater than stock quantity sss",
+      function (value) {
+        const { preStockQuantity } = this.parent;
+        return value >= preStockQuantity;
+      }
+    ),
+  stockAvailable: Yup.number().optional(),
+  preStockQuantity: Yup.number().optional(),
   // productCode: Yup.string().trim().optional(),
   manageStock: Yup.boolean().optional(),
   lowStockWarning: Yup.number().when("manageStock", {
@@ -32,10 +45,10 @@ const InventoryValidationSchema = Yup.object().shape({
         .required()
         .test(
           "is-less-than-stock",
-          "Low stock warning cannot be greater than stock quantity",
+          "Low stock warning cannot be equal or greater than stock quantity",
           function (value) {
             const { stockQuantity } = this.parent;
-            return value <= stockQuantity;
+            return value < stockQuantity;
           }
         ),
     otherwise: () => Yup.number().notRequired(),

@@ -16,7 +16,19 @@ const mediaApi = baseApi.injectEndpoints({
       }),
       providesTags: ["images"],
     }),
+    deleteImage: builder.mutation({
+      query: (payload: string[]) => ({
+        url: "/images",
+        method: "DELETE",
+        body: { imageIds: payload },
+      }),
+      invalidatesTags: ["images"],
+    }),
   }),
 });
 
-export const { useUploadImageMutation, useGetImagesQuery } = mediaApi;
+export const {
+  useUploadImageMutation,
+  useGetImagesQuery,
+  useDeleteImageMutation,
+} = mediaApi;

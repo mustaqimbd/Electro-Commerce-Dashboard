@@ -48,11 +48,11 @@ const ImageSelectPopup = ({ open, click, handleOpen, modalTitle }: TProps) => {
             Media Library
           </Button>
         </div>
-        <div
-          className={`flex-1 ${activeTab === "mediaLibrary" && "border border-gray-300"}`}
-        >
+        <div className={`flex-1`}>
           {activeTab === "uploadFile" && <UploadFile />}
-          {activeTab === "mediaLibrary" && <MediaLibrary click={click} />}
+          {activeTab === "mediaLibrary" && (
+            <MediaLibrary click={click} handleOpen={handleOpen} />
+          )}
         </div>
       </div>
     </CommonModal>

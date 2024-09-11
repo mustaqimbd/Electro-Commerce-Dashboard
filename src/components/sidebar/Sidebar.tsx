@@ -73,6 +73,11 @@ export function Sidebar() {
       icon: <ImagePlusIcon className="w-4 h-4" />,
     },
     {
+      href: "/media",
+      name: "Media",
+      icon: <ImagePlusIcon className="w-4 h-4" />,
+    },
+    {
       href: "/contact",
       name: "Contact & Social",
       icon: <Shapes className="w-4 h-4" />,

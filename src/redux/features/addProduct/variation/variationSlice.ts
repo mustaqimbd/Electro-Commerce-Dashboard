@@ -1,5 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { TSelectedAttribute, TVariationInitialState } from "./interface";
+import {
+  TSelectedAttribute,
+  TVariation,
+  TVariationInitialState,
+} from "./interface";
 import { TInventory, TOffer, TPrice } from "../interface";
 
 // const variations: TVariation = {
@@ -117,10 +121,12 @@ const variationSlice = createSlice({
             // },
           },
           inventory: {
-            sku: "",
+            // sku: "",
             stockStatus: "",
             stockQuantity: 0,
-            productCode: "",
+            stockAvailable: 0,
+            preStockQuantity: 0,
+            // productCode: "",
             lowStockWarning: 0,
             manageStock: false,
             // showStockQuantity: false,
@@ -136,8 +142,19 @@ const variationSlice = createSlice({
         });
       }
     },
-    setDefaultVariation: (state, action) => {
-      state.variations = action.payload;
+    setDefaultVariation: (state, action: PayloadAction<TVariation[]>) => {
+      const variations = action.payload?.map(
+        ({ inventory, ...remainingData }) => {
+          return {
+            ...remainingData,
+            inventory: {
+              ...inventory,
+              preStockQuantity: inventory?.stockQuantity,
+            },
+          };
+        }
+      );
+      state.variations = variations;
     },
     setVariationThumbnail: (
       state,

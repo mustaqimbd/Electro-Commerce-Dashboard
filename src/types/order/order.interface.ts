@@ -1,3 +1,5 @@
+import { TVariation } from "../../redux/features/addProduct/variation/interface";
+
 type ShippingCharge = {
   name: string;
   amount: number;
@@ -32,6 +34,7 @@ export type Product = {
   unitPrice: number;
   quantity: number;
   total: number;
+  variation: TVariation;
   isProductWarrantyAvailable: boolean;
   isWarrantyClaim: boolean;
   warranty: {
