@@ -71,7 +71,7 @@ const AddAttribute = () => {
   return (
     <div className="w-full">
       <div className="">
-        <Card className="p-4 space-y-2">
+        <Card className="p-4 shadow-none rounded-xl space-y-5">
           <SectionTitle>Add New Attribute</SectionTitle>
           <form onSubmit={handleSubmit(onSubmit)} className="">
             <div className="space-y-3">

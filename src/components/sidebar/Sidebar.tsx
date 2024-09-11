@@ -3,6 +3,7 @@ import { permission } from "@/types/order/order.interface";
 import isPermitted from "@/utilities/isPermitted";
 import {
   Bike,
+  Component,
   Home,
   ImagePlusIcon,
   LayoutDashboard,
@@ -42,6 +43,7 @@ export function Sidebar() {
     permissions,
     permission.manageWarrantyClaim
   );
+  const ManageCoupons = isPermitted(permissions, permission.manageCoupon);
 
   const productManagementLinks = [
     {
@@ -145,6 +147,13 @@ export function Sidebar() {
           href="/dashboard/manage-admin-staff"
           name="Manage employs"
           icon={<UsersRound className="w-4 h-4" />}
+        />
+      )}
+      {ManageCoupons && (
+        <NavLink
+          href="/dashboard/manage-coupon"
+          name="Manage coupons"
+          icon={<Component className="w-4 h-4" />}
         />
       )}
 
