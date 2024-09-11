@@ -132,3 +132,8 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #777777;
 }
+
+/* Override date time picker style*/
+.react-datetime-picker__wrapper {
+  @apply p-1 rounded-md !border-gray-300 shadow-sm
+}
