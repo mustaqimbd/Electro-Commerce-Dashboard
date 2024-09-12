@@ -1,6 +1,5 @@
 "use client";
 import SectionContentWrapper from "@/components/section-content-wrapper/SectionContentWrapper";
-import { Card } from "@/components/ui/card";
 import {
   setCategory,
   setSubcategory,
@@ -93,22 +92,20 @@ const Category = ({ categories }: { categories: TCategories[] }) => {
   );
 
   return (
-    <Card>
-      <SectionContentWrapper heading="Select Category">
-        <div className=" max-h-64  overflow-y-scroll ">
-          <ul className="list-none">
-            {categories.map((category: TCategories) => (
-              <li className="p-2" key={category._id}>
-                {renderCategory(category)}
-                {selectCategory.name == category._id &&
-                  category.subcategories &&
-                  renderSubcategories(category.subcategories)}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </SectionContentWrapper>
-    </Card>
+    <SectionContentWrapper heading="Select Category">
+      <div className=" max-h-64  overflow-y-scroll ">
+        <ul className="list-none">
+          {categories.map((category: TCategories) => (
+            <li className="p-2" key={category._id}>
+              {renderCategory(category)}
+              {selectCategory.name == category._id &&
+                category.subcategories &&
+                renderSubcategories(category.subcategories)}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </SectionContentWrapper>
   );
 };
 
