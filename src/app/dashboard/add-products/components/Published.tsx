@@ -2,29 +2,29 @@
 import SectionContentWrapper from "@/components/section-content-wrapper/SectionContentWrapper";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { TPublishedStatus } from "@/redux/features/addProduct/interface";
-import {
-  useCreateProductMutation,
-  useUpdateProductMutation,
-} from "@/redux/features/allProducts/allProductsApi";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { SubmitHandler, useForm } from "react-hook-form";
-import modifiedVariations from "../lib/modifiedVariations";
-import ProductSchema from "../lib/productValidation";
 import { toast } from "@/components/ui/use-toast";
+import { resetProduct } from "@/redux/features/addProduct/addProductSlice";
+import { TPublishedStatus } from "@/redux/features/addProduct/interface";
 import {
   setDefaultSelectedAttributeValue,
   setDefaultVariation,
   setGeneratedVariations,
   setSelectedAttribute,
 } from "@/redux/features/addProduct/variation/variationSlice";
-import { resetProduct } from "@/redux/features/addProduct/addProductSlice";
-import { useRouter } from "next/navigation";
+import {
+  useCreateProductMutation,
+  useUpdateProductMutation,
+} from "@/redux/features/allProducts/allProductsApi";
 import {
   setDeleteImage,
   setGallery,
   setThumbnail,
 } from "@/redux/features/imageSelector/imageSelectorSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { useRouter } from "next/navigation";
+import { SubmitHandler, useForm } from "react-hook-form";
+import modifiedVariations from "../lib/modifiedVariations";
+import ProductSchema from "../lib/productValidation";
 
 const Published = ({ productId }: { productId: string }) => {
   const dispatch = useAppDispatch();
@@ -124,7 +124,7 @@ const Published = ({ productId }: { productId: string }) => {
                 defaultValue={publishedStatus.status}
                 {...register("status")}
                 id="status"
-                className="border h-9 border-gray-300  rounded-sm min-w-[100px] xl:w-[120px]"
+                className="border h-9 border-gray-300  rounded-sm min-w-[100px] xl:w-[120px] px-2"
               >
                 <option value="Published">Published</option>
                 <option value="Draft">Draft</option>
@@ -136,7 +136,7 @@ const Published = ({ productId }: { productId: string }) => {
                 defaultValue={publishedStatus.visibility}
                 {...register("visibility")}
                 id="visibility"
-                className="border h-9 border-gray-300  rounded-sm"
+                className="border h-9 border-gray-300 w-[100px] px-2 rounded-sm"
               >
                 <option value="Public">Public</option>
                 {/* <option value="Password protected">Password protected</option> */}
