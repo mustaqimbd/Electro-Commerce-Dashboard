@@ -13,6 +13,7 @@ import {
   PackageSearch,
   PlusCircle,
   Shapes,
+  Truck,
   User,
   UsersRound,
 } from "lucide-react";
@@ -43,7 +44,11 @@ export function Sidebar() {
     permissions,
     permission.manageWarrantyClaim
   );
-  const ManageCoupons = isPermitted(permissions, permission.manageCoupon);
+  const manageCoupons = isPermitted(permissions, permission.manageCoupon);
+  const manageShippingCharges = isPermitted(
+    permissions,
+    permission.manageShippingCharges
+  );
 
   const productManagementLinks = [
     {
@@ -149,14 +154,20 @@ export function Sidebar() {
           icon={<UsersRound className="w-4 h-4" />}
         />
       )}
-      {ManageCoupons && (
+      {manageCoupons && (
         <NavLink
           href="/dashboard/manage-coupon"
           name="Manage coupons"
           icon={<Component className="w-4 h-4" />}
         />
       )}
-
+      {manageShippingCharges && (
+        <NavLink
+          href="/dashboard/manage-shipping-charges"
+          name="Manage shipping charges"
+          icon={<Truck className="w-4 h-4" />}
+        />
+      )}
       <Accordion type="single" collapsible>
         <AccordionItem value="item-1">
           <AccordionTrigger className="no-underline px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground transparent">
