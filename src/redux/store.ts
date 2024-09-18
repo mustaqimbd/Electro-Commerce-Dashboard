@@ -24,6 +24,7 @@ import ordersReducer from "./features/orders/ordersSlice";
 import paginationReducer from "./features/pagination/PaginationSlice";
 import processingOrdersReducer from "./features/processingOrders/processingOrdersSlice";
 import searchReducer from "./features/search/searchSlice";
+import shippingChargesSlice from "./features/shippingCharge/ShippingChargeSlice";
 import userSlice from "./features/user/userSlice";
 import warrantyClaimSlice from "./features/warrantyClaimRequests/warrantyClaimSlice";
 import storage from "./storage";
@@ -52,6 +53,7 @@ export const createStore = () => {
       warrantyClaim: warrantyClaimSlice,
       users: userSlice,
       allCoupons: couponSlice,
+      shippingCharges: shippingChargesSlice,
     },
     middleware: (getDefaultMiddlewares) =>
       getDefaultMiddlewares({

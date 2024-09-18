@@ -2,20 +2,23 @@ import baseApi from "@/redux/baseApi/baseApi";
 
 const shippingChargeAPI = baseApi.injectEndpoints({
   endpoints: (builder) => ({
+    createShippingCharge: builder.mutation({
+      query: (body) => ({
+        url: "/shipping-charges",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["shippingCharge"],
+    }),
     getShippingCharge: builder.query({
       query: () => ({
         url: "/shipping-charges",
         method: "GET",
       }),
-      // transformResponse: (response:unknown) => {
-      //   return {
-      //     data: response.data,
-      //     meta: response.meta,
-      //   };
-      // },
       providesTags: ["shippingCharge"],
     }),
   }),
 });
 
-export const { useGetShippingChargeQuery } = shippingChargeAPI;
+export const { useGetShippingChargeQuery, useCreateShippingChargeMutation } =
+  shippingChargeAPI;
