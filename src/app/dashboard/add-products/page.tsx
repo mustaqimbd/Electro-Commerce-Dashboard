@@ -10,8 +10,8 @@ import ProductData from "./components/productData/ProductsData";
 import getAttributes from "./lib/getAttributes";
 // import getTags from "./lib/getTags";
 import fetchData from "@/utilities/fetchData";
-import Brand from "./components/Brand";
 import Link from "next/link";
+import Brand from "./components/Brand";
 // import getBrands from "./lib/getBrands";
 
 const AddProducts = async ({ productId }: { productId: string }) => {
@@ -30,7 +30,7 @@ const AddProducts = async ({ productId }: { productId: string }) => {
 
   return (
     <>
-      <Card>
+      <Card className="shadow-none rounded-xl space-y-5 m-1">
         <div className="flex gap-3 justify-between items-center bg-white rounded-md p-4  ">
           <h1 className="text-3xl">
             {productId ? "Edit Product" : "Add Product"}
@@ -41,7 +41,7 @@ const AddProducts = async ({ productId }: { productId: string }) => {
         </div>
       </Card>
       {/* product data section started */}
-      <div className="flex justify-start items-start gap-4 mt-3 w-full">
+      <div className="flex justify-between items-start gap-4 mt-3 w-full px-3">
         <div className="w-[65%] space-y-3">
           {/* products title */}
           <Title />

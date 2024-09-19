@@ -56,7 +56,8 @@ type Tags =
   | "paymentMethod"
   | "images"
   | "warrantyClaimRequests"
-  | "users";
+  | "users"
+  | "coupons";
 const tags: Tags[] = [
   "allProducts",
   "singleProduct",
@@ -70,6 +71,7 @@ const tags: Tags[] = [
   "images",
   "warrantyClaimRequests",
   "users",
+  "coupons",
 ];
 
 const baseApi = createApi({
