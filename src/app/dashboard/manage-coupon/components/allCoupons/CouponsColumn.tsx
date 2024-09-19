@@ -40,7 +40,7 @@ const columns: ColumnDef<TCoupon>[] = [
     ),
   },
   {
-    accessorKey: "maxDiscountAmount",
+    accessorKey: "endDate",
     header: () => <h2 className="text-start">Ends in</h2>,
     cell: ({ row }) => (
       <div>
