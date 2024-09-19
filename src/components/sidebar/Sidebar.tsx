@@ -7,12 +7,12 @@ import {
   Home,
   ImagePlusIcon,
   LayoutDashboard,
-  LayoutList,
+  // LayoutList,
   ListOrdered,
   Loader,
   PackageSearch,
   PlusCircle,
-  Shapes,
+  // Shapes,
   Truck,
   User,
   UsersRound,
@@ -52,8 +52,13 @@ export function Sidebar() {
 
   const productManagementLinks = [
     {
+      href: "/products",
+      name: "All Products",
+      icon: <PackageSearch className="w-4 h-4" />,
+    },
+    {
       href: "/add-products",
-      name: "Add Products",
+      name: "Add Product",
       icon: <PlusCircle className="w-4 h-4" />,
     },
     {
@@ -66,10 +71,15 @@ export function Sidebar() {
       name: "Attribute",
       icon: <PlusCircle className="w-4 h-4" />,
     },
+    // {
+    //   href: "/brand",
+    //   name: "Brand",
+    //   icon: <PlusCircle className="w-4 h-4" />,
+    // },
     {
-      href: "/products",
-      name: "All Products",
-      icon: <PackageSearch className="w-4 h-4" />,
+      href: "/media",
+      name: "Media",
+      icon: <ImagePlusIcon className="w-4 h-4" />,
     },
   ];
 
@@ -79,21 +89,16 @@ export function Sidebar() {
       name: "Slider Section",
       icon: <ImagePlusIcon className="w-4 h-4" />,
     },
-    {
-      href: "/media",
-      name: "Media",
-      icon: <ImagePlusIcon className="w-4 h-4" />,
-    },
-    {
-      href: "/contact",
-      name: "Contact & Social",
-      icon: <Shapes className="w-4 h-4" />,
-    },
-    {
-      href: "/contents",
-      name: "Text Contents",
-      icon: <LayoutList className="w-4 h-4" />,
-    },
+    // {
+    //   href: "/contact",
+    //   name: "Contact & Social",
+    //   icon: <Shapes className="w-4 h-4" />,
+    // },
+    // {
+    //   href: "/contents",
+    //   name: "Text Contents",
+    //   icon: <LayoutList className="w-4 h-4" />,
+    // },
   ];
 
   return (
@@ -110,15 +115,27 @@ export function Sidebar() {
           icon={<LayoutDashboard className="w-4 h-4" />}
         />
       )}
-      {manageProduct &&
-        productManagementLinks.map((item) => (
-          <NavLink
-            key={item.href}
-            href={`/dashboard${item.href}`}
-            name={item.name}
-            icon={item.icon}
-          />
-        ))}
+      {manageProduct && (
+        <Accordion type="single" collapsible className="!mt-0">
+          <AccordionItem value="item-1">
+            <AccordionTrigger className="px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground">
+              <div className="flex items-center gap-3">
+                <PackageSearch className="w-4 h-4" /> <span>Products</span>
+              </div>
+            </AccordionTrigger>
+            <AccordionContent>
+              {productManagementLinks.map((item) => (
+                <NavLink
+                  key={item.href}
+                  href={`/dashboard${item.href}`}
+                  name={item.name}
+                  icon={item.icon}
+                />
+              ))}
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+      )}
       {manageOrder && (
         <NavLink
           href="/dashboard/orders"
@@ -168,7 +185,7 @@ export function Sidebar() {
           icon={<Truck className="w-4 h-4" />}
         />
       )}
-      <Accordion type="single" collapsible>
+      <Accordion type="single" collapsible className="!mt-0">
         <AccordionItem value="item-1">
           <AccordionTrigger className="no-underline px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground transparent">
             Theme Option

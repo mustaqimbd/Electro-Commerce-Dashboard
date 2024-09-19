@@ -19,6 +19,8 @@ import { useEffect } from "react";
 import Show from "../Show";
 import { useDeleteImageMutation } from "@/redux/features/imageSelector/imageApi";
 import { useToast } from "@/components/ui/use-toast";
+import { EyeIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 type TImage = { _id: string; src: string; alt: string };
 type TProps = {
@@ -31,6 +33,8 @@ type TProps = {
 const MediaLibrary = ({ click, index, handleOpen }: TProps) => {
   const dispatch = useAppDispatch();
   const { toast } = useToast();
+  const router = useRouter();
+
   const [deleteImage, { isLoading: loading }] = useDeleteImageMutation();
 
   const { thumbnail, gallery, deleteImages } = useAppSelector(
@@ -160,7 +164,11 @@ const MediaLibrary = ({ click, index, handleOpen }: TProps) => {
                 <div
                   key={image._id}
                   onClick={() => selectImage(image._id)}
-                  className={`w-[140px] h-[140px] relative cursor-pointer rounded-sm ${gallery.includes(image._id) || (deleteImages.includes(image._id) && "border-2 border-blue-600")}`}
+                  className={`w-[140px] h-[140px] relative cursor-pointer rounded-sm ${
+                    (gallery.includes(image._id) ||
+                      deleteImages.includes(image._id)) &&
+                    "border-2 border-blue-600"
+                  }`}
                 >
                   <Image
                     src={`${config.base_url}/${image.src}`}
@@ -169,13 +177,23 @@ const MediaLibrary = ({ click, index, handleOpen }: TProps) => {
                     className="object-cover rounded-sm"
                     sizes="(max-width: 208px) 100vw,"
                   />
-                  {gallery.includes(image._id) ||
-                    (deleteImages.includes(image._id) && (
-                      <button className="bg-white text-green-500 absolute right-1 bottom-1 p-1 rounded-full opacity-70 ring-offset-background transition-opacity hover:opacity-100 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground z-10">
-                        {/* <Cross2Icon className="h-5 w-5" /> */}
-                        <CheckIcon className="h-5 w-5" />
-                      </button>
-                    ))}
+                  <span title="View image">
+                    <EyeIcon
+                      className="h-6 w-6 bg-white text-green-500 absolute right-1 top-1 p-1 rounded-full opacity-70 ring-offset-background transition-opacity hover:opacity-100 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground z-10"
+                      onClick={(e) => {
+                        router.push(`/dashboard/media/${image._id}`);
+                        e.stopPropagation();
+                      }}
+                    />
+                  </span>
+
+                  {(gallery.includes(image._id) ||
+                    deleteImages.includes(image._id)) && (
+                    <button className="bg-white text-green-500 absolute right-1 bottom-1 p-1 rounded-full opacity-70 ring-offset-background transition-opacity hover:opacity-100 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground z-10">
+                      {/* <Cross2Icon className="h-5 w-5" /> */}
+                      <CheckIcon className="h-5 w-5" />
+                    </button>
+                  )}
                 </div>
               ))}
         </div>

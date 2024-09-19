@@ -21,6 +21,7 @@ import { setThumbnail } from "@/redux/features/imageSelector/imageSelectorSlice"
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { useForm } from "react-hook-form";
 import AddCategoryMedia from "../../components/AddCategoryMedia";
+import { useEffect } from "react";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -54,6 +55,10 @@ const AddSubCategoryForm = ({ category }: { category: string }) => {
       category: "",
     },
   });
+
+  useEffect(() => {
+    dispatch(setThumbnail(""));
+  }, [dispatch]);
 
   const onSubmit = async (data: TSubCategoryForm) => {
     if (category) {

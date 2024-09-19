@@ -16,6 +16,7 @@ type TTags =
   | "processingOrders"
   | "processingDoneOrders"
   | "singleOrder"
+  | "singleImage"
   | "orderStatusCount"
   | "customerOrderHistory"
   | "categories"
