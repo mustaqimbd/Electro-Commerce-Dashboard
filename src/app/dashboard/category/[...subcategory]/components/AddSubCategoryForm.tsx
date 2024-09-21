@@ -2,12 +2,8 @@
 
 import { toast } from "@/components/ui/use-toast";
 import { useAddSubCategoryMutation } from "@/redux/features/category/subCategoryApi";
-import { refetchCategories } from "../../lib/getCategories";
-
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import { z } from "zod";
-
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -22,6 +18,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { useForm } from "react-hook-form";
 import AddCategoryMedia from "../../components/AddCategoryMedia";
 import { useEffect } from "react";
+import { refetchData } from "@/utilities/fetchData";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -36,11 +33,6 @@ type TSubCategoryForm = {
   category: string;
   image?: string;
 };
-
-// type FormValues = {
-//   firstName: string;
-//   lastName: string;
-// };
 
 const AddSubCategoryForm = ({ category }: { category: string }) => {
   const [addSubCategory] = useAddSubCategoryMutation();
@@ -67,7 +59,7 @@ const AddSubCategoryForm = ({ category }: { category: string }) => {
 
       const addedSubCategory = await addSubCategory(data).unwrap();
       if (addedSubCategory?.success) {
-        refetchCategories();
+        refetchData("categories");
         form.reset();
         dispatch(setThumbnail(""));
         toast({
@@ -76,7 +68,6 @@ const AddSubCategoryForm = ({ category }: { category: string }) => {
         });
       }
     } else {
-      refetchCategories();
       toast({
         title: "Something Went wrong .Please try Agian Later",
       });

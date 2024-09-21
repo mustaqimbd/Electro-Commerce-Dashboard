@@ -1,6 +1,5 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { DialogClose } from "@/components/ui/dialog";
 import {
   Form,
   FormField,
@@ -16,8 +15,8 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { refetchCategories } from "../lib/getCategories";
 import UpdateCategoryMedia from "./UpdateCategoryMedia";
+import { refetchData } from "@/utilities/fetchData";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -33,15 +32,18 @@ type TCategoryForm = {
 };
 type TCategoryImage = {
   src: string;
+  alt: string;
 };
 const UpdateCategoryForm = ({
   id,
   name,
   image,
+  handleOpen,
 }: {
   id: string;
   name: string;
   image: TCategoryImage;
+  handleOpen: (open: boolean) => void;
 }) => {
   const { thumbnail } = useAppSelector(({ imageSelector }) => imageSelector);
   const dispatch = useAppDispatch();
@@ -50,32 +52,31 @@ const UpdateCategoryForm = ({
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-
     defaultValues: {
-      name: "",
+      name: name,
       image: "",
     },
   });
 
+  //handle close button for remove setThumbnail in thumbnail select slice
+  const handleClose = () => {
+    dispatch(setThumbnail(""));
+  };
   const onSubmit = async (data: TCategoryForm) => {
     data.image = thumbnail || undefined;
 
     const updatedCategory = await updateCategory({ id, data }).unwrap();
     if (updatedCategory?.success) {
       form.reset();
-      refetchCategories();
+      refetchData("categories");
       dispatch(setThumbnail(""));
-
       toast({
         className: "bg-success text-white text-2xl",
         title: updatedCategory?.message,
       });
+      handleOpen(false);
+      handleClose();
     }
-  };
-
-  //handle close button for remove setThumbnail in thumbnail select slice
-  const handleClose = () => {
-    dispatch(setThumbnail(""));
   };
 
   return (
@@ -88,7 +89,7 @@ const UpdateCategoryForm = ({
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Name</FormLabel>
-                <Input placeholder={name} {...field} />
+                <Input {...field} />
                 <FormMessage />
               </FormItem>
             )}
@@ -100,15 +101,7 @@ const UpdateCategoryForm = ({
             <Button type="submit" className="">
               Update Category
             </Button>
-            <div className="flex gap-4 items-center ">
-              <DialogClose asChild>
-                <Button onClick={() => handleClose()} className="bg-black">
-                  Done
-                </Button>
-              </DialogClose>{" "}
-            </div>
           </div>
-          <div></div>
         </form>
       </Form>
     </div>

@@ -20,6 +20,7 @@ type TTags =
   | "orderStatusCount"
   | "customerOrderHistory"
   | "categories"
+  | "subcategories"
   | "attributes"
   | "brands"
   | "tags";

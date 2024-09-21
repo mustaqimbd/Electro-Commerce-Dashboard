@@ -25,11 +25,15 @@ const borderColor = (status: string) => {
                           ? "ring-1 ring-[#E38390] text-[#E38390]"
                           : status === "follow up"
                             ? "ring-1 ring-[#00C3C6] text-[#00C3C6] hover:text-white hover:bg-[#00C3C6]"
-                            : status === "Published"
+                            : status === "Public"
                               ? "ring-1 ring-[#32CD32] text-[#32CD32] hover:text-white hover:bg-[#32CD32]"
-                              : status === "Draft"
-                                ? "ring-1 ring-[#808080] text-[#808080] hover:text-white hover:bg-[#808080]"
-                                : "";
+                              : status === "Private"
+                                ? "ring-1 ring-[#fe5461] text-[#fe5461]  hover:text-white hover:bg-[#fe5461]"
+                                : status === "Published"
+                                  ? "ring-1 ring-[#6BD3B0] text-[#6BD3B0] hover:bg-[#6BD3B0] hover:text-white"
+                                  : status === "Draft"
+                                    ? "ring-1 ring-[#808080] text-[#808080] hover:text-white hover:bg-[#808080]"
+                                    : "";
 };
 
 export default borderColor;

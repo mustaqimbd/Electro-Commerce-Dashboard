@@ -12,7 +12,6 @@ import {
 } from "@tanstack/react-table";
 import { SquarePen, Trash2Icon } from "lucide-react";
 import * as React from "react";
-
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -40,13 +39,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import config from "@/config/config";
-
 import { toast } from "@/components/ui/use-toast";
 import { useDeleteSubCategoryMutation } from "@/redux/features/category/subCategoryApi";
 import Image from "next/image";
-import { refetchCategories } from "../../lib/getCategories";
-import { refetchSubCategories } from "../../lib/getSubcategories";
 import UpdateSubCategoryForm from "./UpdateSubcategoryForm";
+import { refetchData } from "@/utilities/fetchData";
 
 export type TSubCategories = {
   _id: string;
@@ -112,15 +109,13 @@ export const columns: ColumnDef<TSubCategories>[] = [
         const res = await deleteSubCategory(subCategoryIds).unwrap();
 
         if (res?.success) {
-          refetchSubCategories();
-          refetchCategories();
+          refetchData("subcategories");
+          refetchData("categories");
           toast({
             className: "bg-success text-white ",
             title: "SubCategory Successfully Deleted",
           });
         } else {
-          refetchSubCategories();
-          refetchCategories();
           toast({
             className: " bg-danger text-whit",
             title: "Something Went Wrong",

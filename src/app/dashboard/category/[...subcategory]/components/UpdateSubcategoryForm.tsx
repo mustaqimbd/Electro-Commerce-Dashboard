@@ -16,9 +16,8 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
-import { refetchSubCategories } from "../../lib/getSubcategories";
 import UpdateSubCategoryMedia from "./UpdateSubCategoryMedia";
+import { refetchData } from "@/utilities/fetchData";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -64,7 +63,7 @@ const UpdateSubCategoryForm = ({
     const updatedCategory = await updateSubCategory({ id, data }).unwrap();
     if (updatedCategory?.success) {
       form.reset();
-      refetchSubCategories();
+      refetchData("subcategories");
       dispatch(setThumbnail(""));
 
       toast({

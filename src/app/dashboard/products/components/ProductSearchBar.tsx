@@ -66,7 +66,7 @@ const ProductSearchBar = ({ endPoint }: { endPoint: string }) => {
           onKeyDown={handleKeyPress}
           disabled={searchQuery && isLoading ? true : false}
           className="p-5 w-full outline-none ring-1 ring-primary rounded-full rounded-r-none border-r-0 border-secondary h-[40px]"
-          placeholder="Search orders by mobile number"
+          placeholder="Search products"
         />
         {searchQuery && (
           <button

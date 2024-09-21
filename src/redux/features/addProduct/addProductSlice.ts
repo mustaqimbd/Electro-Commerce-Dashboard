@@ -16,7 +16,7 @@ const initialState: TProduct = {
   // slug: "",
   // type: "simple",
   description: "",
-  // shortDescription: "",
+  shortDescription: "",
   price: {
     regularPrice: 0,
     salePrice: 0,
@@ -88,6 +88,9 @@ const productSlice = createSlice({
     },
     setDescription: (state, action: PayloadAction<string>) => {
       state.description = action.payload;
+    },
+    setShortDescription: (state, action: PayloadAction<string>) => {
+      state.shortDescription = action.payload;
     },
     // setThumbnail: (state, action: PayloadAction<string>) => {
     //   state.image.thumbnail = action.payload;
@@ -166,6 +169,7 @@ const productSlice = createSlice({
       const {
         title,
         description,
+        shortDescription,
         price,
         // image,
         inventory,
@@ -176,6 +180,7 @@ const productSlice = createSlice({
       } = action.payload;
       state.title = title;
       state.description = description;
+      state.shortDescription = shortDescription;
       state.price = price;
       state.inventory = {
         ...inventory,
@@ -195,6 +200,7 @@ const productSlice = createSlice({
 export const {
   setTitle,
   setDescription,
+  setShortDescription,
   // setThumbnail,
   // setGallery,
   setAttributes,

@@ -12,6 +12,7 @@ import getAttributes from "./lib/getAttributes";
 import fetchData from "@/utilities/fetchData";
 import Link from "next/link";
 import Brand from "./components/Brand";
+import ShortDescription from "./components/ShortDescription";
 // import getBrands from "./lib/getBrands";
 
 const AddProducts = async ({ productId }: { productId: string }) => {
@@ -45,6 +46,7 @@ const AddProducts = async ({ productId }: { productId: string }) => {
         <div className="w-[65%] space-y-3">
           {/* products title */}
           <Title />
+          <ShortDescription />
           {/* products description */}
           <Description />
           {/* product data */}

@@ -71,11 +71,11 @@ export function Sidebar() {
       name: "Attribute",
       icon: <PlusCircle className="w-4 h-4" />,
     },
-    // {
-    //   href: "/brand",
-    //   name: "Brand",
-    //   icon: <PlusCircle className="w-4 h-4" />,
-    // },
+    {
+      href: "/brand",
+      name: "Brand",
+      icon: <PlusCircle className="w-4 h-4" />,
+    },
     {
       href: "/media",
       name: "Media",

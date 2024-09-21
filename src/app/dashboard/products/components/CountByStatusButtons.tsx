@@ -77,6 +77,11 @@ const CountByStatusButtons = () => {
             }}
             disabled={isLoading}
             className={`capitalize bg-white flex items-center gap-1 rounded-2xl ${borderColor(status.name)} ${filter === status.name ? bg : ""}`}
+            title={
+              status.name == "Draft"
+                ? "Draft products will be automatically deleted after 30 days."
+                : undefined
+            }
           >
             <span>{status.name}</span>
             <span>({status.total})</span>

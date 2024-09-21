@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 "use client";
 
 import {
@@ -11,17 +10,9 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { Settings, SquarePen, Trash2Icon } from "lucide-react";
 import * as React from "react";
-
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -40,24 +31,19 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { toast } from "@/components/ui/use-toast";
 import config from "@/config/config";
-import { useDeleteCategoryMutation } from "@/redux/features/category/categoryApi";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { refetchCategories } from "../lib/getCategories";
-import UpdateCategoryForm from "./UpdateCategoryForm";
+import CategoryAction from "./CategoryAction";
+import NavigateSubCategory from "./NavigateSubCategory";
+import { useDeleteCategoryMutation } from "@/redux/features/category/categoryApi";
+import { refetchData } from "@/utilities/fetchData";
+import { toast } from "@/components/ui/use-toast";
 
 export type TCategories = {
   _id: string;
   image: {
     src: string;
+    alt: string;
   };
   name: string;
   subcategories: [];
@@ -106,116 +92,14 @@ export const columns: ColumnDef<TCategories>[] = [
   {
     accessorKey: "items",
     header: "Sub Categories",
-    cell: ({ row }) => {
-      const router = useRouter();
-
-      return (
-        <>
-          <div className="flex items-center gap-3">
-            <div className="lowercase ml-6">
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger>
-                    {row.original?.subcategories?.length}
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p className="text-white">
-                      {" "}
-                      <span className="">
-                        {row.original?.subcategories?.length}
-                      </span>{" "}
-                      Sub Categories
-                    </p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            </div>
-            <Settings
-              onClick={() =>
-                router.push(
-                  `/dashboard/category/${row.original.name.replace(/ /g, "-")}/${row.original._id}`
-                )
-              }
-              className="w-5 h-5 text-primary cursor-pointer"
-            />
-          </div>
-        </>
-      );
-    },
+    cell: ({ row }) => <NavigateSubCategory category={row.original} />,
   },
   {
     id: "_id",
     accessorKey: "_id",
     header: () => <div className="text-center">Action</div>,
     enableHiding: true,
-    cell: ({ row }) => {
-      // eslint-disable-next-line react-hooks/rules-of-hooks
-      const [deleteCategory] = useDeleteCategoryMutation();
-
-      const handleDelete = async (id: string) => {
-        const categoryIds = [id];
-
-        const res = await deleteCategory(categoryIds).unwrap();
-
-        if (res?.success) {
-          refetchCategories();
-          toast({
-            className: "bg-success text-white ",
-            title: "Category Successfully Deleted",
-          });
-        } else {
-          refetchCategories();
-          toast({
-            className: " bg-danger text-whit",
-            title: "Something Went Wrong",
-          });
-        }
-      };
-      return (
-        <span className="flex justify-center">
-          <Dialog>
-            <DialogTrigger>
-              {" "}
-              <SquarePen className="text-green-500" />
-            </DialogTrigger>
-            <DialogContent className=" h-fit">
-              <h1 className="text-2xl font-semibold">Update Category</h1>
-
-              <div>
-                <UpdateCategoryForm
-                  id={row.getValue("_id")}
-                  name={row.getValue("name")}
-                  image={row.getValue("image")}
-                />
-              </div>
-            </DialogContent>
-          </Dialog>
-
-          <Dialog>
-            <DialogTrigger>
-              {" "}
-              <Trash2Icon className="text-red-500" />
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px] h-fit">
-              <h1 className="text-3xl">Are you sure?</h1>
-              <div className="flex gap-4 items-center ">
-                <DialogClose asChild>
-                  <Button className="bg-red-500 hover:bg-red-500">
-                    Cancel
-                  </Button>
-                </DialogClose>{" "}
-                <Button
-                  onClick={() => handleDelete(row.getValue("_id"))}
-                  className=""
-                >
-                  Yes, Delete it!
-                </Button>
-              </div>
-            </DialogContent>
-          </Dialog>
-        </span>
-      );
-    },
+    cell: ({ row }) => <CategoryAction category={row.original} />,
   },
 ];
 
@@ -227,6 +111,7 @@ export const CategoryTable = ({
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
+  const [deleteCategory] = useDeleteCategoryMutation();
 
   const table = useReactTable({
     data: categories,
@@ -243,6 +128,29 @@ export const CategoryTable = ({
     },
   });
 
+  const selectedRows = table?.getFilteredSelectedRowModel()?.rows;
+  const categoryIds = selectedRows.map(({ original }) => original._id);
+
+  const handleDelete = async () => {
+    if (categoryIds.length) {
+      const res = await deleteCategory(categoryIds).unwrap();
+      if (res?.success) {
+        refetchData("categories");
+        toast({
+          className: "bg-success text-white ",
+          title: "Category deleted successfully!",
+        });
+      } else {
+        toast({
+          className: "bg-danger text-whit",
+          title: "Something Went Wrong",
+        });
+      }
+    } else {
+      alert("Please select categories!");
+    }
+  };
+
   return (
     <div className="w-full">
       <div className="flex items-center gap-2 py-4">
@@ -258,7 +166,7 @@ export const CategoryTable = ({
               </SelectGroup>
             </SelectContent>
           </Select>
-          <Button>Apply</Button>
+          <Button onClick={handleDelete}>Apply</Button>
         </div>
         <Input
           placeholder="Filter Name"

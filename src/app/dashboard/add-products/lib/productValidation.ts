@@ -26,7 +26,7 @@ const InventoryValidationSchema = Yup.object().shape({
     .default(0)
     .test(
       "is-less-than-quantity",
-      "Low stock warning cannot be equal or greater than stock quantity sss",
+      "Stock quantity cannot less than existing quantity!",
       function (value) {
         const { preStockQuantity } = this.parent;
         return value >= preStockQuantity;

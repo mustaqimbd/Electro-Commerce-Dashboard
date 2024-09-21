@@ -15,9 +15,9 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { refetchCategories } from "../lib/getCategories";
 import AddCategoryMedia from "./AddCategoryMedia";
 import { useEffect } from "react";
+import { refetchData } from "@/utilities/fetchData";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -44,7 +44,6 @@ const AddCategoryForm = () => {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-
     defaultValues: {
       name: "",
       image: "",
@@ -55,7 +54,7 @@ const AddCategoryForm = () => {
     data.image = thumbnail || undefined;
     const addedCategory = await addCategory(data).unwrap();
     if (addedCategory?.success) {
-      refetchCategories();
+      refetchData("categories");
       form.reset();
       dispatch(setThumbnail(""));
 
@@ -90,7 +89,7 @@ const AddCategoryForm = () => {
 
           <AddCategoryMedia />
 
-          <div className="flex gap-3 items-center">
+          <div className="flex gap-10 items-center">
             <Button type="submit" className="">
               Add Category
             </Button>
@@ -102,7 +101,6 @@ const AddCategoryForm = () => {
               Reset
             </Button>
           </div>
-          <div></div>
         </form>
       </Form>
     </div>

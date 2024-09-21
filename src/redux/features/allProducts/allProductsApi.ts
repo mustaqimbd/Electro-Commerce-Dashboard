@@ -13,7 +13,7 @@ const allProductsApi = baseApi.injectEndpoints({
     }),
     getAProduct: builder.query({
       query: (id: string) => ({
-        url: `/products/${id}`,
+        url: `/products/${id}/admin`,
       }),
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       transformResponse: (response: any) => {

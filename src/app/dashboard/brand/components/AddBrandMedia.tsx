@@ -59,7 +59,7 @@ const AddBrandMedia = () => {
                 />
               </svg>
               <TypographyH4 className="text-center">
-                Recommended: max 200 * 200
+                Recommended <br /> max 200 * 200
               </TypographyH4>
             </>
           )}
