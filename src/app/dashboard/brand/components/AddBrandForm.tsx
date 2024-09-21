@@ -9,34 +9,36 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
-import { useAddCategoryMutation } from "@/redux/features/category/categoryApi";
 import { setThumbnail } from "@/redux/features/imageSelector/imageSelectorSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { refetchCategories } from "../lib/getCategories";
-import AddCategoryMedia from "./AddCategoryMedia";
 import { useEffect } from "react";
+import { useAddBrandMutation } from "@/redux/features/brand/brandApi";
+import { refetchData } from "@/utilities/fetchData";
+import AddBrandMedia from "./AddBrandMedia";
+import { Textarea } from "@/components/ui/textarea";
 
 const formSchema = z.object({
   name: z.string().min(2, {
-    message: "Category Name must be at least 2 characters.",
+    message: "Brand Name must be at least 2 characters.",
   }),
-  image: z.string().optional(),
-  category: z.string().optional(),
+  logo: z.string().optional(),
+  description: z.string().optional(),
 });
 
-type TCategoryForm = {
+type TBrandForm = {
   name: string;
-  image?: string;
+  description?: string;
+  logo?: string;
 };
 
-const AddCategoryForm = () => {
+const AddBrandForm = () => {
   const { thumbnail } = useAppSelector(({ imageSelector }) => imageSelector);
   const dispatch = useAppDispatch();
 
-  const [addCategory] = useAddCategoryMutation();
+  const [addBrand] = useAddBrandMutation();
 
   useEffect(() => {
     dispatch(setThumbnail(""));
@@ -44,24 +46,24 @@ const AddCategoryForm = () => {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-
     defaultValues: {
       name: "",
-      image: "",
+      description: "",
+      logo: "",
     },
   });
 
-  const onSubmit = async (data: TCategoryForm) => {
-    data.image = thumbnail || undefined;
-    const addedCategory = await addCategory(data).unwrap();
-    if (addedCategory?.success) {
-      refetchCategories();
+  const onSubmit = async (data: TBrandForm) => {
+    data.logo = thumbnail || undefined;
+    const addedBrand = await addBrand(data).unwrap();
+
+    if (addedBrand?.success) {
+      refetchData("brands");
       form.reset();
       dispatch(setThumbnail(""));
-
       toast({
         className: "bg-success text-white text-2xl",
-        title: addedCategory?.message,
+        title: addedBrand?.message,
       });
     }
   };
@@ -82,18 +84,25 @@ const AddCategoryForm = () => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Name</FormLabel>
-                <Input placeholder="Category Name" {...field} />
+                <Input placeholder="Enter brand name" {...field} />
                 <FormMessage />
               </FormItem>
             )}
           />
-
-          <AddCategoryMedia />
-
-          <div className="flex gap-3 items-center">
-            <Button type="submit" className="">
-              Add Category
-            </Button>
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Description</FormLabel>
+                <Textarea placeholder="Enter brand description" {...field} />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <AddBrandMedia />
+          <div className="flex gap-10 items-center">
+            <Button type="submit">Add Brand</Button>
             <Button
               type="reset"
               className="bg-transparent border border-red-100 text-black hover:bg-red-500 hover:text-white"
@@ -102,11 +111,10 @@ const AddCategoryForm = () => {
               Reset
             </Button>
           </div>
-          <div></div>
         </form>
       </Form>
     </div>
   );
 };
 
-export default AddCategoryForm;
+export default AddBrandForm;

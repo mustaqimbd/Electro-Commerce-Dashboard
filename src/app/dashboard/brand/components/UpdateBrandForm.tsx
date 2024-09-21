@@ -1,6 +1,5 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { DialogClose } from "@/components/ui/dialog";
 import {
   Form,
   FormField,
@@ -10,66 +9,74 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
-import { useUpdateCategoryMutation } from "@/redux/features/category/categoryApi";
 import { setThumbnail } from "@/redux/features/imageSelector/imageSelectorSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { refetchCategories } from "../lib/getCategories";
-import UpdateCategoryMedia from "./UpdateCategoryMedia";
+import UpdateCategoryMedia from "./UpdateBrandMedia";
+import { Textarea } from "@/components/ui/textarea";
+import { useUpdateBrandMutation } from "@/redux/features/brand/brandApi";
+import { refetchData } from "@/utilities/fetchData";
 
 const formSchema = z.object({
   name: z.string().min(2, {
     message: "Category Name must be at least 2 characters.",
   }),
-  image: z.string().optional(),
-  category: z.string().optional(),
+  logo: z.string().optional(),
+  description: z.string().optional(),
 });
 
-type TCategoryForm = {
+type TBrandForm = {
   name: string;
-  image?: string;
+  logo?: string;
+  description?: string;
 };
-type TCategoryImage = {
+type TBrandImage = {
   src: string;
+  alt: string;
 };
-const UpdateCategoryForm = ({
+const UpdateBrandForm = ({
   id,
   name,
-  image,
+  description,
+  logo,
+  handleOpen,
 }: {
   id: string;
   name: string;
-  image: TCategoryImage;
+  description: string;
+  logo: TBrandImage;
+  handleOpen: (open: boolean) => void;
 }) => {
   const { thumbnail } = useAppSelector(({ imageSelector }) => imageSelector);
   const dispatch = useAppDispatch();
-
-  const [updateCategory] = useUpdateCategoryMutation();
+  const [updateBrand] = useUpdateBrandMutation();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-
     defaultValues: {
-      name: "",
-      image: "",
+      name,
+      description,
+      logo: "",
     },
   });
 
-  const onSubmit = async (data: TCategoryForm) => {
-    data.image = thumbnail || undefined;
+  const onSubmit = async (data: TBrandForm) => {
+    data.logo = thumbnail || undefined;
 
-    const updatedCategory = await updateCategory({ id, data }).unwrap();
+    const updatedCategory = await updateBrand({ id, data }).unwrap();
+
     if (updatedCategory?.success) {
       form.reset();
-      refetchCategories();
+      refetchData("brands");
       dispatch(setThumbnail(""));
-
       toast({
         className: "bg-success text-white text-2xl",
         title: updatedCategory?.message,
       });
+      handleClose();
+      handleOpen(false);
     }
   };
 
@@ -88,31 +95,30 @@ const UpdateCategoryForm = ({
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Name</FormLabel>
-                <Input placeholder={name} {...field} />
+                <Input {...field} />
                 <FormMessage />
               </FormItem>
             )}
           />
-
-          <UpdateCategoryMedia image={image} />
-
-          <div className="flex gap-3 items-center">
-            <Button type="submit" className="">
-              Update Category
-            </Button>
-            <div className="flex gap-4 items-center ">
-              <DialogClose asChild>
-                <Button onClick={() => handleClose()} className="bg-black">
-                  Done
-                </Button>
-              </DialogClose>{" "}
-            </div>
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Description</FormLabel>
+                <Textarea {...field} />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <UpdateCategoryMedia image={logo} />
+          <div>
+            <Button type="submit">Update Brand</Button>
           </div>
-          <div></div>
         </form>
       </Form>
     </div>
   );
 };
 
-export default UpdateCategoryForm;
+export default UpdateBrandForm;

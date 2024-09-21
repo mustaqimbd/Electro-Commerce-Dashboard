@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 "use client";
 
 import {
@@ -11,17 +10,9 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { Settings, SquarePen, Trash2Icon } from "lucide-react";
 import * as React from "react";
-
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -40,30 +31,25 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { toast } from "@/components/ui/use-toast";
 import config from "@/config/config";
-import { useDeleteCategoryMutation } from "@/redux/features/category/categoryApi";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { refetchCategories } from "../lib/getCategories";
-import UpdateCategoryForm from "./UpdateCategoryForm";
+import BrandActions from "./BrandActions";
+import { useDeleteBrandMutation } from "@/redux/features/brand/brandApi";
+import { refetchData } from "@/utilities/fetchData";
+import { toast } from "@/components/ui/use-toast";
 
-export type TCategories = {
+export type TBrands = {
   _id: string;
-  image: {
-    src: string;
-  };
   name: string;
-  subcategories: [];
+  slug: string;
+  logo: {
+    src: string;
+    alt: string;
+  };
+  description: string;
 };
 
-export const columns: ColumnDef<TCategories>[] = [
+export const columns: ColumnDef<TBrands>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -93,7 +79,7 @@ export const columns: ColumnDef<TCategories>[] = [
       <Image
         width={50}
         height={50}
-        src={`${config.base_url}/${row.original.image?.src}`}
+        src={`${config.base_url}/${row.original.logo?.src}`}
         alt={row?.original?.name}
       />
     ),
@@ -101,45 +87,19 @@ export const columns: ColumnDef<TCategories>[] = [
   {
     accessorKey: "name",
     header: "Name",
-    cell: ({ row }) => <div className="capitalize">{row.getValue("name")}</div>,
+    cell: ({ row }) => (
+      <span className="capitalize">{row.getValue("name")}</span>
+    ),
   },
   {
-    accessorKey: "items",
-    header: "Sub Categories",
+    accessorKey: "description",
+    header: "Description",
     cell: ({ row }) => {
-      const router = useRouter();
-
+      const description = row.original.description;
       return (
-        <>
-          <div className="flex items-center gap-3">
-            <div className="lowercase ml-6">
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger>
-                    {row.original?.subcategories?.length}
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p className="text-white">
-                      {" "}
-                      <span className="">
-                        {row.original?.subcategories?.length}
-                      </span>{" "}
-                      Sub Categories
-                    </p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            </div>
-            <Settings
-              onClick={() =>
-                router.push(
-                  `/dashboard/category/${row.original.name.replace(/ /g, "-")}/${row.original._id}`
-                )
-              }
-              className="w-5 h-5 text-primary cursor-pointer"
-            />
-          </div>
-        </>
+        <span title={row.original.description}>
+          {description ? description.slice(0, 20) + "..." : null}
+        </span>
       );
     },
   },
@@ -148,88 +108,18 @@ export const columns: ColumnDef<TCategories>[] = [
     accessorKey: "_id",
     header: () => <div className="text-center">Action</div>,
     enableHiding: true,
-    cell: ({ row }) => {
-      // eslint-disable-next-line react-hooks/rules-of-hooks
-      const [deleteCategory] = useDeleteCategoryMutation();
-
-      const handleDelete = async (id: string) => {
-        const categoryIds = [id];
-
-        const res = await deleteCategory(categoryIds).unwrap();
-
-        if (res?.success) {
-          refetchCategories();
-          toast({
-            className: "bg-success text-white ",
-            title: "Category Successfully Deleted",
-          });
-        } else {
-          refetchCategories();
-          toast({
-            className: " bg-danger text-whit",
-            title: "Something Went Wrong",
-          });
-        }
-      };
-      return (
-        <span className="flex justify-center">
-          <Dialog>
-            <DialogTrigger>
-              {" "}
-              <SquarePen className="text-green-500" />
-            </DialogTrigger>
-            <DialogContent className=" h-fit">
-              <h1 className="text-2xl font-semibold">Update Category</h1>
-
-              <div>
-                <UpdateCategoryForm
-                  id={row.getValue("_id")}
-                  name={row.getValue("name")}
-                  image={row.getValue("image")}
-                />
-              </div>
-            </DialogContent>
-          </Dialog>
-
-          <Dialog>
-            <DialogTrigger>
-              {" "}
-              <Trash2Icon className="text-red-500" />
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px] h-fit">
-              <h1 className="text-3xl">Are you sure?</h1>
-              <div className="flex gap-4 items-center ">
-                <DialogClose asChild>
-                  <Button className="bg-red-500 hover:bg-red-500">
-                    Cancel
-                  </Button>
-                </DialogClose>{" "}
-                <Button
-                  onClick={() => handleDelete(row.getValue("_id"))}
-                  className=""
-                >
-                  Yes, Delete it!
-                </Button>
-              </div>
-            </DialogContent>
-          </Dialog>
-        </span>
-      );
-    },
+    cell: ({ row }) => <BrandActions brand={row.original} />,
   },
 ];
 
-export const CategoryTable = ({
-  categories,
-}: {
-  categories: TCategories[];
-}) => {
+export const BrandTable = ({ brands }: { brands: TBrands[] }) => {
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
+  const [deleteBrand] = useDeleteBrandMutation();
 
   const table = useReactTable({
-    data: categories,
+    data: brands,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -242,6 +132,29 @@ export const CategoryTable = ({
       rowSelection,
     },
   });
+
+  const selectedRows = table?.getFilteredSelectedRowModel()?.rows;
+  const brandIds = selectedRows.map(({ original }) => original._id);
+
+  const handleDelete = async () => {
+    if (brandIds.length) {
+      const res = await deleteBrand(brandIds).unwrap();
+      if (res?.success) {
+        refetchData("brands");
+        toast({
+          className: "bg-success text-white ",
+          title: "Brand deleted successfully!",
+        });
+      } else {
+        toast({
+          className: "bg-danger text-whit",
+          title: "Something Went Wrong",
+        });
+      }
+    } else {
+      alert("Please select brands!");
+    }
+  };
 
   return (
     <div className="w-full">
@@ -258,7 +171,7 @@ export const CategoryTable = ({
               </SelectGroup>
             </SelectContent>
           </Select>
-          <Button>Apply</Button>
+          <Button onClick={handleDelete}>Apply</Button>
         </div>
         <Input
           placeholder="Filter Name"
