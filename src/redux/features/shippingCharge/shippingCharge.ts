@@ -17,8 +17,27 @@ const shippingChargeAPI = baseApi.injectEndpoints({
       }),
       providesTags: ["shippingCharge"],
     }),
+    getShippingChargeAdmin: builder.query({
+      query: () => ({
+        url: "/shipping-charges/admin",
+        method: "GET",
+      }),
+      providesTags: ["shippingCharge"],
+    }),
+    updateShippingCharge: builder.mutation({
+      query: (body) => ({
+        url: `/shipping-charges/${body.id}`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: ["shippingCharge"],
+    }),
   }),
 });
 
-export const { useGetShippingChargeQuery, useCreateShippingChargeMutation } =
-  shippingChargeAPI;
+export const {
+  useGetShippingChargeQuery,
+  useCreateShippingChargeMutation,
+  useGetShippingChargeAdminQuery,
+  useUpdateShippingChargeMutation,
+} = shippingChargeAPI;

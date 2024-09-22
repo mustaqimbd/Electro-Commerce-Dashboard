@@ -1,6 +1,6 @@
 "use client";
 
-import { useGetShippingChargeQuery } from "@/redux/features/shippingCharge/shippingCharge";
+import { useGetShippingChargeAdminQuery } from "@/redux/features/shippingCharge/shippingCharge";
 import {
   setShippingChargeLoading,
   setShippingCharges,
@@ -9,7 +9,7 @@ import { useAppDispatch } from "@/redux/hooks";
 import { useEffect } from "react";
 
 const FetchShippingCharges = () => {
-  const { data, isLoading } = useGetShippingChargeQuery({});
+  const { data, isLoading } = useGetShippingChargeAdminQuery({});
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(setShippingCharges(data?.data));
