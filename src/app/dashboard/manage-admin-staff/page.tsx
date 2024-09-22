@@ -5,6 +5,7 @@ import isPermitted from "@/utilities/isPermitted";
 import { redirect } from "next/navigation";
 import CreateUser from "./components/CreateUser/CreateUser";
 import GetAllUser from "./components/GetAllUser";
+import SearchEmployee from "./components/SearchEmployee/SearchEmployee";
 import UsersTable from "./components/UsersTable";
 
 const ManageUser = () => {
@@ -27,7 +28,10 @@ const ManageUser = () => {
           <h2 className="text-3xl">Manage employs</h2>
         </div>
         <div className="space-y-2">
-          <CreateUser />
+          <div className="flex justify-between px-3">
+            <CreateUser />
+            <SearchEmployee />
+          </div>
           <UsersTable />
         </div>
       </Card>

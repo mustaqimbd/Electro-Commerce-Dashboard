@@ -6,7 +6,7 @@ import { useAppDispatch } from "@/redux/hooks";
 import { useEffect } from "react";
 
 const GetAllUser = () => {
-  const { data, isLoading } = useGetAllUsersQuery({});
+  const { data, isLoading } = useGetAllUsersQuery({ search: undefined });
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(setUsers(data?.data || []));
