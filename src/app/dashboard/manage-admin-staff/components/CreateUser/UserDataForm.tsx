@@ -305,13 +305,15 @@ const UserDataForm = ({
             </div>
           </div>
           <div className="flex flex-col gap-2">
-            <Label htmlFor="birthCertificateNo">Enter NID number</Label>
+            <Label htmlFor="birthCertificateNo">
+              Enter birth certificate number
+            </Label>
             <div className="space-y-2 w-full">
               <Input
                 type="text"
                 {...register("birthCertificateNo")}
                 id="birthCertificateNo"
-                placeholder="Enter emergency contact"
+                placeholder="Enter birth certificate"
                 className="w-full"
               />
               {errors.birthCertificateNo?.message && (
