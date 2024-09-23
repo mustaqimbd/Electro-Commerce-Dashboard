@@ -24,9 +24,8 @@ const SearchEmployee = () => {
   };
 
   const handleKeyPress = (e: { key: string; repeat: unknown }) => {
-    if (e.key === "Enter" && !e.repeat) {
-      handleSearch();
-    }
+    if (searchQuery.length - 1 === 0) setSearch(undefined);
+    if (e.key === "Enter" && !e.repeat) handleSearch();
   };
 
   const handleSearch = async () => {

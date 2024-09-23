@@ -4,6 +4,7 @@ import isPermitted from "@/utilities/isPermitted";
 import {
   Bike,
   Component,
+  Glasses,
   Home,
   ImagePlusIcon,
   LayoutDashboard,
@@ -155,6 +156,13 @@ export function Sidebar() {
           href="/dashboard/courier-management"
           name="Courier Management"
           icon={<Bike className="w-4 h-4" />}
+        />
+      )}
+      {manageCourier && (
+        <NavLink
+          href="/dashboard/monitor-delivery"
+          name="Monitor delivery"
+          icon={<Glasses className="w-4 h-4" />}
         />
       )}
       {manageWarrantyClaim && (

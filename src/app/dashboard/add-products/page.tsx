@@ -31,8 +31,8 @@ const AddProducts = async ({ productId }: { productId: string }) => {
 
   return (
     <>
-      <Card className="shadow-none rounded-xl space-y-5 m-1">
-        <div className="flex gap-3 justify-between items-center bg-white rounded-md p-4  ">
+      <Card className="shadow-none rounded-xl space-y-5 m-1 overflow-hidden">
+        <div className="flex gap-3 justify-between items-center bg-white rounded-md p-4  overflow-hidden">
           <h1 className="text-3xl">
             {productId ? "Edit Product" : "Add Product"}
           </h1>
