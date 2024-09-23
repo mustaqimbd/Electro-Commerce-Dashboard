@@ -19,15 +19,17 @@ const AllClaimRequestPage = () => {
   }
 
   return (
-    <Card className="p-5 m-5 rounded-lg">
-      <div className="grid grid-cols-2 justify-between items-center mb-8">
-        <h2 className="text-3xl">Claim requests</h2>
-        <WarrantyClaimData />
-      </div>
-      <div>
-        <WarrantyClaimTable />
-      </div>
-    </Card>
+    <>
+      <WarrantyClaimData />
+      <Card className="p-4 shadow-none rounded-xl m-3">
+        <h2 className="text-xl font-bold mb-2">Claim requests</h2>
+        <hr className="mb-8" />
+
+        <div>
+          <WarrantyClaimTable />
+        </div>
+      </Card>
+    </>
   );
 };
 
