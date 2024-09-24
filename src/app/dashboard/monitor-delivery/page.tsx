@@ -3,6 +3,11 @@ import { getPermission } from "@/lib/getAccessToken";
 import { permission } from "@/types/order/order.interface";
 import isPermitted from "@/utilities/isPermitted";
 import { redirect } from "next/navigation";
+import OrderSearchBar from "@/components/OrderSearchBar";
+import Show from "@/components/Show";
+import MonitorOrderDateRange from "./components/MonitorDateRange";
+import OrdersTable from "./components/OrdersTable";
+import StatusButtons from "./components/StatusButtons";
 
 const MonitorDelivery = () => {
   const { permissions = [] } = getPermission();
@@ -15,21 +20,27 @@ const MonitorDelivery = () => {
   if (!manageAdminOrStaff) {
     redirect("/error");
   }
+
   return (
-    <>
-      <Card className="p-4 shadow-none rounded-xl m-3">
-        <h2 className="text-xl font-bold mb-2">Monitor delivery</h2>
-        <hr className="mb-8" />
-        <div className="space-y-2">
-          <div className="flex justify-between px-3">
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquam
-            debitis, veniam similique nulla voluptatem suscipit et deserunt
-            facilis minima possimus eaque ullam voluptates accusantium non illo
-            pariatur facere consectetur provident!
-          </div>
+    <Card className="bg-white p-4 shadow-none rounded-xl m-3">
+      {/* header section , button , search bar  */}
+      <div className="grid grid-cols-2 justify-between items-center mb-8">
+        <h1 className="text-3xl">Monitor Delivery</h1>
+        <OrderSearchBar endPoint="/orders/admin/order-deliver-status" />
+      </div>
+      <hr className="mb-8" />
+      <div>
+        {/* All,Pending,canceled,on courier etc status*/}
+        <StatusButtons />
+        <div className="flex items-center justify-between mt-8 mb-3">
+          {/*Bulk actions and invoice print for Orders*/}
+          <MonitorOrderDateRange />
+          <Show />
         </div>
-      </Card>
-    </>
+        {/* <FilterAndOrdersTable/> */}
+        <OrdersTable />
+      </div>
+    </Card>
   );
 };
 
