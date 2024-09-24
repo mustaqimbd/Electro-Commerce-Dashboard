@@ -57,6 +57,7 @@ export type TOrders = {
   paymentMethod: PaymentMethod;
   statusHistory: StatusHistory;
   status: string;
+  deliveryStatus: string;
   followUpDate: string;
   shipping: Shipping;
   createdAt: Date;
@@ -86,6 +87,7 @@ export const permission = {
 
 export type TQuery = {
   status?: string;
+  deliveryStatus?: string;
   category?: string;
   stock?: string;
   sort?: string;

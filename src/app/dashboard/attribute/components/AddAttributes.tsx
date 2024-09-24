@@ -1,7 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { FieldLebel } from "@/components/ui/field-lebel";
 import { Input } from "@/components/ui/input";
 import { SectionTitle } from "@/components/ui/sectionTitle";
 import { toast } from "@/components/ui/use-toast";
@@ -11,24 +10,33 @@ import {
   TAttributeForm,
   TAttributeValueItem,
 } from "../lib/attribute.interface";
-import { refetchAttributes } from "../lib/getAttributes";
 
+import { Label } from "@/components/ui/label";
+import { refetchData } from "@/utilities/fetchData";
+
+// Custom validation resolver
 const resolver = async (values: TAttributeForm) => {
+  const errors: Record<string, unknown> = {};
+
+  // Check if name is present
+  if (!values.name) {
+    errors.name = {
+      type: "required",
+      message: "Name is required.",
+    };
+  }
+
+  // Check if at least one value is provided
+  if (!values.values || values.values.length === 0) {
+    errors.values = {
+      type: "required",
+      message: "At least one value is required.",
+    };
+  }
+
   return {
-    values: values.name && values.values.length > 0 ? values : {},
-    errors:
-      !values.name || values.values.length === 0
-        ? {
-            name: {
-              type: "required",
-              message: "This is required.",
-            },
-            values: {
-              type: "required",
-              message: "This is required.",
-            },
-          }
-        : {},
+    values: Object.keys(errors).length === 0 ? values : {},
+    errors,
   };
 };
 
@@ -44,28 +52,41 @@ const AddAttribute = () => {
   const [addAttributes] = useAddAttributeMutation();
 
   const onSubmit = async (data: TAttributeForm) => {
-    const formattedValues: TAttributeValueItem[] = data.values.map((value) => ({
-      name: value,
-    }));
+    // Formatting values into the structure required for the API
+    const formattedValues: TAttributeValueItem[] = data.values?.map(
+      (value) => ({
+        name: value,
+      })
+    );
 
-    const addedAttribute = await addAttributes({
-      name: data.name,
-      values: formattedValues,
-    }).unwrap();
+    try {
+      const addedAttribute = await addAttributes({
+        name: data.name,
+        values: formattedValues,
+      }).unwrap();
 
-    if (addedAttribute) {
-      refetchAttributes();
-      reset();
+      if (addedAttribute) {
+        refetchData("attributes");
+        reset();
+        toast({
+          className: "bg-success text-white",
+          title: addedAttribute?.message,
+        });
+      }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
       toast({
-        className: "bg-success text-white",
-        title: addedAttribute?.message,
+        className: "bg-error text-white",
+        title: "Failed to add attribute",
+        description: error?.message || "An error occurred",
       });
     }
   };
 
+  // Handle values input change by splitting the values by commas
   const handleValuesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValues = e.target.value.split(",").map((value) => value.trim());
-    setValue("values", inputValues);
+    setValue("values", inputValues, { shouldValidate: true });
   };
 
   return (
@@ -76,9 +97,10 @@ const AddAttribute = () => {
           <form onSubmit={handleSubmit(onSubmit)} className="">
             <div className="space-y-3">
               <div>
-                <FieldLebel>Name</FieldLebel>
+                <Label htmlFor="name">Name</Label>
                 <Input
                   {...register("name")}
+                  id="name"
                   type="text"
                   placeholder="Enter Attribute Name"
                 />
@@ -87,10 +109,11 @@ const AddAttribute = () => {
                 )}
               </div>
               <div>
-                <FieldLebel>Attribute Values</FieldLebel>
+                <Label htmlFor="values">Attribute Values</Label>
                 <Input
+                  id="values"
                   type="text"
-                  placeholder="Ex: Red,Green,Blue"
+                  placeholder="Ex: Red, Green, Blue"
                   onChange={handleValuesChange}
                 />
                 {errors.values && (

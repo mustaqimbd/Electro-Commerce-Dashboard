@@ -1,7 +1,7 @@
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
 import {
-  useDeleteAttributeValueMutation,
+  useDeleteAttributeMutation,
   useUpdateAttributeMutation,
 } from "@/redux/features/addAttributes/attributesApi";
 import { Save, TrashIcon } from "lucide-react";
@@ -10,19 +10,27 @@ import {
   TAttributeValueForm,
   TAttributeValueItem,
 } from "../lib/attribute.interface";
-import { refetchAttributes } from "../lib/getAttributes";
+import { refetchData } from "@/utilities/fetchData";
 
-const UpdateAttributeValue = ({ item }: { item: TAttributeValueItem }) => {
+const UpdateAttributeValue = ({
+  item,
+  attributeId,
+}: {
+  item: TAttributeValueItem;
+  attributeId: string;
+}) => {
   const [updateAttribute] = useUpdateAttributeMutation();
-  const [deleteAttributeValue] = useDeleteAttributeValueMutation();
+  const [deleteAttribute] = useDeleteAttributeMutation();
 
   //Add attribute Value handler
 
   //delete attribute value
   const deleteAttributeValuehandler = async (attributeValueId: string) => {
-    const res = await deleteAttributeValue(attributeValueId).unwrap();
+    const res = await deleteAttribute({
+      valueIds: [attributeValueId],
+    }).unwrap();
     if (res?.success) {
-      refetchAttributes();
+      refetchData("attributes");
       toast({
         className: "bg-success text-white text-2xl",
         title: res?.message,
@@ -61,12 +69,18 @@ const UpdateAttributeValue = ({ item }: { item: TAttributeValueItem }) => {
   //update Attribute Value
   const onSubmit = async (data: TAttributeValueForm) => {
     const updatedData = {
-      attributeId: item?._id,
-      values: data?.name,
+      attributeId,
+      values: [
+        {
+          _id: item?._id,
+          name: data.name,
+        },
+      ],
     };
+
     const res = await updateAttribute(updatedData).unwrap();
     if (res?.success) {
-      refetchAttributes();
+      refetchData("attributes");
       reset();
       toast({
         className: "bg-success text-white text-2xl",

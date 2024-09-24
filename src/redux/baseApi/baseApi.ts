@@ -51,6 +51,7 @@ type Tags =
   | "allOrders"
   | "processingOrders"
   | "processingDoneAndCourierOrders"
+  | "monitorDelivery"
   | "carts"
   | "shippingCharge"
   | "paymentMethod"
@@ -65,6 +66,7 @@ const tags: Tags[] = [
   "allOrders",
   "processingOrders",
   "processingDoneAndCourierOrders",
+  "monitorDelivery",
   "carts",
   "shippingCharge",
   "paymentMethod",

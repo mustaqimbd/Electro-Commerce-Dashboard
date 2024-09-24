@@ -31,7 +31,12 @@ const updateStatusApi = baseApi.injectEndpoints({
         method: "PATCH",
         body: payload,
       }),
-      invalidatesTags: ["allOrders"],
+      invalidatesTags: [
+        "allOrders",
+        "processingOrders",
+        "processingDoneAndCourierOrders",
+        "monitorDelivery",
+      ],
     }),
     updateOrdersStatus: builder.mutation({
       query: (payload: { orderIds: string[]; status: string }) => ({
@@ -39,7 +44,12 @@ const updateStatusApi = baseApi.injectEndpoints({
         method: "PATCH",
         body: payload,
       }),
-      invalidatesTags: ["allOrders"],
+      invalidatesTags: [
+        "allOrders",
+        "processingOrders",
+        "processingDoneAndCourierOrders",
+        "monitorDelivery",
+      ],
     }),
     deleteOrders: builder.mutation({
       query: (orderIds: string[]) => ({
@@ -47,7 +57,12 @@ const updateStatusApi = baseApi.injectEndpoints({
         method: "DELETE",
         body: { orderIds },
       }),
-      invalidatesTags: ["allOrders"],
+      invalidatesTags: [
+        "allOrders",
+        "processingOrders",
+        "processingDoneAndCourierOrders",
+        "monitorDelivery",
+      ],
     }),
   }),
 });

@@ -8,17 +8,17 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/use-toast";
+import { useAddBrandMutation } from "@/redux/features/brand/brandApi";
 import { setThumbnail } from "@/redux/features/imageSelector/imageSelectorSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { refetchData } from "@/utilities/fetchData";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useEffect } from "react";
-import { useAddBrandMutation } from "@/redux/features/brand/brandApi";
-import { refetchData } from "@/utilities/fetchData";
 import AddBrandMedia from "./AddBrandMedia";
-import { Textarea } from "@/components/ui/textarea";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -58,7 +58,7 @@ const AddBrandForm = () => {
     const addedBrand = await addBrand(data).unwrap();
 
     if (addedBrand?.success) {
-      refetchData("brands");
+      await refetchData("brands");
       form.reset();
       dispatch(setThumbnail(""));
       toast({

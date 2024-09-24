@@ -97,8 +97,8 @@ const EditOrder = ({
       const payload = dirtyValues(dirtyFields, data);
       await updateOrder({ payload, _id }).unwrap();
       dispatch(setIsOrderUpdate(!iSOrderUpdate));
-      refetchData("allOrders");
-      refetchData("singleOrder");
+      await refetchData("allOrders");
+      await refetchData("singleOrder");
       reset();
       handleOpen();
       toast({

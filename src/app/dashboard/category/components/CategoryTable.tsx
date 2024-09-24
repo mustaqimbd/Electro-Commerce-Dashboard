@@ -1,16 +1,5 @@
 "use client";
 
-import {
-  ColumnDef,
-  VisibilityState,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
-import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -31,13 +20,24 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { toast } from "@/components/ui/use-toast";
 import config from "@/config/config";
-import Image from "next/image";
-import CategoryAction from "./CategoryAction";
-import NavigateSubCategory from "./NavigateSubCategory";
 import { useDeleteCategoryMutation } from "@/redux/features/category/categoryApi";
 import { refetchData } from "@/utilities/fetchData";
-import { toast } from "@/components/ui/use-toast";
+import {
+  ColumnDef,
+  VisibilityState,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
+import Image from "next/image";
+import * as React from "react";
+import CategoryAction from "./CategoryAction";
+import NavigateSubCategory from "./NavigateSubCategory";
 
 export type TCategories = {
   _id: string;
@@ -135,7 +135,7 @@ export const CategoryTable = ({
     if (categoryIds.length) {
       const res = await deleteCategory(categoryIds).unwrap();
       if (res?.success) {
-        refetchData("categories");
+        await refetchData("categories");
         toast({
           className: "bg-success text-white ",
           title: "Category deleted successfully!",

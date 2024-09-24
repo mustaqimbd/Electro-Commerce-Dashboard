@@ -32,8 +32,8 @@ const BulkAction = () => {
       if (bulkAction === "processing done") {
         const res = await updateProcessingOrderStatus(updatePayload).unwrap();
         if (res.success) {
-          refetchData("processingOrders");
-          refetchData("customerOrderHistory");
+          await refetchData("processingOrders");
+          await refetchData("customerOrderHistory");
           dispatch(setIsOrderUpdate(!iSOrderUpdate));
           dispatch(setBulkOrder({ orderIds: [] }));
           toast({

@@ -8,15 +8,16 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { toast } from "@/components/ui/use-toast";
-import { useDeleteCategoryMutation } from "@/redux/features/category/categoryApi";
 import { refetchData } from "@/utilities/fetchData";
 import { SquarePen, Trash2Icon } from "lucide-react";
 import { useState } from "react";
-import { TCategories } from "./CategoryTable";
-import UpdateCategoryForm from "./UpdateCategoryForm";
-const CategoryAction = ({ category }: { category: TCategories }) => {
+import UpdateSubCategoryForm from "./UpdateSubcategoryForm";
+import { TSubCategories } from "./SubCategoryTable";
+import { useDeleteSubCategoryMutation } from "@/redux/features/category/subCategoryApi";
+
+const SubCategoryAction = ({ category }: { category: TSubCategories }) => {
   const { _id, name, image } = category;
-  const [deleteCategory] = useDeleteCategoryMutation();
+  const [deleteSubCategory] = useDeleteSubCategoryMutation();
 
   const [open, setOpen] = useState(false);
 
@@ -27,13 +28,14 @@ const CategoryAction = ({ category }: { category: TCategories }) => {
   const handleDelete = async (id: string) => {
     const categoryIds = [id];
 
-    const res = await deleteCategory(categoryIds).unwrap();
+    const res = await deleteSubCategory(categoryIds).unwrap();
 
     if (res?.success) {
       await refetchData("categories");
+      await refetchData("subcategories");
       toast({
         className: "bg-success text-white ",
-        title: "Category Successfully Deleted",
+        title: "Sub category Successfully Deleted",
       });
     } else {
       toast({
@@ -50,9 +52,9 @@ const CategoryAction = ({ category }: { category: TCategories }) => {
           <SquarePen className="text-green-500" />
         </DialogTrigger>
         <DialogContent className=" h-fit">
-          <h1 className="text-2xl font-semibold">Update Category</h1>
+          <h1 className="text-2xl font-semibold">Update sub category</h1>
           <div>
-            <UpdateCategoryForm
+            <UpdateSubCategoryForm
               id={_id}
               name={name}
               image={image}
@@ -79,4 +81,4 @@ const CategoryAction = ({ category }: { category: TCategories }) => {
   );
 };
 
-export default CategoryAction;
+export default SubCategoryAction;

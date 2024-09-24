@@ -39,7 +39,7 @@ const AddNotes = ({ order }: { order: TOrders }) => {
       }
 
       await updateOrder({ payload, _id: order._id }).unwrap();
-      refetchData("allOrders");
+      await refetchData("allOrders");
       reset();
       handleOpen();
       toast({

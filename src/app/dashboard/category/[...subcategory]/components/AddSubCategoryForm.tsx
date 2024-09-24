@@ -1,9 +1,5 @@
 "use client";
 
-import { toast } from "@/components/ui/use-toast";
-import { useAddSubCategoryMutation } from "@/redux/features/category/subCategoryApi";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -13,12 +9,16 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { toast } from "@/components/ui/use-toast";
+import { useAddSubCategoryMutation } from "@/redux/features/category/subCategoryApi";
 import { setThumbnail } from "@/redux/features/imageSelector/imageSelectorSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { useForm } from "react-hook-form";
-import AddCategoryMedia from "../../components/AddCategoryMedia";
-import { useEffect } from "react";
 import { refetchData } from "@/utilities/fetchData";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import AddCategoryMedia from "../../components/AddCategoryMedia";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -53,23 +53,31 @@ const AddSubCategoryForm = ({ category }: { category: string }) => {
   }, [dispatch]);
 
   const onSubmit = async (data: TSubCategoryForm) => {
-    if (category) {
-      data.category = category;
-      data.image = thumbnail || undefined;
+    try {
+      if (category) {
+        data.category = category;
+        data.image = thumbnail || undefined;
 
-      const addedSubCategory = await addSubCategory(data).unwrap();
-      if (addedSubCategory?.success) {
-        refetchData("categories");
-        form.reset();
-        dispatch(setThumbnail(""));
-        toast({
-          className: "bg-success text-white text-2xl",
-          title: addedSubCategory?.message,
-        });
+        const addedSubCategory = await addSubCategory(data).unwrap();
+
+        if (addedSubCategory?.success) {
+          await refetchData("categories");
+          await refetchData("subcategories");
+          form.reset();
+          dispatch(setThumbnail(""));
+          toast({
+            className: "bg-success text-white text-2xl",
+            title: addedSubCategory?.message,
+          });
+        }
       }
-    } else {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
       toast({
-        title: "Something Went wrong .Please try Agian Later",
+        title:
+          error?.data?.errorMessages?.[0]?.message ||
+          "Something went wrong. Please try again later.",
+        variant: "destructive",
       });
     }
   };

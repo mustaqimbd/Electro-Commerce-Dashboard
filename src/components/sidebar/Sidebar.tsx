@@ -124,7 +124,7 @@ export function Sidebar() {
                 <PackageSearch className="w-4 h-4" /> <span>Products</span>
               </div>
             </AccordionTrigger>
-            <AccordionContent>
+            <AccordionContent className="pl-4">
               {productManagementLinks.map((item) => (
                 <NavLink
                   key={item.href}
@@ -198,7 +198,7 @@ export function Sidebar() {
           <AccordionTrigger className="no-underline px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground transparent">
             Theme Option
           </AccordionTrigger>
-          <AccordionContent>
+          <AccordionContent className="pl-4">
             {themeOptionLinks.map((item) => (
               <NavLink
                 key={item.href}

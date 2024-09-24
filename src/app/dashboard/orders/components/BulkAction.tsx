@@ -3,10 +3,7 @@ import Invoice from "@/components/invoice/Invoice";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
 import { useUpdateOrdersStatusMutation } from "@/redux/features/orders/ordersApi";
-import {
-  setBulkOrder,
-  // setIsOrderUpdate,
-} from "@/redux/features/orders/ordersSlice";
+import { setBulkOrder } from "@/redux/features/orders/ordersSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { refetchData } from "@/utilities/fetchData";
 // import { refetchData } from "@/utilities/fetchData";
@@ -34,8 +31,8 @@ const BulkAction = () => {
       if (bulkAction) {
         const res = await updateOrderStatus(updatePayload).unwrap();
         if (res.success) {
-          refetchData("allOrders");
-          refetchData("customerOrderHistory");
+          await refetchData("allOrders");
+          await refetchData("customerOrderHistory");
           dispatch(setBulkOrder({ orderIds: [] }));
           // dispatch(setIsOrderUpdate(!iSOrderUpdate));
           toast({

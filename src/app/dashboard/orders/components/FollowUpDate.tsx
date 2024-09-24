@@ -48,7 +48,7 @@ const FollowUpDate = ({ order }: { order: TOrders }) => {
         };
         try {
           await updateOrder({ payload, _id: order._id }).unwrap();
-          refetchData("allOrders");
+          await refetchData("allOrders");
           toast({
             className: "bg-success text-white text-2xl",
             title: "Follow up date added successfully!",

@@ -31,8 +31,8 @@ const CourierBulkAction = () => {
       if (bulkAction) {
         const res = await sendCourierAndUpdateStatus(updatePayload).unwrap();
         if (res.success) {
-          refetchData("processingDoneOrders");
-          refetchData("customerOrderHistory");
+          await refetchData("processingDoneOrders");
+          await refetchData("customerOrderHistory");
           dispatch(setBulkOrder({ orderIds: [] }));
           // dispatch(setIsOrderUpdate(!iSOrderUpdate));
 

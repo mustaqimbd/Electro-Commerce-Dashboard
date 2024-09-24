@@ -8,16 +8,16 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/use-toast";
+import { useUpdateBrandMutation } from "@/redux/features/brand/brandApi";
 import { setThumbnail } from "@/redux/features/imageSelector/imageSelectorSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { refetchData } from "@/utilities/fetchData";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import UpdateCategoryMedia from "./UpdateBrandMedia";
-import { Textarea } from "@/components/ui/textarea";
-import { useUpdateBrandMutation } from "@/redux/features/brand/brandApi";
-import { refetchData } from "@/utilities/fetchData";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -69,7 +69,7 @@ const UpdateBrandForm = ({
 
     if (updatedCategory?.success) {
       form.reset();
-      refetchData("brands");
+      await refetchData("brands");
       dispatch(setThumbnail(""));
       toast({
         className: "bg-success text-white text-2xl",

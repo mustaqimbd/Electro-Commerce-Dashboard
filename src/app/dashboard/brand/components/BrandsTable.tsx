@@ -1,16 +1,5 @@
 "use client";
 
-import {
-  ColumnDef,
-  VisibilityState,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
-import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -31,12 +20,23 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { toast } from "@/components/ui/use-toast";
 import config from "@/config/config";
-import Image from "next/image";
-import BrandActions from "./BrandActions";
 import { useDeleteBrandMutation } from "@/redux/features/brand/brandApi";
 import { refetchData } from "@/utilities/fetchData";
-import { toast } from "@/components/ui/use-toast";
+import {
+  ColumnDef,
+  VisibilityState,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
+import Image from "next/image";
+import * as React from "react";
+import BrandActions from "./BrandActions";
 
 export type TBrands = {
   _id: string;
@@ -140,7 +140,7 @@ export const BrandTable = ({ brands }: { brands: TBrands[] }) => {
     if (brandIds.length) {
       const res = await deleteBrand(brandIds).unwrap();
       if (res?.success) {
-        refetchData("brands");
+        await refetchData("brands");
         toast({
           className: "bg-success text-white ",
           title: "Brand deleted successfully!",

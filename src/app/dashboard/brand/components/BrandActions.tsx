@@ -6,12 +6,12 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { toast } from "@/components/ui/use-toast";
-import { SquarePen, Trash2Icon } from "lucide-react";
-import { TBrands } from "./BrandsTable";
-import UpdateBrandForm from "./UpdateBrandForm";
 import { useDeleteBrandMutation } from "@/redux/features/brand/brandApi";
 import { refetchData } from "@/utilities/fetchData";
+import { SquarePen, Trash2Icon } from "lucide-react";
 import { useState } from "react";
+import { TBrands } from "./BrandsTable";
+import UpdateBrandForm from "./UpdateBrandForm";
 
 const BrandActions = ({ brand }: { brand: TBrands }) => {
   const [deleteBrand] = useDeleteBrandMutation();
@@ -27,7 +27,7 @@ const BrandActions = ({ brand }: { brand: TBrands }) => {
     const categoryIds = [id];
     const res = await deleteBrand(categoryIds).unwrap();
     if (res?.success) {
-      refetchData("brands");
+      await refetchData("brands");
       toast({
         className: "bg-success text-white ",
         title: "Brand deleted successfully!",

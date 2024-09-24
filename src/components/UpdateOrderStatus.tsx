@@ -54,9 +54,9 @@ const UpdateOrderStatus = ({ _id, status, handleOpen }: TProps) => {
       if (ordersUpdateOptions.includes(action)) {
         const res = await updateOrdersStatus(updatePayload).unwrap();
         if (res.success) {
-          // refetchData("allOrders");
-          refetchData("singleOrder");
-          refetchData("customerOrderHistory");
+          // await refetchData("allOrders");
+          await refetchData("singleOrder");
+          await refetchData("customerOrderHistory");
           // dispatch(setIsOrderUpdate(!iSOrderUpdate));
           toast({
             className: "bg-success text-white text-2xl",
@@ -73,9 +73,9 @@ const UpdateOrderStatus = ({ _id, status, handleOpen }: TProps) => {
       if (processingOrdersUpdateOptions.includes(action)) {
         const res = await updateProcessingOrdersStatus(updatePayload).unwrap();
         if (res.success) {
-          // refetchData("processingOrders");
-          refetchData("singleOrder");
-          refetchData("customerOrderHistory");
+          // await refetchData("processingOrders");
+          await refetchData("singleOrder");
+          await refetchData("customerOrderHistory");
           // dispatch(setIsOrderUpdate(!iSOrderUpdate));
           toast({
             className: "bg-success text-white text-2xl",
@@ -94,9 +94,9 @@ const UpdateOrderStatus = ({ _id, status, handleOpen }: TProps) => {
         // const courier = await sendCourierAndUpdateStatus(orderData).unwrap();
         const res = await sendCourierAndUpdateStatus(updatePayload).unwrap();
         if (res.success) {
-          // refetchData("processingDoneOrders");
-          refetchData("singleOrder");
-          refetchData("customerOrderHistory");
+          // await refetchData("processingDoneOrders");
+          await refetchData("singleOrder");
+          await refetchData("customerOrderHistory");
           // dispatch(setIsOrderUpdate(!iSOrderUpdate));
           toast({
             className: "bg-success text-white text-2xl",
