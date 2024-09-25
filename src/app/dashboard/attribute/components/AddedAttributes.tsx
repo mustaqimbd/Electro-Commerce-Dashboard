@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 "use client";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -29,19 +28,19 @@ import {
 import { PencilIcon, Settings, TrashIcon } from "lucide-react";
 import { useState } from "react";
 import { TAttribute } from "../lib/attribute.interface";
-import { refetchAttributes } from "../lib/getAttributes";
 import AttributeValueUpdateModal from "./AttributeValueUpdateModal";
+import { refetchData } from "@/utilities/fetchData";
 
-const AddedAttributes = ({ attributes }: { attributes: TAttribute[] }) => {
+const AddedAttributes = ({ attributes = [] }: { attributes: TAttribute[] }) => {
   const [attributeName, setAttributeName] = useState("");
   //handle delete an attributes
   const [deleteAttribute] = useDeleteAttributeMutation();
   const [updateAttribute] = useUpdateAttributeMutation();
+
   const handleDeleteAttributes = async (attributeId: string) => {
-    const res = await deleteAttribute(attributeId).unwrap();
-    console.log(res);
+    const res = await deleteAttribute({ attributeIds: [attributeId] }).unwrap();
     if (res?.success) {
-      refetchAttributes();
+      refetchData("attributes");
       toast({
         className: "bg-success text-white text-2xl",
         title: res?.message,
@@ -58,9 +57,9 @@ const AddedAttributes = ({ attributes }: { attributes: TAttribute[] }) => {
   const handleUpdateAttributes = async (attributeId: string) => {
     const data = { attributeId: attributeId, name: attributeName };
     const res = await updateAttribute(data).unwrap();
-    console.log(res);
+
     if (res?.success) {
-      refetchAttributes();
+      refetchData("attributes");
       toast({
         className: "bg-success text-white text-2xl",
         title: res?.message,

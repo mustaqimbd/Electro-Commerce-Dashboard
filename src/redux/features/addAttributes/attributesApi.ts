@@ -2,34 +2,9 @@ import baseApi from "@/redux/baseApi/baseApi";
 
 const attributesApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    deleteAttribute: builder.mutation({
-      query: (attributeId) => ({
-        url: `/attributes/${attributeId}`,
-        method: "DELETE",
-        // body: {
-        //   categoryIds: attributeId,
-        // },
-      }),
-    }),
-    deleteAttributeValue: builder.mutation({
-      query: (attributeId) => ({
-        url: `/attributes-value/${attributeId}`,
-        method: "DELETE",
-        // body: {
-        //   categoryIds: attributeId,
-        // },
-      }),
-    }),
     addAttribute: builder.mutation({
       query: (data) => ({
         url: `/attributes`,
-        method: "POST",
-        body: data,
-      }),
-    }),
-    addAttributeValue: builder.mutation({
-      query: (data) => ({
-        url: `/attributes-value`,
         method: "POST",
         body: data,
       }),
@@ -41,21 +16,27 @@ const attributesApi = baseApi.injectEndpoints({
         body: { values: data?.values },
       }),
     }),
-    updateAttributeValue: builder.mutation({
-      query: (data) => ({
-        url: `/attributes-value/${data?.attributeValueId}`,
-        method: "PATCH",
-        body: { name: data?.name },
+    deleteAttribute: builder.mutation({
+      query: ({
+        attributeIds,
+        valueIds,
+      }: {
+        attributeIds?: string[];
+        valueIds?: string[];
+      }) => ({
+        url: `/attributes`,
+        method: "DELETE",
+        body: {
+          attributeIds,
+          valueIds,
+        },
       }),
     }),
   }),
 });
 
 export const {
-  useDeleteAttributeMutation,
   useAddAttributeMutation,
   useUpdateAttributeMutation,
-  useUpdateAttributeValueMutation,
-  useDeleteAttributeValueMutation,
-  useAddAttributeValueMutation,
+  useDeleteAttributeMutation,
 } = attributesApi;

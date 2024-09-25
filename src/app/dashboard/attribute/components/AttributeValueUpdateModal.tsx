@@ -25,7 +25,11 @@ const AttributeValueUpdate = ({ attribute }: { attribute: TAttribute }) => {
         <p className="font-semibold">Update Attribute Value</p>
         <div className="grid grid-cols-2 gap-3">
           {attribute?.values?.map((item) => (
-            <UpdateAttributeValue key={item._id} item={item} />
+            <UpdateAttributeValue
+              key={item._id}
+              item={item}
+              attributeId={attribute?._id}
+            />
           ))}
         </div>
       </div>

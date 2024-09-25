@@ -35,7 +35,7 @@ const SalesByPlatformChart = ({
       fill: `var(--color-${salesByPlatformCount.source.split(" ").join("-")})`,
     });
     chartConfig2[salesByPlatformCount.source.split(" ").join("-")] = {
-      label: `${salesByPlatformCount.source} - ${salesByPlatformCount.percentage}%`,
+      label: `${salesByPlatformCount.source} - ${salesByPlatformCount.count} - ${salesByPlatformCount.percentage}%`,
       color: `hsl(var(--chart-${i + 1}))`,
     };
   }

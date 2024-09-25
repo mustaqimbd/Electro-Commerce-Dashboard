@@ -42,17 +42,21 @@ const AccountsPage = async () => {
             <p className="text-gray-600 font-semibold">{user?.email}</p>
           </div>
           <div>
-            <p className="text-gray-500">NID:</p>
-            <p className="text-gray-600 font-semibold">{user?.NIDNo}</p>
+            <p className="text-gray-500">Birth certificate No:</p>
+            <p className="text-gray-600 font-semibold">
+              {user?.birthCertificateNo || "N/A"}
+            </p>
           </div>
           <div>
             <p className="text-gray-500">NID:</p>
-            <p className="text-gray-600 font-semibold">{user?.NIDNo}</p>
+            <p className="text-gray-600 font-semibold">
+              {user?.NIDNo || "N/A"}
+            </p>
           </div>
           <div>
             <p className="text-gray-500">Emergency contact:</p>
             <p className="text-gray-600 font-semibold">
-              {user?.emergencyContact}
+              {user?.emergencyContact || "N/A"}
             </p>
           </div>
           <div>
@@ -62,7 +66,7 @@ const AccountsPage = async () => {
           <div>
             <p className="text-gray-500">Full address:</p>
             <p className="text-gray-600 font-semibold">
-              {user?.address?.fullAddress}
+              {user?.address?.fullAddress || "N/A"}
             </p>
           </div>
         </div>

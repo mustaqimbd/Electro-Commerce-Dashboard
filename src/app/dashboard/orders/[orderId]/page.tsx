@@ -26,15 +26,17 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
     advance = 0,
     total,
     payment,
+    discount,
     status,
+    deliveryStatus,
     shipping,
     // orderSource,
     createdAt,
     invoiceNotes,
     officialNotes,
     courierNotes,
-    discount,
     orderNotes,
+    reasonNotes,
   } = order;
 
   const isEdit = [
@@ -68,9 +70,9 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
               <div className="flex items-center gap-2">
                 <span className="font-bold min-w-[60px]">Status : </span>
                 <span
-                  className={`capitalize px-2 pb-[2px] pt-[1px] text-white rounded ${backgroundColor(status)}`}
+                  className={`capitalize px-2 pb-[2px] pt-[1px] text-white rounded ${backgroundColor(deliveryStatus ? deliveryStatus : status)}`}
                 >
-                  {status}
+                  {deliveryStatus ? deliveryStatus : status}
                 </span>
               </div>
             </div>
@@ -182,6 +184,14 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
                 {courierNotes}
               </p>
             </div>
+            {reasonNotes && (
+              <div>
+                <p className="font-bold mb-1">Reason Note</p>
+                <p className="min-h-10 border p-2 rounded-md block break-words">
+                  {reasonNotes}
+                </p>
+              </div>
+            )}
           </div>
           {isDeleted && (
             <div className="pr-4 flex flex-col justify-end h-full">

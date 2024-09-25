@@ -11,21 +11,24 @@ import {
   persistStore,
 } from "redux-persist";
 // import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
-import storage from "./storage";
 import baseApi from "./baseApi/baseApi";
 import courierBaseApi from "./baseApi/courierBaseApi";
 import addProductReducer from "./features/addProduct/addProductSlice";
 import variationReducer from "./features/addProduct/variation/variationSlice";
+import allProductReducer from "./features/allProducts/allProductsSlice";
 import authReducer from "./features/auth/authSlice";
+import couponSlice from "./features/coupon/couponSlice";
 import courierManagementReducer from "./features/courierManagement/courierManagementSlice";
+import monitorDeliveryReducer from "./features/monitorDelivery/monitorDeliverySlice";
+import imageSelectorReducer from "./features/imageSelector/imageSelectorSlice";
 import ordersReducer from "./features/orders/ordersSlice";
 import paginationReducer from "./features/pagination/PaginationSlice";
 import processingOrdersReducer from "./features/processingOrders/processingOrdersSlice";
 import searchReducer from "./features/search/searchSlice";
+import shippingChargesSlice from "./features/shippingCharge/ShippingChargeSlice";
 import userSlice from "./features/user/userSlice";
 import warrantyClaimSlice from "./features/warrantyClaimRequests/warrantyClaimSlice";
-import allProductReducer from "./features/allProducts/allProductsSlice";
-import imageSelectorReducer from "./features/imageSelector/imageSelectorSlice";
+import storage from "./storage";
 
 const persistConfig = {
   key: "auth",
@@ -46,10 +49,13 @@ export const createStore = () => {
       orders: ordersReducer,
       processingOrders: processingOrdersReducer,
       courierManagement: courierManagementReducer,
+      monitorDelivery: monitorDeliveryReducer,
       search: searchReducer,
       pagination: paginationReducer,
       warrantyClaim: warrantyClaimSlice,
       users: userSlice,
+      allCoupons: couponSlice,
+      shippingCharges: shippingChargesSlice,
     },
     middleware: (getDefaultMiddlewares) =>
       getDefaultMiddlewares({

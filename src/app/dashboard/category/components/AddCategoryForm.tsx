@@ -12,10 +12,11 @@ import { toast } from "@/components/ui/use-toast";
 import { useAddCategoryMutation } from "@/redux/features/category/categoryApi";
 import { setThumbnail } from "@/redux/features/imageSelector/imageSelectorSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { refetchData } from "@/utilities/fetchData";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { refetchCategories } from "../lib/getCategories";
 import AddCategoryMedia from "./AddCategoryMedia";
 
 const formSchema = z.object({
@@ -37,9 +38,12 @@ const AddCategoryForm = () => {
 
   const [addCategory] = useAddCategoryMutation();
 
+  useEffect(() => {
+    dispatch(setThumbnail(""));
+  }, [dispatch]);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-
     defaultValues: {
       name: "",
       image: "",
@@ -50,7 +54,7 @@ const AddCategoryForm = () => {
     data.image = thumbnail || undefined;
     const addedCategory = await addCategory(data).unwrap();
     if (addedCategory?.success) {
-      refetchCategories();
+      await refetchData("categories");
       form.reset();
       dispatch(setThumbnail(""));
 
@@ -85,7 +89,7 @@ const AddCategoryForm = () => {
 
           <AddCategoryMedia />
 
-          <div className="flex gap-3 items-center">
+          <div className="flex gap-10 items-center">
             <Button type="submit" className="">
               Add Category
             </Button>
@@ -97,7 +101,6 @@ const AddCategoryForm = () => {
               Reset
             </Button>
           </div>
-          <div></div>
         </form>
       </Form>
     </div>

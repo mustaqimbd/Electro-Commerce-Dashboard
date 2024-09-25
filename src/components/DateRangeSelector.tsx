@@ -257,7 +257,7 @@ const DateRangeSelector = ({
           )
         : null}
       <Select onValueChange={(v) => handleFilterChange(v)}>
-        <SelectTrigger className="w-[120px]">
+        <SelectTrigger className="w-[120px] border-primary focus:ring-0">
           <SelectValue placeholder={selectedPeriod || formattedDate} />
         </SelectTrigger>
         <SelectContent>

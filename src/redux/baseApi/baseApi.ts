@@ -51,12 +51,14 @@ type Tags =
   | "allOrders"
   | "processingOrders"
   | "processingDoneAndCourierOrders"
+  | "monitorDelivery"
   | "carts"
   | "shippingCharge"
   | "paymentMethod"
   | "images"
   | "warrantyClaimRequests"
-  | "users";
+  | "users"
+  | "coupons";
 const tags: Tags[] = [
   "allProducts",
   "singleProduct",
@@ -64,12 +66,14 @@ const tags: Tags[] = [
   "allOrders",
   "processingOrders",
   "processingDoneAndCourierOrders",
+  "monitorDelivery",
   "carts",
   "shippingCharge",
   "paymentMethod",
   "images",
   "warrantyClaimRequests",
   "users",
+  "coupons",
 ];
 
 const baseApi = createApi({

@@ -29,7 +29,8 @@ const CustomerOrderHistory = ({ phoneNumber }: { phoneNumber: string }) => {
   }
 
   return (
-    <div className="flex flex-wrap items-center justify-start gap-5">
+    // <div className="flex flex-wrap items-center justify-start gap-5">
+    <div className="grid grid-cols-3 gap-4">
       {orderHistory?.map((status: { name: string; total: string }) => {
         const name = status.name;
         const total = status.total;

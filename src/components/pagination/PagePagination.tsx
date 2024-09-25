@@ -2,7 +2,6 @@
 import {
   Pagination,
   PaginationContent,
-  // PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
@@ -10,13 +9,7 @@ import {
 } from "@/components/ui/pagination";
 import { setPage } from "@/redux/features/pagination/PaginationSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-// import { Dispatch, SetStateAction } from "react";
-// type TProps = {
-//   currentPage?: number;
-//   setCurrentPage?: Dispatch<SetStateAction<number>>;
-//   totalPage?: number;
-//   className?: string;
-// };
+
 export function PagePagination() {
   const dispatch = useAppDispatch();
   const {
@@ -59,12 +52,14 @@ export function PagePagination() {
     }
   }
 
+  const showFrom = currentPage * limit - limit;
+
   return (
     <Pagination>
       <PaginationContent className="overflow-x-auto">
         <div className="flex items-center justify-start">
           <p className="mr-20 min-w-48">
-            Showing {currentPage * limit - limit} to{" "}
+            Showing {total !== 0 ? showFrom + 1 : showFrom} to{" "}
             {currentPage * limit < total ? currentPage * limit : total} of{" "}
             {total}
           </p>
@@ -77,53 +72,6 @@ export function PagePagination() {
             disabled={isLoading || currentPage === 1}
           />
         </PaginationItem>
-        {/* {totalPage < 6 ? (
-          newPage.map((item, index) => (
-            <PaginationItem
-              key={index}
-              // className={`${currentPage === item && "bg-blue-600"}`}
-            >
-              <PaginationLink
-                // className="cursor-pointer"
-                onClick={() => dispatch(setPage(item))}
-                size={"sm"}
-                className={`cursor-pointer bg-gray-100 hover:bg-gray-100 ${currentPage === item && "bg-primary hover:bg-primary text-white hover:text-white"}`}
-              >
-                {item}
-              </PaginationLink>
-            </PaginationItem>
-          ))
-        ) : (
-          <>
-            {newPage.map((item, index) => (
-              <PaginationItem key={index}>
-                <PaginationLink
-                  onClick={() => dispatch(setPage(item))}
-                  size={"sm"}
-                  className={`cursor-pointer bg-gray-100 hover:bg-gray-100 ${currentPage === item && "bg-primary hover:bg-primary text-white hover:text-white"}`}
-                >
-                  {item}
-                </PaginationLink>
-              </PaginationItem>
-            ))}
-
-            <PaginationItem>
-              <PaginationEllipsis />
-            </PaginationItem>
-
-            {pages.slice(-2).map((item, index) => (
-              <PaginationItem key={index}>
-                <PaginationLink
-                  onClick={() => dispatch(setPage(item))}
-                  size={"sm"}
-                  className={`cursor-pointer bg-gray-100 hover:bg-gray-100 ${currentPage === item && "bg-primary hover:bg-primary text-white hover:text-white"}`}
-                >
-                  {item}
-                </PaginationLink>
-              </PaginationItem>
-            ))}
-          </>
-        )} */}
         {newPage.map((item, index) => (
           <PaginationItem key={index}>
             <PaginationLink

@@ -102,7 +102,7 @@ const CreateOrder = ({ order }: { order?: TOrders }) => {
     try {
       await createOrder(data).unwrap();
       dispatch(setIsOrderUpdate(!iSOrderUpdate));
-      refetchData("allOrders");
+      await refetchData("allOrders");
       reset();
       handleOpen();
       toast({

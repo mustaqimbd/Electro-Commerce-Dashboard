@@ -1,11 +1,16 @@
 const backgroundColor = (status: string) => {
   return status === "all"
     ? "bg-primary"
-    : status === "pending"
+    : status === "pending" ||
+        status === "delivered_approval_pending" ||
+        status === "partial_delivered_approval_pending" ||
+        status === "unknown_approval_pending" ||
+        status === "cancelled_approval_pending" ||
+        status === "hold"
       ? "bg-[#fec400]"
       : status === "confirmed"
         ? "bg-[#6BD3B0]"
-        : status === "processing"
+        : status === "processing" || status === "in_review"
           ? "bg-[#FA8232]"
           : status === "warranty processing"
             ? "bg-[#ca8b68]"
@@ -13,9 +18,9 @@ const backgroundColor = (status: string) => {
               ? "bg-[#00C3C6]"
               : status === "processing done"
                 ? "bg-[#6BD3B0]"
-                : status === "On courier"
+                : status === "On courier" || status === "partial_delivered"
                   ? "bg-[#4c84ff]"
-                  : status === "canceled"
+                  : status === "cancelled" || status === "canceled"
                     ? "bg-[#fe5461]"
                     : status === "deleted" || status === "problem"
                       ? "bg-[#C70000]"
@@ -28,15 +33,19 @@ const backgroundColor = (status: string) => {
                           : status === "follow up" ||
                               status === "retry required"
                             ? "bg-[#00C3C6]"
-                            : status === "Published"
+                            : status === "Public"
                               ? "bg-[#32CD32]"
-                              : status === "Draft"
-                                ? "bg-[#808080]"
-                                : status === "admin"
-                                  ? "bg-teal-500"
-                                  : status === "staff"
-                                    ? "bg-cyan-500"
-                                    : "";
+                              : status === "Private"
+                                ? "bg-[#fe5461]"
+                                : status === "Published"
+                                  ? "bg-[#6BD3B0]"
+                                  : status === "Draft"
+                                    ? "bg-[#808080]"
+                                    : status === "admin"
+                                      ? "bg-teal-500"
+                                      : status === "staff"
+                                        ? "bg-cyan-500"
+                                        : "bg-primary";
 };
 
 export default backgroundColor;

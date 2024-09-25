@@ -1,5 +1,4 @@
 import baseApi from "@/redux/baseApi/baseApi";
-import { TQuery } from "@/types/order/order.interface";
 import searchParams from "@/utilities/searchParams";
 
 const userApi = baseApi.injectEndpoints({
@@ -21,7 +20,7 @@ const userApi = baseApi.injectEndpoints({
       invalidatesTags: ["users"],
     }),
     getAllUsers: builder.query({
-      query: (args: Partial<TQuery>) => ({
+      query: (args) => ({
         url: "/users/all-admin-staff",
         params: searchParams(args),
       }),

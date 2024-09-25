@@ -79,7 +79,7 @@ const UpdateApprovalStatus = ({
   const onSubmit: SubmitHandler<TFormInput> = async (data) => {
     try {
       await createWarrantyClaimOrder({ ...data, id: _id }).unwrap();
-      refetchData("allOrders");
+      await refetchData("allOrders");
       reset();
       setOpen(false);
       toast({

@@ -24,7 +24,7 @@ const ReasonNotes = ({ order }: { order: TOrders }) => {
   const onSubmit: SubmitHandler<FieldValues> = async (payload) => {
     try {
       await updateOrder({ payload, _id }).unwrap();
-      // refetchData("allOrders");
+      // await refetchData("allOrders");
       // dispatch(setIsOrderUpdate(!iSOrderUpdate));
       handleOpen();
       toast({

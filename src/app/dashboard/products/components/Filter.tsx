@@ -113,7 +113,7 @@ const Filter = ({ categories }: { categories: TCategory[] }) => {
         <option className="pl-5" value="Out of stock">
           Out of stock
         </option>
-        <option value="On backorder">On backorder</option>
+        {/* <option value="On backorder">On backorder</option> */}
       </select>
       {/* <Button onClick={handleSubmit} disabled={isLoading}>
         Filter

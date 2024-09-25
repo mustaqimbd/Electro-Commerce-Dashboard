@@ -81,7 +81,7 @@ const ProductCode = ({
       data.order_Id = order._id;
       const res = await addWarrantyCode(data).unwrap();
       if (res.success) {
-        refetchData("processingOrders");
+        await refetchData("processingOrders");
         dispatch(setIsOrderUpdate(!iSOrderUpdate));
         handleOpen();
         toast({
@@ -102,7 +102,7 @@ const ProductCode = ({
       data.order_Id = order._id;
       const res = await updateWarrantyCode(data).unwrap();
       if (res.success) {
-        // refetchData("processingOrders");
+        // await refetchData("processingOrders");
         // dispatch(setIsOrderUpdate(!iSOrderUpdate));
         handleOpen();
         toast({

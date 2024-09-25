@@ -11,10 +11,10 @@ import {
 } from "@/components/ui/table";
 import { setBulkOrder } from "@/redux/features/courierManagement/courierManagementSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { TOrders } from "@/types/order/order.interface";
+// import { TOrders } from "@/types/order/order.interface";
 import formattedOrderData from "@/utilities/formattedOrderData";
 import {
-  ColumnDef,
+  // ColumnDef,
   flexRender,
   getCoreRowModel,
   // getPaginationRowModel,
@@ -22,26 +22,26 @@ import {
 } from "@tanstack/react-table";
 import { useEffect } from "react";
 import { columns } from "./OrdersColumn";
-import ReasonNotes from "./ReasonNotes";
+// import ReasonNotes from "./ReasonNotes";
 
 export default function OrdersTable() {
   const dispatch = useAppDispatch();
-  const status = useAppSelector(
-    ({ courierManagement }) => courierManagement.selectedStatus
-  );
+  // const status = useAppSelector(
+  //   ({ courierManagement }) => courierManagement.selectedStatus
+  // );
 
-  const newColumns: ColumnDef<TOrders>[] =
-    status === "delivery cancel"
-      ? [
-          ...columns.slice(0, 8),
-          {
-            accessorKey: "reasons",
-            header: "Reasons",
-            cell: ({ row }) => <ReasonNotes order={row.original} />,
-          },
-          ...columns.slice(8),
-        ]
-      : [...columns];
+  // const newColumns: ColumnDef<TOrders>[] =
+  //   status === "delivery cancel"
+  //     ? [
+  //         ...columns.slice(0, 8),
+  //         {
+  //           accessorKey: "reasons",
+  //           header: "Reasons",
+  //           cell: ({ row }) => <ReasonNotes order={row.original} />,
+  //         },
+  //         ...columns.slice(8),
+  //       ]
+  //     : [...columns];
 
   const { isLoading } = useAppSelector(({ pagination }) => pagination);
   const orders = useAppSelector(({ search, courierManagement }) => {
@@ -55,7 +55,7 @@ export default function OrdersTable() {
 
   const table = useReactTable({
     data: orders,
-    columns: newColumns,
+    columns: columns,
     getCoreRowModel: getCoreRowModel(),
     // getPaginationRowModel: getPaginationRowModel(),
   });
