@@ -4,8 +4,9 @@ import searchParams from "@/utilities/searchParams";
 const reportsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getStats: builder.query({
-      query: () => ({
+      query: (args) => ({
         url: "/reports/stats",
+        params: searchParams(args),
       }),
     }),
     getOrdersCount: builder.query({
