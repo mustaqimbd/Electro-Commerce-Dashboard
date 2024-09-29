@@ -30,7 +30,7 @@ export type TBestSellingProduct = {
   productId: string;
   productName: string;
   productImage: string;
-  stockQuantity: number;
+  stockAvailable: number;
   totalSales: number;
   totalWarrantyClaims: number;
 };

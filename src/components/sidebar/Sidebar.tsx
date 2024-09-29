@@ -172,13 +172,7 @@ export function Sidebar() {
           icon={<LayoutDashboard className="w-4 h-4" />}
         />
       )}
-      {manageAdminOrStaff && (
-        <NavLink
-          href="/dashboard/manage-admin-staff"
-          name="Manage employs"
-          icon={<UsersRound className="w-4 h-4" />}
-        />
-      )}
+
       {manageCoupons && (
         <NavLink
           href="/dashboard/manage-coupon"
@@ -210,6 +204,13 @@ export function Sidebar() {
           </AccordionContent>
         </AccordionItem>
       </Accordion>
+      {manageAdminOrStaff && (
+        <NavLink
+          href="/dashboard/manage-admin-staff"
+          name="Manage employs"
+          icon={<UsersRound className="w-4 h-4" />}
+        />
+      )}
       <hr />
       <span className="block mb-5"></span>
       <NavLink
