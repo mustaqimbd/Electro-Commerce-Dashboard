@@ -1,7 +1,7 @@
 import { TShippingCharge } from "@/redux/features/shippingCharge/shippingChargeInterface";
 import { ColumnDef } from "@tanstack/react-table";
+import Action from "./Action";
 import UpdateActiveStatus from "./UpdateActiveStatus";
-import UpdateDetails from "./UpdateDetails";
 
 const columns: ColumnDef<TShippingCharge>[] = [
   {
@@ -29,9 +29,9 @@ const columns: ColumnDef<TShippingCharge>[] = [
     cell: ({ row }) => <UpdateActiveStatus shippingCharge={row.original} />,
   },
   {
-    accessorKey: "details",
-    header: () => <h2 className="text-center">Update details</h2>,
-    cell: ({ row }) => <UpdateDetails shippingCharge={row.original} />,
+    accessorKey: "action",
+    header: () => <h2 className="text-center">Action</h2>,
+    cell: ({ row }) => <Action shippingCharge={row.original} />,
   },
 ];
 export default columns;
