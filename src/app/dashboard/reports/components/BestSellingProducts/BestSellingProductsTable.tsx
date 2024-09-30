@@ -54,10 +54,10 @@ export const columns: ColumnDef<TBestSellingProduct>[] = [
     ),
   },
   {
-    accessorKey: "stockQuantity",
+    accessorKey: "stockAvailable",
     header: "Stock",
     cell: ({ row }) => (
-      <div className="lowercase">{row.original.stockQuantity}</div>
+      <div className="lowercase">{row.original.stockAvailable}</div>
     ),
   },
   {
@@ -110,7 +110,7 @@ const BestSellingProductsTable = ({
               </TableRow>
             ))}
           </TableHeader>
-          <TableBody>
+          <TableBody className="max-h-[521.5px] overflow-x-scroll">
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow

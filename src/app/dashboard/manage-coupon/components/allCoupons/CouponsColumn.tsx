@@ -1,6 +1,7 @@
 import { formatDate, formatTime } from "@/lib/formatDate";
 import { TCoupon } from "@/redux/features/coupon/couponInterface";
 import { ColumnDef } from "@tanstack/react-table";
+import Action from "./Action";
 import UpdateActiveStatus from "./UpdateActiveStatus";
 
 const columns: ColumnDef<TCoupon>[] = [
@@ -53,6 +54,11 @@ const columns: ColumnDef<TCoupon>[] = [
     accessorKey: "isActive",
     header: () => <h2 className="text-start">Active status</h2>,
     cell: ({ row }) => <UpdateActiveStatus coupon={row.original} />,
+  },
+  {
+    accessorKey: "action",
+    header: () => <h2 className="text-start">Action</h2>,
+    cell: ({ row }) => <Action coupon={row.original} />,
   },
 ];
 export default columns;

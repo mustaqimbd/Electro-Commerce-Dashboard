@@ -69,7 +69,15 @@ const columns: ColumnDef<TUser>[] = [
   {
     accessorKey: "status",
     header: "Status",
-    cell: ({ row }) => <p className="capitalize">{row.original.status}</p>,
+    cell: ({ row }) => (
+      <div>
+        <p
+          className={`capitalize px-2 pb-[2px] pt-[1px] rounded text-white ${backgroundColor(row.original.status)} capitalize inline-block select-none`}
+        >
+          {row.original.status}
+        </p>
+      </div>
+    ),
   },
   {
     accessorKey: "role",
