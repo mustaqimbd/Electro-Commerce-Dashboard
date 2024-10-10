@@ -28,7 +28,7 @@ const listItems = [
     href: "/dashboard/accounts",
   },
   {
-    name: "Settings",
+    name: "Change password",
     icon: <Key className="mr-2 h-4 w-4" />,
     href: "/dashboard/accounts/change-password",
   },

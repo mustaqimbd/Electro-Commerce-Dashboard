@@ -12,14 +12,14 @@ const AccountsPage = async () => {
   return (
     <div className="flex-1 space-y-7">
       <Card className="p-4 shadow-none rounded-xl">
-        <div className="grid grid-cols-10">
-          <div className="col-span-1">
+        <div className="flex gap-5">
+          <div>
             <Avatar className="rounded-full w-20 h-20">
               <AvatarImage src={profilePicUrl} />
               <AvatarFallback>{user?.fullName}</AvatarFallback>
             </Avatar>
           </div>
-          <div className="col-span-9">
+          <div className="flex-1">
             <p className="font-semibold text-xl">{user?.fullName}</p>
             <p className="capitalize text-gray-500">{user?.role}</p>
             <p className="capitalize text-gray-500">{user?.uid}</p>
