@@ -21,14 +21,12 @@ import {
   setThumbnail,
 } from "@/redux/features/imageSelector/imageSelectorSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 import modifiedVariations from "../lib/modifiedVariations";
 import ProductSchema from "../lib/productValidation";
 
 const Published = ({ productId }: { productId: string }) => {
   const dispatch = useAppDispatch();
-  const router = useRouter();
   const [createProduct, { isLoading }] = useCreateProductMutation();
   const [updateProduct, { isLoading: isUpdateLoading }] =
     useUpdateProductMutation();
@@ -71,7 +69,6 @@ const Published = ({ productId }: { productId: string }) => {
           className: "bg-success text-white text-2xl",
           title: res.message,
         });
-        router.push("/dashboard/products");
       } else {
         const validatedData = await ProductSchema.validate(productData, {
           abortEarly: false,
