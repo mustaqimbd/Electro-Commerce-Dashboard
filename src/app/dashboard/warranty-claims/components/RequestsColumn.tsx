@@ -57,13 +57,6 @@ const columns: ColumnDef<TWarrantyClaim>[] = [
     },
   },
   {
-    accessorKey: "officialNotes",
-    header: "Notes",
-    cell: ({ row }) => {
-      return <OfficialNotes reqData={row?.original} />;
-    },
-  },
-  {
     accessorKey: "contactStatus",
     header: "Contact status",
     cell: ({ row }) => {
@@ -73,6 +66,13 @@ const columns: ColumnDef<TWarrantyClaim>[] = [
           contactStatus={row.original.contactStatus}
         />
       );
+    },
+  },
+  {
+    accessorKey: "officialNotes",
+    header: "Notes",
+    cell: ({ row }) => {
+      return <OfficialNotes reqData={row?.original} />;
     },
   },
   {

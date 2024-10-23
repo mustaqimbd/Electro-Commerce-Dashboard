@@ -22,11 +22,14 @@ const backgroundColor = (status: string) => {
                   ? "bg-[#4c84ff]"
                   : status === "cancelled" || status === "canceled"
                     ? "bg-[#fe5461]"
-                    : status === "deleted" || status === "problem"
+                    : status === "deleted" ||
+                        status === "problem" ||
+                        status === "banned"
                       ? "bg-[#C70000]"
                       : status === "completed" ||
                           status === "solved" ||
-                          status === "approved"
+                          status === "approved" ||
+                          status === "active"
                         ? "bg-[#2DB224]"
                         : status === "returned" || status === "partly returned"
                           ? "bg-[#E38390]"
