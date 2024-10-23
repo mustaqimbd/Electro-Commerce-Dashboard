@@ -11,6 +11,7 @@ import AddProductToOrder from "./AddProductToOrder";
 import { TOrders } from "@/types/order/order.interface";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import ProductCode from "@/app/dashboard/processing-orders/components/ProductCode";
 
 export type TEditOrderProps = {
   order?: TOrders;
@@ -39,11 +40,18 @@ const EditOrderTable = ({
 
   return (
     <>
-      <div className="mb-4 flex justify-start">
-        <Button onClick={handleAddProduct} type="button">
-          Add Product
-        </Button>
-      </div>
+      {order?.deliveryStatus !== "partial_delivered" ? (
+        <div className="mb-4 flex justify-start">
+          <Button onClick={handleAddProduct} type="button">
+            Add Product
+          </Button>
+        </div>
+      ) : (
+        <p className="mb-4 pl-2 bg-yellow-500">
+          <strong>Instruction: </strong> First update (decrease) the product
+          quantity, then remove the product code.
+        </p>
+      )}
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
           <thead className="text-white bg-primary dark:bg-gray-700 dark:text-gray-400">
@@ -51,6 +59,11 @@ const EditOrderTable = ({
               <th scope="col" className="px-6 py-3">
                 Product name
               </th>
+              {order?.deliveryStatus == "partial_delivered" && (
+                <th scope="col" className="px-6 py-3">
+                  Product Code
+                </th>
+              )}
               <th scope="col" className="px-6 py-3">
                 Unit Price
               </th>
@@ -100,6 +113,15 @@ const EditOrderTable = ({
                         (key) => `${attributes[key] + " "}`
                       )}
                     </td>
+                    {order?.deliveryStatus == "partial_delivered" && (
+                      <td className="px-6 py-4">
+                        <ProductCode
+                          order={order}
+                          disable={false}
+                          isPartialDelivery={true}
+                        />
+                      </td>
+                    )}
                     <td className="px-6 py-4">{unitPrice}</td>
                     <td className="px-6 py-4">
                       <div className="space-y-2 w-14">

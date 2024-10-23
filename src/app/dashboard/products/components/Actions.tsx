@@ -5,6 +5,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import config from "@/config/config";
 // import config from "@/config/config";
 import { DotsVerticalIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
@@ -23,8 +24,7 @@ const Actions = ({ _id }: { _id: string }) => {
           <DropdownMenuGroup>
             <DropdownMenuItem>
               <Link
-                // href={`${config.base_client_url}/product/${_id}`}
-                href={`/dashboard/products/${_id}/edit`}
+                href={`${config.base_client_url}/product/${_id}`}
                 className="text-blue-500 hover:text-blue-700 flex items-center gap-1"
               >
                 {/* View Icon */}
@@ -47,16 +47,16 @@ const Actions = ({ _id }: { _id: string }) => {
                     d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
                   />
                 </svg>
-                <span>View details</span>
+                <span>View</span>
               </Link>
             </DropdownMenuItem>
-            {/* <DropdownMenuItem> */}
-            {/* <Link
+            <DropdownMenuItem>
+              <Link
                 href={`/dashboard/products/${_id}/edit`}
                 className="text-green-500 hover:text-green-700 flex items-center gap-1"
-              > */}
-            {/* Edit Icon */}
-            {/* <svg
+              >
+                {/* Edit Icon */}
+                <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
@@ -70,9 +70,9 @@ const Actions = ({ _id }: { _id: string }) => {
                     d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
                   />
                 </svg>
-                <span>Edit</span> */}
-            {/* </Link> */}
-            {/* </DropdownMenuItem> */}
+                <span>Edit</span>
+              </Link>
+            </DropdownMenuItem>
             {/* <DropdownMenuItem> */}
             {/* <DeleteOrderBtn
                 _id={order._id}

@@ -23,6 +23,7 @@ import {
 import { useEffect } from "react";
 import { columns } from "./OrdersColumn";
 // import ReasonNotes from "./ReasonNotes";
+// import { useCallback,useState ,useRef } from "react";
 
 export default function OrdersTable() {
   const dispatch = useAppDispatch();
@@ -68,9 +69,125 @@ export default function OrdersTable() {
     dispatch(setBulkOrder(selectedOrders));
   }, [selectedOrders, dispatch]);
 
+  // const [scrollPositionX, setScrollPositionX] = useState(0);
+  // const tableRef = useRef<HTMLDivElement | null>(null); // Ref to access the table container
+  // const debounceTimeout = useRef<NodeJS.Timeout | null>(null); // Set correct type for debounce timeout
+
+  // // Custom debounce scroll handler using setTimeout
+  // const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+  //   const scrollLeft = e.currentTarget.scrollLeft;
+
+  //   // Clear the previous timeout if the user keeps scrolling
+  //   if (debounceTimeout.current) {
+  //     clearTimeout(debounceTimeout.current);
+  //   }
+
+  //   // Set a new timeout to delay the scroll position update
+  //   debounceTimeout.current = setTimeout(() => {
+  //     setScrollPositionX(scrollLeft);
+  //   }, 200); // 200ms debounce delay
+  // };
+
+  // useEffect(() => {
+  //   const tableContainer = tableRef.current;
+
+  //   // Restore the X-axis scroll position from sessionStorage
+  //   if (tableContainer) {
+  //     const savedScrollPositionX = sessionStorage.getItem(
+  //       "table-scroll-position-x"
+  //     );
+  //     if (savedScrollPositionX) {
+  //       tableContainer.scrollLeft = parseInt(savedScrollPositionX, 10); // Set the horizontal scroll position
+  //     }
+  //   }
+
+  //   // Save the scroll position when component is unmounted
+  //   console.log("scrollPositionX", scrollPositionX);
+  //   return () => {
+  //     if (tableContainer) {
+  //       sessionStorage.setItem(
+  //         "table-scroll-position-x",
+  //         scrollPositionX.toString()
+  //       );
+  //     }
+  //   };
+  // }, [scrollPositionX]);
+
+  // Debounce Hook
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // function useDebounce(callback: (...args: any[]) => void, delay: number) {
+  //   const timer = useRef<number | undefined>(undefined);
+
+  //   const debouncedFunction = useCallback(
+  //     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  //     (...args: any[]) => {
+  //       if (timer.current !== undefined) {
+  //         clearTimeout(timer.current);
+  //       }
+  //       timer.current = window.setTimeout(() => {
+  //         callback(...args);
+  //       }, delay);
+  //     },
+  //     [callback, delay]
+  //   );
+
+  //   return debouncedFunction;
+  // }
+  //   const [scrollPositionX, setScrollPositionX] = useState(0);
+
+  //   const handleScroll = useDebounce((e: { target: { scrollLeft: number } }) => {
+  //     setScrollPositionX(e.target.scrollLeft);
+
+  //     // sessionStorage.setItem(
+  //     //   "table-scroll-position-x",
+  //     //   e.target.scrollLeft.toString()
+  //     // );
+  //   }, 200);
+
+  // useEffect(() => {
+  //   const tableContainer = document.getElementById("table-container");
+
+  //   if (tableContainer) {
+  //     // Restore scroll position from sessionStorage
+  //     const savedScrollPositionX = sessionStorage.getItem(
+  //       "table-scroll-position-x"
+  //     );
+  //     if (savedScrollPositionX) {
+  //       tableContainer.scrollLeft = parseInt(savedScrollPositionX, 10);
+  //     }
+
+  //     const saveScrollPosition = () => {
+  //       sessionStorage.setItem(
+  //         "table-scroll-position-x",
+  //         tableContainer.scrollLeft.toString()
+  //       );
+  //     };
+
+  //     // Cleanup to save scroll position on unmount
+  //     return () => {
+  //       saveScrollPosition();
+  //     };
+  //   }
+  // }, []); // Empty dependency array to ensure this runs only on mount/unmount
+
+  // useEffect(() => {
+  //   if (scrollPositionX !== 0) {
+  //     sessionStorage.setItem(
+  //       "table-scroll-position-x",
+  //       scrollPositionX.toString()
+  //     );
+  //   }
+  // }, [scrollPositionX]); // Update sessionStorage whenever scrollPositionX changes
+
   return (
     <div className="w-full">
-      <div className="rounded-md border overflow-hidden">
+      <div
+        className="rounded-md border"
+        // className="rounded-md border relative w-full overflow-auto"
+        // id="table-container"
+        // ref={tableRef} // Attach the ref to the table container
+        // onScroll={handleScroll} // Attach the debounced scroll handler
+      >
         <Table className="min-w-[1100px]">
           <TableHeader className="bg-primary text-white">
             {table?.getHeaderGroups()?.map((headerGroup) => (

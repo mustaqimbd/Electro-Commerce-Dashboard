@@ -5,9 +5,9 @@ import OrderIdAndDate from "@/components/OrderIdAndDate";
 import { Checkbox } from "@/components/ui/checkbox";
 import { TOrders } from "@/types/order/order.interface";
 import { ColumnDef } from "@tanstack/react-table";
-// import ProductCode from "../../processing-orders/components/ProductCode";
-import ReasonNotes from "./ReasonNotes";
-import backgroundColor from "@/utilities/backgroundColor";
+// import ReasonNotes from "./ReasonNotes";
+import OrderStatus from "@/components/OrderStatus";
+import ProductCode from "../../processing-orders/components/ProductCode";
 
 export const columns: ColumnDef<TOrders>[] = [
   {
@@ -88,11 +88,11 @@ export const columns: ColumnDef<TOrders>[] = [
       );
     },
   },
-  // {
-  //   accessorKey: "productCode",
-  //   header: "Product Code",
-  //   cell: ({ row }) => <ProductCode order={row.original} disable={true} />,
-  // },
+  {
+    accessorKey: "productCode",
+    header: "Product Code",
+    cell: ({ row }) => <ProductCode order={row.original} disable={true} />,
+  },
   {
     accessorKey: "total",
     header: "Total",
@@ -104,33 +104,29 @@ export const columns: ColumnDef<TOrders>[] = [
     cell: () => <p>Case on delivery</p>,
   },
   {
-    accessorKey: "notes",
-    header: "Notes",
-    cell: ({ row }) => <AddNotes order={row.original} />,
-  },
-  {
     accessorKey: "status",
     header: "Delivery status",
     cell: ({ row }) => {
-      const deliveryStatus =
-        row.original?.deliveryStatus?.length > 14
-          ? row.original?.deliveryStatus?.slice(0, 14) + "..."
-          : row.original?.deliveryStatus;
+      const status = row.original.deliveryStatus;
       return (
-        <span
-          title={row.original?.deliveryStatus}
-          className={`capitalize px-2 pb-[2px] pt-[1px] text-white rounded ${backgroundColor(row.original?.deliveryStatus)}`}
-        >
-          {deliveryStatus}
-        </span>
+        <OrderStatus
+          order={row.original}
+          deliveryStatus={status}
+          disableStatus={[status == "cancelled" ? "" : status, "canceled"]}
+        />
       );
     },
   },
   {
     accessorKey: "notes",
-    header: "Delivery Notes",
-    cell: ({ row }) => <ReasonNotes order={row.original} />,
+    header: "Notes",
+    cell: ({ row }) => <AddNotes order={row.original} />,
   },
+  // {
+  //   accessorKey: "notes",
+  //   header: "Delivery Notes",
+  //   cell: ({ row }) => <ReasonNotes order={row.original} />,
+  // },
   {
     accessorKey: "orderSource",
     header: "Origin",

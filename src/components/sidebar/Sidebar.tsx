@@ -161,57 +161,61 @@ export function Sidebar() {
       {manageCourier && (
         <NavLink
           href="/dashboard/monitor-delivery"
-          name="Monitor delivery"
+          name="Monitor Delivery"
           icon={<Glasses className="w-4 h-4" />}
         />
       )}
       {manageWarrantyClaim && (
         <NavLink
           href="/dashboard/warranty-claims"
-          name="Warranty claims"
+          name="Warranty Claims"
           icon={<LayoutDashboard className="w-4 h-4" />}
         />
       )}
       {manageAdminOrStaff && (
         <NavLink
           href="/dashboard/manage-admin-staff"
-          name="Manage employs"
+          name="Manage Employees"
           icon={<UsersRound className="w-4 h-4" />}
         />
       )}
       {manageCoupons && (
         <NavLink
           href="/dashboard/manage-coupon"
-          name="Manage coupons"
+          name="Manage Coupons"
           icon={<Component className="w-4 h-4" />}
         />
       )}
       {manageShippingCharges && (
         <NavLink
           href="/dashboard/manage-shipping-charges"
-          name="Manage shipping charges"
+          name="Manage Shipping Charges"
           icon={<Truck className="w-4 h-4" />}
         />
       )}
-      <Accordion type="single" collapsible className="!mt-0">
-        <AccordionItem value="item-1">
-          <AccordionTrigger className="no-underline px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground transparent">
-            Theme Option
-          </AccordionTrigger>
-          <AccordionContent className="pl-4">
-            {themeOptionLinks.map((item) => (
-              <NavLink
-                key={item.href}
-                href={`/dashboard${item.href}`}
-                name={item.name}
-                icon={item.icon}
-              />
-            ))}
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
-      <hr />
-      <span className="block mb-5"></span>
+      {(isSuperAdmin || manageProduct) && (
+        <>
+          <Accordion type="single" collapsible className="!mt-0">
+            <AccordionItem value="item-1">
+              <AccordionTrigger className="no-underline px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground transparent">
+                Theme Option
+              </AccordionTrigger>
+              <AccordionContent className="pl-4">
+                {themeOptionLinks.map((item) => (
+                  <NavLink
+                    key={item.href}
+                    href={`/dashboard${item.href}`}
+                    name={item.name}
+                    icon={item.icon}
+                  />
+                ))}
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+          <hr />
+          <span className="block mb-5"></span>
+        </>
+      )}
       <NavLink
         href="/dashboard/accounts"
         name="Accounts"

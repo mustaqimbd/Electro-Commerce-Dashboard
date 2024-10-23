@@ -37,13 +37,32 @@ const schema = yup.object().shape({
   ),
 });
 
+const removeSchema = yup.object().shape({
+  order_Id: yup.string().optional(),
+  warrantyInfo: yup.array(
+    yup.object().shape({
+      itemId: yup
+        .string()
+        .required("Item is required!")
+        .typeError("Item is required!"),
+      codes: yup.array(
+        yup.object().shape({
+          code: yup.string().default(""),
+        })
+      ),
+    })
+  ),
+});
+
 type TFormInput = yup.InferType<typeof schema>;
 const ProductCode = ({
   order,
   disable,
+  isPartialDelivery,
 }: {
   order: TOrders;
   disable: boolean;
+  isPartialDelivery?: boolean;
 }) => {
   const { toast } = useToast();
   const dispatch = useAppDispatch();
@@ -61,7 +80,7 @@ const ProductCode = ({
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(isPartialDelivery ? removeSchema : schema),
   });
 
   const [open, setOpen] = useState(false);
@@ -99,15 +118,24 @@ const ProductCode = ({
   };
   const update: SubmitHandler<TFormInput> = async (data) => {
     try {
-      data.order_Id = order._id;
-      const res = await updateWarrantyCode(data).unwrap();
+      const updatedData = {
+        ...data,
+        warrantyInfo: data?.warrantyInfo?.map((item) => ({
+          ...item,
+          codes: item?.codes?.filter((codeObj) => codeObj.code !== ""),
+        })),
+      };
+
+      updatedData.order_Id = order._id;
+
+      const res = await updateWarrantyCode(updatedData).unwrap();
       if (res.success) {
         // await refetchData("processingOrders");
         // dispatch(setIsOrderUpdate(!iSOrderUpdate));
         handleOpen();
         toast({
           className: "bg-success text-white text-2xl",
-          title: "Product code updated successfully!",
+          title: `Product code ${isPartialDelivery ? "removed" : "updated"} successfully!`,
         });
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -124,6 +152,7 @@ const ProductCode = ({
       {warranty ? (
         <Button
           onClick={handleOpen}
+          type="button"
           className="bg-inherit text-inherit hover:bg-inherit"
         >
           View code
@@ -131,6 +160,7 @@ const ProductCode = ({
       ) : (
         <Button
           onClick={handleOpen}
+          type="button"
           className="bg-inherit text-inherit hover:bg-inherit"
         >
           Add code
@@ -146,81 +176,85 @@ const ProductCode = ({
         <p className="text-center border-b border-primary -my-3 pb-1">
           <strong>Order Id : </strong> {order?.orderId}
         </p>
-        <form
-          onSubmit={handleSubmit(warranty ? update : onSubmit)}
-          className="space-y-5"
-        >
+        <div className="space-y-5">
           {order.products.map(
             (
               { _id, title, quantity, isProductWarrantyAvailable, warranty },
               productIndex
-            ) => (
-              <div key={productIndex}>
-                <h1 className="text-lg">{title}</h1>
-                <p>
-                  <strong>Quantity : </strong> <span>{quantity}</span>
-                </p>
-                {isProductWarrantyAvailable ? (
-                  <>
-                    <input
-                      type="text"
-                      defaultValue={_id}
-                      {...register(`warrantyInfo.${productIndex}.itemId`)}
-                      className="hidden"
-                    />{" "}
-                    <div className="grid grid-cols-2 gap-5 mt-2">
-                      {Array.from({ length: quantity }).map((_, index) => (
-                        <div
-                          className="space-y-2 flex-1"
-                          key={`product-${productIndex}-quantity-${index}`}
-                        >
-                          <Label htmlFor={`quantity-${productIndex}-${index}`}>
-                            Product {index + 1} code
-                            <span className="text-red-600">*</span>
-                          </Label>
-                          <div className="space-y-2">
-                            <Input
-                              type="text"
-                              {...register(
-                                `warrantyInfo.${productIndex}.codes.${index}.code`
-                              )}
-                              defaultValue={
-                                (warranty?.warrantyCodes?.length &&
-                                  warranty?.warrantyCodes[index]?.code) ||
-                                ""
-                              }
-                              id={`quantity-${productIndex}-${index}`}
-                              placeholder="Enter code"
-                            />
+            ) => {
+              const totalCodes = warranty?.warrantyCodes?.length || 0;
+              return (
+                <div key={productIndex}>
+                  <h1 className="text-lg">{title}</h1>
+                  <p>
+                    <strong>Quantity : </strong> <span>{quantity}</span>
+                  </p>
+                  {isProductWarrantyAvailable ? (
+                    <>
+                      <input
+                        type="text"
+                        defaultValue={_id}
+                        {...register(`warrantyInfo.${productIndex}.itemId`)}
+                        className="hidden"
+                      />{" "}
+                      <div className="grid grid-cols-2 gap-5 mt-2">
+                        {Array.from({
+                          length: totalCodes < quantity ? quantity : totalCodes,
+                        }).map((_, index) => (
+                          <div
+                            className="space-y-2 flex-1"
+                            key={`product-${productIndex}-quantity-${index}`}
+                          >
+                            <Label
+                              htmlFor={`quantity-${productIndex}-${index}`}
+                            >
+                              Product {index + 1} code
+                              <span className="text-red-600">*</span>
+                            </Label>
+                            <div className="space-y-2">
+                              <Input
+                                type="text"
+                                {...register(
+                                  `warrantyInfo.${productIndex}.codes.${index}.code`
+                                )}
+                                defaultValue={
+                                  (warranty?.warrantyCodes?.length &&
+                                    warranty?.warrantyCodes[index]?.code) ||
+                                  ""
+                                }
+                                id={`quantity-${productIndex}-${index}`}
+                                placeholder="Enter code"
+                              />
 
-                            {errors.warrantyInfo?.length &&
-                              errors.warrantyInfo[productIndex]?.codes
-                                ?.length &&
-                              errors?.warrantyInfo![productIndex]?.codes![index]
-                                ?.code && (
-                                <p className="text-red-600">
-                                  {
-                                    errors?.warrantyInfo![productIndex]?.codes![
-                                      index
-                                    ]?.code?.message as string
-                                  }
-                                </p>
-                              )}
+                              {errors.warrantyInfo?.length &&
+                                errors.warrantyInfo[productIndex]?.codes
+                                  ?.length &&
+                                errors?.warrantyInfo![productIndex]?.codes![
+                                  index
+                                ]?.code && (
+                                  <p className="text-red-600">
+                                    {
+                                      errors?.warrantyInfo![productIndex]
+                                        ?.codes![index]?.code?.message as string
+                                    }
+                                  </p>
+                                )}
+                            </div>
                           </div>
-                        </div>
-                      ))}
-                    </div>
-                  </>
-                ) : (
-                  <p>This product has not warranty!</p>
-                )}
-              </div>
-            )
+                        ))}
+                      </div>
+                    </>
+                  ) : (
+                    <p>This product has not warranty!</p>
+                  )}
+                </div>
+              );
+            }
           )}
           {!disable && (
             <div className="flex items-center justify-center mt-6">
               <Button
-                type="submit"
+                onClick={handleSubmit(warranty ? update : onSubmit)}
                 className="w-[200px]"
                 disabled={isLoading || loading}
               >
@@ -228,7 +262,7 @@ const ProductCode = ({
               </Button>
             </div>
           )}
-        </form>
+        </div>
       </CommonModal>
     </>
   );
