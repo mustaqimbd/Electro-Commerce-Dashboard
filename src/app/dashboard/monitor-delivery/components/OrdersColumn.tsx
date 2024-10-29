@@ -112,7 +112,7 @@ export const columns: ColumnDef<TOrders>[] = [
         <OrderStatus
           order={row.original}
           deliveryStatus={status}
-          disableStatus={[status == "cancelled" ? "" : status, "canceled"]}
+          disableStatus={[status == "cancelled" ? "" : status, "accept"]}
         />
       );
     },

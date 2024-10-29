@@ -126,10 +126,7 @@ const UpdateOrderStatus = ({ _id, status, handleOpen }: TProps) => {
       >
         <option value="">Update status</option>
         {statusOptions(status).map((status) => (
-          <option
-            value={status === "accept" ? "canceled" : status}
-            key={status}
-          >
+          <option value={status} key={status}>
             {status}
           </option>
         ))}

@@ -172,13 +172,6 @@ export function Sidebar() {
           icon={<LayoutDashboard className="w-4 h-4" />}
         />
       )}
-      {manageAdminOrStaff && (
-        <NavLink
-          href="/dashboard/manage-admin-staff"
-          name="Manage Employees"
-          icon={<UsersRound className="w-4 h-4" />}
-        />
-      )}
 
       {manageCoupons && (
         <NavLink
@@ -217,27 +210,10 @@ export function Sidebar() {
           <span className="block mb-5"></span>
         </>
       )}
-      <Accordion type="single" collapsible className="!mt-0">
-        <AccordionItem value="item-1">
-          <AccordionTrigger className="no-underline px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground transparent">
-            Theme Option
-          </AccordionTrigger>
-          <AccordionContent className="pl-4">
-            {themeOptionLinks.map((item) => (
-              <NavLink
-                key={item.href}
-                href={`/dashboard${item.href}`}
-                name={item.name}
-                icon={item.icon}
-              />
-            ))}
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
       {manageAdminOrStaff && (
         <NavLink
           href="/dashboard/manage-admin-staff"
-          name="Manage employs"
+          name="Manage Employees"
           icon={<UsersRound className="w-4 h-4" />}
         />
       )}

@@ -187,6 +187,7 @@ const EditOrder = ({
                 order={order}
                 register={register}
                 watch={watch}
+                reset={reset}
                 control={control}
               />
             </div>

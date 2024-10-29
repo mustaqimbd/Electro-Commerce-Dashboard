@@ -20,12 +20,10 @@ import {
   setSearchedOrders,
 } from "@/redux/features/search/searchSlice";
 import { useGetMonitorDeliveryOrdersQuery } from "@/redux/features/monitorDelivery/monitorDeliveryApi";
-import { useToast } from "@/components/ui/use-toast";
 // import DateRangeSelector from "@/components/DateRangeSelector";
 
 const StatusButtons = () => {
   const dispatch = useAppDispatch();
-  const { toast } = useToast();
 
   const { page, limit, isLoading } = useAppSelector(
     ({ pagination }) => pagination
@@ -72,12 +70,6 @@ const StatusButtons = () => {
     }
     if (error) {
       throw new Error("Something went wrong!");
-    }
-    if (filter === "all") {
-      toast({
-        className: "bg-success text-white text-2xl",
-        title: "Successfully refreshed!",
-      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, loading, error, dispatch]);
