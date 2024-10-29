@@ -29,26 +29,31 @@ const BulkAction = () => {
   const handleBulkAction = async () => {
     try {
       if (bulkAction) {
-        const res = await updateOrderStatus(updatePayload).unwrap();
-        if (res.success) {
-          await refetchData("allOrders");
-          await refetchData("customerOrderHistory");
-          dispatch(setBulkOrder({ orderIds: [] }));
-          // dispatch(setIsOrderUpdate(!iSOrderUpdate));
-          toast({
-            className: "bg-success text-white text-2xl",
-            title: "The orders status was successfully updated!",
-          });
-          return;
+        if (orderIds.length) {
+          const res = await updateOrderStatus(updatePayload).unwrap();
+          if (res.success) {
+            await refetchData("allOrders");
+            await refetchData("customerOrderHistory");
+            dispatch(setBulkOrder({ orderIds: [] }));
+            // dispatch(setIsOrderUpdate(!iSOrderUpdate));
+            toast({
+              className: "bg-success text-white text-2xl",
+              title: "The orders status was successfully updated!",
+            });
+            return;
+          } else {
+            throw new Error(res.message);
+          }
         } else {
-          throw new Error(res.message);
+          alert("Please select an order.");
         }
       }
+
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       toast({
         variant: "destructive",
-        title: error?.message || "Courier entry is failed!",
+        title: error?.message || "Failed to update order status!",
       });
     }
   };

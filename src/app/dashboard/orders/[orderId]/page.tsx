@@ -35,17 +35,22 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
     invoiceNotes,
     officialNotes,
     courierNotes,
+    riderNotes,
     orderNotes,
     reasonNotes,
   } = order;
 
-  const isEdit = [
+  const edit = [
     "pending",
     "confirmed",
     "follow up",
     "processing",
     "warranty processing",
+    "warranty added",
+    "partial_delivered",
+    // "processing done",
   ].includes(status);
+  const isEdit = edit || order.deliveryStatus === "partial_delivered";
 
   const isInvoice = ["processing"].includes(status);
 
@@ -182,6 +187,12 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
               <p className="font-bold mb-1">Courier Note</p>
               <p className="min-h-10 border p-2 rounded-md block break-words">
                 {courierNotes}
+              </p>
+            </div>
+            <div>
+              <p className="font-bold mb-1">Rider Note</p>
+              <p className="min-h-10 border p-2 rounded-md block break-words">
+                {riderNotes}
               </p>
             </div>
             {reasonNotes && (

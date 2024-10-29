@@ -3,13 +3,17 @@ import Link from "next/link";
 import EditOrder from "@/app/dashboard/orders/[orderId]/components/EditOrder";
 
 const OrderActionDropDown = ({ order }: { order: TOrders }) => {
-  const isEdit = [
+  const edit = [
     "pending",
     "confirmed",
     "follow up",
     "processing",
     "warranty processing",
+    "warranty added",
+    // "processing done",
   ].includes(order.status);
+
+  const isEdit = edit || order.deliveryStatus === "partial_delivered";
 
   return (
     <div className="flex justify-center items-center gap-5">

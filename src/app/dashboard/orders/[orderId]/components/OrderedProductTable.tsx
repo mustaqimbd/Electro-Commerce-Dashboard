@@ -45,7 +45,7 @@ export const columns: ColumnDef<Product>[] = [
             <Image
               width={100}
               height={100}
-              src={`${config.base_url}/${image.src}`}
+              src={`${image.src}`}
               alt={image.alt}
             />
           </div>

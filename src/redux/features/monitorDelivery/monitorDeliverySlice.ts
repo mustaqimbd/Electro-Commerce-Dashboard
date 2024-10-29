@@ -3,7 +3,7 @@ import { TMonitorOrdersInitialState } from "./monitorDeliveryInterface";
 
 const initialState: TMonitorOrdersInitialState = {
   monitorDeliveryOrders: [],
-  selectedStatus: "pending",
+  selectedStatus: "in_review",
   iSOrderUpdate: false,
   singleOrder: {
     invoice: "",

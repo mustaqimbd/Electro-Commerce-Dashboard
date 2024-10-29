@@ -4,19 +4,24 @@ import backgroundColor from "@/utilities/backgroundColor";
 import { useState } from "react";
 import UpdateOrderStatus from "./UpdateOrderStatus";
 
-const OrderStatus = ({
-  order,
-  disableStatus = [],
-}: {
+type TProps = {
   order: TOrders;
+  deliveryStatus?: string;
   disableStatus?: string[];
-}) => {
+};
+
+const OrderStatus = ({ order, deliveryStatus, disableStatus = [] }: TProps) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
     setOpen(!open);
   };
 
-  const status = order.status;
+  const status = deliveryStatus ? deliveryStatus : order.status;
+  const showStatus = deliveryStatus
+    ? deliveryStatus?.length > 14
+      ? deliveryStatus?.slice(0, 14) + "..."
+      : deliveryStatus
+    : order.status;
 
   return (
     <>
@@ -24,8 +29,9 @@ const OrderStatus = ({
         onClick={handleOpen}
         disabled={disableStatus.includes(status)}
         className={`capitalize px-2 pb-[2px] pt-[1px] text-white rounded ${backgroundColor(status)}`}
+        title={deliveryStatus ? deliveryStatus : ""}
       >
-        {status}
+        {showStatus}
       </button>
       <CommonModal
         open={open}
@@ -42,7 +48,7 @@ const OrderStatus = ({
           </span>
         </div>
         <UpdateOrderStatus
-          status={order.status}
+          status={status}
           _id={order._id}
           handleOpen={handleOpen}
           // disableStatus={disableStatus}

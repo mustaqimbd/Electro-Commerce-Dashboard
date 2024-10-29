@@ -26,15 +26,13 @@ const UpdateOrderStatus = ({ _id, status, handleOpen }: TProps) => {
     useSendCourierAndUpdateStatusMutation();
   // const iSOrderUpdate = useAppSelector(({ orders }) => orders.iSOrderUpdate);
 
-  const ordersUpdateOptions = [
-    "confirmed",
+  const ordersRoute = ["pending", "confirmed", "follow up", "canceled"];
+  const processingOrdersRoute = [
     "processing",
-    "follow up",
-    "canceled",
-    "deleted",
+    "warranty processing",
+    "warranty added",
   ];
-
-  const processingOrdersUpdateOptions = ["processing done"];
+  const courierRoute = ["processing done", "cancelled"];
 
   const handleSubmit = async () => {
     // const orderData = {
@@ -51,7 +49,7 @@ const UpdateOrderStatus = ({ _id, status, handleOpen }: TProps) => {
     };
 
     try {
-      if (ordersUpdateOptions.includes(action)) {
+      if (ordersRoute.includes(status)) {
         const res = await updateOrdersStatus(updatePayload).unwrap();
         if (res.success) {
           // await refetchData("allOrders");
@@ -70,7 +68,8 @@ const UpdateOrderStatus = ({ _id, status, handleOpen }: TProps) => {
           throw new Error(res.message);
         }
       }
-      if (processingOrdersUpdateOptions.includes(action)) {
+
+      if (processingOrdersRoute.includes(status)) {
         const res = await updateProcessingOrdersStatus(updatePayload).unwrap();
         if (res.success) {
           // await refetchData("processingOrders");
@@ -90,7 +89,7 @@ const UpdateOrderStatus = ({ _id, status, handleOpen }: TProps) => {
         }
       }
 
-      if (action === "On courier") {
+      if (courierRoute.includes(status)) {
         // const courier = await sendCourierAndUpdateStatus(orderData).unwrap();
         const res = await sendCourierAndUpdateStatus(updatePayload).unwrap();
         if (res.success) {

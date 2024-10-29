@@ -29,33 +29,37 @@ const BulkAction = () => {
 
   const handleBulkAction = async () => {
     try {
-      if (bulkAction === "processing done") {
-        const res = await updateProcessingOrderStatus(updatePayload).unwrap();
-        if (res.success) {
-          await refetchData("processingOrders");
-          await refetchData("customerOrderHistory");
-          dispatch(setIsOrderUpdate(!iSOrderUpdate));
-          dispatch(setBulkOrder({ orderIds: [] }));
-          toast({
-            className: "bg-success text-white text-2xl",
-            title: "The orders updated successfully!",
-          });
-          return;
+      if (bulkAction) {
+        if (orderIds.length) {
+          const res = await updateProcessingOrderStatus(updatePayload).unwrap();
+          if (res.success) {
+            await refetchData("processingOrders");
+            await refetchData("customerOrderHistory");
+            dispatch(setIsOrderUpdate(!iSOrderUpdate));
+            dispatch(setBulkOrder({ orderIds: [] }));
+            toast({
+              className: "bg-success text-white text-2xl",
+              title: "The orders updated successfully!",
+            });
+            return;
+          } else {
+            throw new Error(res.message);
+          }
         } else {
-          throw new Error(res.message);
+          alert("Please select an order!");
         }
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       toast({
         variant: "destructive",
-        title: error?.message || "Courier entry is failed!",
+        title: error?.message || "Failed to update status!",
       });
     }
   };
 
-  const isBulkAction =
-    selectedStatus == "processing" || selectedStatus == "warranty added";
+  const isBulkAction = selectedStatus !== "processing done";
+
   return (
     <div className={"flex gap-10 items-center"}>
       {isBulkAction && (

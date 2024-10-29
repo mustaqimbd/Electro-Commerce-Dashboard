@@ -24,17 +24,23 @@ import { useGetMonitorDeliveryOrdersQuery } from "@/redux/features/monitorDelive
 
 const StatusButtons = () => {
   const dispatch = useAppDispatch();
+
   const { page, limit, isLoading } = useAppSelector(
     ({ pagination }) => pagination
   );
+
   const { startFrom, endAt } = useAppSelector(({ orders }) => orders);
+
   const { selectedStatus: filter, monitorDeliveryOrders } = useAppSelector(
     ({ monitorDelivery }) => monitorDelivery
   );
+
   if (!monitorDeliveryOrders.length && page > 1) {
     dispatch(setPage(1));
   }
+
   const [orderStatusCount, setOrderStatusCount] = useState([]);
+
   const {
     data,
     isLoading: loading,
@@ -65,6 +71,7 @@ const StatusButtons = () => {
     if (error) {
       throw new Error("Something went wrong!");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, loading, error, dispatch]);
 
   return (

@@ -81,7 +81,9 @@ export type TProduct = {
   slug?: string;
   type?: string;
   description: string;
-  shortDescription?: string;
+  shortDescription: string;
+  additionalInfo: string;
+  usageGuidelines: string;
   price: TPrice;
   image: TImage;
   inventory: TInventory;

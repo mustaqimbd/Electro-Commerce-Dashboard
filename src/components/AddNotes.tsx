@@ -26,7 +26,7 @@ const AddNotes = ({ order }: { order: TOrders }) => {
     formState: { dirtyFields },
   } = useForm();
 
-  const { officialNotes, invoiceNotes, courierNotes } = order;
+  const { officialNotes, riderNotes, invoiceNotes, courierNotes } = order;
   const isFormDirty = Object.keys(dirtyFields).length > 0;
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
@@ -55,10 +55,13 @@ const AddNotes = ({ order }: { order: TOrders }) => {
     }
   };
 
-  const notes = officialNotes || invoiceNotes || courierNotes;
-  const noteNumbers = [officialNotes, invoiceNotes, courierNotes].filter(
-    (note) => note !== undefined && note !== null && note !== ""
-  ).length;
+  const notes = officialNotes || riderNotes || invoiceNotes || courierNotes;
+  const noteNumbers = [
+    officialNotes,
+    riderNotes,
+    invoiceNotes,
+    courierNotes,
+  ].filter((note) => note !== undefined && note !== null && note !== "").length;
 
   return (
     <>
@@ -87,14 +90,14 @@ const AddNotes = ({ order }: { order: TOrders }) => {
         open={open}
         handleOpen={handleOpen}
         modalTitle="Add notes"
-        className="h-[400px] w-[600px]"
+        className="h-[400px] w-[800px]"
       >
         <form onSubmit={handleSubmit(onSubmit)}>
           <Tabs
             defaultValue="orderNotes"
             // onChange={(e) => handleTabClick(e.target)}
           >
-            <TabsList className="grid w-full grid-cols-4 gap-4 bg-cyan-50">
+            <TabsList className="grid w-full grid-cols-5 gap-4 bg-cyan-50">
               <TabsTrigger
                 value="orderNotes"
                 className="border border-cyan-400 data-[state=active]:bg-primary data-[state=active]:text-white"
@@ -108,16 +111,22 @@ const AddNotes = ({ order }: { order: TOrders }) => {
                 Official Note
               </TabsTrigger>
               <TabsTrigger
-                value="invoiceNotes"
-                className="border border-cyan-400 data-[state=active]:bg-primary data-[state=active]:text-white"
-              >
-                Invoice Note
-              </TabsTrigger>
-              <TabsTrigger
                 value="courierNotes"
                 className="border border-cyan-400 data-[state=active]:bg-primary data-[state=active]:text-white"
               >
                 Courier Note
+              </TabsTrigger>
+              <TabsTrigger
+                value="riderNotes"
+                className="border border-cyan-400 data-[state=active]:bg-primary data-[state=active]:text-white"
+              >
+                Rider Note
+              </TabsTrigger>
+              <TabsTrigger
+                value="invoiceNotes"
+                className="border border-cyan-400 data-[state=active]:bg-primary data-[state=active]:text-white"
+              >
+                Invoice Note
               </TabsTrigger>
             </TabsList>
             <TabsContent value="orderNotes">
@@ -145,18 +154,6 @@ const AddNotes = ({ order }: { order: TOrders }) => {
                 />
               </div>
             </TabsContent>
-            <TabsContent value="invoiceNotes">
-              <div className="grid w-full gap-1.5">
-                <Label htmlFor="invoiceNotes">Note</Label>
-                <Textarea
-                  placeholder="Type note here."
-                  id="invoiceNotes"
-                  className="min-h-44 border border-primary focus-visible:ring-primary"
-                  {...register("invoiceNotes")}
-                  defaultValue={order?.invoiceNotes}
-                />
-              </div>
-            </TabsContent>
             <TabsContent value="courierNotes">
               <div className="grid w-full gap-1.5">
                 <Label htmlFor="courierNotes">Note</Label>
@@ -166,6 +163,30 @@ const AddNotes = ({ order }: { order: TOrders }) => {
                   className="min-h-44 border border-primary focus-visible:ring-primary"
                   {...register("courierNotes")}
                   defaultValue={order?.courierNotes}
+                />
+              </div>
+            </TabsContent>
+            <TabsContent value="riderNotes">
+              <div className="grid w-full gap-1.5">
+                <Label htmlFor="riderNotes">Note</Label>
+                <Textarea
+                  placeholder="Type note here."
+                  id="riderNotes"
+                  className="min-h-44 border border-primary focus-visible:ring-primary"
+                  {...register("riderNotes")}
+                  defaultValue={order?.riderNotes}
+                />
+              </div>
+            </TabsContent>
+            <TabsContent value="invoiceNotes">
+              <div className="grid w-full gap-1.5">
+                <Label htmlFor="invoiceNotes">Note</Label>
+                <Textarea
+                  placeholder="Type note here."
+                  id="invoiceNotes"
+                  className="min-h-44 border border-primary focus-visible:ring-primary"
+                  {...register("invoiceNotes")}
+                  defaultValue={order?.invoiceNotes}
                 />
               </div>
             </TabsContent>
