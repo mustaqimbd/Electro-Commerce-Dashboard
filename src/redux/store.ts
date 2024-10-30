@@ -19,8 +19,9 @@ import allProductReducer from "./features/allProducts/allProductsSlice";
 import authReducer from "./features/auth/authSlice";
 import couponSlice from "./features/coupon/couponSlice";
 import courierManagementReducer from "./features/courierManagement/courierManagementSlice";
-import monitorDeliveryReducer from "./features/monitorDelivery/monitorDeliverySlice";
 import imageSelectorReducer from "./features/imageSelector/imageSelectorSlice";
+import imageToOrderReqSlice from "./features/imageToOrder/imageToOrderSlice";
+import monitorDeliveryReducer from "./features/monitorDelivery/monitorDeliverySlice";
 import ordersReducer from "./features/orders/ordersSlice";
 import paginationReducer from "./features/pagination/PaginationSlice";
 import processingOrdersReducer from "./features/processingOrders/processingOrdersSlice";
@@ -56,6 +57,7 @@ export const createStore = () => {
       users: userSlice,
       allCoupons: couponSlice,
       shippingCharges: shippingChargesSlice,
+      imageToOrder: imageToOrderReqSlice,
     },
     middleware: (getDefaultMiddlewares) =>
       getDefaultMiddlewares({
