@@ -6,14 +6,13 @@ import {
   Component,
   Glasses,
   Home,
+  Image,
   ImagePlusIcon,
   LayoutDashboard,
-  // LayoutList,
   ListOrdered,
   Loader,
   PackageSearch,
   PlusCircle,
-  // Shapes,
   Truck,
   User,
   UsersRound,
@@ -139,11 +138,20 @@ export function Sidebar() {
       )}
       {manageOrder && (
         <NavLink
+          href="/dashboard/image-to-order"
+          name="Image to order"
+          // eslint-disable-next-line jsx-a11y/alt-text
+          icon={<Image className="w-4 h-4" />}
+        />
+      )}
+      {manageOrder && (
+        <NavLink
           href="/dashboard/orders"
           name="Orders"
           icon={<ListOrdered className="w-4 h-4" />}
         />
       )}
+
       {manageProcessing && (
         <NavLink
           href="/dashboard/processing-orders"

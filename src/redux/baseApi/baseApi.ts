@@ -58,7 +58,8 @@ type Tags =
   | "images"
   | "warrantyClaimRequests"
   | "users"
-  | "coupons";
+  | "coupons"
+  | "imageToOrderReq";
 const tags: Tags[] = [
   "allProducts",
   "singleProduct",
@@ -74,6 +75,7 @@ const tags: Tags[] = [
   "warrantyClaimRequests",
   "users",
   "coupons",
+  "imageToOrderReq",
 ];
 
 const baseApi = createApi({
