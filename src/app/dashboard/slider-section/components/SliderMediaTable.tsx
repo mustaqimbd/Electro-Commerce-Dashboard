@@ -1,12 +1,12 @@
 "use client";
 import {
-  Table,
+  SliderTable,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from "@/components/ui/sliderTable";
 
 import {
   flexRender,
@@ -32,7 +32,7 @@ const SliderMediaTable = ({ slider }: { slider: TSlider[] }) => {
   });
   return (
     <div className="rounded-lg overflow-hidden">
-      <Table className="w-full">
+      <SliderTable className="w-full">
         <TableHeader className="bg-primary text-white">
           {table?.getHeaderGroups()?.map((headerGroup) => (
             <TableRow key={headerGroup?.id} className="hover:bg-muted/0">
@@ -77,7 +77,7 @@ const SliderMediaTable = ({ slider }: { slider: TSlider[] }) => {
             </TableRow>
           )}
         </TableBody>
-      </Table>
+      </SliderTable>
     </div>
   );
 };

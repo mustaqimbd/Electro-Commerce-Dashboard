@@ -37,7 +37,7 @@ const Advanced = () => {
     <div>
       <div className="flex items-center gap-3 mb-3">
         <Label className="w-40" htmlFor="featured">
-          Featured
+          Flash sales
         </Label>
         <div>
           <Input
