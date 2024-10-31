@@ -22,6 +22,14 @@ const imageToOrder = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["imageToOrderReq"],
     }),
+    createNewOrderFromImageToOrder: builder.mutation({
+      query: (reqData) => ({
+        url: `/image-to-order/create-order/${reqData.id}`,
+        method: "POST",
+        body: reqData,
+      }),
+      invalidatesTags: ["imageToOrderReq"],
+    }),
   }),
 });
 
@@ -29,4 +37,5 @@ export const {
   useGetImageToOrderReqQuery,
   useGetSingleImageToOrderReqQuery,
   useUpdateImageToOrderReqMutation,
+  useCreateNewOrderFromImageToOrderMutation,
 } = imageToOrder;

@@ -4,9 +4,10 @@ import { TImageToOrderReq } from "@/redux/features/imageToOrder/imageToOrderInte
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
 import ContactStatus from "./ContactStatus/ContactStatus";
-import CreateOrder from "./CreateOrder/CreateOrder";
+import CreateOrder from "./CreateOrder/CreateNewOrder";
 import CustomerNotes from "./CustomerNotes/CustomerNotes";
 import Images from "./Images/Images";
+import ITOStatus from "./Status/ITOStatus";
 
 const columns: ColumnDef<TImageToOrderReq>[] = [
   {
@@ -41,6 +42,13 @@ const columns: ColumnDef<TImageToOrderReq>[] = [
         contactStatus={row.original.contactStatus}
         _id={row.original._id}
       />
+    ),
+  },
+  {
+    accessorKey: "status",
+    header: () => <h2 className="text-center">Status</h2>,
+    cell: ({ row }) => (
+      <ITOStatus currentStatus={row.original.status} _id={row.original._id} />
     ),
   },
   {
