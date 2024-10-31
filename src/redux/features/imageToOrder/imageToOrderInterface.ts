@@ -8,6 +8,12 @@ export type TImageToOrderContactStatus =
   | "confirmed"
   | "retry required";
 
+export type TImageToOrderStatus =
+  | "pending"
+  | "confirmed"
+  | "canceled"
+  | "completed";
+
 export type TImageToOrderReq = {
   _id: string;
   reqId: string;
@@ -17,7 +23,7 @@ export type TImageToOrderReq = {
     fullAddress: string;
   };
   contactStatus: TImageToOrderContactStatus;
-  status: string;
+  status: TImageToOrderStatus;
   createdAt: string;
   images: string[];
   customerNotes: string;
