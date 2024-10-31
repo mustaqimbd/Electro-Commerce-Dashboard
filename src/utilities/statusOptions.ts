@@ -15,7 +15,7 @@ const statusOptions = (status: string) => {
               : status === "canceled"
                 ? ["confirmed"]
                 : status === "cancelled"
-                  ? ["accept"]
+                  ? ["returned"]
                   : [];
 
   return statusOptions;

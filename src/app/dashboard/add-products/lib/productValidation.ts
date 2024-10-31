@@ -21,17 +21,18 @@ const InventoryValidationSchema = Yup.object().shape({
   //   .min(1, "Stock quantity is required")
   //   .typeError("Stock quantity is required")
   //   .required(),
-  stockQuantity: Yup.number()
-    .transform((value, originalValue) => (originalValue === "" ? 0 : value))
-    .default(0)
-    .test(
-      "is-less-than-quantity",
-      "Stock quantity cannot less than existing quantity!",
-      function (value) {
-        const { preStockQuantity } = this.parent;
-        return value >= preStockQuantity;
-      }
-    ),
+  // stockQuantity: Yup.number()
+  //   .transform((value, originalValue) => (originalValue === "" ? 0 : value))
+  //   .default(0)
+  //   .test(
+  //     "is-less-than-quantity",
+  //     "Stock quantity cannot less than existing quantity!",
+  //     function (value) {
+  //       const { preStockQuantity } = this.parent;
+  //       return value >= preStockQuantity;
+  //     }
+  //   ),
+  stockQuantity: Yup.number().default(0),
   stockAvailable: Yup.number().optional(),
   preStockQuantity: Yup.number().optional(),
   // productCode: Yup.string().trim().optional(),

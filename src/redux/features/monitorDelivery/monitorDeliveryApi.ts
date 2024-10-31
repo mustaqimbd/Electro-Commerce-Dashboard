@@ -13,8 +13,8 @@ const updateStatusApi = baseApi.injectEndpoints({
     }),
     refreshCourierOrders: builder.mutation({
       query: () => ({
-        url: "/orders/admin/update-order-delivery-status",
-        method: "PATCH",
+        url: "/orders/update-order-delivery-status",
+        method: "POST",
       }),
       invalidatesTags: ["monitorDelivery"],
     }),

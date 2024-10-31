@@ -6,16 +6,17 @@ const Table = React.forwardRef<
   HTMLTableElement,
   React.HTMLAttributes<HTMLTableElement>
 >(({ className, ...props }, ref) => {
-  const divRef = React.useRef<HTMLDivElement>(null); // added code
+  // const divRef = React.useRef<HTMLDivElement>(null); // added code
 
-  React.useEffect(() => {
-    if (divRef.current) {
-      divRef.current.scrollLeft = 117;
-    }
-  }, []); // useEffect function added code
+  // React.useEffect(() => {
+  //   if (divRef.current) {
+  //     divRef.current.scrollLeft = 117;
+  //   }
+  // }, []); // useEffect function added code
   //ref={divRef}
   return (
-    <div className="relative w-full overflow-auto" ref={divRef}>
+    // <div className="relative w-full  max-h-[calc(100vh-400px)] overflow-auto" ref={divRef}>
+    <div className="relative w-full max-h-[calc(100vh-400px)] overflow-auto">
       <table
         ref={ref}
         className={cn("w-full caption-bottom text-sm", className)}
