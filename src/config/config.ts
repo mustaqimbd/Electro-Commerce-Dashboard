@@ -10,6 +10,7 @@ const config = {
     access_token_cookie_expires:
       process.env.NEXT_PUBLIC_ACCESS_TOKEN_COOKIE_EXPIRES,
   },
+  next_public_show_ito: process.env.NEXT_PUBLIC_SHOW_ITO || false,
 };
 
 export default config;

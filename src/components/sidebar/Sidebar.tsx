@@ -1,3 +1,4 @@
+import config from "@/config/config";
 import { getPermission } from "@/lib/getAccessToken";
 import { permission } from "@/types/order/order.interface";
 import isPermitted from "@/utilities/isPermitted";
@@ -6,7 +7,7 @@ import {
   Component,
   Glasses,
   Home,
-  // Image,
+  Image,
   ImagePlusIcon,
   LayoutDashboard,
   ListOrdered,
@@ -136,14 +137,14 @@ export function Sidebar() {
           </AccordionItem>
         </Accordion>
       )}
-      {/* {manageOrder && (
+      {config.next_public_show_ito == true && manageOrder && (
         <NavLink
           href="/dashboard/image-to-order"
           name="Image to order"
           // eslint-disable-next-line jsx-a11y/alt-text
           icon={<Image className="w-4 h-4" />}
         />
-      )} */}
+      )}
       {manageOrder && (
         <NavLink
           href="/dashboard/orders"
