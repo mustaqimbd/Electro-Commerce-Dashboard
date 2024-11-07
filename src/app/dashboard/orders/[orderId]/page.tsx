@@ -10,8 +10,14 @@ import { OrderedProductTable } from "./components/OrderedProductTable";
 import fetchData from "@/utilities/fetchData";
 import EditOrder from "./components/EditOrder";
 import CustomerOrderHistory from "../components/CustomerOrderHistory";
+import { getPermission } from "@/lib/getAccessToken";
+import isPermitted from "@/utilities/isPermitted";
+import { permission } from "@/types/order/order.interface";
 
 const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
+  const { permissions = [] } = getPermission();
+  const editPermission = isPermitted(permissions, permission.manageProcessing);
+
   const { data: order } = await fetchData({
     endPoint: `/orders/admin/order-id/${params.orderId}`,
     tags: ["singleOrder"],
@@ -50,7 +56,10 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
     "partial_delivered",
     // "processing done",
   ].includes(status);
-  const isEdit = edit || order.deliveryStatus === "partial_delivered";
+  const isEdit =
+    edit || (order.deliveryStatus === "partial_delivered" && editPermission)
+      ? true
+      : false;
 
   const isInvoice = ["processing"].includes(status);
 

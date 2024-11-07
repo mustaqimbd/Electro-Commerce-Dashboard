@@ -18,6 +18,7 @@ const initialState: TMonitorOrdersInitialState = {
     orderIds: [],
     invoices: [],
   },
+  editPermission: false,
 };
 
 const monitorDeliverySlice = createSlice({
@@ -39,6 +40,9 @@ const monitorDeliverySlice = createSlice({
     setBulkOrder: (state, action) => {
       state.bulkOrders = action.payload;
     },
+    setEditPermission: (state, action) => {
+      state.editPermission = action.payload;
+    },
   },
 });
 export const {
@@ -46,6 +50,7 @@ export const {
   setSelectedStatus,
   setSingleOrder,
   setBulkOrder,
+  setEditPermission,
 } = monitorDeliverySlice.actions;
 
 export default monitorDeliverySlice.reducer;

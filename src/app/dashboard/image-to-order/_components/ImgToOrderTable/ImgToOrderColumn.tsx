@@ -27,7 +27,8 @@ const columns: ColumnDef<TImageToOrderReq>[] = [
   {
     accessorKey: "shipping",
     header: () => <h2 className="text-center">Address</h2>,
-    cell: ({ row }) => <CustomerInfo customer={row?.original?.shipping} />,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    cell: ({ row }) => <CustomerInfo order={row?.original as any} />,
   },
   {
     accessorKey: "images",

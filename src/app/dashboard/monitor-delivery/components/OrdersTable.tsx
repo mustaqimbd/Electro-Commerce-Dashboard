@@ -9,11 +9,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { setBulkOrder } from "@/redux/features/monitorDelivery/monitorDeliverySlice";
+import {
+  setBulkOrder,
+  setEditPermission,
+} from "@/redux/features/monitorDelivery/monitorDeliverySlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 // import { TOrders } from "@/types/order/order.interface";
 import formattedOrderData from "@/utilities/formattedOrderData";
 import {
+  ColumnDef,
   // ColumnDef,
   flexRender,
   getCoreRowModel,
@@ -22,27 +26,51 @@ import {
 } from "@tanstack/react-table";
 import { useEffect } from "react";
 import { columns } from "./OrdersColumn";
+import { TOrders } from "@/types/order/order.interface";
+import OrderStatus from "@/components/OrderStatus";
 // import ReasonNotes from "./ReasonNotes";
 // import { useCallback,useState ,useRef } from "react";
 
-export default function OrdersTable() {
+export default function OrdersTable({
+  editPermission,
+}: {
+  editPermission: boolean;
+}) {
   const dispatch = useAppDispatch();
-  // const status = useAppSelector(
-  //   ({ monitorDelivery }) => monitorDelivery.selectedStatus
-  // );
 
-  // const newColumns: ColumnDef<TOrders>[] =
-  //   status === "delivery cancel"
-  //     ? [
-  //         ...columns.slice(0, 8),
-  //         {
-  //           accessorKey: "reasons",
-  //           header: "Reasons",
-  //           cell: ({ row }) => <ReasonNotes order={row.original} />,
-  //         },
-  //         ...columns.slice(8),
-  //       ]
-  //     : [...columns];
+  const newColumns: ColumnDef<TOrders>[] = editPermission
+    ? [
+        ...columns.slice(0, 8),
+        {
+          accessorKey: "status",
+          header: "Delivery status",
+          cell: ({ row }) => {
+            const status = row.original.deliveryStatus;
+            return (
+              <>
+                {editPermission ? (
+                  <OrderStatus
+                    order={row.original}
+                    deliveryStatus={status}
+                    disableStatus={[
+                      status == "cancelled" ? "" : status,
+                      "returned",
+                    ]}
+                  />
+                ) : (
+                  <OrderStatus
+                    order={row.original}
+                    deliveryStatus={status}
+                    disableStatus={[status]}
+                  />
+                )}
+              </>
+            );
+          },
+        },
+        ...columns.slice(8),
+      ]
+    : [...columns];
 
   const { isLoading } = useAppSelector(({ pagination }) => pagination);
   const orders = useAppSelector(({ search, monitorDelivery }) => {
@@ -50,14 +78,15 @@ export default function OrdersTable() {
       ? search.searchedOrders
       : monitorDelivery.monitorDeliveryOrders;
   });
+
   const search = useAppSelector(({ search }) => {
     return search.search;
   });
 
   const table = useReactTable({
     data: orders,
-    // columns: newColumns,
-    columns: columns,
+    columns: newColumns,
+    // columns: columns,
     getCoreRowModel: getCoreRowModel(),
     // getPaginationRowModel: getPaginationRowModel(),
   });
@@ -67,117 +96,8 @@ export default function OrdersTable() {
 
   useEffect(() => {
     dispatch(setBulkOrder(selectedOrders));
-  }, [selectedOrders, dispatch]);
-
-  // const [scrollPositionX, setScrollPositionX] = useState(0);
-  // const tableRef = useRef<HTMLDivElement | null>(null); // Ref to access the table container
-  // const debounceTimeout = useRef<NodeJS.Timeout | null>(null); // Set correct type for debounce timeout
-
-  // // Custom debounce scroll handler using setTimeout
-  // const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-  //   const scrollLeft = e.currentTarget.scrollLeft;
-
-  //   // Clear the previous timeout if the user keeps scrolling
-  //   if (debounceTimeout.current) {
-  //     clearTimeout(debounceTimeout.current);
-  //   }
-
-  //   // Set a new timeout to delay the scroll position update
-  //   debounceTimeout.current = setTimeout(() => {
-  //     setScrollPositionX(scrollLeft);
-  //   }, 200); // 200ms debounce delay
-  // };
-
-  // useEffect(() => {
-  //   const tableContainer = tableRef.current;
-
-  //   // Restore the X-axis scroll position from sessionStorage
-  //   if (tableContainer) {
-  //     const savedScrollPositionX = sessionStorage.getItem(
-  //       "table-scroll-position-x"
-  //     );
-  //     if (savedScrollPositionX) {
-  //       tableContainer.scrollLeft = parseInt(savedScrollPositionX, 10); // Set the horizontal scroll position
-  //     }
-  //   }
-
-  //   // Save the scroll position when component is unmounted
-  //   console.log("scrollPositionX", scrollPositionX);
-  //   return () => {
-  //     if (tableContainer) {
-  //       sessionStorage.setItem(
-  //         "table-scroll-position-x",
-  //         scrollPositionX.toString()
-  //       );
-  //     }
-  //   };
-  // }, [scrollPositionX]);
-
-  // Debounce Hook
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  // function useDebounce(callback: (...args: any[]) => void, delay: number) {
-  //   const timer = useRef<number | undefined>(undefined);
-
-  //   const debouncedFunction = useCallback(
-  //     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  //     (...args: any[]) => {
-  //       if (timer.current !== undefined) {
-  //         clearTimeout(timer.current);
-  //       }
-  //       timer.current = window.setTimeout(() => {
-  //         callback(...args);
-  //       }, delay);
-  //     },
-  //     [callback, delay]
-  //   );
-
-  //   return debouncedFunction;
-  // }
-  //   const [scrollPositionX, setScrollPositionX] = useState(0);
-
-  //   const handleScroll = useDebounce((e: { target: { scrollLeft: number } }) => {
-  //     setScrollPositionX(e.target.scrollLeft);
-
-  //     // sessionStorage.setItem(
-  //     //   "table-scroll-position-x",
-  //     //   e.target.scrollLeft.toString()
-  //     // );
-  //   }, 200);
-
-  // useEffect(() => {
-  //   const tableContainer = document.getElementById("table-container");
-
-  //   if (tableContainer) {
-  //     // Restore scroll position from sessionStorage
-  //     const savedScrollPositionX = sessionStorage.getItem(
-  //       "table-scroll-position-x"
-  //     );
-  //     if (savedScrollPositionX) {
-  //       tableContainer.scrollLeft = parseInt(savedScrollPositionX, 10);
-  //     }
-
-  //     const saveScrollPosition = () => {
-  //       sessionStorage.setItem(
-  //         "table-scroll-position-x",
-  //         tableContainer.scrollLeft.toString()
-  //       );
-  //     };
-
-  //     // Cleanup to save scroll position on unmount
-  //     return () => {
-  //       saveScrollPosition();
-  //     };
-  //   }
-  // }, []); // Empty dependency array to ensure this runs only on mount/unmount
-
-  // useEffect(() => {
-  //   if (scrollPositionX !== 0) {
-  //     sessionStorage.setItem(
-  //       "table-scroll-position-x",
-  //       scrollPositionX.toString()
-  //     );
-  //   }
-  // }, [scrollPositionX]); // Update sessionStorage whenever scrollPositionX changes
+    dispatch(setEditPermission(editPermission));
+  }, [selectedOrders, dispatch, editPermission]);
 
   return (
     <div className="w-full">

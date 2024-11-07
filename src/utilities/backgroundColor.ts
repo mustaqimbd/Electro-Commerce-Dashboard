@@ -27,6 +27,7 @@ const backgroundColor = (status: string) => {
                         status === "banned"
                       ? "bg-[#C70000]"
                       : status === "completed" ||
+                          status === "partial completed" ||
                           status === "solved" ||
                           status === "approved" ||
                           status === "active"

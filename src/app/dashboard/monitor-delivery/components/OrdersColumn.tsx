@@ -6,7 +6,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { TOrders } from "@/types/order/order.interface";
 import { ColumnDef } from "@tanstack/react-table";
 // import ReasonNotes from "./ReasonNotes";
-import OrderStatus from "@/components/OrderStatus";
 import ProductCode from "../../processing-orders/components/ProductCode";
 
 export const columns: ColumnDef<TOrders>[] = [
@@ -58,8 +57,7 @@ export const columns: ColumnDef<TOrders>[] = [
     accessorKey: "shipping",
     header: "Customer Info",
     cell: ({ row }) => {
-      const customer = row.original.shipping;
-      return <CustomerInfo customer={customer} />;
+      return <CustomerInfo order={row.original} />;
     },
   },
   {
@@ -102,20 +100,6 @@ export const columns: ColumnDef<TOrders>[] = [
     accessorKey: "payment",
     header: "Payment",
     cell: () => <p>Case on delivery</p>,
-  },
-  {
-    accessorKey: "status",
-    header: "Delivery status",
-    cell: ({ row }) => {
-      const status = row.original.deliveryStatus;
-      return (
-        <OrderStatus
-          order={row.original}
-          deliveryStatus={status}
-          disableStatus={[status == "cancelled" ? "" : status, "returned"]}
-        />
-      );
-    },
   },
   {
     accessorKey: "notes",

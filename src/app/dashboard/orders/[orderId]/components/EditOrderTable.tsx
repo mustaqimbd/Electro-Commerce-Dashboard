@@ -12,12 +12,12 @@ import AddProductToOrder from "./AddProductToOrder";
 import { TOrders } from "@/types/order/order.interface";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import ProductCode from "@/app/dashboard/processing-orders/components/ProductCode";
 import { refetchData } from "@/utilities/fetchData";
 import { useToast } from "@/components/ui/use-toast";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { useUpdateOrderMutation } from "@/redux/features/orders/ordersApi";
 import { setIsOrderUpdate } from "@/redux/features/orders/ordersSlice";
+import WarrantyCodes from "@/app/dashboard/monitor-delivery/components/WarrantyCodes";
 
 export type TEditOrderProps = {
   order?: TOrders;
@@ -81,17 +81,12 @@ const EditOrderTable = ({
 
   return (
     <>
-      {order?.deliveryStatus !== "partial_delivered" ? (
+      {order?.deliveryStatus !== "partial_delivered" && (
         <div className="mb-4 flex justify-start">
           <Button onClick={handleAddProduct} type="button">
             Add Product
           </Button>
         </div>
-      ) : (
-        <p className="mb-4 pl-2 bg-yellow-500">
-          <strong>Instruction: </strong> First update (decrease) the product
-          quantity, then remove the product code.
-        </p>
       )}
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -156,11 +151,7 @@ const EditOrderTable = ({
                     </td>
                     {order?.deliveryStatus == "partial_delivered" && (
                       <td className="px-6 py-4">
-                        <ProductCode
-                          order={order}
-                          disable={false}
-                          isPartialDelivery={true}
-                        />
+                        <WarrantyCodes order={order} register={register} />
                       </td>
                     )}
                     <td className="px-6 py-4">{unitPrice}</td>

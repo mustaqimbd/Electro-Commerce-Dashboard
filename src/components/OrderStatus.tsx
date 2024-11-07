@@ -28,7 +28,7 @@ const OrderStatus = ({ order, deliveryStatus, disableStatus = [] }: TProps) => {
       <button
         onClick={handleOpen}
         disabled={disableStatus.includes(status)}
-        className={`capitalize px-2 pb-[2px] pt-[1px] text-white rounded ${backgroundColor(status)}`}
+        className={`capitalize px-2 pb-[2px] pt-[1px] text-white rounded ${backgroundColor(status)} ${order.status == "returned" ? "bg-red-300" : order.status == "partial completed" ? "bg-blue-400" : ""}`}
         title={deliveryStatus ? deliveryStatus : ""}
       >
         {showStatus}

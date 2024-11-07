@@ -23,6 +23,7 @@ const schema = yup.object().shape({
     phoneNumber: yup.string().optional(),
     fullAddress: yup.string().optional(),
   }),
+  status: yup.string().optional(),
   advance: yup
     .number()
     .transform((value, originalValue) => (originalValue === "" ? 0 : value))
@@ -39,6 +40,11 @@ const schema = yup.object().shape({
       newProductId: yup.string().optional(),
       quantity: yup.number().optional(),
       variation: yup.string().optional(),
+      claimedCodes: yup.array(
+        yup.object().shape({
+          code: yup.string(),
+        })
+      ),
     })
   ),
   officialNotes: yup.string().trim().optional(),
@@ -95,7 +101,12 @@ const EditOrder = ({
   const onSubmit: SubmitHandler<TEditOrderFormInput> = async (data) => {
     try {
       const payload = dirtyValues(dirtyFields, data);
-      await updateOrder({ payload, _id }).unwrap();
+      if (order?.deliveryStatus === "partial_delivered") {
+        payload.status = "partial completed";
+        await updateOrder({ payload, _id }).unwrap();
+      } else {
+        await updateOrder({ payload, _id }).unwrap();
+      }
       dispatch(setIsOrderUpdate(!iSOrderUpdate));
       await refetchData("allOrders");
       await refetchData("singleOrder");

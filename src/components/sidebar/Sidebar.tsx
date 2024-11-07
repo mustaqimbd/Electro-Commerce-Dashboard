@@ -6,7 +6,7 @@ import {
   Component,
   Glasses,
   Home,
-  Image,
+  // Image,
   ImagePlusIcon,
   LayoutDashboard,
   ListOrdered,
@@ -136,14 +136,14 @@ export function Sidebar() {
           </AccordionItem>
         </Accordion>
       )}
-      {manageOrder && (
+      {/* {manageOrder && (
         <NavLink
           href="/dashboard/image-to-order"
           name="Image to order"
           // eslint-disable-next-line jsx-a11y/alt-text
           icon={<Image className="w-4 h-4" />}
         />
-      )}
+      )} */}
       {manageOrder && (
         <NavLink
           href="/dashboard/orders"
@@ -166,7 +166,7 @@ export function Sidebar() {
           icon={<Bike className="w-4 h-4" />}
         />
       )}
-      {manageCourier && (
+      {(manageCourier || manageProcessing) && (
         <NavLink
           href="/dashboard/monitor-delivery"
           name="Monitor Delivery"

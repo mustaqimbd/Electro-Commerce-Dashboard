@@ -37,32 +37,13 @@ const schema = yup.object().shape({
   ),
 });
 
-const removeSchema = yup.object().shape({
-  order_Id: yup.string().optional(),
-  warrantyInfo: yup.array(
-    yup.object().shape({
-      itemId: yup
-        .string()
-        .required("Item is required!")
-        .typeError("Item is required!"),
-      codes: yup.array(
-        yup.object().shape({
-          code: yup.string().default(""),
-        })
-      ),
-    })
-  ),
-});
-
 type TFormInput = yup.InferType<typeof schema>;
 const ProductCode = ({
   order,
   disable,
-  isPartialDelivery,
 }: {
   order: TOrders;
   disable: boolean;
-  isPartialDelivery?: boolean;
 }) => {
   const { toast } = useToast();
   const dispatch = useAppDispatch();
@@ -80,7 +61,7 @@ const ProductCode = ({
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(isPartialDelivery ? removeSchema : schema),
+    resolver: yupResolver(schema),
   });
 
   const [open, setOpen] = useState(false);
@@ -89,7 +70,7 @@ const ProductCode = ({
     reset();
   };
 
-  const warranty = order.products.find(({ warranty }) => {
+  const warranty = order.products?.find(({ warranty }) => {
     if (warranty?.warrantyCodes) {
       return true;
     }
@@ -135,7 +116,7 @@ const ProductCode = ({
         handleOpen();
         toast({
           className: "bg-success text-white text-2xl",
-          title: `Product code ${isPartialDelivery ? "removed" : "updated"} successfully!`,
+          title: `Product code updated successfully!`,
         });
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -177,7 +158,7 @@ const ProductCode = ({
           <strong>Order Id : </strong> {order?.orderId}
         </p>
         <div className="space-y-5">
-          {order.products.map(
+          {order.products?.map(
             (
               { _id, title, quantity, isProductWarrantyAvailable, warranty },
               productIndex

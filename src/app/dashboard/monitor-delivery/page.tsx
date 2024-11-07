@@ -13,12 +13,13 @@ import RefreshCourier from "./components/RefreshCourier";
 const MonitorDelivery = () => {
   const { permissions = [] } = getPermission();
 
-  const manageAdminOrStaff = isPermitted(
-    permissions,
-    permission.manageAdminOrStaff
-  );
+  const manageCourier = isPermitted(permissions, permission.manageCourier);
 
-  if (!manageAdminOrStaff) {
+  const manageProcessing = permissions.includes(permission.manageProcessing);
+
+  const editPermission = isPermitted(permissions, permission.manageProcessing);
+
+  if (!manageCourier && !manageProcessing) {
     redirect("/error");
   }
 
@@ -32,14 +33,14 @@ const MonitorDelivery = () => {
       <hr className="mb-8" />
       <div>
         {/* All, Pending, canceled, on courier etc status*/}
-        <StatusButtons />
+        <StatusButtons manageProcessing={manageProcessing} />
         <div className="flex items-center justify-between mt-8 mb-3">
           {/*Bulk actions and invoice print for Orders*/}
           <MonitorOrderDateRange />
           <RefreshCourier />
           <Show />
         </div>
-        <OrdersTable />
+        <OrdersTable editPermission={editPermission} />
       </div>
     </Card>
   );

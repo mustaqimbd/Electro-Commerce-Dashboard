@@ -17,17 +17,17 @@ const AllProducts = async () => {
   });
 
   return (
-    <Card className="bg-white p-4 shadow-none rounded-xl m-3">
+    <Card className="bg-white px-4 pt-4 shadow-none rounded-xl m-4">
       {/* header section, search bar  */}
-      <div className="grid grid-cols-2 justify-between items-center mb-8">
+      <div className="grid grid-cols-2 justify-between items-center">
         <h1 className="text-3xl">All Products</h1>
         <ProductSearchBar endPoint="/products/admin" />
       </div>
-      <hr className="mb-8" />
-      <div>
+      <hr className="my-4" />
+      <div className="space-y-4">
         {/* All, Pending, draft, Trash Link */}
         <CountByStatusButtons />
-        <div className="flex items-center justify-between gap-5 mt-8 mb-3 overflow-x-auto">
+        <div className="flex items-center justify-between gap-5 overflow-x-auto pt-4">
           {/*Bulk actions and invoice print for Orders*/}
           {/* <div className="flex items-center gap-5"> */}
           <ProductBulkAction />
