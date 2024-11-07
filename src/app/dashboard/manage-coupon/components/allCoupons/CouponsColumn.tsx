@@ -1,5 +1,6 @@
 import { formatDate, formatTime } from "@/lib/formatDate";
 import { TCoupon } from "@/redux/features/coupon/couponInterface";
+import backgroundColor from "@/utilities/backgroundColor";
 import { ColumnDef } from "@tanstack/react-table";
 import Action from "./Action";
 import UpdateActiveStatus from "./UpdateActiveStatus";
@@ -49,6 +50,32 @@ const columns: ColumnDef<TCoupon>[] = [
         <h2 className="text-start">{formatDate(row.original?.endDate)}</h2>
       </div>
     ),
+  },
+  {
+    accessorKey: "status",
+    header: () => <h2 className="text-start">Status</h2>,
+    cell: ({ row }) => {
+      const targetDate = new Date(row.original?.endDate);
+      const currentDate = new Date();
+
+      return (
+        <div>
+          {targetDate < currentDate ? (
+            <span
+              className={`${backgroundColor("problem")} px-2 rounded-md text-white py-1`}
+            >
+              Expired
+            </span>
+          ) : (
+            <span
+              className={`${backgroundColor("completed")} px-2 rounded-md text-white py-1`}
+            >
+              Active
+            </span>
+          )}
+        </div>
+      );
+    },
   },
   {
     accessorKey: "isActive",
