@@ -84,6 +84,7 @@ export const permission = {
   manageCourier: "manage courier",
   manageWarrantyClaim: "manage warranty claim",
   manageProduct: "manage product",
+  manageImageToOrder: "manage image to order",
 } as const;
 
 export type TQuery = {

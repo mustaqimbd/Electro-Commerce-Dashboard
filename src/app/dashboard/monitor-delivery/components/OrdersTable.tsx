@@ -38,39 +38,37 @@ export default function OrdersTable({
 }) {
   const dispatch = useAppDispatch();
 
-  const newColumns: ColumnDef<TOrders>[] = editPermission
-    ? [
-        ...columns.slice(0, 8),
-        {
-          accessorKey: "status",
-          header: "Delivery status",
-          cell: ({ row }) => {
-            const status = row.original.deliveryStatus;
-            return (
-              <>
-                {editPermission ? (
-                  <OrderStatus
-                    order={row.original}
-                    deliveryStatus={status}
-                    disableStatus={[
-                      status == "cancelled" ? "" : status,
-                      "returned",
-                    ]}
-                  />
-                ) : (
-                  <OrderStatus
-                    order={row.original}
-                    deliveryStatus={status}
-                    disableStatus={[status]}
-                  />
-                )}
-              </>
-            );
-          },
-        },
-        ...columns.slice(8),
-      ]
-    : [...columns];
+  const newColumns: ColumnDef<TOrders>[] = [
+    ...columns.slice(0, 8),
+    {
+      accessorKey: "status",
+      header: "Delivery status",
+      cell: ({ row }) => {
+        const status = row.original.deliveryStatus;
+        return (
+          <>
+            {editPermission ? (
+              <OrderStatus
+                order={row.original}
+                deliveryStatus={status}
+                disableStatus={[
+                  status == "cancelled" ? "" : status,
+                  "returned",
+                ]}
+              />
+            ) : (
+              <OrderStatus
+                order={row.original}
+                deliveryStatus={status}
+                disableStatus={[status]}
+              />
+            )}
+          </>
+        );
+      },
+    },
+    ...columns.slice(8),
+  ];
 
   const { isLoading } = useAppSelector(({ pagination }) => pagination);
   const orders = useAppSelector(({ search, monitorDelivery }) => {
