@@ -80,9 +80,11 @@ const Advanced = () => {
                 className="w-14 px-1 text-center"
               />
               <Select
-                onValueChange={(v) =>
-                  handleChange({ target: { name: "unit", value: v } })
-                }
+                onValueChange={(v) => {
+                  if (v !== "select") {
+                    handleChange({ target: { name: "unit", value: v } });
+                  }
+                }}
                 defaultValue={duration.unit}
               >
                 <SelectTrigger className="w-[120px] border-primary focus:ring-0">
@@ -90,6 +92,7 @@ const Advanced = () => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
+                    <SelectItem value="select">Select</SelectItem>
                     <SelectItem value="days">Days</SelectItem>
                     <SelectItem value="weeks">Weeks</SelectItem>
                     <SelectItem value="months">Months</SelectItem>

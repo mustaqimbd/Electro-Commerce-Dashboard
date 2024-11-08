@@ -22,7 +22,7 @@ const Brand = ({ brands }: TBrand) => {
   const selectedBrand = useAppSelector(({ addProduct }) => addProduct.brand);
 
   const handleChange = (v: string) => {
-    if (v) {
+    if (v !== "Select brand") {
       dispatch(setBrand(v));
     } else {
       dispatch(setBrand(undefined));
@@ -38,11 +38,12 @@ const Brand = ({ brands }: TBrand) => {
   return (
     <SectionContentWrapper heading="Product brand">
       <Select onValueChange={(v) => handleChange(v)}>
-        <SelectTrigger className=" border-primary focus:ring-0">
+        <SelectTrigger className="border-primary focus:ring-primary focus:ring-1">
           <SelectValue placeholder={defaultValue?.name || "Select brand"} />
         </SelectTrigger>
         <SelectContent>
-          <SelectGroup>
+          <SelectGroup className="capitalized">
+            <SelectItem value="Select brand">Select brand</SelectItem>
             {brands.map(({ _id, name }) => (
               <SelectItem key={_id} value={_id}>
                 {name}
@@ -56,3 +57,18 @@ const Brand = ({ brands }: TBrand) => {
 };
 
 export default Brand;
+
+// <Select onValueChange={(v) => handleChange(v)}>
+//   <SelectTrigger className=" border-primary focus:ring-0">
+//     <SelectValue placeholder={defaultValue?.name || "Select brand"} />
+//   </SelectTrigger>
+//   <SelectContent>
+//     <SelectGroup>
+//       {brands.map(({ _id, name }) => (
+//         <SelectItem key={_id} value={_id}>
+//           {name}
+//         </SelectItem>
+//       ))}
+//     </SelectGroup>
+//   </SelectContent>
+// </Select>;

@@ -35,7 +35,7 @@ const Stats = () => {
   const stats = (data as TSuccessResponse<TStats[]>)?.data || [];
 
   return (
-    <div className="mt-5">
+    <div className="space-y-4">
       <div className="flex justify-end">
         <DateRangeSelector
           handlerFN={handleDateChange}

@@ -17,17 +17,17 @@ const AllProducts = async () => {
   });
 
   return (
-    <Card className="bg-white px-4 pt-4 shadow-none rounded-xl m-4">
+    <Card className="bg-white px-4 pt-4 rounded-md m-4">
       {/* header section, search bar  */}
       <div className="grid grid-cols-2 justify-between items-center">
-        <h1 className="text-3xl">All Products</h1>
+        <h1 className="text-2xl font-bold">All Products</h1>
         <ProductSearchBar endPoint="/products/admin" />
       </div>
       <hr className="my-4" />
-      <div className="space-y-4">
-        {/* All, Pending, draft, Trash Link */}
+      <div className="space-y-3">
+        {/* All, published, public, private, draft, Trash status */}
         <CountByStatusButtons />
-        <div className="flex items-center justify-between gap-5 overflow-x-auto pt-4">
+        <div className="flex items-center justify-between gap-5 overflow-x-auto pt-4 px-1 pb-1">
           {/*Bulk actions and invoice print for Orders*/}
           {/* <div className="flex items-center gap-5"> */}
           <ProductBulkAction />
@@ -36,12 +36,12 @@ const AllProducts = async () => {
               <PlusIcon /> <span>Add New Product</span>
             </Button>
           </Link>
-          {/* Filter options with filter button */}
+          {/* Filter options by category and stock status*/}
           <Filter categories={categories} />
           {/* </div> */}
           <Show />
         </div>
-        {/* all products Table  */}
+        {/* All products Table  */}
         <ProductsTable></ProductsTable>
       </div>
     </Card>

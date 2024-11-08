@@ -145,7 +145,7 @@ const UpdateOrderStatus = ({ _id, status, handleOpen }: TProps) => {
     <div className="flex items-center gap-5">
       <select
         onChange={(e) => setAction(e.target.value)}
-        className="h-9 border border-primary focus:outline focus:outline-primary rounded-sm capitalize"
+        className="h-9 border border-primary outline-primary rounded-md capitalize"
       >
         <option value="">Update status</option>
         {statusOptions(status).map((status) => (

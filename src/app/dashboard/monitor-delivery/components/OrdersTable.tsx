@@ -168,7 +168,7 @@ export default function OrdersTable({
         </Table>
       </div>
       {!search && (
-        <div className="flex items-center justify-end space-x-2 py-4">
+        <div className="flex items-center justify-end space-x-2 py-2">
           <PagePagination />
         </div>
       )}

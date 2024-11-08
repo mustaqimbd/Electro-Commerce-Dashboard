@@ -107,7 +107,7 @@ const UpdateApprovalStatus = ({
             <div className="space-y-2 w-full">
               <select
                 {...register("shippingCharge")}
-                className="w-full h-9 border border-gray-300  rounded-sm"
+                className="w-full h-9 border border-primary outline-primary rounded-md"
               >
                 <option value="">Shipping charge</option>
                 {shippingCharges.map(({ _id, name, amount }) => (

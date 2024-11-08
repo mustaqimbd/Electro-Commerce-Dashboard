@@ -25,9 +25,9 @@ const AllClaimRequestPage = () => {
     <>
       <WarrantyClaimData />
       <Card className="p-4 shadow-none rounded-xl m-3">
-        <h2 className="text-xl font-bold mb-2">Claim requests</h2>
-        <hr className="mb-8" />
-        <div className="flex justify-end py-2">
+        <h2 className="text-2xl font-bold">Claim requests</h2>
+        <hr className="my-4" />
+        <div className="flex justify-end">
           <Button>
             <Link
               target="_blank"
@@ -37,7 +37,7 @@ const AllClaimRequestPage = () => {
             </Link>
           </Button>
         </div>
-        <div>
+        <div className="mt-4">
           <WarrantyClaimTable />
         </div>
       </Card>

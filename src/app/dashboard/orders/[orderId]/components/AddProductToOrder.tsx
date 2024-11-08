@@ -99,7 +99,7 @@ const AddProductToOrder = ({
             >
               <select
                 {...register(`productDetails.${index}.newProductId`)}
-                className=" h-9 border focus:outline-none rounded"
+                className=" h-9 border border-primary outline-primary focus:outline-none rounded"
                 required
               >
                 <option value="">Select product</option>

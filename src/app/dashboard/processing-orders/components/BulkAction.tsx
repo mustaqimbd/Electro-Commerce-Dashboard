@@ -1,4 +1,12 @@
 "use client";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import Invoice from "@/components/invoice/Invoice";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
@@ -20,7 +28,7 @@ const BulkAction = () => {
   } = useAppSelector(({ processingOrders }) => processingOrders);
   const { iSOrderUpdate } = useAppSelector(({ orders }) => orders);
 
-  const [bulkAction, setBulkAction] = useState("");
+  const [bulkAction, setBulkAction] = useState("bulk");
 
   const updatePayload = {
     orderIds,
@@ -29,7 +37,7 @@ const BulkAction = () => {
 
   const handleBulkAction = async () => {
     try {
-      if (bulkAction) {
+      if (bulkAction !== "bulk") {
         if (orderIds.length) {
           const res = await updateProcessingOrderStatus(updatePayload).unwrap();
           if (res.success) {
@@ -64,18 +72,21 @@ const BulkAction = () => {
     <div className={"flex gap-10 items-center"}>
       {isBulkAction && (
         <div className="flex items-center gap-2">
-          <select
-            defaultValue={bulkAction}
-            onChange={(e) => setBulkAction(e.target.value)}
-            className="h-9 border focus:outline focus:outline-primary rounded-sm capitalize w-40 pl-2"
-          >
-            <option value="">Bulk Actions</option>
-            {statusOptions(selectedStatus).map((status) => (
-              <option value={status} key={status}>
-                {status}
-              </option>
-            ))}
-          </select>
+          <Select onValueChange={(value) => setBulkAction(value)}>
+            <SelectTrigger className="border-primary focus:ring-primary focus:ring-1">
+              <SelectValue placeholder="Bulk Actions" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup className="capitalize">
+                <SelectItem value="bulk">Bulk Actions</SelectItem>
+                {statusOptions(selectedStatus).map((status) => (
+                  <SelectItem value={status} key={status}>
+                    {status}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
           <Button onClick={handleBulkAction} disabled={isLoading}>
             Apply
           </Button>

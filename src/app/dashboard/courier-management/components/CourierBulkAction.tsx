@@ -1,4 +1,12 @@
 "use client";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
@@ -19,7 +27,7 @@ const CourierBulkAction = () => {
   const filter = useAppSelector(
     ({ courierManagement }) => courierManagement.selectedStatus
   );
-  const [bulkAction, setBulkAction] = useState("");
+  const [bulkAction, setBulkAction] = useState("bulk");
 
   const updatePayload = {
     orderIds,
@@ -28,7 +36,7 @@ const CourierBulkAction = () => {
 
   const handleBulkAction = async () => {
     try {
-      if (bulkAction) {
+      if (bulkAction !== "bulk") {
         const res = await sendCourierAndUpdateStatus(updatePayload).unwrap();
         if (res.success) {
           await refetchData("processingDoneOrders");
@@ -55,18 +63,21 @@ const CourierBulkAction = () => {
     <div className={"flex gap-10 items-center"}>
       {statusOptions(filter).length ? (
         <div className="flex items-center gap-2">
-          <select
-            defaultValue={bulkAction}
-            onChange={(e) => setBulkAction(e.target.value)}
-            className="h-9 border focus:outline focus:outline-primary rounded-sm capitalize w-40 pl-2"
-          >
-            <option value="">Bulk Actions</option>
-            {statusOptions(filter).map((status) => (
-              <option value={status} key={status}>
-                {status}
-              </option>
-            ))}
-          </select>
+          <Select onValueChange={(value) => setBulkAction(value)}>
+            <SelectTrigger className="border-primary focus:ring-primary focus:ring-1">
+              <SelectValue placeholder="Bulk Actions" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup className="capitalize">
+                <SelectItem value="bulk">Bulk Actions</SelectItem>
+                {statusOptions(filter).map((status) => (
+                  <SelectItem value={status} key={status}>
+                    {status}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
           <Button onClick={handleBulkAction} disabled={isLoading}>
             Apply
           </Button>

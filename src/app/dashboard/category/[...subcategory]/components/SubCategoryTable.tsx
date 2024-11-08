@@ -150,7 +150,7 @@ export const CategoryTable = ({
       <div className="flex items-center gap-2 py-4">
         <div className="flex justify-start  gap-2">
           <Select>
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="w-[180px] border-primary focus:ring-primary focus:ring-1">
               <SelectValue placeholder="Bulk Action" />
             </SelectTrigger>
             <SelectContent>
