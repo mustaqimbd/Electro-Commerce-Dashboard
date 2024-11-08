@@ -1,30 +1,32 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Card } from "@/components/ui/card";
 import config from "@/config/config";
 import { getProfile } from "@/lib/getAccessToken";
+import dummyUser from "../../../../public/icons/user.jpg";
 
 const AccountsPage = async () => {
   const user = await getProfile();
-
+  const profilePicUrl = user?.profilePicture
+    ? `${config.base_url}/${user?.profilePicture}`
+    : dummyUser.src;
   return (
     <div className="flex-1 space-y-7">
-      <div className="ring-1 p-5 ring-gray-200 rounded-md w-full">
-        <div className="grid grid-cols-10">
-          <div className="col-span-1">
+      <Card className="p-4 shadow-none rounded-xl">
+        <div className="flex gap-5">
+          <div>
             <Avatar className="rounded-full w-20 h-20">
-              <AvatarImage
-                src={`${config?.base_url}/${user?.profilePicture}`}
-              />
+              <AvatarImage src={profilePicUrl} />
               <AvatarFallback>{user?.fullName}</AvatarFallback>
             </Avatar>
           </div>
-          <div className="col-span-9">
+          <div className="flex-1">
             <p className="font-semibold text-xl">{user?.fullName}</p>
             <p className="capitalize text-gray-500">{user?.role}</p>
             <p className="capitalize text-gray-500">{user?.uid}</p>
           </div>
         </div>
-      </div>
-      <div className="ring-1 p-5 ring-gray-200 rounded-md w-full">
+      </Card>
+      <Card className="p-4 shadow-none rounded-xl">
         <h2 className="font-semibold text-lg">Personal information</h2>
         <div className="grid grid-cols-2 mt-5 gap-3">
           <div>
@@ -70,7 +72,7 @@ const AccountsPage = async () => {
             </p>
           </div>
         </div>
-      </div>
+      </Card>
     </div>
   );
 };

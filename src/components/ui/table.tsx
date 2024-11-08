@@ -5,15 +5,26 @@ import { cn } from "@/lib/utils";
 const Table = React.forwardRef<
   HTMLTableElement,
   React.HTMLAttributes<HTMLTableElement>
->(({ className, ...props }, ref) => (
-  <div className="relative w-full overflow-auto">
-    <table
-      ref={ref}
-      className={cn("w-full caption-bottom text-sm", className)}
-      {...props}
-    />
-  </div>
-));
+>(({ className, ...props }, ref) => {
+  // const divRef = React.useRef<HTMLDivElement>(null); // added code
+
+  // React.useEffect(() => {
+  //   if (divRef.current) {
+  //     divRef.current.scrollLeft = 117;
+  //   }
+  // }, []); // useEffect function added code
+  //ref={divRef}
+  return (
+    // <div className="relative w-full  max-h-[calc(100vh-400px)] overflow-auto" ref={divRef}>
+    <div className="relative w-full overflow-auto">
+      <table
+        ref={ref}
+        className={cn("w-full caption-bottom text-sm", className)}
+        {...props}
+      />
+    </div>
+  );
+});
 Table.displayName = "Table";
 
 const TableHeader = React.forwardRef<

@@ -26,22 +26,6 @@ import { columns } from "./OrdersColumn";
 
 export default function OrdersTable() {
   const dispatch = useAppDispatch();
-  // const status = useAppSelector(
-  //   ({ courierManagement }) => courierManagement.selectedStatus
-  // );
-
-  // const newColumns: ColumnDef<TOrders>[] =
-  //   status === "delivery cancel"
-  //     ? [
-  //         ...columns.slice(0, 8),
-  //         {
-  //           accessorKey: "reasons",
-  //           header: "Reasons",
-  //           cell: ({ row }) => <ReasonNotes order={row.original} />,
-  //         },
-  //         ...columns.slice(8),
-  //       ]
-  //     : [...columns];
 
   const { isLoading } = useAppSelector(({ pagination }) => pagination);
   const orders = useAppSelector(({ search, courierManagement }) => {
@@ -130,7 +114,7 @@ export default function OrdersTable() {
         </Table>
       </div>
       {!search && (
-        <div className="flex items-center justify-end space-x-2 py-4">
+        <div className="flex items-center justify-end space-x-2 py-2">
           <PagePagination />
         </div>
       )}

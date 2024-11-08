@@ -197,7 +197,7 @@ const CreateOrder = ({ order }: { order?: TOrders }) => {
               <div className="space-y-2 w-full">
                 <select
                   {...register("shippingCharge")}
-                  className="w-full h-9 border border-gray-300  rounded-sm"
+                  className="w-full h-9 border border-primary outline-primary  rounded-md"
                 >
                   <option value="">Shipping charge</option>
                   {shippingCharges?.data?.map(
@@ -234,7 +234,7 @@ const CreateOrder = ({ order }: { order?: TOrders }) => {
               <div className="space-y-2 w-full">
                 <select
                   {...register("payment.paymentMethod")}
-                  className="w-full h-9 border border-gray-300  rounded-sm"
+                  className="w-full h-9 border border-primary outline-primary  rounded-md"
                 >
                   <option value="">Payment</option>
                   {paymentMethods?.data?.map(
@@ -296,7 +296,7 @@ const CreateOrder = ({ order }: { order?: TOrders }) => {
               </Label>
               <select
                 {...register("orderSource.name")}
-                className="w-full h-9 border border-gray-300  rounded-sm"
+                className="w-full h-9 border border-primary outline-primary  rounded-md"
               >
                 <option value="">Order source</option>
                 <option value="Phone Call">Phone Call</option>
@@ -324,7 +324,7 @@ const CreateOrder = ({ order }: { order?: TOrders }) => {
                         </Label>
                         <select
                           {...register(`orderedProducts.${index}.product`)}
-                          className="w-full h-9 border border-gray-300  rounded-sm"
+                          className="w-full h-9 border border-primary outline-primary  rounded-md"
                         >
                           <option value="">Select product</option>
                           {productsName?.data?.map(

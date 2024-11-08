@@ -5,9 +5,8 @@ import OrderIdAndDate from "@/components/OrderIdAndDate";
 import { Checkbox } from "@/components/ui/checkbox";
 import { TOrders } from "@/types/order/order.interface";
 import { ColumnDef } from "@tanstack/react-table";
-// import ProductCode from "../../processing-orders/components/ProductCode";
-import ReasonNotes from "./ReasonNotes";
-import backgroundColor from "@/utilities/backgroundColor";
+// import ReasonNotes from "./ReasonNotes";
+import ProductCode from "../../processing-orders/components/ProductCode";
 
 export const columns: ColumnDef<TOrders>[] = [
   {
@@ -58,8 +57,7 @@ export const columns: ColumnDef<TOrders>[] = [
     accessorKey: "shipping",
     header: "Customer Info",
     cell: ({ row }) => {
-      const customer = row.original.shipping;
-      return <CustomerInfo customer={customer} />;
+      return <CustomerInfo order={row.original} />;
     },
   },
   {
@@ -88,11 +86,11 @@ export const columns: ColumnDef<TOrders>[] = [
       );
     },
   },
-  // {
-  //   accessorKey: "productCode",
-  //   header: "Product Code",
-  //   cell: ({ row }) => <ProductCode order={row.original} disable={true} />,
-  // },
+  {
+    accessorKey: "productCode",
+    header: "Product Code",
+    cell: ({ row }) => <ProductCode order={row.original} disable={true} />,
+  },
   {
     accessorKey: "total",
     header: "Total",
@@ -108,29 +106,11 @@ export const columns: ColumnDef<TOrders>[] = [
     header: "Notes",
     cell: ({ row }) => <AddNotes order={row.original} />,
   },
-  {
-    accessorKey: "status",
-    header: "Delivery status",
-    cell: ({ row }) => {
-      const deliveryStatus =
-        row.original?.deliveryStatus?.length > 14
-          ? row.original?.deliveryStatus?.slice(0, 14) + "..."
-          : row.original?.deliveryStatus;
-      return (
-        <span
-          title={row.original?.deliveryStatus}
-          className={`capitalize px-2 pb-[2px] pt-[1px] text-white rounded ${backgroundColor(row.original?.deliveryStatus)}`}
-        >
-          {deliveryStatus}
-        </span>
-      );
-    },
-  },
-  {
-    accessorKey: "notes",
-    header: "Delivery Notes",
-    cell: ({ row }) => <ReasonNotes order={row.original} />,
-  },
+  // {
+  //   accessorKey: "notes",
+  //   header: "Delivery Notes",
+  //   cell: ({ row }) => <ReasonNotes order={row.original} />,
+  // },
   {
     accessorKey: "orderSource",
     header: "Origin",

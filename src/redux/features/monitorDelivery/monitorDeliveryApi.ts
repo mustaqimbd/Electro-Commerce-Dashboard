@@ -11,7 +11,26 @@ const updateStatusApi = baseApi.injectEndpoints({
       }),
       providesTags: ["monitorDelivery"],
     }),
+    refreshCourierOrders: builder.mutation({
+      query: () => ({
+        url: "/orders/update-order-delivery-status",
+        method: "POST",
+      }),
+      invalidatesTags: ["monitorDelivery"],
+    }),
+    courierReturnedOrders: builder.mutation({
+      query: (payload: { orderIds: string[]; status: string }) => ({
+        url: "/orders/manage-return-partial",
+        method: "PATCH",
+        body: payload,
+      }),
+      invalidatesTags: ["monitorDelivery"],
+    }),
   }),
 });
 
-export const { useGetMonitorDeliveryOrdersQuery } = updateStatusApi;
+export const {
+  useGetMonitorDeliveryOrdersQuery,
+  useRefreshCourierOrdersMutation,
+  useCourierReturnedOrdersMutation,
+} = updateStatusApi;

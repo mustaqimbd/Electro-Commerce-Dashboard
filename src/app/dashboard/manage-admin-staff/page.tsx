@@ -24,9 +24,9 @@ const ManageUser = () => {
     <>
       <GetAllUser />
       <Card className="p-4 shadow-none rounded-xl m-3">
-        <h2 className="text-xl font-bold mb-2">Manage employs</h2>
-        <hr className="mb-8" />
-        <div className="space-y-2">
+        <h2 className="text-2xl font-bold">Manage employs</h2>
+        <hr className="mt-4 mb-6" />
+        <div className="space-y-3">
           <div className="flex justify-between px-3">
             <CreateUser />
             <SearchEmployee />

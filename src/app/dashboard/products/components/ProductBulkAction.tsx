@@ -39,11 +39,11 @@ const ProductBulkAction = () => {
   return (
     <div className={"flex gap-2 items-center"}>
       <Select onValueChange={(value) => setAction(value)}>
-        <SelectTrigger className="w-[120px]">
+        <SelectTrigger className="border-primary focus:ring-primary focus:ring-1">
           <SelectValue placeholder="Bulk Actions" />
         </SelectTrigger>
         <SelectContent>
-          <SelectGroup>
+          <SelectGroup className="capitalize">
             <SelectItem value="bulk">Bulk Actions</SelectItem>
             <SelectItem value="delete">Delete</SelectItem>
             {/* <SelectItem value="On courier">Courier Entry</SelectItem> */}

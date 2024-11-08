@@ -12,9 +12,9 @@ const StatsCard = ({ stat }: { stat: TStats }) => {
           {stat.title}
         </TypographyH4>
         <TypographyH4
-          className={`text-gray-900 !font-bold !text-3xl ${montserrat.className}`}
+          className={`text-gray-900 !font-bold !text-xl ${montserrat.className}`}
         >
-          {stat.count}
+          {stat.count || 0}
         </TypographyH4>
         <TypographyH4
           className={`font-semibold !text-gray-500 ${montserrat.className}`}

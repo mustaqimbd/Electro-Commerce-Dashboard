@@ -11,7 +11,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { SectionTitle } from "@/components/ui/sectionTitle";
 import {
   Table,
   TableBody,
@@ -75,7 +74,7 @@ const AddedAttributes = ({ attributes = [] }: { attributes: TAttribute[] }) => {
   return (
     <div className="w-full">
       <Card className="p-4 shadow-none rounded-xl space-y-5">
-        <SectionTitle>Configure Attribute Value</SectionTitle>
+        <h2 className="text-xl font-bold">Configure Attribute Value</h2>
         <Table>
           <TableHeader>
             <TableRow>

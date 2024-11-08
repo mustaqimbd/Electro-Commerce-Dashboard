@@ -1,6 +1,8 @@
 import { formatDate, formatTime } from "@/lib/formatDate";
 import { TCoupon } from "@/redux/features/coupon/couponInterface";
+import backgroundColor from "@/utilities/backgroundColor";
 import { ColumnDef } from "@tanstack/react-table";
+import Action from "./Action";
 import UpdateActiveStatus from "./UpdateActiveStatus";
 
 const columns: ColumnDef<TCoupon>[] = [
@@ -50,9 +52,40 @@ const columns: ColumnDef<TCoupon>[] = [
     ),
   },
   {
+    accessorKey: "status",
+    header: () => <h2 className="text-start">Status</h2>,
+    cell: ({ row }) => {
+      const targetDate = new Date(row.original?.endDate);
+      const currentDate = new Date();
+
+      return (
+        <div>
+          {targetDate < currentDate ? (
+            <span
+              className={`${backgroundColor("problem")} px-2 rounded-md text-white py-1`}
+            >
+              Expired
+            </span>
+          ) : (
+            <span
+              className={`${backgroundColor("completed")} px-2 rounded-md text-white py-1`}
+            >
+              Active
+            </span>
+          )}
+        </div>
+      );
+    },
+  },
+  {
     accessorKey: "isActive",
     header: () => <h2 className="text-start">Active status</h2>,
     cell: ({ row }) => <UpdateActiveStatus coupon={row.original} />,
+  },
+  {
+    accessorKey: "action",
+    header: () => <h2 className="text-start">Action</h2>,
+    cell: ({ row }) => <Action coupon={row.original} />,
   },
 ];
 export default columns;

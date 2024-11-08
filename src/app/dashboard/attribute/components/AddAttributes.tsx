@@ -2,7 +2,6 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { SectionTitle } from "@/components/ui/sectionTitle";
 import { toast } from "@/components/ui/use-toast";
 import { useAddAttributeMutation } from "@/redux/features/addAttributes/attributesApi";
 import { useForm } from "react-hook-form";
@@ -93,7 +92,7 @@ const AddAttribute = () => {
     <div className="w-full">
       <div className="">
         <Card className="p-4 shadow-none rounded-xl space-y-5">
-          <SectionTitle>Add New Attribute</SectionTitle>
+          <h2 className="text-xl font-bold">Add New Attribute</h2>
           <form onSubmit={handleSubmit(onSubmit)} className="">
             <div className="space-y-3">
               <div>

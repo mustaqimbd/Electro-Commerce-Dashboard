@@ -38,8 +38,8 @@ const columns: ColumnDef<TWarrantyClaim>[] = [
     accessorKey: "shipping",
     header: "Customer Info",
     cell: ({ row }) => {
-      const customer = row.original.shipping;
-      return <CustomerInfo customer={customer} />;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return <CustomerInfo order={row.original as any} />;
     },
   },
   {
@@ -57,13 +57,6 @@ const columns: ColumnDef<TWarrantyClaim>[] = [
     },
   },
   {
-    accessorKey: "officialNotes",
-    header: "Notes",
-    cell: ({ row }) => {
-      return <OfficialNotes reqData={row?.original} />;
-    },
-  },
-  {
     accessorKey: "contactStatus",
     header: "Contact status",
     cell: ({ row }) => {
@@ -73,6 +66,13 @@ const columns: ColumnDef<TWarrantyClaim>[] = [
           contactStatus={row.original.contactStatus}
         />
       );
+    },
+  },
+  {
+    accessorKey: "officialNotes",
+    header: "Notes",
+    cell: ({ row }) => {
+      return <OfficialNotes reqData={row?.original} />;
     },
   },
   {

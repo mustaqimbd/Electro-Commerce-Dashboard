@@ -56,8 +56,7 @@ export const columns: ColumnDef<TOrders>[] = [
     accessorKey: "shipping",
     header: "Customer Info",
     cell: ({ row }) => {
-      const customer = row.original.shipping;
-      return <CustomerInfo customer={customer} />;
+      return <CustomerInfo order={row.original} />;
     },
   },
   {

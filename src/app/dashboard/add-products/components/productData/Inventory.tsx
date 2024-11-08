@@ -150,7 +150,7 @@ const Inventory = ({ isVariation, index, productId }: TProps) => {
             onChange={handleChange}
             name="stockStatus"
             id="stockStatus"
-            className="w-full h-9 border border-gray-300  rounded-sm"
+            className="w-full h-9 border border-primary outline-primary rounded-md"
           >
             <option value="In stock">In stock</option>
             <option value="Out of stock">Out of stock</option>

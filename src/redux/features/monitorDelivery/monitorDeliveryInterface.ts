@@ -49,6 +49,7 @@ export type TMonitorOrdersInitialState = {
     orderIds: string[];
     invoices: TOrders[];
   };
+  editPermission: boolean;
 };
 export type TInitialStateUpdateOrder = {
   updateOrder: UpdateOrderInitialState;

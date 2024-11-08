@@ -17,6 +17,14 @@ import { useGetAllProductsQuery } from "@/redux/features/allProducts/allProducts
 // import queryHelper from "@/utilities/queryHelper";
 // import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+} from "@/components/ui/select";
 
 type TCategory = {
   _id: string;
@@ -51,8 +59,8 @@ const Filter = ({ categories }: { categories: TCategory[] }) => {
     error,
   } = useGetAllProductsQuery({
     status: filter,
-    category,
-    stock,
+    category: category === "All Categories" ? "" : category,
+    stock: stock === "All Product Stock" ? "" : stock,
     sort: "-createdAt",
     page,
     limit,
@@ -78,43 +86,44 @@ const Filter = ({ categories }: { categories: TCategory[] }) => {
 
   return (
     <div className="flex items-center gap-10">
-      <select
-        defaultValue={category}
-        onChange={(e) => setCategory(e.target.value)}
-        className="h-9 border border-gray-300  rounded-sm"
-      >
-        <option value="">All Categories</option>
-        {categories.map(({ _id, name, subcategories }) => {
-          return (
-            <>
-              <option value={_id} key={_id}>
-                {name}
-              </option>
-              {subcategories.length > 0 && (
-                <>
-                  {subcategories.map(({ _id, name }) => (
-                    <option value={_id} key={_id} className="relative">
+      <Select onValueChange={(value) => setCategory(value)}>
+        <SelectTrigger className="border-primary focus:ring-primary focus:ring-1">
+          <SelectValue placeholder="All Categories" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            <SelectItem value="All Categories">All Categories</SelectItem>
+            {categories.map(({ _id, name, subcategories }) => (
+              <div key={_id}>
+                <SelectItem value={_id} className="font-bold">
+                  {name}
+                </SelectItem>
+                {subcategories.length > 0 &&
+                  subcategories.map(({ _id, name }) => (
+                    <SelectItem key={_id} value={_id} className="pl-4">
                       {name}
-                    </option>
+                    </SelectItem>
                   ))}
-                </>
-              )}
-            </>
-          );
-        })}
-      </select>
-      <select
-        defaultValue={stock}
-        onChange={(e) => setStatus(e.target.value)}
-        className=" h-9 border border-gray-300  rounded-sm"
-      >
-        <option value="">All Product Stock</option>
-        <option value="In stock">In stock</option>
-        <option className="pl-5" value="Out of stock">
-          Out of stock
-        </option>
-        {/* <option value="On backorder">On backorder</option> */}
-      </select>
+              </div>
+            ))}
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+
+      <Select onValueChange={(value) => setStatus(value)}>
+        <SelectTrigger className="border-primary focus:ring-primary focus:ring-1">
+          <SelectValue placeholder="All Product Stock" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup className="capitalize">
+            <SelectItem value="All Product Stock">All Product Stock</SelectItem>
+            <SelectItem value="In stock">In stock</SelectItem>
+            <SelectItem value="Out of stock">Out of stock</SelectItem>
+            {/* <SelectItem value="On backorder">On backorder</SelectItem> */}
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+
       {/* <Button onClick={handleSubmit} disabled={isLoading}>
         Filter
       </Button> */}

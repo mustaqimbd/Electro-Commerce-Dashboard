@@ -16,7 +16,7 @@ const WarrantySlice = baseApi.injectEndpoints({
         method: "PATCH",
         body: payload,
       }),
-      invalidatesTags: ["processingOrders"],
+      invalidatesTags: ["processingOrders", "monitorDelivery"],
     }),
   }),
 });

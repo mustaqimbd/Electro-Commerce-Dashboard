@@ -7,9 +7,9 @@ import Stats from "./components/stats/Stats";
 
 const Reports = () => {
   return (
-    <>
-      <div className="p-5 flex flex-col gap-5">
-        <PageTitle title="Reports" />
+    <div className="p-4">
+      <PageTitle title="Reports" />
+      <div className="flex flex-col gap-5">
         <Stats />
         <div className="grid grid-cols-3 gap-5">
           <OrdersCount />
@@ -20,7 +20,7 @@ const Reports = () => {
           <BestSellingProducts />
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

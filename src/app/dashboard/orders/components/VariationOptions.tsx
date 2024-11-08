@@ -23,7 +23,7 @@ const VariationOptions = <T extends FieldValues>({
         <div>
           <select
             {...register(`${orderedProducts}.${index}.variation` as Path<T>)}
-            className="w-full h-8 border border-gray-300 rounded-sm"
+            className="w-full h-8 border border-primary outline-primary rounded-md"
           >
             <option value="">Select attribute</option>
             {data?.variations?.map(

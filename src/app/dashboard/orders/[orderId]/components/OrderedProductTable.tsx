@@ -45,7 +45,7 @@ export const columns: ColumnDef<Product>[] = [
             <Image
               width={100}
               height={100}
-              src={`${config.base_url}/${image.src}`}
+              src={`${image.src}`}
               alt={image.alt}
             />
           </div>
@@ -136,7 +136,7 @@ export function OrderedProductTable({ products }: { products: Product[] }) {
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length ? (
+            {table?.getRowModel()?.rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}

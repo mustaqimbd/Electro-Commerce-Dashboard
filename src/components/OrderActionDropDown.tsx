@@ -1,15 +1,27 @@
 import { TOrders } from "@/types/order/order.interface";
 import Link from "next/link";
 import EditOrder from "@/app/dashboard/orders/[orderId]/components/EditOrder";
+import { useAppSelector } from "@/redux/hooks";
 
 const OrderActionDropDown = ({ order }: { order: TOrders }) => {
-  const isEdit = [
+  const editPermission = useAppSelector(
+    ({ monitorDelivery }) => monitorDelivery.editPermission
+  );
+
+  const edit = [
     "pending",
     "confirmed",
     "follow up",
     "processing",
     "warranty processing",
+    "warranty added",
+    // "processing done",
   ].includes(order.status);
+
+  const isEdit =
+    edit || (order.deliveryStatus === "partial_delivered" && editPermission)
+      ? true
+      : false;
 
   return (
     <div className="flex justify-center items-center gap-5">

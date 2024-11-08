@@ -1,3 +1,4 @@
+import config from "@/config/config";
 import { getPermission } from "@/lib/getAccessToken";
 import { permission } from "@/types/order/order.interface";
 import isPermitted from "@/utilities/isPermitted";
@@ -6,14 +7,13 @@ import {
   Component,
   Glasses,
   Home,
+  Image,
   ImagePlusIcon,
   LayoutDashboard,
-  // LayoutList,
   ListOrdered,
   Loader,
   PackageSearch,
   PlusCircle,
-  // Shapes,
   Truck,
   User,
   UsersRound,
@@ -137,6 +137,14 @@ export function Sidebar() {
           </AccordionItem>
         </Accordion>
       )}
+      {config.next_public_show_ito == true && manageOrder && (
+        <NavLink
+          href="/dashboard/image-to-order"
+          name="Image to order"
+          // eslint-disable-next-line jsx-a11y/alt-text
+          icon={<Image className="w-4 h-4" />}
+        />
+      )}
       {manageOrder && (
         <NavLink
           href="/dashboard/orders"
@@ -144,6 +152,7 @@ export function Sidebar() {
           icon={<ListOrdered className="w-4 h-4" />}
         />
       )}
+
       {manageProcessing && (
         <NavLink
           href="/dashboard/processing-orders"
@@ -158,58 +167,65 @@ export function Sidebar() {
           icon={<Bike className="w-4 h-4" />}
         />
       )}
-      {manageCourier && (
+      {(manageCourier || manageProcessing) && (
         <NavLink
           href="/dashboard/monitor-delivery"
-          name="Monitor delivery"
+          name="Monitor Delivery"
           icon={<Glasses className="w-4 h-4" />}
         />
       )}
       {manageWarrantyClaim && (
         <NavLink
           href="/dashboard/warranty-claims"
-          name="Warranty claims"
+          name="Warranty Claims"
           icon={<LayoutDashboard className="w-4 h-4" />}
         />
       )}
-      {manageAdminOrStaff && (
-        <NavLink
-          href="/dashboard/manage-admin-staff"
-          name="Manage employs"
-          icon={<UsersRound className="w-4 h-4" />}
-        />
-      )}
+
       {manageCoupons && (
         <NavLink
           href="/dashboard/manage-coupon"
-          name="Manage coupons"
+          name="Manage Coupons"
           icon={<Component className="w-4 h-4" />}
         />
       )}
       {manageShippingCharges && (
         <NavLink
           href="/dashboard/manage-shipping-charges"
-          name="Manage shipping charges"
+          name="Manage Shipping Charges"
           icon={<Truck className="w-4 h-4" />}
         />
       )}
-      <Accordion type="single" collapsible className="!mt-0">
-        <AccordionItem value="item-1">
-          <AccordionTrigger className="no-underline px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground transparent">
-            Theme Option
-          </AccordionTrigger>
-          <AccordionContent className="pl-4">
-            {themeOptionLinks.map((item) => (
-              <NavLink
-                key={item.href}
-                href={`/dashboard${item.href}`}
-                name={item.name}
-                icon={item.icon}
-              />
-            ))}
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
+      {(isSuperAdmin || manageProduct) && (
+        <>
+          <Accordion type="single" collapsible className="!mt-0">
+            <AccordionItem value="item-1">
+              <AccordionTrigger className="no-underline px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground transparent">
+                Theme Option
+              </AccordionTrigger>
+              <AccordionContent className="pl-4">
+                {themeOptionLinks.map((item) => (
+                  <NavLink
+                    key={item.href}
+                    href={`/dashboard${item.href}`}
+                    name={item.name}
+                    icon={item.icon}
+                  />
+                ))}
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+          <hr />
+          <span className="block mb-5"></span>
+        </>
+      )}
+      {manageAdminOrStaff && (
+        <NavLink
+          href="/dashboard/manage-admin-staff"
+          name="Manage Employees"
+          icon={<UsersRound className="w-4 h-4" />}
+        />
+      )}
       <hr />
       <span className="block mb-5"></span>
       <NavLink

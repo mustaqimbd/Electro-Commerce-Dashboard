@@ -22,23 +22,23 @@ const Orders = () => {
   }
 
   return (
-    <Card className="bg-white p-4 shadow-none rounded-xl m-3">
+    <Card className="bg-white px-4 pt-4 rounded-md m-4">
       {/* header section , button , search bar  */}
-      <div className="grid grid-cols-2 justify-between items-center mb-8">
-        <h1 className="text-3xl">Courier Management</h1>
+      <div className="grid grid-cols-2 justify-between items-center">
+        <h1 className="text-2xl font-bold">Courier Management</h1>
         <OrderSearchBar endPoint="/orders/admin/processing-done-on-courier-orders" />
       </div>
-      <hr className="mb-8" />
-      <div>
-        {/* All,Pending,canceled,on courier etc status*/}
+      <hr className="my-4" />
+      <div className="space-y-3">
+        {/* All, Processing done, on courier etc status*/}
         <StatusButtons />
-        <div className="flex items-center justify-between mt-8 mb-3">
+        <div className="flex items-center justify-between gap-5 overflow-x-auto pt-4 px-1 pb-1">
           {/*Bulk actions and invoice print for Orders*/}
           <CourierBulkAction />
           <ProcessingOrderDateRange />
           <Show />
         </div>
-        {/* <FilterAndOrdersTable/> */}
+        {/* Courier orders table */}
         <OrdersTable />
       </div>
     </Card>

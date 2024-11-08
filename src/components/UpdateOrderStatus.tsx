@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
 import { useSendCourierAndUpdateStatusMutation } from "@/redux/features/courierManagement/courierManagementApi";
+import { useCourierReturnedOrdersMutation } from "@/redux/features/monitorDelivery/monitorDeliveryApi";
 import { useUpdateOrdersStatusMutation } from "@/redux/features/orders/ordersApi";
 // import { setIsOrderUpdate } from "@/redux/features/orders/ordersSlice";
 import { useUpdateProcessingOrderStatusMutation } from "@/redux/features/processingOrders/processingOrdersApi";
@@ -24,17 +25,17 @@ const UpdateOrderStatus = ({ _id, status, handleOpen }: TProps) => {
     useUpdateProcessingOrderStatusMutation();
   const [sendCourierAndUpdateStatus, { isLoading: isSendLoading }] =
     useSendCourierAndUpdateStatusMutation();
+  const [courierReturnedOrders, { isLoading: isReturnLoading }] =
+    useCourierReturnedOrdersMutation();
   // const iSOrderUpdate = useAppSelector(({ orders }) => orders.iSOrderUpdate);
 
-  const ordersUpdateOptions = [
-    "confirmed",
+  const ordersRoute = ["pending", "confirmed", "follow up", "canceled"];
+  const processingOrdersRoute = [
     "processing",
-    "follow up",
-    "canceled",
-    "deleted",
+    "warranty processing",
+    "warranty added",
   ];
-
-  const processingOrdersUpdateOptions = ["processing done"];
+  const courierRoute = ["processing done", "cancelled"];
 
   const handleSubmit = async () => {
     // const orderData = {
@@ -51,7 +52,27 @@ const UpdateOrderStatus = ({ _id, status, handleOpen }: TProps) => {
     };
 
     try {
-      if (ordersUpdateOptions.includes(action)) {
+      if (action === "returned") {
+        const res = await courierReturnedOrders(updatePayload).unwrap();
+        if (res.success) {
+          // await refetchData("allOrders");
+          await refetchData("singleOrder");
+          await refetchData("customerOrderHistory");
+          // dispatch(setIsOrderUpdate(!iSOrderUpdate));
+          toast({
+            className: "bg-success text-white text-2xl",
+            title: "Order status updated successfully!",
+          });
+          if (handleOpen) {
+            handleOpen();
+          }
+          return;
+        } else {
+          throw new Error(res.message);
+        }
+      }
+
+      if (ordersRoute.includes(status)) {
         const res = await updateOrdersStatus(updatePayload).unwrap();
         if (res.success) {
           // await refetchData("allOrders");
@@ -70,7 +91,8 @@ const UpdateOrderStatus = ({ _id, status, handleOpen }: TProps) => {
           throw new Error(res.message);
         }
       }
-      if (processingOrdersUpdateOptions.includes(action)) {
+
+      if (processingOrdersRoute.includes(status)) {
         const res = await updateProcessingOrdersStatus(updatePayload).unwrap();
         if (res.success) {
           // await refetchData("processingOrders");
@@ -90,7 +112,7 @@ const UpdateOrderStatus = ({ _id, status, handleOpen }: TProps) => {
         }
       }
 
-      if (action === "On courier") {
+      if (courierRoute.includes(status)) {
         // const courier = await sendCourierAndUpdateStatus(orderData).unwrap();
         const res = await sendCourierAndUpdateStatus(updatePayload).unwrap();
         if (res.success) {
@@ -123,7 +145,7 @@ const UpdateOrderStatus = ({ _id, status, handleOpen }: TProps) => {
     <div className="flex items-center gap-5">
       <select
         onChange={(e) => setAction(e.target.value)}
-        className="h-9 border border-primary focus:outline focus:outline-primary rounded-sm capitalize"
+        className="h-9 border border-primary outline-primary rounded-md capitalize"
       >
         <option value="">Update status</option>
         {statusOptions(status).map((status) => (
@@ -135,7 +157,7 @@ const UpdateOrderStatus = ({ _id, status, handleOpen }: TProps) => {
       <div className="flex justify-end">
         <Button
           onClick={handleSubmit}
-          disabled={loading || isLoading || isSendLoading}
+          disabled={loading || isLoading || isSendLoading || isReturnLoading}
           className="self-end bg-primary"
           // size={"sm"}
         >

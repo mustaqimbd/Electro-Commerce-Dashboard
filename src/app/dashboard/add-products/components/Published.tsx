@@ -21,14 +21,12 @@ import {
   setThumbnail,
 } from "@/redux/features/imageSelector/imageSelectorSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 import modifiedVariations from "../lib/modifiedVariations";
 import ProductSchema from "../lib/productValidation";
 
 const Published = ({ productId }: { productId: string }) => {
   const dispatch = useAppDispatch();
-  const router = useRouter();
   const [createProduct, { isLoading }] = useCreateProductMutation();
   const [updateProduct, { isLoading: isUpdateLoading }] =
     useUpdateProductMutation();
@@ -71,7 +69,6 @@ const Published = ({ productId }: { productId: string }) => {
           className: "bg-success text-white text-2xl",
           title: res.message,
         });
-        router.push("/dashboard/products");
       } else {
         const validatedData = await ProductSchema.validate(productData, {
           abortEarly: false,
@@ -124,7 +121,7 @@ const Published = ({ productId }: { productId: string }) => {
                 defaultValue={publishedStatus.status}
                 {...register("status")}
                 id="status"
-                className="border h-9 border-gray-300  rounded-sm min-w-[100px] xl:w-[120px] px-2"
+                className="border h-9 border-primary outline-primary rounded-md min-w-[100px] xl:w-[120px] px-2"
               >
                 <option value="Published">Published</option>
                 <option value="Draft">Draft</option>
@@ -136,7 +133,7 @@ const Published = ({ productId }: { productId: string }) => {
                 defaultValue={publishedStatus.visibility}
                 {...register("visibility")}
                 id="visibility"
-                className="border h-9 border-gray-300 w-[100px] px-2 rounded-sm"
+                className="border h-9 border-primary outline-primary w-[100px] px-2 rounded-md"
               >
                 <option value="Public">Public</option>
                 {/* <option value="Password protected">Password protected</option> */}

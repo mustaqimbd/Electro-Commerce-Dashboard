@@ -20,27 +20,37 @@ import {
   setSearchedOrders,
 } from "@/redux/features/search/searchSlice";
 import { useGetMonitorDeliveryOrdersQuery } from "@/redux/features/monitorDelivery/monitorDeliveryApi";
+
 // import DateRangeSelector from "@/components/DateRangeSelector";
 
-const StatusButtons = () => {
+const StatusButtons = ({ manageProcessing }: { manageProcessing: boolean }) => {
   const dispatch = useAppDispatch();
+
   const { page, limit, isLoading } = useAppSelector(
     ({ pagination }) => pagination
   );
+
   const { startFrom, endAt } = useAppSelector(({ orders }) => orders);
-  const { selectedStatus: filter, monitorDeliveryOrders } = useAppSelector(
-    ({ monitorDelivery }) => monitorDelivery
-  );
+
+  const {
+    selectedStatus: filter,
+    monitorDeliveryOrders,
+    editPermission,
+  } = useAppSelector(({ monitorDelivery }) => monitorDelivery);
+
   if (!monitorDeliveryOrders.length && page > 1) {
     dispatch(setPage(1));
   }
+
   const [orderStatusCount, setOrderStatusCount] = useState([]);
+
   const {
     data,
     isLoading: loading,
     error,
   } = useGetMonitorDeliveryOrdersQuery({
-    deliveryStatus: filter,
+    deliveryStatus:
+      editPermission && filter == "in_review" ? "cancelled" : filter,
     startFrom,
     endAt,
     sort: "-createdAt",
@@ -65,11 +75,18 @@ const StatusButtons = () => {
     if (error) {
       throw new Error("Something went wrong!");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, loading, error, dispatch]);
+
+  const showStatus = manageProcessing
+    ? orderStatusCount?.filter(
+        ({ name }) => name == "partial_delivered" || name == "cancelled"
+      )
+    : orderStatusCount;
 
   return (
     <div className="flex flex-wrap items-center justify-start gap-5">
-      {orderStatusCount?.map((status: { name: string; total: string }) => {
+      {showStatus?.map((status: { name: string; total: string }) => {
         const bg = `${backgroundColor(status.name)} text-white`;
         return (
           <Button

@@ -66,6 +66,7 @@ export type TOrders = {
   invoiceNotes?: string;
   officialNotes?: string;
   courierNotes?: string;
+  riderNotes?: string;
   reasonNotes?: string;
   orderSource: { name: string; url: string; lpNo: number };
 };
@@ -83,6 +84,7 @@ export const permission = {
   manageCourier: "manage courier",
   manageWarrantyClaim: "manage warranty claim",
   manageProduct: "manage product",
+  manageImageToOrder: "manage image to order",
 } as const;
 
 export type TQuery = {

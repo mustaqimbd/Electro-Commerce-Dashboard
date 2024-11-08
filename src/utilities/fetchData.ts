@@ -1,7 +1,7 @@
 "use server";
 import config from "@/config/config";
-import { cookies } from "next/headers";
 import { revalidateTag } from "next/cache";
+import { cookies } from "next/headers";
 import objectToSearchParams from "./searchParams";
 
 type TTags =
@@ -22,7 +22,8 @@ type TTags =
   | "subcategories"
   | "attributes"
   | "brands"
-  | "tags";
+  | "tags"
+  | "sliders";
 
 type TProps = {
   endPoint: string;

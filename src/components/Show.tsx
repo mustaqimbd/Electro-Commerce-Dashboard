@@ -20,11 +20,11 @@ const Show = ({ className }: { className?: string }) => {
     >
       <span>Show</span>
       <Select onValueChange={(v) => dispatch(setLimit(parseInt(v)))}>
-        <SelectTrigger className="w-[60px] h-[30px] border-primary focus:ring-0">
+        <SelectTrigger className="w-[60px] border-primary focus:ring-primary focus:ring-1">
           <SelectValue placeholder={limit} />
         </SelectTrigger>
         <SelectContent>
-          <SelectGroup>
+          <SelectGroup className="capitalize">
             <SelectItem value="10">10</SelectItem>
             <SelectItem value="20">20</SelectItem>
             <SelectItem value="30">30</SelectItem>
