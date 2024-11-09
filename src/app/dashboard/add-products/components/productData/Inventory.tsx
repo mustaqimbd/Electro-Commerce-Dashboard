@@ -58,9 +58,10 @@ type TProps = {
 const Inventory = ({ isVariation, index, productId }: TProps) => {
   const dispatch = useAppDispatch();
   const {
-    // sku,
+    sku,
     stockStatus,
     stockQuantity,
+    stockAvailable,
     // productCode,
     manageStock,
     lowStockWarning,
@@ -139,7 +140,7 @@ const Inventory = ({ isVariation, index, productId }: TProps) => {
       <div className="flex items-center gap-3 mb-3">
         <Label className="flex gap-3 w-48" htmlFor="stockStatus">
           Stock Status
-          <span title="Lorem Ipsum is simply dummy text.">
+          <span title="Indicates whether the product is in stock, out of stock.">
             <i className="fa-solid fa-circle-question">i</i>
           </span>
         </Label>
@@ -164,7 +165,7 @@ const Inventory = ({ isVariation, index, productId }: TProps) => {
       <div className="flex items-center gap-3 mb-3">
         <Label className="flex gap-3 w-48" htmlFor="stockQuantity">
           Stock Quantity
-          <span title="Lorem Ipsum is simply dummy text.">
+          <span title="The total number of units.">
             <i className="fa-solid fa-circle-question">i</i>
           </span>
         </Label>
@@ -186,10 +187,36 @@ const Inventory = ({ isVariation, index, productId }: TProps) => {
           )} */}
         </div>
       </div>
-      {/* <div className="flex items-center gap-3 mb-3">
+      <div className="flex items-center gap-3 mb-3">
+        <Label className="flex gap-3 w-48" htmlFor="stockAvailable">
+          Stock Available
+          <span title="The current number of units available for sale. This value decreases as orders are placed.">
+            <i className="fa-solid fa-circle-question">i</i>
+          </span>
+        </Label>
+        <div className="space-y-2 w-full">
+          <Input
+            type="number"
+            defaultValue={stockAvailable || ""}
+            // {...register("stockAvailable")}
+            onChange={handleChange}
+            name="stockAvailable"
+            id="stockAvailable"
+            placeholder="Enter stock available"
+            className={`w-full text-blue-700 ${stockAvailable <= lowStockWarning ? "text-red-700" : ""} font-bold !opacity-100`}
+            disabled
+          />
+          {/* {errors.stockAvailable?.message && (
+            <p className="text-red-600">
+              {errors.stockAvailable?.message as string}
+            </p>
+          )} */}
+        </div>
+      </div>
+      <div className="flex items-center gap-3 mb-3">
         <Label className="flex gap-3 w-48" htmlFor="sku">
           SKU
-          <span title="Lorem Ipsum is simply dummy text.">
+          <span title="A unique identifier for the product.">
             <i className="fa-solid fa-circle-question">i</i>
           </span>
         </Label>
@@ -204,11 +231,11 @@ const Inventory = ({ isVariation, index, productId }: TProps) => {
             placeholder="Enter SKU"
             className="w-full"
           />
-          {errors.sku?.message && (
+          {/* {errors.sku?.message && (
             <p className="text-red-600">{errors.sku?.message as string}</p>
-          )}
+          )} */}
         </div>
-      </div> */}
+      </div>
       {/* <div className="flex items-center gap-3 mb-3">
         <Label className="flex gap-3 w-48" htmlFor="productCode">
           Product Code
@@ -238,7 +265,7 @@ const Inventory = ({ isVariation, index, productId }: TProps) => {
         <div className="flex items-center gap-3 mb-3">
           <Label className="flex gap-3 w-48" htmlFor="manageStock">
             Manage Stock
-            <span title="Lorem Ipsum is simply dummy text.">
+            <span title="Enable this to track and manage stock levels for this product by email.">
               <i className="fa-solid fa-circle-question">i</i>
             </span>
           </Label>
@@ -258,7 +285,7 @@ const Inventory = ({ isVariation, index, productId }: TProps) => {
         <div className="flex items-center gap-3 mb-3">
           <Label className="flex gap-3 w-48" htmlFor="lowStockWarning">
             Low Stock Warning
-            <span title="Lorem Ipsum is simply dummy text.">
+            <span title="Set a threshold to receive email when stock levels fall below this number.">
               <i className="fa-solid fa-circle-question">i</i>
             </span>
           </Label>
@@ -285,7 +312,7 @@ const Inventory = ({ isVariation, index, productId }: TProps) => {
         <div className="flex items-center gap-3 mb-3">
           <Label className="flex gap-3 w-48" htmlFor="hideStock">
             Hide stock
-            <span title="Lorem Ipsum is simply dummy text.">
+            <span title="Enable this to hide the stock quantity from customers on the front end.">
               <i className="fa-solid fa-circle-question">i</i>
             </span>
           </Label>
