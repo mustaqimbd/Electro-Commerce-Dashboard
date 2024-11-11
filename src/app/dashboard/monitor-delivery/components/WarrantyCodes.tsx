@@ -74,7 +74,7 @@ const WarrantyCodes = ({
                         type="text"
                         defaultValue={_id}
                         {...register(
-                          `productDetails.${productIndex}.claimedCodes`
+                          `productDetails.${productIndex}.warrantyCodes`
                         )}
                         className="hidden"
                       />{" "}
@@ -96,7 +96,7 @@ const WarrantyCodes = ({
                               <Input
                                 type="text"
                                 {...register(
-                                  `productDetails.${productIndex}.claimedCodes.${index}.code`
+                                  `productDetails.${productIndex}.warrantyCodes.${index}.code`
                                 )}
                                 defaultValue={
                                   (warranty?.warrantyCodes?.length &&

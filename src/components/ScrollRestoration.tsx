@@ -83,7 +83,7 @@ const ScrollRestoration = ({
     <div
       id={tableId}
       onScroll={handleScroll}
-      className="w-full h-[calc(100vh-63px)] overflow-y-auto bg-gray-50"
+      className="w-full h-[calc(100vh-60px)] overflow-y-auto bg-gray-50"
     >
       {children}
     </div>

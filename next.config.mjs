@@ -19,14 +19,6 @@ const nextConfig = {
         hostname: "api.oneselfbd.com",
       },
       {
-        protocol: "http",
-        hostname: "api.medicellbd.com",
-      },
-      {
-        protocol: "https",
-        hostname: "api.medicellbd.com",
-      },
-      {
         protocol: "https",
         hostname: "electrocommerce.abirmahmud.top",
       },
@@ -36,9 +28,6 @@ const nextConfig = {
       },
     ],
   },
-  // experimental: {
-  //   scrollRestoration: true,
-  // },
 };
 
 export default nextConfig;

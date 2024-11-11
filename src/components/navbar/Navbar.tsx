@@ -8,7 +8,7 @@ const Navbar = async () => {
   const user = await getProfile();
 
   return (
-    <div className="w-full flex bg-white justify-between items-center  border-b py-2 px-6 top-0 sticky z-10">
+    <div className="w-full h-[60px] flex bg-white justify-between items-center  border-b py-2 px-6 top-0 sticky z-10">
       <div className="px-2">
         <Link href="/dashboard">
           <Image
@@ -20,7 +20,7 @@ const Navbar = async () => {
           />
         </Link>
       </div>
-      <div className="">
+      <div>
         <UserMenu user={user} />
       </div>
     </div>

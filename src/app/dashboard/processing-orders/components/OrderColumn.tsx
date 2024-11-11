@@ -89,7 +89,12 @@ export const columns: ColumnDef<TOrders>[] = [
   {
     accessorKey: "productCode",
     header: "Product Code",
-    cell: ({ row }) => <ProductCode order={row.original} disable={false} />,
+    cell: ({ row }) => {
+      const status = row.original.status;
+      const isDisable =
+        status === "partial completed" || status === "returned" ? true : false;
+      return <ProductCode order={row.original} disable={isDisable} />;
+    },
   },
   {
     accessorKey: "total",
@@ -105,7 +110,10 @@ export const columns: ColumnDef<TOrders>[] = [
     accessorKey: "status",
     header: "Status",
     cell: ({ row }) => (
-      <OrderStatus order={row.original} disableStatus={["processing done"]} />
+      <OrderStatus
+        order={row.original}
+        disableStatus={["processing done", "partial completed", "returned"]}
+      />
     ),
   },
   {

@@ -24,7 +24,7 @@ const updateStatusApi = baseApi.injectEndpoints({
         method: "PATCH",
         body: payload,
       }),
-      invalidatesTags: ["monitorDelivery"],
+      invalidatesTags: ["monitorDelivery", "processingOrders"],
     }),
   }),
 });

@@ -56,8 +56,12 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
     "partial_delivered",
     // "processing done",
   ].includes(status);
+
   const isEdit =
-    edit || (order.deliveryStatus === "partial_delivered" && editPermission)
+    edit ||
+    (deliveryStatus === "partial_delivered" &&
+      status !== "partial completed" &&
+      editPermission)
       ? true
       : false;
 
@@ -68,6 +72,8 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
     "processing",
     "processing done",
     "On courier",
+    "partial completed",
+    "returned",
   ].includes(status);
 
   const isDeleted = ["pending", "follow up"].includes(status);
@@ -84,9 +90,19 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
               <div className="flex items-center gap-2">
                 <span className="font-bold min-w-[60px]">Status : </span>
                 <span
-                  className={`capitalize px-2 pb-[2px] pt-[1px] text-white rounded ${backgroundColor(deliveryStatus ? deliveryStatus : status)}`}
+                  className={`capitalize px-2 pb-[2px] pt-[1px] text-white rounded ${backgroundColor(
+                    deliveryStatus &&
+                      status !== "partial completed" &&
+                      status !== "returned"
+                      ? deliveryStatus
+                      : status
+                  )}`}
                 >
-                  {deliveryStatus ? deliveryStatus : status}
+                  {deliveryStatus &&
+                  status !== "partial completed" &&
+                  status !== "returned"
+                    ? deliveryStatus
+                    : status}
                 </span>
               </div>
             </div>

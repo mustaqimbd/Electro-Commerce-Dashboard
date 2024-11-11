@@ -103,7 +103,7 @@ export function Sidebar() {
   ];
 
   return (
-    <div className="w-[17rem] p-2 h-[calc(100vh-63px)] border-r overflow-y-auto space-y-4">
+    <div className="w-[17rem] p-2 h-[calc(100vh-60px)] border-r overflow-y-auto space-y-4">
       <NavLink
         href="/dashboard"
         name="Home"
