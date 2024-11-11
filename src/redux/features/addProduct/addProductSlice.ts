@@ -34,7 +34,7 @@ const initialState: TProduct = {
     gallery: [],
   },
   inventory: {
-    // sku: "",
+    sku: "",
     stockStatus: "In stock",
     stockQuantity: 0,
     stockAvailable: 0,

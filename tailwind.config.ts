@@ -26,6 +26,9 @@ module.exports = {
         primary: "#29C1F1",
         secondary: "#0dbdef ",
         tertiary: "#2B77C2",
+        // primary: "#019ba9",
+        // secondary: "#f04a00",
+        // tertiary: "#2B77C2",
         success: "#28a745",
         destructive: {
           DEFAULT: "hsl(var(--destructive))",

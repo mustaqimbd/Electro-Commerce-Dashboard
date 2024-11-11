@@ -137,7 +137,7 @@ export function Sidebar() {
           </AccordionItem>
         </Accordion>
       )}
-      {config.next_public_show_ito == true && manageOrder && (
+      {Boolean(config.next_public_show_ito) == true && manageOrder && (
         <NavLink
           href="/dashboard/image-to-order"
           name="Image to order"

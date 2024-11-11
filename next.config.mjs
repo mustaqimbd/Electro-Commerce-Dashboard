@@ -11,8 +11,20 @@ const nextConfig = {
         hostname: "localhost",
       },
       {
+        protocol: "http",
+        hostname: "api.oneselfbd.com",
+      },
+      {
         protocol: "https",
         hostname: "api.oneselfbd.com",
+      },
+      {
+        protocol: "http",
+        hostname: "api.medicellbd.com",
+      },
+      {
+        protocol: "https",
+        hostname: "api.medicellbd.com",
       },
       {
         protocol: "https",

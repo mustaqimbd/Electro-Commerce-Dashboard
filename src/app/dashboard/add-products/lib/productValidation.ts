@@ -15,7 +15,6 @@ const ImageValidationSchema = Yup.object().shape({
 });
 
 const InventoryValidationSchema = Yup.object().shape({
-  // sku: Yup.string().optional(),
   stockStatus: Yup.string().required("Stock status is required"),
   // stockQuantity: Yup.number()
   //   .min(1, "Stock quantity is required")
@@ -35,6 +34,7 @@ const InventoryValidationSchema = Yup.object().shape({
   stockQuantity: Yup.number().default(0),
   stockAvailable: Yup.number().optional(),
   preStockQuantity: Yup.number().optional(),
+  sku: Yup.string().trim().required("SKU is required"),
   // productCode: Yup.string().trim().optional(),
   manageStock: Yup.boolean().optional(),
   lowStockWarning: Yup.number().when("manageStock", {

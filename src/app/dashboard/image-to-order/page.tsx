@@ -21,7 +21,7 @@ const AllImageToOrderPage = () => {
     <>
       <FetchAllImageToOrderReq />
       <Card className="p-4 shadow-none rounded-xl m-3">
-        <h2 className="text-xl font-bold mb-2">Orders requests</h2>
+        <h2 className="text-2xl font-bold mb-2">Orders requests</h2>
         <hr className="mb-8" />
         <div></div>
         <ImgToOrderTable />
