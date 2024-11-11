@@ -108,7 +108,7 @@ function Invoice({ orders }: { orders: TOrders[] }) {
                       <span className="font-bold flex items-center gap-2">
                         <UserRound className="w-4 text-primary" />
                       </span>
-                      <span>All NeedZ Mart</span>
+                      <span>Oneself</span>
                     </div>
                     <div className="flex items-center gap-2 text-sm">
                       <span className="font-bold flex items-center gap-2">

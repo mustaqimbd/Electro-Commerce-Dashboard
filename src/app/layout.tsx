@@ -8,10 +8,10 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: {
-    default: "All NeedZ Mart",
-    template: "%s | All NeedZ Mart",
+    default: "Oneself",
+    template: "%s | Oneself",
   },
-  description: "All NeedZ Mart",
+  description: "Oneself",
 };
 
 export default function RootLayout({

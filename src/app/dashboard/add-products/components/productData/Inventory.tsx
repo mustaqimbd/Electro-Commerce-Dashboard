@@ -202,7 +202,7 @@ const Inventory = ({ isVariation, index, productId }: TProps) => {
             onChange={handleChange}
             name="stockAvailable"
             id="stockAvailable"
-            placeholder="Enter stock available"
+            // placeholder="Enter stock available"
             className={`w-full text-blue-700 ${stockAvailable <= lowStockWarning ? "text-red-700" : ""} font-bold !opacity-100`}
             disabled
           />
