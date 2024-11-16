@@ -1,6 +1,6 @@
 import Image from "next/image";
 import loadingGif from "../../public/loading.gif";
-import logo from "../../public/logo.png";
+import logo from "../../public/logo.jpg";
 
 const Loading = () => {
   return (

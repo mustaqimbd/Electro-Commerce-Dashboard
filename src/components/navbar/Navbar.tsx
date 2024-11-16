@@ -1,6 +1,6 @@
 import { getProfile } from "@/lib/getAccessToken";
 import Image from "next/image";
-import logo from "../../../public/logo.png";
+import logo from "../../../public/logo.jpg";
 import UserMenu from "../userMenu/UserMenu";
 import Link from "next/link";
 

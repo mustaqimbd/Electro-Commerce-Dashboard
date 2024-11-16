@@ -1,7 +1,7 @@
 import { TOrders } from "@/types/order/order.interface";
 import { MapPin, Phone, ScissorsLineDashedIcon, UserRound } from "lucide-react";
 import Image from "next/image";
-import logo from "../../../public/logo.png";
+import logo from "../../../public/logo.jpg";
 import InvoiceButton from "./InvoiceButton";
 import { InvoiceTable } from "./InvoiceTable";
 
