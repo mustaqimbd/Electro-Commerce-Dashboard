@@ -19,7 +19,10 @@ const OrderActionDropDown = ({ order }: { order: TOrders }) => {
   ].includes(order.status);
 
   const isEdit =
-    edit || (order.deliveryStatus === "partial_delivered" && editPermission)
+    edit ||
+    (order.deliveryStatus === "partial_delivered" &&
+      order.status !== "partial completed" &&
+      editPermission)
       ? true
       : false;
 

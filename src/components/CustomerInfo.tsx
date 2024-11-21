@@ -30,7 +30,7 @@ const CustomerInfo = ({ order }: { order: TOrders }) => {
           <span>{customer.phoneNumber}</span>
           {deliveryStatus ? (
             <a
-              href={`${config.courier_url}/${order.orderId}`}
+              href={`${config.courier_url}/${order?.courierDetails?.trackingId}`}
               title="View courier status"
               target="_blank"
               className="absolute -right-1 text-primary hover:text-secondary"

@@ -69,6 +69,7 @@ export type TOrders = {
   riderNotes?: string;
   reasonNotes?: string;
   orderSource: { name: string; url: string; lpNo: number };
+  courierDetails: { trackingId: string };
 };
 
 export type TPermissionEnum = (typeof permission)[keyof typeof permission];

@@ -1,9 +1,9 @@
-import { MapPin, Phone, UserRound, ScissorsLineDashedIcon } from "lucide-react";
-import logo from "../../../public/logo.png";
-import Image from "next/image";
-import { InvoiceTable } from "./InvoiceTable";
 import { TOrders } from "@/types/order/order.interface";
+import { MapPin, Phone, ScissorsLineDashedIcon, UserRound } from "lucide-react";
+import Image from "next/image";
+import logo from "../../../public/logo.jpg";
 import InvoiceButton from "./InvoiceButton";
+import { InvoiceTable } from "./InvoiceTable";
 
 function Invoice({ orders }: { orders: TOrders[] }) {
   // function formatDate(date: string | number | Date) {
@@ -108,7 +108,7 @@ function Invoice({ orders }: { orders: TOrders[] }) {
                       <span className="font-bold flex items-center gap-2">
                         <UserRound className="w-4 text-primary" />
                       </span>
-                      <span>OneSelf</span>
+                      <span>Oneself</span>
                     </div>
                     <div className="flex items-center gap-2 text-sm">
                       <span className="font-bold flex items-center gap-2">

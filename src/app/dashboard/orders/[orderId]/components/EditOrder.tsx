@@ -40,7 +40,7 @@ const schema = yup.object().shape({
       newProductId: yup.string().optional(),
       quantity: yup.number().optional(),
       variation: yup.string().optional(),
-      claimedCodes: yup.array(
+      warrantyCodes: yup.array(
         yup.object().shape({
           code: yup.string(),
         })
@@ -103,6 +103,11 @@ const EditOrder = ({
       const payload = dirtyValues(dirtyFields, data);
       if (order?.deliveryStatus === "partial_delivered") {
         payload.status = "partial completed";
+        payload?.productDetails?.forEach((product) => {
+          product.warrantyCodes = product?.warrantyCodes?.filter(
+            (warranty) => warranty.code !== ""
+          );
+        });
         await updateOrder({ payload, _id }).unwrap();
       } else {
         await updateOrder({ payload, _id }).unwrap();

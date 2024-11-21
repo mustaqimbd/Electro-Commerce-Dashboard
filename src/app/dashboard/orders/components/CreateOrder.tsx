@@ -74,7 +74,10 @@ const CreateOrder = ({ order }: { order?: TOrders }) => {
   const [open, setOpen] = useState(false);
   const [product, setProduct] = useState(1);
 
-  const { data: productsName } = useGetCustomerProductsQuery({});
+  const { data: productsName } = useGetCustomerProductsQuery({
+    page: 1,
+    limit: 1000,
+  });
   const { data: shippingCharges } = useGetShippingChargeQuery({});
   const { data: paymentMethods } = useGetPaymentMethodQuery({});
 

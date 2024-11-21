@@ -11,6 +11,10 @@ const nextConfig = {
         hostname: "localhost",
       },
       {
+        protocol: "http",
+        hostname: "api.oneselfbd.com",
+      },
+      {
         protocol: "https",
         hostname: "api.oneselfbd.com",
       },
@@ -24,9 +28,6 @@ const nextConfig = {
       },
     ],
   },
-  // experimental: {
-  //   scrollRestoration: true,
-  // },
 };
 
 export default nextConfig;

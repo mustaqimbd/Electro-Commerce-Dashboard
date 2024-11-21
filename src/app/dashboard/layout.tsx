@@ -7,7 +7,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
       <Navbar></Navbar>
       <div className="flex">
         <Sidebar></Sidebar>
-        <div className="w-full h-[calc(100vh-63px)] overflow-y-auto bg-gray-50">
+        <div className="w-full h-[calc(100vh-60px)] overflow-y-auto bg-gray-50">
           {children}
         </div>
         {/* <ScrollRestoration>{children}</ScrollRestoration> */}

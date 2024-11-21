@@ -20,7 +20,9 @@ const backgroundColor = (status: string) => {
                 ? "bg-[#6BD3B0]"
                 : status === "On courier" || status === "partial_delivered"
                   ? "bg-[#4c84ff]"
-                  : status === "cancelled" || status === "canceled"
+                  : status === "cancelled" ||
+                      status === "canceled" ||
+                      status === "returned"
                     ? "bg-[#fe5461]"
                     : status === "deleted" ||
                         status === "problem" ||
@@ -32,7 +34,7 @@ const backgroundColor = (status: string) => {
                           status === "approved" ||
                           status === "active"
                         ? "bg-[#2DB224]"
-                        : status === "returned" || status === "partly returned"
+                        : status === "partly returned"
                           ? "bg-[#E38390]"
                           : status === "follow up" ||
                               status === "retry required"

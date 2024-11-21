@@ -79,11 +79,11 @@ export const columns: ColumnDef<TAllProducts>[] = [
       );
     },
   },
-  // {
-  //   accessorKey: "sku",
-  //   header: "SKU",
-  //   cell: ({ row }) => <span>{row.original.sku}</span>,
-  // },
+  {
+    accessorKey: "sku",
+    header: "SKU",
+    cell: ({ row }) => <span>{row.original.sku}</span>,
+  },
   {
     accessorKey: "stock",
     header: "Stock",
