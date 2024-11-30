@@ -305,7 +305,6 @@ const CreateOrder = ({ order }: { order?: TOrders }) => {
                 <option value="Phone Call">Phone Call</option>
                 <option value="Social Media">Social Media</option>
                 <option value="From Office">From Office</option>
-                <option value="Others">Others</option>
               </select>
               {errors.orderSource?.name?.message && (
                 <p className="text-red-600">
