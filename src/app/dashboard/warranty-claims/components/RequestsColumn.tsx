@@ -10,6 +10,7 @@ import OfficialNotes from "./OfficialNotes";
 import ProblemDetails from "./ProblemDetails";
 import Result from "./Result/Result";
 import VideosAndImages from "./VideosAndImages/VideosAndImages";
+import ViewWarrantyClaimDetails from "./ViewWarrantyClaimDetails/ViewWarrantyClaimDetails";
 
 const columns: ColumnDef<TWarrantyClaim>[] = [
   {
@@ -90,11 +91,16 @@ const columns: ColumnDef<TWarrantyClaim>[] = [
     },
   },
   {
-    id: "Edit",
-    header: "Edit",
+    id: "Action",
+    header: "Action",
     enableHiding: false,
     cell: ({ row }) => {
-      return <EditRequest reqData={row.original} />;
+      return (
+        <div className="flex gap-3 justify-center">
+          <EditRequest reqData={row.original} />
+          <ViewWarrantyClaimDetails reqData={row.original} />
+        </div>
+      );
     },
   },
 ];
