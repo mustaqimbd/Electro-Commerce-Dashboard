@@ -4,12 +4,37 @@ type TShipping = {
   phoneNumber: string;
 };
 
-type TClaimReqData = {
+export type TPrevWarrantyInformation = {
+  duration: string;
+  endsDate: string;
+  startDate: string;
+};
+
+export type TClaims = {
+  _id: string;
+  createdAt: string;
+  claimedCodes: string[];
+  order_id?: string;
+};
+
+export type TClaimReqData = {
   order_id: string;
   orderItemId: string;
   productId: string;
+  prevWarrantyInformation: TPrevWarrantyInformation;
+  product: {
+    _id: string;
+    title: string;
+  };
   claimedCodes: string[];
   _id: string;
+  warrantyClaimHistory?: {
+    _id: string;
+    parentItemId: string;
+    parentOrder: string;
+    claims?: TClaims[];
+  };
+  attributes: Record<string, string>;
 };
 
 export type TVideosAndImages = {
