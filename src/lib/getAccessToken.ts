@@ -60,3 +60,7 @@ export const getPermission = () => {
     };
   }
 };
+
+export const accessTokenFromCookies = () => {
+  return cookies().get("__app.ec.at")?.value;
+};

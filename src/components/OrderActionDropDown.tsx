@@ -57,7 +57,7 @@ const OrderActionDropDown = ({ order }: { order: TOrders }) => {
       {isEdit && (
         <div>
           <EditOrder
-            order={order}
+            order={{ ...order }}
             className="text-primary hover:text-secondary bg-inherit hover:bg-inherit px-1 py-0"
           />
         </div>

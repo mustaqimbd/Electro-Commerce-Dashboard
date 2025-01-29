@@ -125,7 +125,7 @@ function Invoice({ orders }: { orders: TOrders[] }) {
                   </div>
                 </div>
               </div>
-              <InvoiceTable products={products} />
+              <InvoiceTable products={products ? products : []} />
               <div className="space-y-[2px] space-y2 bg-muted/50 text-sm bg-light">
                 <div className="space-y-[2px] space-y2 px-2">
                   <p className="text-right pt-[2px] pt2">

@@ -29,7 +29,7 @@ export default function Error({ error, reset }: TProps) {
         </button>
         <button
           className="text-white py-1 px-4 bg-[#29C1F1] rounded-md"
-          onClick={() => router.push("/")}
+          onClick={() => router.push("/dashboard")}
         >
           Back to home
         </button>

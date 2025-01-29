@@ -32,6 +32,10 @@ export function Sidebar() {
   const isSuperAdmin = isPermitted(permissions);
   const manageProduct = isPermitted(permissions, permission.manageProduct);
   const manageOrder = isPermitted(permissions, permission.manageOrder);
+  const manageImgToOrder = isPermitted(
+    permissions,
+    permission.manageImageToOrder
+  );
   const manageProcessing = isPermitted(
     permissions,
     permission.manageProcessing
@@ -137,7 +141,7 @@ export function Sidebar() {
           </AccordionItem>
         </Accordion>
       )}
-      {Boolean(config.next_public_show_ito) == true && manageOrder && (
+      {Boolean(config.next_public_show_ito) == true && manageImgToOrder && (
         <NavLink
           href="/dashboard/image-to-order"
           name="Image to order"
@@ -174,6 +178,11 @@ export function Sidebar() {
           icon={<Glasses className="w-4 h-4" />}
         />
       )}
+      {/* <NavLink
+        href="/dashboard/fraud-check"
+        name="Fraud Check"
+        icon={<LayoutDashboard className="w-4 h-4" />}
+      /> */}
       {manageWarrantyClaim && (
         <NavLink
           href="/dashboard/warranty-claims"

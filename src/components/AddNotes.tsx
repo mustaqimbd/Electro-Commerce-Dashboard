@@ -111,17 +111,18 @@ const AddNotes = ({ order }: { order: TOrders }) => {
                 Official Note
               </TabsTrigger>
               <TabsTrigger
+                value="riderNotes"
+                className="border border-cyan-400 data-[state=active]:bg-primary data-[state=active]:text-white"
+              >
+                Monitoring Note
+              </TabsTrigger>
+              <TabsTrigger
                 value="courierNotes"
                 className="border border-cyan-400 data-[state=active]:bg-primary data-[state=active]:text-white"
               >
                 Courier Note
               </TabsTrigger>
-              <TabsTrigger
-                value="riderNotes"
-                className="border border-cyan-400 data-[state=active]:bg-primary data-[state=active]:text-white"
-              >
-                Rider Note
-              </TabsTrigger>
+
               <TabsTrigger
                 value="invoiceNotes"
                 className="border border-cyan-400 data-[state=active]:bg-primary data-[state=active]:text-white"

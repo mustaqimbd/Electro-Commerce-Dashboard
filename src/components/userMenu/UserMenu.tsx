@@ -12,14 +12,18 @@ import {
 import { useToast } from "@/components/ui/use-toast";
 import config from "@/config/config";
 import { useLogOutMutation } from "@/redux/features/auth/authApi";
-import { logOut } from "@/redux/features/auth/authSlice";
-import { useAppDispatch } from "@/redux/hooks";
+import { logOut, setUser } from "@/redux/features/auth/authSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { TErrorResponse } from "@/types/response/response";
 import { TUserProfile } from "@/types/user/user.interface";
 import { Key, LogOut, User } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import dummyUser from "../../../public/icons/user.jpg";
+import { useEffect } from "react";
+import { accessTokenFromCookies } from "@/lib/getAccessToken";
+import decodeJWT from "@/utilities/decodeJWT";
+import { TUser } from "@/redux/features/auth/interface";
 
 const listItems = [
   {
@@ -39,6 +43,8 @@ const UserMenu = ({ user }: { user: TUserProfile }) => {
   const { toast } = useToast();
   const { fullName, profilePicture } = user || {};
   const dispatch = useAppDispatch();
+  const token = useAppSelector((state) => state.auth.token);
+
   const profilePicUrl = profilePicture
     ? `${config.base_url}/${profilePicture}`
     : dummyUser.src;
@@ -59,6 +65,18 @@ const UserMenu = ({ user }: { user: TUserProfile }) => {
       });
     }
   };
+
+  useEffect(() => {
+    (async () => {
+      const accessToken = await accessTokenFromCookies();
+      if (token && accessToken && token == accessToken) {
+        return;
+      } else if (accessToken) {
+        const user = decodeJWT(accessToken) as TUser;
+        dispatch(setUser({ user: user, token: accessToken }));
+      }
+    })();
+  }, [dispatch, token]);
 
   return (
     <div>

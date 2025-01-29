@@ -1,10 +1,10 @@
 "use client";
 import { Input } from "@/components/ui/input";
-import fetchData from "@/utilities/fetchData";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { TEditOrderProps } from "./EditOrderTable";
 import { useFieldArray } from "react-hook-form";
 import VariationOptions from "../../components/VariationOptions";
+import { useGetCustomerProductsQuery } from "@/redux/features/allProducts/allProductsApi";
 
 type TEditOrderProps2 = {
   addProduct: number[];
@@ -27,19 +27,26 @@ const AddProductToOrder = ({
   existingSubTotal,
 }: TEditOrderProps2) => {
   const [productsName, setProductsName] = useState<TProduct[]>([]);
-  const [products, setProducts] = useState<TProduct[]>([]);
+  // const [products, setProducts] = useState<TProduct[]>([]);
 
-  useEffect(() => {
-    const productsName = async () => {
-      const { data } = await fetchData({
-        endPoint: "/products",
-        tags: ["ProductsName"],
-      });
-      // setProductsName(data);
-      setProducts(data);
-    };
-    productsName();
-  }, []);
+  // useEffect(() => {
+  //   const productsName = async () => {
+  //     const { data } = await fetchData({
+  //       endPoint: "/products",
+  //       tags: ["ProductsName"],
+  //       page: 1,
+  //       limit:1000,
+  //     });
+  //     // setProductsName(data);
+  //     setProducts(data);
+  //   };
+  //   productsName();
+  // }, []);
+
+  const { data: { data: products = [] } = {} } = useGetCustomerProductsQuery({
+    page: 1,
+    limit: 1000,
+  });
 
   const { remove } = useFieldArray({
     control,
@@ -55,7 +62,9 @@ const AddProductToOrder = ({
   useEffect(() => {
     const slToRemove = new Set(selectedProduct?.map((item) => item._id));
     // console.log(slToRemove);
-    const filteredArray = products.filter((item) => !slToRemove.has(item._id));
+    const filteredArray = products?.filter(
+      (item: { _id: string }) => !slToRemove.has(item._id)
+    );
     // console.log("filteredArray", filteredArray);
     setProductsName(filteredArray);
   }, [selectedProduct, products]);
@@ -189,13 +198,10 @@ const AddProductToOrder = ({
                 className="w-14 px-1 text-center"
               />
             </div>
-            <p className="font-normal text-right">
-              Shipping Cost : ৳ {updatedSubTotal && charge}
-            </p>
+            <p className="font-normal text-right">Shipping Cost : ৳ {charge}</p>
             <hr />
             <p className="font-semibold text-right">
-              Total : ৳{" "}
-              {updatedSubTotal && updatedSubTotal + charge - totalMinus}
+              Total : ৳ {updatedSubTotal + charge - totalMinus}
             </p>
           </div>
         </td>

@@ -159,7 +159,7 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
           </div>
           <hr />
           {/* Single order table */}
-          <OrderedProductTable products={products} />
+          <OrderedProductTable products={products ? products : []} />
           <hr />
           <div className="space-y-[2px] space-y2 text-sm bg-light mt-1">
             <p className="text-right pt-[2px] pt2">
@@ -203,9 +203,9 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
               </p>
             </div>
             <div>
-              <p className="font-bold mb-1">Invoice Note</p>
+              <p className="font-bold mb-1">Monitoring Note</p>
               <p className="min-h-10 border p-2 rounded-md block break-words">
-                {invoiceNotes}
+                {riderNotes}
               </p>
             </div>
             <div>
@@ -214,12 +214,7 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
                 {courierNotes}
               </p>
             </div>
-            <div>
-              <p className="font-bold mb-1">Rider Note</p>
-              <p className="min-h-10 border p-2 rounded-md block break-words">
-                {riderNotes}
-              </p>
-            </div>
+
             {reasonNotes && (
               <div>
                 <p className="font-bold mb-1">Reason Note</p>
@@ -228,6 +223,12 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
                 </p>
               </div>
             )}
+            <div>
+              <p className="font-bold mb-1">Invoice Note</p>
+              <p className="min-h-10 border p-2 rounded-md block break-words">
+                {invoiceNotes}
+              </p>
+            </div>
           </div>
           {isDeleted && (
             <div className="pr-4 flex flex-col justify-end h-full">

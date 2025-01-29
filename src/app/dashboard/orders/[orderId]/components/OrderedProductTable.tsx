@@ -158,7 +158,7 @@ export function OrderedProductTable({ products }: { products: Product[] }) {
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  No product
                 </TableCell>
               </TableRow>
             )}

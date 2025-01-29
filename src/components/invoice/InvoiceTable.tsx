@@ -108,7 +108,7 @@ export function InvoiceTable({ products }: { products: TProduct[] }) {
           ))}
         </TableHeader>
         <TableBody>
-          {table?.getRowModel()?.rows?.length ? (
+          {table && table?.getRowModel()?.rows?.length ? (
             table?.getRowModel()?.rows.map((row) => (
               <TableRow key={row.id} className="border-b">
                 {row.getVisibleCells()?.map((cell) => (
