@@ -41,7 +41,7 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
     invoiceNotes,
     officialNotes,
     courierNotes,
-    riderNotes,
+    monitoringNotes,
     orderNotes,
     reasonNotes,
   } = order;
@@ -205,7 +205,7 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
             <div>
               <p className="font-bold mb-1">Monitoring Note</p>
               <p className="min-h-10 border p-2 rounded-md block break-words">
-                {riderNotes}
+                {monitoringNotes}
               </p>
             </div>
             <div>

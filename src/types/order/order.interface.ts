@@ -66,7 +66,7 @@ export type TOrders = {
   invoiceNotes?: string;
   officialNotes?: string;
   courierNotes?: string;
-  riderNotes?: string;
+  monitoringNotes?: string;
   reasonNotes?: string;
   orderSource: { name: string; url: string; lpNo: number };
   courierDetails: { trackingId: string };
