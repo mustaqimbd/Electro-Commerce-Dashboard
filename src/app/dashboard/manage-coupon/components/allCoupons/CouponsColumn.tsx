@@ -26,8 +26,8 @@ const columns: ColumnDef<TCoupon>[] = [
     cell: ({ row }) => <h2 className="text-start">{row.original?.code}</h2>,
   },
   {
-    accessorKey: "percentage",
-    header: () => <h2 className="text-start">Percentage</h2>,
+    accessorKey: "discountType",
+    header: () => <h2 className="text-start">Discount type</h2>,
     cell: ({ row }) => (
       <h2 className="text-start">{row.original?.percentage}</h2>
     ),
