@@ -1,3 +1,6 @@
+import { TCategories } from "@/app/dashboard/category/components/CategoryTable";
+import { TProduct } from "../addProduct/interface";
+
 export type TAllCoupons = {
   selectedType: string;
   isLoading: boolean;
@@ -10,47 +13,26 @@ export type TCoupon = {
   slug: string;
   shortDescription: string;
   code: string;
-  percentage: number;
-  maxDiscountAmount: number;
+  discountType: "percentage" | "flat";
+  discountValue: number;
+  maxDiscount: number;
+  minimumOrderValue: number;
+  startDate: string;
+  usageLimit: number;
+  usageCount: number;
+  onlyForRegisteredUsers: false;
   endDate: string;
-  limitDiscountAmount: boolean;
+  tags: string[];
   isActive: boolean;
+  isDeleted: boolean;
   createdAt: string;
+  allowedUsers: {
+    _id: string;
+    name: string;
+    uid: string;
+    phoneNumber: string;
+  }[];
+  fixedCategories: TCategories[];
+  restrictedCategories: TCategories[];
+  fixedProducts: TProduct[];
 };
-
-// type ab = {
-//   name: string;
-//   slug: string;
-//   shortDescription: string;
-//   code: string;
-//   discountType: "percentage" | "flat";
-//   discountValue: number;
-//   maxDiscount: number;
-//   minimumOrderValue: number;
-//   startDate: string;
-//   usageLimit: number;
-//   usageCount: number;
-//   onlyForRegisteredUsers: false;
-//   endDate: string;
-//   tags: string[];
-//   isActive: boolean;
-//   isDeleted: boolean;
-//   createdAt: string;
-//   allowedUsers: string[];
-//   fixedCategories: [
-//     {
-//       _id: "65e9f785c62b24e9b453cd26";
-//       name: "Smart Sensor Tap ";
-//     },
-//     {
-//       _id: "6732f671f642ad62918896cc";
-//       name: "Remote Control Light";
-//     },
-//     {
-//       _id: "6732fbfdf642ad6291889a6d";
-//       name: "Mobile Control Light";
-//     },
-//   ];
-//   restrictedCategories: null;
-//   fixedProducts: null;
-// };

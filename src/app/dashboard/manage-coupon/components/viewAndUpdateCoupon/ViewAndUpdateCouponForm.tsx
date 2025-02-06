@@ -5,9 +5,10 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import {
-  useCreateCouponMutation,
   useGetAllCouponTagsQuery,
+  useUpdateCouponsMutation,
 } from "@/redux/features/coupon/couponApi";
+import { TCoupon } from "@/redux/features/coupon/couponInterface";
 import {
   TErrorMessages,
   TErrorResponse,
@@ -15,7 +16,7 @@ import {
 } from "@/types/response/response";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Label } from "@radix-ui/react-label";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import "react-calendar/dist/Calendar.css";
 import "react-clock/dist/Clock.css";
 import DateTimePicker from "react-datetime-picker";
@@ -33,19 +34,18 @@ type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 const schema = yup.object().shape({
-  name: yup.string().required("Name is required"),
-  code: yup.string().required("Code is required"),
+  name: yup.string().optional(),
+  code: yup.string().optional(),
   discountType: yup
     .string()
     .oneOf(["percentage", "flat"], "Invalid discount type")
-    .default("percentage")
-    .required("Code is required"),
-  discountValue: yup.string().required("Percentage is required"),
-  maxDiscount: yup.string().optional(),
-  minimumOrderValue: yup.string().optional(),
-  usageLimit: yup.string().optional(),
-  onlyForRegisteredUsers: yup.string().optional(),
-  tags: yup.string().optional(),
+    .optional(),
+  discountValue: yup.string(),
+  maxDiscount: yup.number().nullable().optional(),
+  minimumOrderValue: yup.number().nullable().optional(),
+  usageLimit: yup.number().nullable().optional(),
+  onlyForRegisteredUsers: yup.string().nullable().optional(),
+  // tags: yup.string().optional(),
   endDate: yup.string().optional(),
   startDate: yup.string().optional(),
   shortDescription: yup.string().optional(),
@@ -58,31 +58,57 @@ export type TFixedCustomersInfo = {
   uid: string;
   phoneNumber: string;
 };
-const CreateCouponForm = () => {
-  const [fixedCategories, setFixedCategories] = useState<TSelectOption>([]);
+
+const ViewAndUpdateCouponForm = ({
+  edit,
+  coupon,
+  setOpen,
+}: {
+  edit: boolean;
+  coupon: TCoupon;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+}) => {
+  const [fixedCategories, setFixedCategories] = useState<TSelectOption>(
+    coupon?.fixedCategories?.map((item) => ({
+      value: item._id,
+      label: item.name,
+    })) || []
+  );
   const [restrictedCategories, setRestrictedCategories] =
-    useState<TSelectOption>([]);
-  const [fixedProducts, setFixedProducts] = useState<TSelectOption>([]);
+    useState<TSelectOption>(
+      coupon?.restrictedCategories?.map((item) => ({
+        value: item._id,
+        label: item.name,
+      })) || []
+    );
+  const [fixedProducts, setFixedProducts] = useState<TSelectOption>(
+    coupon?.fixedProducts?.map((item) => ({
+      value: item._id,
+      label: item.title,
+    })) || []
+  );
 
   const [fixedCustomers, setFixedCustomers] = useState<TFixedCustomersInfo[]>(
-    []
+    coupon.allowedUsers || []
   );
 
   const { data: allTagsRes } = useGetAllCouponTagsQuery({});
   const allTags = (allTagsRes?.data?.tags as string[]) || [];
 
-  const [selectedTags, setSelectedTags] = useState<TSelectOption>([]);
+  const [selectedTags, setSelectedTags] = useState<TSelectOption>(
+    coupon.tags.map((item) => ({ value: item, label: item }))
+  );
 
   const { toast } = useToast();
 
-  const [startValue, setStartValue] = useState<Value>(new Date());
-  const [value, onChange] = useState<Value>(new Date());
+  const [startValue, setStartValue] = useState<Value>(
+    new Date(coupon.startDate)
+  );
+  const [value, onChange] = useState<Value>(new Date(coupon.endDate));
 
-  const [startDateError, setStartDateError] = useState("");
-  const [endDateError, setEndDateError] = useState("");
   const [serverErrors, setServerErrors] = useState<TErrorMessages[]>([]);
 
-  const [createCouponFn, { isLoading }] = useCreateCouponMutation();
+  const [updateCouponFN, { isLoading }] = useUpdateCouponsMutation();
 
   const {
     register,
@@ -91,6 +117,8 @@ const CreateCouponForm = () => {
     formState: { errors },
   } = useForm<TFormInput>({
     resolver: yupResolver(schema),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    defaultValues: { ...(coupon as any) },
   });
 
   const resetForm = () => {
@@ -105,49 +133,31 @@ const CreateCouponForm = () => {
   };
 
   const onSubmit: SubmitHandler<TFormInput> = async (data) => {
-    setEndDateError("");
-    setStartDateError("");
     setServerErrors([]);
     data.endDate = new Date(value as unknown as string).toISOString();
     data.startDate = new Date(startValue as unknown as string).toISOString();
 
-    if (new Date(Date.now()) > new Date(data.endDate)) {
-      setEndDateError("The selected end date must be a future date");
-      return;
-    }
-    if (new Date(Date.now()) > new Date(data.startDate)) {
-      setStartDateError("The selected start date must be a future date");
-      return;
-    }
-
     const body = {
       ...data,
+      id: coupon._id,
       onlyForRegisteredUsers:
         data.onlyForRegisteredUsers === "true" ? true : false,
-      discountValue: Number(data.discountValue) || undefined,
-      maxDiscount: Number(data.maxDiscount) || undefined,
-      minimumOrderValue: Number(data.minimumOrderValue) || undefined,
-      usageLimit: Number(data.usageLimit) || undefined,
-      tags: selectedTags.length
-        ? selectedTags.map((item) => item.value)
-        : undefined,
-      fixedProducts: fixedProducts.length
-        ? fixedProducts.map((item) => item.value)
-        : undefined,
-      fixedCategories: fixedCategories.length
-        ? fixedCategories.map((item) => item.value)
-        : undefined,
-      restrictedCategories: restrictedCategories.length
-        ? restrictedCategories.map((item) => item.value)
-        : undefined,
-      allowedUsers: fixedCustomers.length
-        ? fixedCustomers.map((item) => item._id)
-        : undefined,
+      discountValue: Number(data.discountValue) ?? undefined,
+      maxDiscount: Number(data.maxDiscount) ?? undefined,
+      minimumOrderValue: Number(data.minimumOrderValue) ?? undefined,
+      usageLimit: Number(data.usageLimit) ?? undefined,
+      tags: selectedTags?.map((item) => item.value),
+      fixedProducts: fixedProducts?.map((item) => item.value),
+      fixedCategories: fixedCategories?.map((item) => item.value),
+      restrictedCategories: restrictedCategories?.map((item) => item.value),
+      allowedUsers: fixedCustomers?.map((item) => item._id),
     };
+
     try {
-      const res = (await createCouponFn(body).unwrap()) as TSuccessResponse;
+      const res = (await updateCouponFN(body).unwrap()) as TSuccessResponse;
       if (res.success) {
         resetForm();
+        setOpen(false);
         toast({
           className: "toast-success",
           title: res?.message,
@@ -155,7 +165,7 @@ const CreateCouponForm = () => {
       }
     } catch (error) {
       const err = (error as { data: TErrorResponse })?.data;
-      setServerErrors(err.errorMessages);
+      setServerErrors(err?.errorMessages);
       toast({
         className: "toast-error",
         title: err?.message,
@@ -177,6 +187,7 @@ const CreateCouponForm = () => {
               id="name"
               placeholder="Winter 2025"
               className="w-full border-gray-300"
+              disabled={!edit}
             />
             {errors.name?.message && (
               <p className="text-red-600 font-bold text-sm">
@@ -194,6 +205,7 @@ const CreateCouponForm = () => {
               id="code"
               placeholder="WINTER2025"
               className="w-full border-gray-300"
+              disabled={!edit}
             />
             {errors.code?.message && (
               <p className="text-red-600 font-bold text-sm">
@@ -212,6 +224,7 @@ const CreateCouponForm = () => {
               className="w-full py-[6px] px-2 outline-gray-200 border-2 border-gray-200 rounded-md"
               defaultValue={"percentage"}
               {...register("discountType")}
+              disabled={!edit}
             >
               <option value="percentage">Percentage</option>
               <option value="flat">Flat</option>
@@ -222,11 +235,12 @@ const CreateCouponForm = () => {
               Discount value<span className="text-red-600">*</span>
             </Label>
             <Input
-              type="text"
+              type="number"
               {...register("discountValue")}
               id="discountValue"
               placeholder="20"
               className="w-full border-gray-300"
+              disabled={!edit}
             />
             {errors.discountValue?.message && (
               <p className="text-red-600 font-bold text-sm">
@@ -239,11 +253,12 @@ const CreateCouponForm = () => {
           <div className="space-y-2">
             <Label htmlFor="maxDiscount">Coupon max discount</Label>
             <Input
-              type="text"
+              type="number"
               {...register("maxDiscount")}
               id="maxDiscount"
               placeholder="200"
               className="w-full border-gray-300"
+              disabled={!edit}
             />
             {errors.maxDiscount?.message && (
               <p className="text-red-600 font-bold text-sm">
@@ -254,11 +269,12 @@ const CreateCouponForm = () => {
           <div className="space-y-2">
             <Label htmlFor="minimumOrderValue">Minium order amount</Label>
             <Input
-              type="text"
+              type="number"
               {...register("minimumOrderValue")}
               id="minimumOrderValue"
               placeholder="1490"
               className="w-full border-gray-300"
+              disabled={!edit}
             />
             {errors.minimumOrderValue?.message && (
               <p className="text-red-600 font-bold text-sm">
@@ -271,11 +287,12 @@ const CreateCouponForm = () => {
           <div className="space-y-2">
             <Label htmlFor="usageLimit">Max claim time</Label>
             <Input
-              type="text"
+              type="number"
               {...register("usageLimit")}
               id="usageLimit"
               placeholder="Enter max claim time"
               className="w-full border-gray-300"
+              disabled={!edit}
             />
             {errors.usageLimit?.message && (
               <p className="text-red-600 font-bold text-sm">
@@ -292,6 +309,7 @@ const CreateCouponForm = () => {
               className="w-full py-[6px] px-2 outline-gray-200 border-2 border-gray-200 rounded-md"
               defaultValue={"false"}
               {...register("onlyForRegisteredUsers")}
+              disabled={!edit}
             >
               <option value={"true"}>Yes</option>
               <option value={"false"}>No</option>
@@ -308,6 +326,7 @@ const CreateCouponForm = () => {
             isClearable={true}
             onChange={(v) => setSelectedTags(v)}
             value={selectedTags}
+            isDisabled={!edit}
           />
         </div>
         <div className="space-y-2">
@@ -317,6 +336,7 @@ const CreateCouponForm = () => {
             id="shortDescription"
             className="w-full border-gray-300"
             placeholder="Type short description here"
+            disabled={!edit}
           />
           {errors.shortDescription?.message && (
             <p className="text-red-600 font-bold text-sm">
@@ -335,6 +355,7 @@ const CreateCouponForm = () => {
             setFixedProducts={setFixedProducts}
             setFixedCategories={setFixedCategories}
             setRestrictedCategories={setRestrictedCategories}
+            edit={edit}
           />
         </div>
 
@@ -342,6 +363,7 @@ const CreateCouponForm = () => {
           <CouponForFixedCustomers
             setFixedCustomers={setFixedCustomers}
             fixedCustomers={fixedCustomers}
+            edit={edit}
           />
         </div>
 
@@ -355,12 +377,8 @@ const CreateCouponForm = () => {
               className="col-span-6"
               onChange={setStartValue}
               value={startValue}
+              disabled={!edit}
             />
-            {startDateError && (
-              <p className="text-red-600 font-bold text-sm col-span-8">
-                {startDateError}
-              </p>
-            )}
           </div>
           <div className="flex flex-col gap-2">
             <Label htmlFor="fullName" className="col-span-2">
@@ -370,16 +388,12 @@ const CreateCouponForm = () => {
               className="col-span-6"
               onChange={onChange}
               value={value}
+              disabled={!edit}
             />
-            {endDateError && (
-              <p className="text-red-600 font-bold text-sm col-span-8">
-                {endDateError}
-              </p>
-            )}
           </div>
         </div>
 
-        {serverErrors.length ? (
+        {serverErrors?.length ? (
           <div>
             <ul className="list-disc ml-5">
               {serverErrors.map((item, index) => (
@@ -390,12 +404,15 @@ const CreateCouponForm = () => {
             </ul>
           </div>
         ) : null}
-        <EcButton disabled={isLoading} loading={isLoading} type="submit">
-          Create
-        </EcButton>
+
+        {edit ? (
+          <EcButton disabled={isLoading} loading={isLoading} type="submit">
+            Update
+          </EcButton>
+        ) : null}
       </form>
     </div>
   );
 };
 
-export default CreateCouponForm;
+export default ViewAndUpdateCouponForm;

@@ -26,19 +26,41 @@ const columns: ColumnDef<TCoupon>[] = [
     cell: ({ row }) => <h2 className="text-start">{row.original?.code}</h2>,
   },
   {
+    accessorKey: "usageCount",
+    header: () => <h2 className="text-start">Usage count</h2>,
+    cell: ({ row }) => (
+      <h2 className="text-start">{row.original?.usageCount}</h2>
+    ),
+  },
+  {
     accessorKey: "discountType",
     header: () => <h2 className="text-start">Discount type</h2>,
     cell: ({ row }) => (
-      <h2 className="text-start">{row.original?.percentage}</h2>
+      <h2 className="text-start capitalize">{row.original?.discountType}</h2>
+    ),
+  },
+  {
+    accessorKey: "discountValue",
+    header: () => <h2 className="text-start">Discount value</h2>,
+    cell: ({ row }) => (
+      <h2 className="text-start">{row.original?.discountValue || "N/A"}</h2>
     ),
   },
   {
     accessorKey: "maxDiscountAmount",
     header: () => <h2 className="text-start">Max amount</h2>,
     cell: ({ row }) => (
-      <h2 className="text-start">
-        {row.original?.maxDiscountAmount || "Not found"}
-      </h2>
+      <h2 className="text-start">{row.original?.maxDiscount || "N/A"}</h2>
+    ),
+  },
+  {
+    accessorKey: "startDate",
+    header: () => <h2 className="text-start">Start time</h2>,
+    cell: ({ row }) => (
+      <div>
+        <p className="text-start">{formatTime(row.original?.startDate)}</p>
+        <h2 className="text-start">{formatDate(row.original?.startDate)}</h2>
+      </div>
     ),
   },
   {
@@ -53,7 +75,7 @@ const columns: ColumnDef<TCoupon>[] = [
   },
   {
     accessorKey: "status",
-    header: () => <h2 className="text-start">Status</h2>,
+    header: () => <h2 className="text-center">Status</h2>,
     cell: ({ row }) => {
       const targetDate = new Date(row.original?.endDate);
       const currentDate = new Date();
@@ -65,6 +87,12 @@ const columns: ColumnDef<TCoupon>[] = [
               className={`${backgroundColor("problem")} px-2 rounded-md text-white py-1`}
             >
               Expired
+            </span>
+          ) : targetDate > currentDate ? (
+            <span
+              className={`${backgroundColor("pending")} px-2 rounded-md text-black py-1`}
+            >
+              Not started
             </span>
           ) : (
             <span
