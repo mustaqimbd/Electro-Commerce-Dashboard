@@ -2,7 +2,7 @@ import { TCategories } from "@/app/dashboard/category/components/CategoryTable";
 import { TProduct } from "../addProduct/interface";
 
 export type TAllCoupons = {
-  selectedType: string;
+  selectedType?: string;
   isLoading: boolean;
   codes: TCoupon[];
   selectedTags?: string | string[];

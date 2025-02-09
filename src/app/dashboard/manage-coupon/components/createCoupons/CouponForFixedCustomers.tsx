@@ -17,7 +17,7 @@ const CouponForFixedCustomers = ({
   const [triggerGetCustomers, { data: customersRes, isLoading }] =
     useLazyGetAllCustomersQuery();
 
-  const customers = (customersRes?.data as TCustomer[]) || undefined;
+  const customers = (customersRes?.data as TCustomer[]) || null;
 
   const addOrRemoveCustomerFromList = (customer: TFixedCustomersInfo) => {
     const isAlreadyExist = fixedCustomers.find(
@@ -56,8 +56,10 @@ const CouponForFixedCustomers = ({
           </div>
           <div className="mt-5">
             <p className="text-xs font-semibold text-center text-destructive">
-              {!customers?.length ? (
-                <>No associate customer was found with the number.</>
+              {Array.isArray(customers) ? (
+                !customers?.length ? (
+                  <>No associate customer was found with the number.</>
+                ) : null
               ) : null}
             </p>
             {customers?.map((customer) => (

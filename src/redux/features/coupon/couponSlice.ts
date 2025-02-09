@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { TAllCoupons } from "./couponInterface";
 
 const initialState: TAllCoupons = {
-  selectedType: "active",
+  selectedType: undefined,
   isLoading: true,
   codes: [],
   selectedTags: [],

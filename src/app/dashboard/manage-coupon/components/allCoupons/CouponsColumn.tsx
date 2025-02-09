@@ -2,6 +2,7 @@ import { formatDate, formatTime } from "@/lib/formatDate";
 import { TCoupon } from "@/redux/features/coupon/couponInterface";
 import backgroundColor from "@/utilities/backgroundColor";
 import { ColumnDef } from "@tanstack/react-table";
+import { isAfter, isBefore, parseISO } from "date-fns";
 import Action from "./Action";
 import UpdateActiveStatus from "./UpdateActiveStatus";
 
@@ -77,31 +78,53 @@ const columns: ColumnDef<TCoupon>[] = [
     accessorKey: "status",
     header: () => <h2 className="text-center">Status</h2>,
     cell: ({ row }) => {
-      const targetDate = new Date(row.original?.endDate);
+      const startDate = row.original?.startDate
+        ? parseISO(row.original.startDate)
+        : null;
+      const endDate = row.original?.endDate
+        ? parseISO(row.original.endDate)
+        : null;
       const currentDate = new Date();
 
+      if (
+        !startDate ||
+        isNaN(startDate.getTime()) ||
+        !endDate ||
+        isNaN(endDate.getTime())
+      ) {
+        return (
+          <span className="px-2 rounded-md text-gray-500 py-1">
+            Invalid date
+          </span>
+        );
+      }
+
+      let status = {
+        label: "Active",
+        color: "completed",
+        textColor: "text-white",
+      };
+
+      if (isBefore(currentDate, startDate)) {
+        status = {
+          label: "Not started",
+          color: "pending",
+          textColor: "text-black",
+        };
+      } else if (isAfter(currentDate, endDate)) {
+        status = {
+          label: "Expired",
+          color: "problem",
+          textColor: "text-white",
+        };
+      }
+
       return (
-        <div>
-          {targetDate < currentDate ? (
-            <span
-              className={`${backgroundColor("problem")} px-2 rounded-md text-white py-1`}
-            >
-              Expired
-            </span>
-          ) : targetDate > currentDate ? (
-            <span
-              className={`${backgroundColor("pending")} px-2 rounded-md text-black py-1`}
-            >
-              Not started
-            </span>
-          ) : (
-            <span
-              className={`${backgroundColor("completed")} px-2 rounded-md text-white py-1`}
-            >
-              Active
-            </span>
-          )}
-        </div>
+        <span
+          className={`${backgroundColor(status.color)} px-2 rounded-md ${status.textColor} py-1`}
+        >
+          {status.label}
+        </span>
       );
     },
   },
