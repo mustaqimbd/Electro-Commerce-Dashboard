@@ -5,6 +5,8 @@ export type TAllCoupons = {
   selectedType: string;
   isLoading: boolean;
   codes: TCoupon[];
+  selectedTags?: string | string[];
+  search?: string;
 };
 
 export type TCoupon = {
