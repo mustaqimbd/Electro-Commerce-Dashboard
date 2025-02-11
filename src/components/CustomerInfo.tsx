@@ -5,6 +5,7 @@ import { useState } from "react";
 import CustomerOrderHistory from "@/app/dashboard/orders/components/CustomerOrderHistory";
 import { TOrders } from "@/types/order/order.interface";
 import config from "@/config/config";
+import Link from "next/link";
 
 const CustomerInfo = ({ order }: { order: TOrders }) => {
   const { shipping: customer, deliveryStatus } = order || {};
@@ -26,7 +27,14 @@ const CustomerInfo = ({ order }: { order: TOrders }) => {
           </span>
         </div>
         <div className="flex items-center gap-1 relative">
-          <Phone className="w-4" />
+          <Link
+            href={`https://wa.me/88${customer.phoneNumber}`}
+            target="_blank"
+            title="Whatsapp"
+          >
+            <Phone className="w-4 text-primary" />
+          </Link>
+
           <span>{customer.phoneNumber}</span>
           {deliveryStatus ? (
             <a
@@ -96,7 +104,7 @@ const CustomerInfo = ({ order }: { order: TOrders }) => {
         open={open}
         handleOpen={handleOpen}
         modalTitle="Customer Order History"
-        className="h-[360px] w-[710px]"
+        className="h-[310px] !w-[1100px]"
       >
         <CustomerOrderHistory phoneNumber={customer.phoneNumber} />
       </CommonModal>

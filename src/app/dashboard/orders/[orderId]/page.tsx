@@ -9,10 +9,12 @@ import { MapPin, Phone, UserRound } from "lucide-react";
 import { OrderedProductTable } from "./components/OrderedProductTable";
 import fetchData from "@/utilities/fetchData";
 import EditOrder from "./components/EditOrder";
-import CustomerOrderHistory from "../components/CustomerOrderHistory";
 import { getPermission } from "@/lib/getAccessToken";
 import isPermitted from "@/utilities/isPermitted";
 import { permission } from "@/types/order/order.interface";
+import Link from "next/link";
+import OrdersTable from "../components/OrdersTable";
+import OrderHistoryTable from "./components/OrderHistoryTable";
 
 const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
   const { permissions = [] } = getPermission();
@@ -79,8 +81,8 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
   const isDeleted = ["pending", "follow up"].includes(status);
 
   return (
-    <>
-      <div className="flex justify-between gap-3 mb-10">
+    <div>
+      <div className="flex justify-between gap-3 mb-4">
         <Card className="w-3/4 p-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-10">
@@ -120,8 +122,8 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
             />
           </div>
           <hr className="my-2" />
-          <div className="grid grid-cols-3 divide-x-2 pb-3">
-            <div className="flex flex-col gap-2">
+          <div className="grid grid-cols-3 pb-3">
+            <div className="flex flex-col gap-2 border-r border-gray-300">
               <h1 className="font-bold">Customer Info</h1>
               <div>
                 <div className="flex items-start gap-2">
@@ -135,12 +137,18 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
                   <span>{shipping?.fullAddress}</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Phone className="w-5" />
+                  <Link
+                    href={`https://wa.me/88${shipping.phoneNumber}`}
+                    target="_blank"
+                    title="Whatsapp"
+                  >
+                    <Phone className="w-5 text-primary" />
+                  </Link>
                   <span>{shipping?.phoneNumber}</span>
                 </div>
               </div>
             </div>
-            <div className="flex flex-col gap-2 pl-3">
+            <div className="flex flex-col gap-2 pl-3 border-r border-gray-300">
               <h1 className="font-bold">Shipping charge</h1>
               <div>
                 <span>
@@ -148,7 +156,7 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
                 </span>
               </div>
             </div>
-            <div className="flex flex-col gap-2 pl-3">
+            <div className="flex flex-col gap-2 pl-3 border-r border-gray-300">
               <h1 className="font-bold">Payment By</h1>
               <div>
                 <span className="flex items-center gap-2">
@@ -214,7 +222,6 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
                 {courierNotes}
               </p>
             </div>
-
             {reasonNotes && (
               <div>
                 <p className="font-bold mb-1">Reason Note</p>
@@ -230,17 +237,19 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
               </p>
             </div>
           </div>
-          {isDeleted && (
-            <div className="pr-4 flex flex-col justify-end h-full">
-              <DeleteOrderBtn _id={_id} variant="destructive">
-                Delete
-              </DeleteOrderBtn>
-            </div>
-          )}
         </Card>
       </div>
-      <CustomerOrderHistory phoneNumber={shipping?.phoneNumber} />
-    </>
+      <p className="py-2 text-center font-bold">Order History</p>
+      <OrderHistoryTable searchQuery={shipping?.phoneNumber} />
+      <OrdersTable />
+      {isDeleted && (
+        <div className="pr-4 flex flex-col justify-end h-full my-5">
+          <DeleteOrderBtn _id={_id} variant="destructive">
+            Delete
+          </DeleteOrderBtn>
+        </div>
+      )}
+    </div>
   );
 };
 

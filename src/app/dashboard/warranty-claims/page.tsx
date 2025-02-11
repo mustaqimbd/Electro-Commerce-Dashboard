@@ -25,7 +25,7 @@ const AllClaimRequestPage = () => {
     <>
       <WarrantyClaimData />
       <Card className="p-4 shadow-none rounded-xl m-3">
-        <h2 className="text-2xl font-bold">Claim requests</h2>
+        <h2 className="text-2xl font-bold">Warranty Claims</h2>
         <hr className="my-4" />
         <div className="flex justify-end">
           <Button>
