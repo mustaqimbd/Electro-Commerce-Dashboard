@@ -54,7 +54,7 @@ const EditOrderTable = ({
     const confirmDelete = window.confirm(
       "Warning! Are you sure you want to delete this product?"
     );
-    if (confirmDelete) {
+    if (confirmDelete && _id) {
       try {
         await updateOrder({ payload, _id }).unwrap();
         dispatch(setIsOrderUpdate(!iSOrderUpdate));
