@@ -26,7 +26,13 @@ const updateStatusApi = baseApi.injectEndpoints({
       providesTags: ["allOrders"],
     }),
     updateOrder: builder.mutation({
-      query: ({ payload, _id }) => ({
+      query: ({
+        payload,
+        _id,
+      }: {
+        payload: Record<string, unknown>;
+        _id: string;
+      }) => ({
         url: `/orders/update-order/${_id}`,
         method: "PATCH",
         body: payload,

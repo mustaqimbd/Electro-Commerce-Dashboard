@@ -81,7 +81,7 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
   const isDeleted = ["pending", "follow up"].includes(status);
 
   return (
-    <div>
+    <div className="mb-5">
       <div className="flex justify-between gap-3 mb-4">
         <Card className="w-3/4 p-4">
           <div className="flex items-center justify-between">
@@ -243,7 +243,7 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
       <OrderHistoryTable searchQuery={shipping?.phoneNumber} />
       <OrdersTable />
       {isDeleted && (
-        <div className="pr-4 flex flex-col justify-end h-full my-5">
+        <div className="pr-4 flex flex-col justify-end h-full mt-5">
           <DeleteOrderBtn _id={_id} variant="destructive">
             Delete
           </DeleteOrderBtn>

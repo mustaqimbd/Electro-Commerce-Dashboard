@@ -230,6 +230,13 @@ export function Sidebar() {
       )}
       {manageAdminOrStaff && (
         <NavLink
+          href="/dashboard/customers"
+          name="Customer List"
+          icon={<UsersRound className="w-4 h-4" />}
+        />
+      )}
+      {manageAdminOrStaff && (
+        <NavLink
           href="/dashboard/manage-admin-staff"
           name="Manage Employees"
           icon={<UsersRound className="w-4 h-4" />}

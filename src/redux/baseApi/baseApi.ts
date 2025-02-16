@@ -58,6 +58,7 @@ type Tags =
   | "images"
   | "warrantyClaimRequests"
   | "users"
+  | "customers"
   | "coupons"
   | "imageToOrderReq";
 const tags: Tags[] = [
@@ -74,6 +75,7 @@ const tags: Tags[] = [
   "images",
   "warrantyClaimRequests",
   "users",
+  "customers",
   "coupons",
   "imageToOrderReq",
 ];

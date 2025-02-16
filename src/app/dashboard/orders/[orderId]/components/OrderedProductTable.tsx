@@ -21,7 +21,7 @@ import {
 } from "@tanstack/react-table";
 import Image from "next/image";
 import Link from "next/link";
-import * as React from "react";
+import { useState } from "react";
 
 export const columns: ColumnDef<Product>[] = [
   {
@@ -95,9 +95,8 @@ export const columns: ColumnDef<Product>[] = [
 ];
 
 export function OrderedProductTable({ products }: { products: Product[] }) {
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState({});
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = useState({});
   const table = useReactTable({
     data: products,
     columns,

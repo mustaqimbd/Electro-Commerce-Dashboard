@@ -1,4 +1,5 @@
 "use client";
+import { setIsLoading } from "@/redux/features/pagination/PaginationSlice";
 import {
   setSearch,
   setSearchedOrders,
@@ -10,6 +11,8 @@ import { useEffect } from "react";
 const OrderHistoryTable = ({ searchQuery }: { searchQuery: string }) => {
   const dispatch = useAppDispatch();
   useEffect(() => {
+    dispatch(setIsLoading(true));
+    dispatch(setSearch(true));
     const fetchOrders = async () => {
       const { data } = await fetchData({
         endPoint: "/orders/admin/all-orders",
@@ -19,8 +22,8 @@ const OrderHistoryTable = ({ searchQuery }: { searchQuery: string }) => {
           sort: "-createdAt",
         },
       });
-      dispatch(setSearch(true));
       dispatch(setSearchedOrders(data?.data));
+      dispatch(setIsLoading(false));
     };
     fetchOrders();
   }, [dispatch, searchQuery]);

@@ -28,6 +28,7 @@ import processingOrdersReducer from "./features/processingOrders/processingOrder
 import searchReducer from "./features/search/searchSlice";
 import shippingChargesSlice from "./features/shippingCharge/ShippingChargeSlice";
 import userSlice from "./features/user/userSlice";
+import customersSlice from "./features/customers/customersSlice";
 import warrantyClaimSlice from "./features/warrantyClaimRequests/warrantyClaimSlice";
 import storage from "./storage";
 
@@ -55,6 +56,7 @@ export const createStore = () => {
       pagination: paginationReducer,
       warrantyClaim: warrantyClaimSlice,
       users: userSlice,
+      customers: customersSlice,
       allCoupons: couponSlice,
       shippingCharges: shippingChargesSlice,
       imageToOrder: imageToOrderReqSlice,
