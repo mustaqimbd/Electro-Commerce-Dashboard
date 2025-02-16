@@ -28,6 +28,7 @@ import { useEffect } from "react";
 import { columns } from "./OrdersColumn";
 import { TOrders } from "@/types/order/order.interface";
 import OrderStatus from "@/components/OrderStatus";
+import MonitoringAndTracking from "./MonitoringAndTracking";
 // import ReasonNotes from "./ReasonNotes";
 // import { useCallback,useState ,useRef } from "react";
 
@@ -42,7 +43,7 @@ export default function OrdersTable({
     ...columns.slice(0, 8),
     {
       accessorKey: "status",
-      header: "Delivery status",
+      header: "Delivery",
       cell: ({ row }) => {
         const status = row.original.deliveryStatus;
         return (
@@ -66,6 +67,33 @@ export default function OrdersTable({
           </>
         );
       },
+    },
+    {
+      accessorKey: "monitor",
+      header: "Monitoring",
+      cell: ({ row }) => (
+        <MonitoringAndTracking
+          order={row.original}
+          statusOptions={[
+            "not monitoring",
+            "monitoring",
+            "low warning",
+            "high warning",
+          ]}
+          monitor="monitoring"
+        />
+      ),
+    },
+    {
+      accessorKey: "tracking",
+      header: "Tracking",
+      cell: ({ row }) => (
+        <MonitoringAndTracking
+          order={row.original}
+          statusOptions={["not contacted", "contact again", "completed today"]}
+          monitor="tracking"
+        />
+      ),
     },
     ...columns.slice(8),
   ];
@@ -106,7 +134,7 @@ export default function OrdersTable({
         // ref={tableRef} // Attach the ref to the table container
         // onScroll={handleScroll} // Attach the debounced scroll handler
       >
-        <Table className="min-w-[1100px]">
+        <Table className="min-w-[1300px]">
           <TableHeader className="bg-primary text-white">
             {table?.getHeaderGroups()?.map((headerGroup) => (
               <TableRow key={headerGroup.id} className="hover:bg-muted/0">

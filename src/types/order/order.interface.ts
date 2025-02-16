@@ -58,6 +58,8 @@ export type TOrders = {
   statusHistory: StatusHistory;
   status: string;
   deliveryStatus: string;
+  monitoringStatus: string;
+  trackingStatus: string;
   followUpDate: string;
   shipping: Shipping;
   createdAt: Date;
