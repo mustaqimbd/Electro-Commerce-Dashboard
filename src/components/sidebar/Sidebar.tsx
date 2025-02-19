@@ -178,11 +178,11 @@ export function Sidebar() {
           icon={<Glasses className="w-4 h-4" />}
         />
       )}
-      {/* <NavLink
+      <NavLink
         href="/dashboard/fraud-check"
         name="Fraud Check"
         icon={<LayoutDashboard className="w-4 h-4" />}
-      /> */}
+      />
       {manageWarrantyClaim && (
         <NavLink
           href="/dashboard/warranty-claims"

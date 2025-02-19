@@ -5,7 +5,11 @@ import { useToast } from "@/components/ui/use-toast";
 import { useState } from "react";
 // import fetchData from "@/utilities/fetchData";
 import CommonModal from "@/components/modal/CommonModal";
+import fetchData from "@/utilities/fetchData";
+import { Search, X } from "lucide-react";
+
 type Report = {
+  reportFrom: string;
   comment: string;
   date: string;
 };
@@ -19,77 +23,20 @@ type Courier = {
   deliveryRate: number;
 };
 
-type DummyData = {
-  successRatio: number;
-  message: string;
-  reports: Report[];
+type Data = {
   phoneNumber: string;
   totalOrders: number;
   totalDeliveries: number;
   totalCancellations: number;
+  successRatio: number;
+  message: string;
   couriers: Courier[];
+  reports: Report[];
 };
 
-const dummyData: DummyData = {
-  successRatio: 70,
-  message: "Your delivery success rate is excellent!",
-  reports: [
-    {
-      comment: "Very good customer",
-      date: "2021-09-01",
-    },
-    {
-      comment: "Very good customer",
-      date: "2021-09-01",
-    },
-    {
-      comment: "Very good customer",
-      date: "2021-09-01",
-    },
-  ],
-  phoneNumber: "01728781726",
-  totalOrders: 120,
-  totalDeliveries: 102,
-  totalCancellations: 18,
-  couriers: [
-    {
-      name: "Steadfast",
-      logo: "https://i.ibb.co.com/tM68nWR/stead-fast.png",
-      orders: 30,
-      deliveries: 22,
-      cancellations: 8,
-      deliveryRate: 73.33,
-    },
-    {
-      name: "Pathao",
-      logo: "https://i.ibb.co.com/b1xNZJY/pathao.png",
-      orders: 50,
-      deliveries: 45,
-      cancellations: 5,
-      deliveryRate: 90,
-    },
-    {
-      name: "RedX",
-      logo: "https://i.ibb.co.com/NWL7Tr4/redx.png",
-      orders: 40,
-      deliveries: 35,
-      cancellations: 5,
-      deliveryRate: 87.5,
-    },
-    {
-      name: "PaperFly",
-      logo: "https://go.paperfly.com.bd/static/assets/paperfly-logo.d67bc8c5.png",
-      orders: 40,
-      deliveries: 35,
-      cancellations: 5,
-      deliveryRate: 87.5,
-    },
-  ],
-};
-
-const DeliverySuccessRatio = () => {
+const FraudCheck = () => {
   const { toast } = useToast();
-  const [data, setData] = useState<DummyData | null>(null);
+  const [data, setData] = useState<Data | null>(null);
   const [mobile, setMobile] = useState("");
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
@@ -98,11 +45,13 @@ const DeliverySuccessRatio = () => {
     setOpen(!open);
   };
 
-  const fetchReport = async () => {
-    if (!mobile) {
+  const handleSearch = async () => {
+    const regex = /^01\d{9}$/;
+
+    if (!regex.test(mobile)) {
       toast({
         variant: "destructive",
-        title: "Please enter a mobile number",
+        title: "Please enter a 11 digit valid mobile number.",
       });
       return;
     }
@@ -110,21 +59,32 @@ const DeliverySuccessRatio = () => {
     setLoading(true);
 
     try {
-      //   const response = await fetchData({
-      //     endPoint: `/orders/fraud-check/${mobile}`,
-      //     cache: "no-store",
-      //   }); // Replace with your API endpoint
-      //   setData(response.data);
-      setData(dummyData);
+      const response = await fetchData({
+        endPoint: `/check/fraud-customers/${mobile}`,
+        cache: "no-store",
+      });
+      setData(response.data);
     } catch (error) {
-      // console.error("Error fetching delivery data:", error);
+      // eslint-disable-next-line no-console
+      console.error("Error when fetching delivery data:", error);
       toast({
         variant: "destructive",
-        title: "Failed to fetch the report. Please try again.",
+        title: `Failed to fetch the data. Please try again.`,
       });
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleKeyPress = (e: { key: string; repeat: unknown }) => {
+    if (e.key === "Enter" && !e.repeat) {
+      handleSearch();
+    }
+  };
+
+  const handleClearSearch = () => {
+    setMobile("");
+    setData(null);
   };
 
   return (
@@ -132,16 +92,30 @@ const DeliverySuccessRatio = () => {
       <div className="p-4 bg-white shadow-lg rounded-lg max-w-full mx-4 mt-4">
         {/* Header Section */}
         <div className="flex items-center space-x-2 mb-4 max-w-xl mx-auto">
-          <input
-            type="text"
-            value={mobile}
-            onChange={(e) => setMobile(e.target.value)}
-            placeholder="Enter a mobile number"
-            className="bg-gray-100 focus:outline-orange-500 text-gray-800 px-6 py-3 rounded border border-gray-300 w-full"
-          />
+          <div className="relative flex items-center w-full">
+            <input
+              type="text"
+              value={mobile}
+              onChange={(e) => setMobile(e.target.value)}
+              onKeyDown={handleKeyPress}
+              placeholder="Enter a mobile number"
+              className="bg-gray-100 focus:outline-primary text-gray-800 px-6 py-3 rounded border border-gray-300 w-full"
+            />
+            {mobile ? (
+              <button
+                onClick={handleClearSearch}
+                className="absolute right-8 text-primary"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            ) : (
+              <Search className="w-6 h-6 absolute right-8 text-primary" />
+            )}
+          </div>
           <button
-            onClick={fetchReport}
-            className="bg-orange-500 text-white px-6 py-3 rounded hover:bg-orange-600"
+            onClick={handleSearch}
+            disabled={loading}
+            className="bg-primary text-white px-6 py-3 rounded hover:bg-secondary"
           >
             {loading ? "Loading..." : "Check"}
           </button>
@@ -172,13 +146,18 @@ const DeliverySuccessRatio = () => {
                 ></div>
                 {/* Inner Circle */}
                 <div className="absolute inset-3 bg-white rounded-full flex items-center justify-center">
-                  <span className="text-xl font-bold text-green-500">
+                  <span
+                    className={`text-xl font-bold ${data.successRatio >= 60 ? "text-green-500" : data.successRatio >= 40 ? "text-yellow-500" : "text-red-500"}`}
+                  >
                     {data.successRatio}%
                   </span>
                 </div>
               </div>
-
-              <p className="text-green-500 mt-2 font-medium">{data.message}</p>
+              <p
+                className={`mt-2 font-medium ${data.successRatio >= 60 ? "text-green-500" : data.successRatio >= 40 ? "text-yellow-500" : "text-red-500"}`}
+              >
+                {data.message}
+              </p>
             </div>
             <div>
               {/* User Info */}
@@ -207,11 +186,13 @@ const DeliverySuccessRatio = () => {
                   <p className="text-sm">মোট অর্ডার</p>
                 </div>
                 <div>
-                  <h4 className="text-xl font-bold">{data.totalDeliveries}</h4>
+                  <h4 className="text-xl font-bold text-green-500">
+                    {data.totalDeliveries}
+                  </h4>
                   <p className="text-sm">মোট ডেলিভারি</p>
                 </div>
                 <div>
-                  <h4 className="text-xl font-bold">
+                  <h4 className="text-xl font-bold text-red-500">
                     {data.totalCancellations}
                   </h4>
                   <p className="text-sm">মোট বাতিল</p>
@@ -295,109 +276,4 @@ const DeliverySuccessRatio = () => {
   );
 };
 
-export default DeliverySuccessRatio;
-
-// import React, { useState, useEffect } from 'react';
-// import axios from 'axios';
-
-// const DeliverySuccessRatio = () => {
-//   const [data, setData] = useState(null);
-//   const [mobile, setMobile] = useState('');
-
-//   useEffect(() => {
-//     // Fetch data from API
-//     const fetchData = async () => {
-//       try {
-//         const response = await axios.get('/api/delivery-stats'); // Replace with your API endpoint
-//         setData(response.data);
-//       } catch (error) {
-//         console.error('Error fetching delivery data:', error);
-//       }
-//     };
-
-//     fetchData();
-//   }, []);
-
-//   if (!data) {
-//     return <div>Loading...</div>;
-//   }
-
-//   return (
-//     <div className="p-4 bg-white shadow-lg rounded-lg w-full max-w-xl mx-auto">
-//       {/* Header Section */}
-//       <div className="flex justify-between items-center mb-4">
-//         <img src="/logo.png" alt="Mohasagor IT Solutions" className="h-10" />
-//         <input
-//           type="text"
-//           value={mobile}
-//           onChange={(e) => setMobile(e.target.value)}
-//           placeholder="রিপোর্ট আইডি প্রবেশ করুন"
-//           className="bg-gray-100 text-gray-800 px-7 py-4 rounded border border-gray-300"
-//         />
-//       </div>
-
-//       {/* Delivery Success Ratio */}
-//       <div className="text-center mb-4">
-//         <h2 className="text-lg font-bold">Delivery Success Ratio</h2>
-//         <div className="relative w-32 h-32 mx-auto mt-4">
-//           <div className="rounded-full border-4 border-green-500 w-full h-full flex items-center justify-center">
-//             <span className="text-2xl font-bold text-green-500">{data.successRatio} %</span>
-//           </div>
-//         </div>
-//         <p className="text-green-500 mt-2 font-medium">
-//           {data.message}
-//         </p>
-//       </div>
-
-//       {/* User Info */}
-//       <div className="text-center mb-4">
-//         <p className="text-sm text-gray-600">Your Number</p>
-//         <h3 className="text-xl font-bold text-orange-600">{data.phoneNumber}</h3>
-//       </div>
-
-//       {/* Stats Section */}
-//       <div className="grid grid-cols-3 gap-4 text-center mb-4">
-//         <div>
-//           <h4 className="text-xl font-bold">{data.totalOrders}</h4>
-//           <p className="text-sm">মোট অর্ডার</p>
-//         </div>
-//         <div>
-//           <h4 className="text-xl font-bold">{data.totalDeliveries}</h4>
-//           <p className="text-sm">মোট ডেলিভারি</p>
-//         </div>
-//         <div>
-//           <h4 className="text-xl font-bold">{data.totalCancellations}</h4>
-//           <p className="text-sm">মোট বাতিল</p>
-//         </div>
-//       </div>
-
-//       {/* Courier Stats Table */}
-//       <table className="w-full border border-gray-200 text-center text-sm">
-//         <thead>
-//           <tr className="bg-gray-100">
-//             <th className="border border-gray-200 px-7 py-4">কুরিয়ার</th>
-//             <th className="border border-gray-200 px-7 py-4">অর্ডার</th>
-//             <th className="border border-gray-200 px-7 py-4">ডেলিভারি</th>
-//             <th className="border border-gray-200 px-7 py-4">বাতিল</th>
-//             <th className="border border-gray-200 px-7 py-4">ডেলিভারি হার</th>
-//           </tr>
-//         </thead>
-//         <tbody>
-//           {data.couriers.map((courier, index) => (
-//             <tr key={index}>
-//               <td className="border border-gray-200 px-7 py-4 flex items-center justify-center">
-//                 <img src={courier.logo} alt={courier.name} className="h-5 mr-2" /> {courier.name}
-//               </td>
-//               <td className="border border-gray-200 px-7 py-4">{courier.orders}</td>
-//               <td className="border border-gray-200 px-7 py-4">{courier.deliveries}</td>
-//               <td className="border border-gray-200 px-7 py-4">{courier.cancellations}</td>
-//               <td className="border border-gray-200 px-7 py-4">{courier.deliveryRate}%</td>
-//             </tr>
-//           ))}
-//         </tbody>
-//       </table>
-//     </div>
-//   );
-// };
-
-// export default DeliverySuccessRatio;
+export default FraudCheck;
