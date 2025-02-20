@@ -6,10 +6,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { TCoupon } from "@/redux/features/coupon/couponInterface";
 import { DotsVerticalIcon } from "@radix-ui/react-icons";
-import { Pencil, Trash } from "lucide-react";
+import { Eye, Trash } from "lucide-react";
 import { useState } from "react";
+import ViewAndUpdateCoupon from "../viewAndUpdateCoupon/ViewAndUpdateCoupon";
 import DeleteCoupon from "./DeleteCoupon";
-import UpdateCouponEndTime from "./UpdateCouponEndTime";
 
 const Action = ({ coupon }: { coupon: TCoupon }) => {
   const [openEditModal, setOpenEditModal] = useState(false);
@@ -29,8 +29,8 @@ const Action = ({ coupon }: { coupon: TCoupon }) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56">
           <DropdownMenuItem onClick={handleOpenEditModal}>
-            <Pencil className="mr-2 h-4 w-4" />
-            <span>Edit</span>
+            <Eye className="mr-2 h-4 w-4" />
+            <span>View</span>
           </DropdownMenuItem>
           <DropdownMenuItem onClick={handleOpenDeleteModal}>
             <Trash className="mr-2 h-4 w-4" />
@@ -38,7 +38,7 @@ const Action = ({ coupon }: { coupon: TCoupon }) => {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      <UpdateCouponEndTime
+      <ViewAndUpdateCoupon
         coupon={coupon}
         open={openEditModal}
         setOpen={setOpenEditModal}

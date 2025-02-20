@@ -76,6 +76,7 @@ export type TPublishedStatus = {
 };
 
 export type TProduct = {
+  _id: string;
   title: string;
   permalink?: string;
   slug?: string;
