@@ -1,4 +1,5 @@
 "use client";
+import { PagePagination } from "@/components/pagination/PagePagination";
 import {
   Table,
   TableBody,
@@ -70,6 +71,9 @@ const CouponsClaimTable = () => {
           )}
         </TableBody>
       </Table>
+      <div className="flex items-center justify-end space-x-2 py-2">
+        <PagePagination />
+      </div>
     </div>
   );
 };

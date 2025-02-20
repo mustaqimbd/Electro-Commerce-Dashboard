@@ -2,9 +2,11 @@ import { createSlice } from "@reduxjs/toolkit";
 import { TAllCoupons } from "./couponInterface";
 
 const initialState: TAllCoupons = {
-  selectedType: "active",
+  selectedType: undefined,
   isLoading: true,
   codes: [],
+  selectedTags: [],
+  search: undefined,
 };
 
 const couponSlice = createSlice({
@@ -20,10 +22,21 @@ const couponSlice = createSlice({
     setCouponLoading: (state, { payload }) => {
       state.isLoading = payload;
     },
+    setCouponSelectedTags: (state, { payload }) => {
+      state.selectedTags = payload;
+    },
+    setCouponSearch: (state, { payload }) => {
+      state.search = payload;
+    },
   },
 });
 
-export const { setCoupons, setCouponSelectedType, setCouponLoading } =
-  couponSlice.actions;
+export const {
+  setCoupons,
+  setCouponSelectedType,
+  setCouponLoading,
+  setCouponSelectedTags,
+  setCouponSearch,
+} = couponSlice.actions;
 
 export default couponSlice.reducer;
