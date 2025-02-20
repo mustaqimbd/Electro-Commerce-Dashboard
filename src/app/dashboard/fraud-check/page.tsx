@@ -1,12 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-
 import { useToast } from "@/components/ui/use-toast";
-import { useState } from "react";
-// import fetchData from "@/utilities/fetchData";
+import { useEffect, useState } from "react";
 import CommonModal from "@/components/modal/CommonModal";
-import fetchData from "@/utilities/fetchData";
 import { Search, X } from "lucide-react";
+import { formatDate, formatTime } from "@/lib/formatDate";
+import getFraudCheck from "./getFraudCheck";
 
 type Report = {
   reportFrom: string;
@@ -34,7 +33,7 @@ type Data = {
   reports: Report[];
 };
 
-const FraudCheck = () => {
+const FraudCheck = ({ phoneNumber }: { phoneNumber: string }) => {
   const { toast } = useToast();
   const [data, setData] = useState<Data | null>(null);
   const [mobile, setMobile] = useState("");
@@ -48,7 +47,7 @@ const FraudCheck = () => {
   const handleSearch = async () => {
     const regex = /^01\d{9}$/;
 
-    if (!regex.test(mobile)) {
+    if (!regex.test(phoneNumber || mobile)) {
       toast({
         variant: "destructive",
         title: "Please enter a 11 digit valid mobile number.",
@@ -59,67 +58,81 @@ const FraudCheck = () => {
     setLoading(true);
 
     try {
-      const response = await fetchData({
-        endPoint: `/check/fraud-customers/${mobile}`,
-        cache: "no-store",
-      });
+      // const response = await fetchData({
+      //   endPoint: `/check/fraud-customers/${phoneNumber || mobile}`,
+      //   cache: "no-store",
+      // });
+      const response = await getFraudCheck(phoneNumber || mobile);
       setData(response.data);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error("Error when fetching delivery data:", error);
       toast({
         variant: "destructive",
-        title: `Failed to fetch the data. Please try again.`,
+        title: `Failed to fetch the customer fraud check data. Please try again.`,
       });
     } finally {
       setLoading(false);
     }
   };
 
-  const handleKeyPress = (e: { key: string; repeat: unknown }) => {
-    if (e.key === "Enter" && !e.repeat) {
-      handleSearch();
-    }
-  };
+  // const handleKeyPress = (e: { key: string; repeat: unknown }) => {
+  //   if (e.key === "Enter" && !e.repeat) {
+  //     handleSearch();
+  //   }
+  // };
 
   const handleClearSearch = () => {
     setMobile("");
     setData(null);
   };
 
+  useEffect(() => {
+    if (phoneNumber) {
+      handleSearch();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [phoneNumber]);
+
   return (
     <>
-      <div className="p-4 bg-white shadow-lg rounded-lg max-w-full mx-4 mt-4">
-        {/* Header Section */}
-        <div className="flex items-center space-x-2 mb-4 max-w-xl mx-auto">
-          <div className="relative flex items-center w-full">
-            <input
-              type="text"
-              value={mobile}
-              onChange={(e) => setMobile(e.target.value)}
-              onKeyDown={handleKeyPress}
-              placeholder="Enter a mobile number"
-              className="bg-gray-100 focus:outline-primary text-gray-800 px-6 py-3 rounded border border-gray-300 w-full"
-            />
-            {mobile ? (
-              <button
-                onClick={handleClearSearch}
-                className="absolute right-8 text-primary"
-              >
-                <X className="w-6 h-6" />
-              </button>
-            ) : (
-              <Search className="w-6 h-6 absolute right-8 text-primary" />
-            )}
+      <div
+        className={`bg-white shadow-lg rounded-lg max-w-full ${!phoneNumber && "p-4 mx-4 my-4"} `}
+      >
+        {/* Header Search Section */}
+        {phoneNumber ? (
+          <h1 className="text-xl font-bold text-center">Fraud Check</h1>
+        ) : (
+          <div className="flex items-center space-x-2 mb-4 max-w-xl mx-auto">
+            <div className="relative flex items-center w-full">
+              <input
+                type="text"
+                value={mobile}
+                onChange={(e) => setMobile(e.target.value)}
+                // onKeyDown={handleKeyPress}
+                placeholder="Enter a mobile number"
+                className="bg-gray-100 focus:outline-primary text-gray-800 px-6 py-3 rounded border border-gray-300 w-full"
+              />
+              {mobile ? (
+                <button
+                  onClick={handleClearSearch}
+                  className="absolute right-8 text-primary"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+              ) : (
+                <Search className="w-6 h-6 absolute right-8 text-primary" />
+              )}
+            </div>
+            <button
+              onClick={handleSearch}
+              disabled={loading}
+              className="bg-primary text-white px-6 py-3 rounded hover:bg-secondary"
+            >
+              {loading ? "Loading..." : "Check"}
+            </button>
           </div>
-          <button
-            onClick={handleSearch}
-            disabled={loading}
-            className="bg-primary text-white px-6 py-3 rounded hover:bg-secondary"
-          >
-            {loading ? "Loading..." : "Check"}
-          </button>
-        </div>
+        )}
 
         {data ? (
           <div className="flex gap-5 items-center justify-evenly">
@@ -162,7 +175,7 @@ const FraudCheck = () => {
             <div>
               {/* User Info */}
               <div>
-                {data?.reports?.length > 0 && (
+                {data?.reports && data.reports.length > 0 && (
                   <button
                     onClick={handleOpen}
                     className="text-red-600 font-semibold"
@@ -217,7 +230,7 @@ const FraudCheck = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {data.couriers.map((courier, index) => (
+                  {data?.couriers?.map((courier, index) => (
                     <tr key={index}>
                       <td className="border border-gray-200 px-7 py-4 flex items-center justify-center">
                         <img
@@ -253,25 +266,37 @@ const FraudCheck = () => {
             </div>
           </div>
         ) : (
-          <div className="text-center text-gray-500">
-            No data to display. Please enter a mobile number and click
-            &quot;Check&quot;.
-          </div>
+          !phoneNumber && (
+            <div className="text-center text-gray-500">
+              No data to display. Please enter a mobile number and click
+              &quot;Check&quot;.
+            </div>
+          )
         )}
       </div>
-      <CommonModal
-        open={open}
-        handleOpen={handleOpen}
-        modalTitle="View reports"
-        className="w-[63%]"
-      >
-        {data?.reports?.map((report, index) => (
-          <div key={index} className="p-4 border-b border-gray-200">
-            <p className="text-gray-600 text-right">{report.date}</p>
-            <p className="">{report.comment}</p>
-          </div>
-        ))}
-      </CommonModal>
+      {data?.reports?.length ? (
+        <CommonModal
+          open={open}
+          handleOpen={handleOpen}
+          modalTitle="View reports"
+          className="w-[63%]"
+        >
+          {data?.reports?.map((report, index) => (
+            <div
+              key={index}
+              className="px-4 py-2 border border-gray-300 rounded mb-4"
+            >
+              <p className="text-gray-600 flex justify-between mb-4">
+                <span>
+                  {report.reportFrom && `${report.reportFrom} courier report`}
+                </span>
+                {`${formatDate(report.date)}, ${formatTime(report.date)}`}
+              </p>
+              <p>{report.comment}</p>
+            </div>
+          ))}
+        </CommonModal>
+      ) : null}
     </>
   );
 };

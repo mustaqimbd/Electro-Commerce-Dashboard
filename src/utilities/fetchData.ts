@@ -21,6 +21,7 @@ type TTags =
   | "categories"
   | "subcategories"
   | "attributes"
+  | "fraudCheck"
   | "brands"
   | "tags"
   | "sliders";
@@ -28,17 +29,24 @@ type TTags =
 type TProps = {
   endPoint: string;
   tags?: TTags[];
+  revalidate?: number;
   searchParams?: Record<string, unknown>;
   cache?: RequestCache;
 };
 
-const fetchData = async ({ endPoint, tags, searchParams, cache }: TProps) => {
+const fetchData = async ({
+  endPoint,
+  tags = [],
+  searchParams,
+  cache,
+  revalidate,
+}: TProps) => {
   let url = `${config.base_url}/api/v1${endPoint}`;
   const accessToken = cookies().get("__app.ec.at")?.value;
   const reqConfig = {
     headers: { authorization: `Bearer ${accessToken}` },
-    cache: cache || "force-cache",
-    next: { tags: tags || [] },
+    cache: cache || "force-cache", // ✅ "force-cache" caches forever
+    next: { tags, revalidate },
   };
 
   if (Object.keys(searchParams || {}).length) {

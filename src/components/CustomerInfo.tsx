@@ -6,7 +6,7 @@ import CustomerOrderHistory from "@/app/dashboard/orders/components/CustomerOrde
 import { TOrders } from "@/types/order/order.interface";
 import config from "@/config/config";
 import Link from "next/link";
-// import FraudCheck from "@/app/dashboard/fraud-check/page";
+import FraudCheck from "@/app/dashboard/fraud-check/page";
 
 const CustomerInfo = ({ order }: { order: TOrders }) => {
   const { shipping: customer, deliveryStatus } = order || {};
@@ -105,10 +105,10 @@ const CustomerInfo = ({ order }: { order: TOrders }) => {
         open={open}
         handleOpen={handleOpen}
         modalTitle="Customer Order History"
-        className="h-[310px] !w-[1100px]"
+        className="h-[90%] !w-[1100px]"
       >
+        <FraudCheck phoneNumber={customer.phoneNumber} />
         <CustomerOrderHistory phoneNumber={customer.phoneNumber} />
-        {/* <FraudCheck phoneNumber={customer.phoneNumber}/> */}
       </CommonModal>
     </>
   );
