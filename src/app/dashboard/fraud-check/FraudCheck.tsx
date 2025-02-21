@@ -13,6 +13,11 @@ type Report = {
   date: string;
 };
 
+type Errors = {
+  errorFrom?: string;
+  message: string;
+};
+
 type Courier = {
   name: string;
   logo: string;
@@ -31,6 +36,7 @@ type Data = {
   message: string;
   couriers: Courier[];
   reports: Report[];
+  errors: Errors[];
 };
 
 const FraudCheck = ({ phoneNumber }: { phoneNumber?: string }) => {
@@ -274,6 +280,17 @@ const FraudCheck = ({ phoneNumber }: { phoneNumber?: string }) => {
           )
         )}
       </div>
+      {data?.errors?.map((error, index) => (
+        <div
+          key={index}
+          className="px-4 py-2 mx-4 border border-gray-300 rounded mb-4 space-y-2 text-red-500"
+        >
+          <p>
+            {error.errorFrom} error: {error.message}
+          </p>
+        </div>
+      ))}
+
       {data?.reports?.length ? (
         <CommonModal
           open={open}
