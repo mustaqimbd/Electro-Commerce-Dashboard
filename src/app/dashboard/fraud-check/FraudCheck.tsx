@@ -51,12 +51,13 @@ const FraudCheck = ({ phoneNumber }: { phoneNumber?: string }) => {
   };
 
   const handleSearch = async () => {
+    const phone = (phoneNumber || mobile).trim();
     const regex = /^01\d{9}$/;
 
-    if (!regex.test(phoneNumber || mobile)) {
+    if (!regex.test(phone)) {
       toast({
         variant: "destructive",
-        title: "Please enter a 11 digit valid mobile number.",
+        title: "Please enter an 11 digit valid mobile number.",
       });
       return;
     }
@@ -70,12 +71,11 @@ const FraudCheck = ({ phoneNumber }: { phoneNumber?: string }) => {
       // });
       const response = await getFraudCheck(phoneNumber || mobile);
       setData(response.data);
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error("Error when fetching delivery data:", error);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
       toast({
         variant: "destructive",
-        title: `Failed to fetch the customer fraud check data. ${error}`,
+        title: error.message || `Failed to fetch the customer fraud check data`,
       });
     } finally {
       setLoading(false);
@@ -303,10 +303,8 @@ const FraudCheck = ({ phoneNumber }: { phoneNumber?: string }) => {
               key={index}
               className="px-4 py-2 border border-gray-300 rounded mb-4"
             >
-              <p className="text-gray-600 flex justify-between mb-4">
-                <span>
-                  {report.reportFrom && `${report.reportFrom} courier report`}
-                </span>
+              <p className="text-gray-600 flex justify-between mb-2">
+                <span>{report.reportFrom && `${report.reportFrom}`}</span>
                 {`${formatDate(report.date)}, ${formatTime(report.date)}`}
               </p>
               <p>{report.comment}</p>

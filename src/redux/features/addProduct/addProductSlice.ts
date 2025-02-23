@@ -11,7 +11,6 @@ import {
 import { TSelectValue } from "./variation/interface";
 
 const initialState: TProduct = {
-  _id: "",
   title: "",
   // permalink: "",
   // slug: "",

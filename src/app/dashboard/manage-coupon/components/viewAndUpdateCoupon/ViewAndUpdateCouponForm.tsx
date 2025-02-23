@@ -83,7 +83,7 @@ const ViewAndUpdateCouponForm = ({
     );
   const [fixedProducts, setFixedProducts] = useState<TSelectOption>(
     coupon?.fixedProducts?.map((item) => ({
-      value: item._id,
+      value: item._id as string,
       label: item.title,
     })) || []
   );

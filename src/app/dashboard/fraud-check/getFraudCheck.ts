@@ -9,19 +9,14 @@ const getFraudCheck = async (phoneNumber: string) => {
     `${config.base_url}/api/v1/check/fraud-customers/${phoneNumber}`,
     {
       headers: { authorization: `Bearer ${accessToken}` },
-      next: { revalidate: 300 },
+      next: { revalidate: 60 },
     }
   );
 
   if (!res.ok) {
-    // Attempt to extract error message from the response body
-    const errorData = await res.json().catch(() => null); // Prevent JSON parse errors
-    const errorMessage =
-      errorData?.message ||
-      errorData?.error ||
-      `Request failed with status ${res.status}`;
-
-    throw new Error(errorMessage);
+    throw new Error(
+      "Failed to fetch fraud check data! try again after some time."
+    );
   }
 
   const data = await res.json();
