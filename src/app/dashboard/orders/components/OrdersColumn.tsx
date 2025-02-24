@@ -74,10 +74,12 @@ export const columns: ColumnDef<TOrders>[] = [
         row.original.products[0] &&
         row.original.products[0]?.variation;
       const attributes =
-        typeof variation === "object" && variation !== null
+        typeof variation === "object" &&
+        variation !== null &&
+        variation !== undefined
           ? variation.attributes
           : {};
-      const variationProps = Object.keys(attributes)
+      const variationProps = Object.keys(attributes || {})
         .map((key) => attributes[key])
         .join(" ");
       return (
