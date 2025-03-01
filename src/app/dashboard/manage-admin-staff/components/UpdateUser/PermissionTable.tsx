@@ -110,7 +110,7 @@ const PermissionTable = ({
     },
     {
       ...permissionData.find((item) => item.name === "manage warranty claim"),
-      description: "Can add warranty to products",
+      description: "Can manage warranty claims",
       fieldName: "manageWarrantyClaim",
       warn: undefined,
     },
