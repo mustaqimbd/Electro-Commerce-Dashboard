@@ -41,7 +41,7 @@ const EditOrderTable = ({
   const [updateOrder, { isLoading }] = useUpdateOrderMutation();
 
   const [addProduct, setAddProduct] = useState<number[]>([]);
-  const { _id, products } = order || {};
+  const { _id, products, deliveryStatus } = order || {};
 
   const handleAddProduct = () => {
     const exitsLastIndex = products?.length ? products?.length - 1 : 0;
@@ -160,7 +160,7 @@ const EditOrderTable = ({
                         <Input
                           type="number"
                           defaultValue={quantity}
-                          min={1}
+                          min={deliveryStatus === "partial_delivered" ? 0 : 1}
                           {...register(`productDetails.${index}.quantity`)}
                           id="quantity"
                           className="w-full px-1 text-center"

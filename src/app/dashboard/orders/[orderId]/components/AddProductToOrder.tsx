@@ -76,7 +76,7 @@ const AddProductToOrder = ({
     remove(index);
   };
 
-  const { shippingCharge, discount, advance } = order || {};
+  const { shippingCharge, discount, advance, couponDiscount = 0 } = order || {};
 
   let updatedSubTotal = existingSubTotal;
   const charge = shippingCharge?.amount || 0;
@@ -176,6 +176,11 @@ const AddProductToOrder = ({
             <p className="font-normal text-right">
               Sub Total : ৳ {updatedSubTotal}
             </p>
+            {couponDiscount > 0 && (
+              <p className="font-normal text-right">
+                Coupon Discount : ৳ {updatedSubTotal}
+              </p>
+            )}
             <div className="flex items-center justify-end gap-2">
               <span>Discount</span>
               <Input
@@ -201,7 +206,7 @@ const AddProductToOrder = ({
             <p className="font-normal text-right">Shipping Cost : ৳ {charge}</p>
             <hr />
             <p className="font-semibold text-right">
-              Total : ৳ {updatedSubTotal + charge - totalMinus}
+              Total : ৳ {updatedSubTotal + charge - totalMinus - couponDiscount}
             </p>
           </div>
         </td>

@@ -53,6 +53,7 @@ export type TOrders = {
   shippingCharge: ShippingCharge;
   advance: number;
   discount: number;
+  couponDiscount: number;
   total: number;
   paymentMethod: PaymentMethod;
   statusHistory: StatusHistory;
