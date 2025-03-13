@@ -37,8 +37,15 @@ export const columns: ColumnDef<Product>[] = [
     accessorKey: "image",
     header: "Products",
     cell: ({ row }) => {
-      const { image, title, productId, slug, variation } = row.original;
-      const attributes = variation?.attributes || {};
+      const {
+        image,
+        title,
+        productId,
+        slug,
+        // variation,
+        attributes = {},
+      } = row.original;
+      // const attributes = variation?.attributes || {};
       return (
         <div className="flex justify-start items-center gap-3">
           <div>

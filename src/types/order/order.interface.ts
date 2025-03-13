@@ -35,6 +35,9 @@ export type Product = {
   quantity: number;
   total: number;
   variation: TVariation;
+  attributes: {
+    [key: string]: string;
+  };
   isProductWarrantyAvailable: boolean;
   isWarrantyClaim: boolean;
   warranty: {
