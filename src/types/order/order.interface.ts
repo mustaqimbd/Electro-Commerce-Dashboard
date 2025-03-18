@@ -16,7 +16,7 @@ type StatusHistory = {
   updatedAt: Date;
 };
 
-type Shipping = {
+export type Shipping = {
   fullName: string;
   phoneNumber: string;
   fullAddress: string;
