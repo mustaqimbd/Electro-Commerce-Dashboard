@@ -61,7 +61,7 @@ type Tags =
   | "customers"
   | "coupons"
   | "imageToOrderReq"
-  | "customers";
+  | "registeredCustomers";
 const tags: Tags[] = [
   "allProducts",
   "singleProduct",
@@ -80,6 +80,7 @@ const tags: Tags[] = [
   "coupons",
   "imageToOrderReq",
   "customers",
+  "registeredCustomers",
 ];
 
 const baseApi = createApi({
