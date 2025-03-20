@@ -6,11 +6,16 @@ import OrderHistoryTable from "../../orders/[orderId]/components/OrderHistoryTab
 import OrdersTable from "../../orders/components/OrdersTable";
 
 const page = async ({ params }: { params: { id: string } }) => {
-  const { data } = await fetchData({
-    endPoint: `/customers/${params.id}`,
-  });
-
-  const customer = data as TCustomer;
+  let customer: TCustomer | undefined;
+  try {
+    const { data } = await fetchData({
+      endPoint: `/customers/${params.id}`,
+    });
+    customer = data as TCustomer;
+  } catch (error) {
+    if (!customer)
+      return <h2 className="text-center font-bold py-2">No customer found</h2>;
+  }
 
   return (
     <Card className="p-4 shadow-none rounded-xl m-3">
@@ -31,7 +36,7 @@ const page = async ({ params }: { params: { id: string } }) => {
       <hr className="my-4" />
       <div className="mt-4">
         <h4 className="py-3 font-semibold">Orders</h4>
-        <OrderHistoryTable searchQuery={customer?.phoneNumber} />
+        <OrderHistoryTable userId={customer._id} />
         <OrdersTable />
       </div>
     </Card>
