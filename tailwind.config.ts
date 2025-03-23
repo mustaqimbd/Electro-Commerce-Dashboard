@@ -18,6 +18,7 @@ module.exports = {
     },
     extend: {
       colors: {
+        white: "#F8F9FA",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -47,6 +48,9 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+      },
+      backgroundImage: {
+        "dashboard-gradient": "linear-gradient(135deg, #ffffff, #E0F7FA)",
       },
       borderRadius: {
         lg: "var(--radius)",

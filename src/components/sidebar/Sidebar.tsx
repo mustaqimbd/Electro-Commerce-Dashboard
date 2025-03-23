@@ -3,17 +3,19 @@ import { getPermission } from "@/lib/getAccessToken";
 import { permission } from "@/types/order/order.interface";
 import isPermitted from "@/utilities/isPermitted";
 import {
+  BarChart,
   Bike,
+  ClipboardList,
   Component,
   Glasses,
   Home,
   Image,
   ImagePlusIcon,
-  LayoutDashboard,
-  ListOrdered,
   Loader,
-  PackageSearch,
-  PlusCircle,
+  Package,
+  Settings,
+  ShieldCheck,
+  Ticket,
   Truck,
   User,
   UsersRound,
@@ -59,32 +61,26 @@ export function Sidebar() {
     {
       href: "/products",
       name: "All Products",
-      icon: <PackageSearch className="w-4 h-4" />,
     },
     {
       href: "/add-products",
       name: "Add Product",
-      icon: <PlusCircle className="w-4 h-4" />,
     },
     {
       href: "/category",
       name: "Category",
-      icon: <PlusCircle className="w-4 h-4" />,
     },
     {
       href: "/attribute",
       name: "Attribute",
-      icon: <PlusCircle className="w-4 h-4" />,
     },
     {
       href: "/brand",
       name: "Brand",
-      icon: <PlusCircle className="w-4 h-4" />,
     },
     {
       href: "/media",
       name: "Media",
-      icon: <ImagePlusIcon className="w-4 h-4" />,
     },
   ];
 
@@ -92,40 +88,36 @@ export function Sidebar() {
     {
       href: "/slider-section",
       name: "Slider Section",
-      icon: <ImagePlusIcon className="w-4 h-4" />,
+      icon: <ImagePlusIcon size={20} />,
     },
     // {
     //   href: "/contact",
     //   name: "Contact & Social",
-    //   icon: <Shapes className="w-4 h-4" />,
+    //   icon: <Shapes size={20} />,
     // },
     // {
     //   href: "/contents",
     //   name: "Text Contents",
-    //   icon: <LayoutList className="w-4 h-4" />,
+    //   icon: <LayoutList size={20} />,
     // },
   ];
 
   return (
-    <div className="w-[17rem] p-2 h-[calc(100vh-60px)] border-r overflow-y-auto space-y-4">
-      <NavLink
-        href="/dashboard"
-        name="Home"
-        icon={<Home className="w-4 h-4" />}
-      />
+    <div className="bg-white text-gray-900 p-2 shadow-lg min-w-64 h-[calc(100vh-60px)] border-r overflow-y-auto space-y-6">
+      <NavLink href="/dashboard" name="Home" icon={<Home size={20} />} />
       {isSuperAdmin && (
         <NavLink
           href="/dashboard/reports"
           name="Reports"
-          icon={<LayoutDashboard className="w-4 h-4" />}
+          icon={<BarChart size={20} />}
         />
       )}
       {manageProduct && (
         <Accordion type="single" collapsible className="!mt-0">
-          <AccordionItem value="item-1">
-            <AccordionTrigger className="px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground">
-              <div className="flex items-center gap-3">
-                <PackageSearch className="w-4 h-4" /> <span>Products</span>
+          <AccordionItem value="item-1" className="border-none">
+            <AccordionTrigger className="px-3 py-2 text-base font-semibold hover:bg-accent hover:text-accent-foreground">
+              <div className="flex items-center gap-2">
+                <Package size={20} /> <span>Products</span>
               </div>
             </AccordionTrigger>
             <AccordionContent className="pl-4">
@@ -134,7 +126,8 @@ export function Sidebar() {
                   key={item.href}
                   href={`/dashboard${item.href}`}
                   name={item.name}
-                  icon={item.icon}
+                  // icon={item.icon}
+                  className="text-sm"
                 />
               ))}
             </AccordionContent>
@@ -146,14 +139,14 @@ export function Sidebar() {
           href="/dashboard/image-to-order"
           name="Image to order"
           // eslint-disable-next-line jsx-a11y/alt-text
-          icon={<Image className="w-4 h-4" />}
+          icon={<Image size={20} />}
         />
       )}
       {manageOrder && (
         <NavLink
           href="/dashboard/orders"
           name="Orders"
-          icon={<ListOrdered className="w-4 h-4" />}
+          icon={<ClipboardList size={20} />}
         />
       )}
 
@@ -161,33 +154,33 @@ export function Sidebar() {
         <NavLink
           href="/dashboard/processing-orders"
           name="Processing Orders"
-          icon={<Loader className="w-4 h-4" />}
+          icon={<Loader size={20} />}
         />
       )}
       {manageCourier && (
         <NavLink
           href="/dashboard/courier-management"
           name="Courier Management"
-          icon={<Bike className="w-4 h-4" />}
+          icon={<Truck size={20} />}
         />
       )}
       {(manageCourier || manageProcessing) && (
         <NavLink
           href="/dashboard/monitor-delivery"
           name="Monitor Delivery"
-          icon={<Glasses className="w-4 h-4" />}
+          icon={<Glasses size={20} />}
         />
       )}
       <NavLink
         href="/dashboard/fraud-check"
         name="Fraud Check"
-        icon={<LayoutDashboard className="w-4 h-4" />}
+        icon={<ShieldCheck size={20} />}
       />
       {manageWarrantyClaim && (
         <NavLink
           href="/dashboard/warranty-claims"
           name="Warranty Claims"
-          icon={<LayoutDashboard className="w-4 h-4" />}
+          icon={<Ticket size={20} />}
         />
       )}
 
@@ -195,59 +188,56 @@ export function Sidebar() {
         <NavLink
           href="/dashboard/manage-coupon"
           name="Manage Coupons"
-          icon={<Component className="w-4 h-4" />}
+          icon={<Component size={20} />}
         />
       )}
       {manageShippingCharges && (
         <NavLink
           href="/dashboard/manage-shipping-charges"
-          name="Manage Shipping Charges"
-          icon={<Truck className="w-4 h-4" />}
+          name="Shipping Charges"
+          icon={<Bike size={20} />}
         />
       )}
       {(isSuperAdmin || manageProduct) && (
-        <>
-          <Accordion type="single" collapsible className="!mt-0">
-            <AccordionItem value="item-1">
-              <AccordionTrigger className="no-underline px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground transparent">
-                Theme Option
-              </AccordionTrigger>
-              <AccordionContent className="pl-4">
-                {themeOptionLinks.map((item) => (
-                  <NavLink
-                    key={item.href}
-                    href={`/dashboard${item.href}`}
-                    name={item.name}
-                    icon={item.icon}
-                  />
-                ))}
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-          <hr />
-          <span className="block mb-5"></span>
-        </>
+        <Accordion type="single" collapsible className="!mt-0">
+          <AccordionItem value="item-1" className="border-none">
+            <AccordionTrigger className=" px-3 py-2 text-base font-semibold hover:bg-accent hover:text-accent-foreground transparent">
+              <div className="flex items-center gap-2">
+                <Settings size={20} /> <span>Theme option</span>
+              </div>
+            </AccordionTrigger>
+            <AccordionContent className="pl-4">
+              {themeOptionLinks.map((item) => (
+                <NavLink
+                  key={item.href}
+                  href={`/dashboard${item.href}`}
+                  name={item.name}
+                  icon={item.icon}
+                  className="text-sm"
+                />
+              ))}
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
       )}
       {manageAdminOrStaff && (
         <NavLink
           href="/dashboard/customers"
           name="Customer List"
-          icon={<UsersRound className="w-4 h-4" />}
+          icon={<UsersRound size={20} />}
         />
       )}
       {manageAdminOrStaff && (
         <NavLink
           href="/dashboard/manage-admin-staff"
           name="Manage Employees"
-          icon={<UsersRound className="w-4 h-4" />}
+          icon={<UsersRound size={20} />}
         />
       )}
-      <hr />
-      <span className="block mb-5"></span>
       <NavLink
         href="/dashboard/accounts"
         name="Accounts"
-        icon={<User className="w-4 h-4" />}
+        icon={<User size={20} />}
       />
     </div>
   );

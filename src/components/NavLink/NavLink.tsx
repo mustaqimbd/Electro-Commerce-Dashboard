@@ -17,7 +17,7 @@ const NavLink = ({ name, href, icon, className, activeClassName }: TProps) => {
       href={href}
       icon={icon}
       className={cn(
-        "px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground transparent",
+        "px-3 py-2 text-base font-semibold hover:bg-accent hover:text-accent-foreground transparent",
         className
       )}
       activeClassName={activeClassName}

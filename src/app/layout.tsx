@@ -23,7 +23,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <AllProvider>
-          <main className="max-w-[1920px] mx-auto relative">
+          <main className="max-w-[1920px] mx-auto relative text-gray-900">
             {children}
             <Toaster />
           </main>
