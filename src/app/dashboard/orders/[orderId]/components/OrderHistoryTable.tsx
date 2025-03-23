@@ -8,25 +8,40 @@ import { useAppDispatch } from "@/redux/hooks";
 import fetchData from "@/utilities/fetchData";
 import { useEffect } from "react";
 
-const OrderHistoryTable = ({ searchQuery }: { searchQuery: string }) => {
+const OrderHistoryTable = ({
+  searchQuery,
+  userId,
+}: {
+  searchQuery?: string;
+  userId?: string;
+}) => {
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(setIsLoading(true));
     dispatch(setSearch(true));
     const fetchOrders = async () => {
+      const searchParams: Record<string, unknown> = {
+        sort: "-createdAt",
+      };
+
+      if (searchQuery) {
+        searchParams.search = searchQuery;
+      }
+
+      if (userId) {
+        searchParams.userId = userId;
+      }
+
       const { data } = await fetchData({
         endPoint: "/orders/admin/all-orders",
         // tags: ["allOrders"],
-        searchParams: {
-          search: searchQuery,
-          sort: "-createdAt",
-        },
+        searchParams,
       });
       dispatch(setSearchedOrders(data?.data));
       dispatch(setIsLoading(false));
     };
     fetchOrders();
-  }, [dispatch, searchQuery]);
+  }, [dispatch, searchQuery, userId]);
   return <></>;
 };
 

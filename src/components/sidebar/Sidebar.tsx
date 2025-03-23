@@ -18,6 +18,7 @@ import {
   Ticket,
   Truck,
   User,
+  UserCheck,
   UsersRound,
 } from "lucide-react";
 import NavLink from "../NavLink/NavLink";
@@ -227,6 +228,12 @@ export function Sidebar() {
           icon={<UsersRound size={20} />}
         />
       )}
+
+      <NavLink
+        href="/dashboard/registered-customers"
+        name="Registered customers"
+        icon={<UserCheck size={20} />}
+      />
       {manageAdminOrStaff && (
         <NavLink
           href="/dashboard/manage-admin-staff"
