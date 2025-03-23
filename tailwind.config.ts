@@ -18,12 +18,13 @@ module.exports = {
     },
     extend: {
       colors: {
+        white: "#F8F9FA",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
-        primary: "#29C1F1",
+        primary: "#0EBEF0",
         secondary: "#0dbdef ",
         tertiary: "#2B77C2",
         success: "#28a745",
@@ -47,6 +48,9 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+      },
+      backgroundImage: {
+        "dashboard-gradient": "linear-gradient(135deg, #ffffff, #E0F7FA)",
       },
       borderRadius: {
         lg: "var(--radius)",

@@ -21,7 +21,7 @@ import {
 } from "@tanstack/react-table";
 import Image from "next/image";
 import Link from "next/link";
-import * as React from "react";
+import { useState } from "react";
 
 export const columns: ColumnDef<Product>[] = [
   {
@@ -37,8 +37,15 @@ export const columns: ColumnDef<Product>[] = [
     accessorKey: "image",
     header: "Products",
     cell: ({ row }) => {
-      const { image, title, productId, slug, variation } = row.original;
-      const attributes = variation?.attributes || {};
+      const {
+        image,
+        title,
+        productId,
+        slug,
+        // variation,
+        attributes = {},
+      } = row.original;
+      // const attributes = variation?.attributes || {};
       return (
         <div className="flex justify-start items-center gap-3">
           <div>
@@ -95,9 +102,8 @@ export const columns: ColumnDef<Product>[] = [
 ];
 
 export function OrderedProductTable({ products }: { products: Product[] }) {
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState({});
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = useState({});
   const table = useReactTable({
     data: products,
     columns,
@@ -158,7 +164,7 @@ export function OrderedProductTable({ products }: { products: Product[] }) {
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  No product
                 </TableCell>
               </TableRow>
             )}

@@ -70,9 +70,16 @@ export const columns: ColumnDef<TOrders>[] = [
         quantity = "",
       } = length ? row.original.products[0] : {};
       const variation =
-        row.original.products[0] && row.original.products[0]?.variation;
-      const attributes = variation?.attributes || {};
-      const variationProps = Object.keys(attributes)
+        length &&
+        row.original.products[0] &&
+        row.original.products[0]?.variation;
+      const attributes =
+        typeof variation === "object" &&
+        variation !== null &&
+        variation !== undefined
+          ? variation.attributes
+          : {};
+      const variationProps = Object.keys(attributes || {})
         .map((key) => attributes[key])
         .join(" ");
       return (
@@ -83,8 +90,8 @@ export const columns: ColumnDef<TOrders>[] = [
           >
             {title.length > 18 ? title.slice(0, 18) + "..." : title}
           </p>
-          <p>৳ {unitPrice}</p>
-          <p>Quantity : {quantity}</p>
+          <p>৳ {unitPrice || 0}</p>
+          <p>Quantity : {quantity || 0}</p>
           {length > 1 && (
             <p className="text-primary">
               And {length - 1} more {length - 1 === 1 ? "item" : "items"}.

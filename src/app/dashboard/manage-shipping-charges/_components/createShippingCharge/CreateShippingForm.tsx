@@ -69,7 +69,7 @@ const CreateShippingForm = () => {
             type="text"
             {...register("name")}
             id="name"
-            placeholder="Enter coupon name"
+            placeholder="Enter shipping name"
             className="w-full border-gray-300"
           />
           {errors.name?.message && (

@@ -1,7 +1,12 @@
+import { TCategories } from "@/app/dashboard/category/components/CategoryTable";
+import { TProduct } from "../addProduct/interface";
+
 export type TAllCoupons = {
-  selectedType: string;
+  selectedType?: string;
   isLoading: boolean;
   codes: TCoupon[];
+  selectedTags?: string | string[];
+  search?: string;
 };
 
 export type TCoupon = {
@@ -10,10 +15,26 @@ export type TCoupon = {
   slug: string;
   shortDescription: string;
   code: string;
-  percentage: number;
-  maxDiscountAmount: number;
+  discountType: "percentage" | "flat";
+  discountValue: number;
+  maxDiscount: number;
+  minimumOrderValue: number;
+  startDate: string;
+  usageLimit: number;
+  usageCount: number;
+  onlyForRegisteredUsers: false;
   endDate: string;
-  limitDiscountAmount: boolean;
+  tags: string[];
   isActive: boolean;
+  isDeleted: boolean;
   createdAt: string;
+  allowedUsers: {
+    _id: string;
+    name: string;
+    uid: string;
+    phoneNumber: string;
+  }[];
+  fixedCategories: TCategories[];
+  restrictedCategories: TCategories[];
+  fixedProducts: TProduct[];
 };

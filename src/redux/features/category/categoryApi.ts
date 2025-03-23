@@ -1,7 +1,14 @@
 import baseApi from "@/redux/baseApi/baseApi";
+import searchParams from "@/utilities/searchParams";
 
 const categoryApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
+    getCategories: builder.query({
+      query: (args) => ({
+        url: "/categories",
+        params: searchParams(args),
+      }),
+    }),
     deleteCategory: builder.mutation({
       query: (data) => ({
         url: `/categories`,
@@ -29,6 +36,7 @@ const categoryApi = baseApi.injectEndpoints({
 });
 
 export const {
+  useGetCategoriesQuery,
   useDeleteCategoryMutation,
   useAddCategoryMutation,
   useUpdateCategoryMutation,

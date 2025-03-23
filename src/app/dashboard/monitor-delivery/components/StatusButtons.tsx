@@ -32,11 +32,9 @@ const StatusButtons = ({ manageProcessing }: { manageProcessing: boolean }) => {
 
   const { startFrom, endAt } = useAppSelector(({ orders }) => orders);
 
-  const {
-    selectedStatus: filter,
-    monitorDeliveryOrders,
-    editPermission,
-  } = useAppSelector(({ monitorDelivery }) => monitorDelivery);
+  const { selectedStatus: filter, monitorDeliveryOrders } = useAppSelector(
+    ({ monitorDelivery }) => monitorDelivery
+  );
 
   if (!monitorDeliveryOrders.length && page > 1) {
     dispatch(setPage(1));
@@ -50,7 +48,7 @@ const StatusButtons = ({ manageProcessing }: { manageProcessing: boolean }) => {
     error,
   } = useGetMonitorDeliveryOrdersQuery({
     deliveryStatus:
-      editPermission && filter == "in_review" ? "cancelled" : filter,
+      manageProcessing && filter == "in_review" ? "cancelled" : filter,
     startFrom,
     endAt,
     sort: "-createdAt",

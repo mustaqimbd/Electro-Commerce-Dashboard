@@ -16,7 +16,7 @@ type StatusHistory = {
   updatedAt: Date;
 };
 
-type Shipping = {
+export type Shipping = {
   fullName: string;
   phoneNumber: string;
   fullAddress: string;
@@ -35,6 +35,9 @@ export type Product = {
   quantity: number;
   total: number;
   variation: TVariation;
+  attributes: {
+    [key: string]: string;
+  };
   isProductWarrantyAvailable: boolean;
   isWarrantyClaim: boolean;
   warranty: {
@@ -53,11 +56,14 @@ export type TOrders = {
   shippingCharge: ShippingCharge;
   advance: number;
   discount: number;
+  couponDiscount: number;
   total: number;
   paymentMethod: PaymentMethod;
   statusHistory: StatusHistory;
   status: string;
   deliveryStatus: string;
+  monitoringStatus: string;
+  trackingStatus: string;
   followUpDate: string;
   shipping: Shipping;
   createdAt: Date;
@@ -66,7 +72,7 @@ export type TOrders = {
   invoiceNotes?: string;
   officialNotes?: string;
   courierNotes?: string;
-  riderNotes?: string;
+  monitoringNotes?: string;
   reasonNotes?: string;
   orderSource: { name: string; url: string; lpNo: number };
   courierDetails: { trackingId: string };

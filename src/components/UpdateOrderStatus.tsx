@@ -29,7 +29,13 @@ const UpdateOrderStatus = ({ _id, status, handleOpen }: TProps) => {
     useCourierReturnedOrdersMutation();
   // const iSOrderUpdate = useAppSelector(({ orders }) => orders.iSOrderUpdate);
 
-  const ordersRoute = ["pending", "confirmed", "follow up", "canceled"];
+  const ordersRoute = [
+    "pending",
+    "confirmed",
+    "follow up",
+    "canceled",
+    "completed",
+  ];
   const processingOrdersRoute = [
     "processing",
     "warranty processing",

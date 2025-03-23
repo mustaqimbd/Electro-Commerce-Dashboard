@@ -1,4 +1,4 @@
-import { useGetAProductQuery } from "@/redux/features/allProducts/allProductsApi";
+import { useGetACustomerProductQuery } from "@/redux/features/allProducts/allProductsApi";
 import { UseFormRegister, FieldValues, Path } from "react-hook-form";
 
 // Update the type constraint for T
@@ -15,7 +15,7 @@ const VariationOptions = <T extends FieldValues>({
   register,
   orderedProducts,
 }: VariationOptionsProps<T>) => {
-  const { data } = useGetAProductQuery(id);
+  const { data } = useGetACustomerProductQuery(id);
 
   return (
     <>

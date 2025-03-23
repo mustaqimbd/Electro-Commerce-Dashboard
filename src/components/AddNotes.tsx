@@ -26,7 +26,7 @@ const AddNotes = ({ order }: { order: TOrders }) => {
     formState: { dirtyFields },
   } = useForm();
 
-  const { officialNotes, riderNotes, invoiceNotes, courierNotes } = order;
+  const { officialNotes, monitoringNotes, invoiceNotes, courierNotes } = order;
   const isFormDirty = Object.keys(dirtyFields).length > 0;
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
@@ -55,10 +55,11 @@ const AddNotes = ({ order }: { order: TOrders }) => {
     }
   };
 
-  const notes = officialNotes || riderNotes || invoiceNotes || courierNotes;
+  const notes =
+    officialNotes || monitoringNotes || invoiceNotes || courierNotes;
   const noteNumbers = [
     officialNotes,
-    riderNotes,
+    monitoringNotes,
     invoiceNotes,
     courierNotes,
   ].filter((note) => note !== undefined && note !== null && note !== "").length;
@@ -111,17 +112,18 @@ const AddNotes = ({ order }: { order: TOrders }) => {
                 Official Note
               </TabsTrigger>
               <TabsTrigger
+                value="monitoringNotes"
+                className="border border-cyan-400 data-[state=active]:bg-primary data-[state=active]:text-white"
+              >
+                Monitoring Note
+              </TabsTrigger>
+              <TabsTrigger
                 value="courierNotes"
                 className="border border-cyan-400 data-[state=active]:bg-primary data-[state=active]:text-white"
               >
                 Courier Note
               </TabsTrigger>
-              <TabsTrigger
-                value="riderNotes"
-                className="border border-cyan-400 data-[state=active]:bg-primary data-[state=active]:text-white"
-              >
-                Rider Note
-              </TabsTrigger>
+
               <TabsTrigger
                 value="invoiceNotes"
                 className="border border-cyan-400 data-[state=active]:bg-primary data-[state=active]:text-white"
@@ -166,15 +168,15 @@ const AddNotes = ({ order }: { order: TOrders }) => {
                 />
               </div>
             </TabsContent>
-            <TabsContent value="riderNotes">
+            <TabsContent value="monitoringNotes">
               <div className="grid w-full gap-1.5">
-                <Label htmlFor="riderNotes">Note</Label>
+                <Label htmlFor="monitoringNotes">Note</Label>
                 <Textarea
                   placeholder="Type note here."
-                  id="riderNotes"
+                  id="monitoringNotes"
                   className="min-h-44 border border-primary focus-visible:ring-primary"
-                  {...register("riderNotes")}
-                  defaultValue={order?.riderNotes}
+                  {...register("monitoringNotes")}
+                  defaultValue={order?.monitoringNotes}
                 />
               </div>
             </TabsContent>

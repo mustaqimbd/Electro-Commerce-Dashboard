@@ -19,6 +19,7 @@ const userApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["users"],
     }),
+
     getAllUsers: builder.query({
       query: (args) => ({
         url: "/users/all-admin-staff",

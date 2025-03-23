@@ -33,7 +33,9 @@ const MonitorDelivery = () => {
       <hr className="my-4" />
       <div className="space-y-3">
         {/* All, Pending, canceled, on courier etc status*/}
-        <StatusButtons manageProcessing={manageProcessing} />
+        <StatusButtons
+          manageProcessing={manageCourier ? false : manageProcessing}
+        />
         <div className="flex items-center justify-between gap-5 overflow-x-auto pt-4 px-1 pb-1">
           {/*Bulk actions for Orders*/}
           <MonitorOrderDateRange />

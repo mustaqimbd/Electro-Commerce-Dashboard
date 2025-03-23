@@ -3,7 +3,6 @@ import { permission } from "@/types/order/order.interface";
 import isPermitted from "@/utilities/isPermitted";
 import { redirect } from "next/navigation";
 import AllCoupons from "./components/allCoupons/AllCoupons";
-import CreateCoupons from "./components/createCoupons/CreateCoupons";
 
 const ManageCoupons = () => {
   const { permissions = [] } = getPermission();
@@ -11,13 +10,12 @@ const ManageCoupons = () => {
   const manageAdminOrStaff = isPermitted(permissions, permission.manageCoupon);
 
   if (!manageAdminOrStaff) {
-    redirect("/error?s=d");
+    redirect("/error");
   }
   return (
-    <div className="px-3 pt-3 grid grid-cols-5 gap-5">
-      <CreateCoupons />
+    <>
       <AllCoupons />
-    </div>
+    </>
   );
 };
 
