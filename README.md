@@ -85,7 +85,3 @@ Make sure to configure the `.env.local` file with appropriate values.
 ## 👥 Team
 
 Developed by **Md. Mustaqim Khan** and **Md. Abir Mahmud**.
-
-## 📧 Contact
-
-For inquiries, reach out via [mustaqimkhanbd@gmail.com](mailto:mustaqimkhanbd@gmail.com) or visit [LinkedIn](https://www.linkedin.com/in/mustaqimbd/).
